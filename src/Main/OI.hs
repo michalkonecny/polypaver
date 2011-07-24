@@ -1,5 +1,9 @@
 
-module Main where
+module Main.OI
+(
+  main
+)
+where
 
 import Canvas
 import Control.Concurrent
@@ -11,18 +15,16 @@ import Numeric.ER.Real.Base.MachineDouble
 import Numeric.ER.Real.DefaultRepr
 import qualified Numeric.ER.BasicTypes.DomainBox as DBox
 import Numeric.ER.BasicTypes.DomainBox.IntMap
-import Plotter
-import Prover
+import Main.OI.Plotter
+import Main.OI.Prover
 import qualified Data.Sequence as Q
-import Form
+import Main.OI.Form
 import System.CPUTime
 import System.Environment
 --import Erf
 --import Sqrt
 import Teddy
 --import LevelSlice 
-
-import qualified OI
 
 main = do
     (vcnumberS : 
