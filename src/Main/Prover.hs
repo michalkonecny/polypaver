@@ -1,9 +1,13 @@
 
-module Main.OI
+module Main.Prover
 (
   main
 )
 where
+
+import Main.Plotter
+import Main.Prover
+import Main.Form
 
 import Canvas
 import Control.Concurrent
@@ -15,10 +19,7 @@ import Numeric.ER.Real.Base.MachineDouble
 import Numeric.ER.Real.DefaultRepr
 import qualified Numeric.ER.BasicTypes.DomainBox as DBox
 import Numeric.ER.BasicTypes.DomainBox.IntMap
-import Main.OI.Plotter
-import Main.OI.Prover
 import qualified Data.Sequence as Q
-import Main.OI.Form
 import System.CPUTime
 import System.Environment
 --import Erf
@@ -72,6 +73,7 @@ main = do
 --    writeFile ("results/erf-true-" ++ maxdegreeS ++ "-" ++ pwdepthS) $ 
 --      "proved up to | in seconds | computed boxes \n0 0 0\n"
 
+{-
     stateTV <- atomically $ newTVar []
     currtimeTV <- atomically $ newTVar inittime
     putStrLn "Searching..."
@@ -98,21 +100,22 @@ main = do
       stateTV
       inittime
       maxdepth
+-}
 
---    prover
---      maxdeg -- maximum bound degree
---      (24*3600) -- 24 hour timeout
---      rad -- domain width parameter
---      midp -- midpoint
---      ix
---      prec -- mantissa bit size (read precisionS)
---      theorem -- to be proved, defined in IntegralTest
---      intvarids -- variable IDs of integer variables, defined in IntegralTest
---      (Q.singleton (initdepth,initbox)) -- enqueue initial box
---      1 -- queue length
---      inittime -- inittime
---      0 -- prevtime
---      initdepth -- maxdepth
---      1 -- number computed boxes
---      (volume initbox) -- initial
---      0
+    prover
+      maxdeg -- maximum bound degree
+      (24*3600) -- 24 hour timeout
+      rad -- domain width parameter
+      midp -- midpoint
+      ix
+      prec -- mantissa bit size (read precisionS)
+      theorem -- to be proved, defined in IntegralTest
+      intvarids -- variable IDs of integer variables, defined in IntegralTest
+      (Q.singleton (initdepth,initbox)) -- enqueue initial box
+      1 -- queue length
+      inittime -- inittime
+      0 -- prevtime
+      initdepth -- maxdepth
+      1 -- number computed boxes
+      (volume initbox) -- initial
+      0
