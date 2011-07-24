@@ -1,5 +1,5 @@
 {-# OPTIONS_GHC -fno-warn-missing-methods #-}
-module Form where
+module Main.Form where
 
 import qualified Numeric.ER.Real.Approx as RA
 import qualified Numeric.ER.Real.Approx.Elementary as RAEL
@@ -16,7 +16,7 @@ import Numeric.ER.RnToRm.UnitDom.Approx.IntervalOI
 import qualified Data.Sequence as Q
 import Data.Ratio
 import qualified Data.Set as Set
-import qualified TruthValue as TV
+import qualified Main.TruthValue as TV
 
 -- test related stuff below
 

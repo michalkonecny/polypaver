@@ -1,135 +1,119 @@
 
-module Plotter where
+module Main.Plotter
+(
+  main
+)
+where
 
+import Main.Plotter
+import Main.Prover
+import Main.Form
+
+import Canvas
 import Control.Concurrent
 import Control.Concurrent.STM
 import Data.Maybe
-import Data.List
 import qualified Numeric.ER.Real.Approx as RA
-import Numeric.ER.Real.Approx.Interval
+import qualified Numeric.ER.RnToRm.Approx as FA
+import Numeric.ER.Real.Base.MachineDouble
 import Numeric.ER.Real.DefaultRepr
-import qualified Data.IntMap as IMap
 import qualified Numeric.ER.BasicTypes.DomainBox as DBox
 import Numeric.ER.BasicTypes.DomainBox.IntMap
 import qualified Data.Sequence as Q
-import Form
-import qualified TruthValue as TV 
-import Numeric.ER.Misc
 import System.CPUTime
+import System.Environment
+--import Erf
+--import Sqrt
+import Teddy
+--import LevelSlice 
 
-{-
-    This bisection search loop enqueues decided true boxes 
-    until the stack is empty or a false box is found.
--}
-plotter maxdeg rad midp ix prec form intvarids queue currtimeTV stateTV inittime maxdepth
-    | Q.null queue = do
-        currtime <- getCPUTime
-        updateCurrtime currtimeTV currtime
-        putStrLn $ 
-          "Search complete." -- \nVC proved true in "
-          -- ++ show ((fromInteger (currtime-inittime)) / 1000000000000) ++
-          -- " seconds."
-    | decided && decision = do -- draw green box
-        enqueueBox stateTV (0,1,0,0.5) box
-        currtime <- getCPUTime
-        updateCurrtime currtimeTV currtime
---        putStrLn "VC true over"
---        print box
---        print qlength
-        plotter maxdeg rad midp ix prec form intvarids boxes currtimeTV stateTV inittime maxdepth
-    | decided = do -- draw red box
-        enqueueBox stateTV (1,0,0,0.7) box
-        currtime <- getCPUTime
-        updateCurrtime currtimeTV currtime
---        putStrLn "Counter example found, search aborted.\nVC false over"
---        print box
-        plotter maxdeg rad midp ix prec form intvarids boxes currtimeTV stateTV inittime maxdepth
-    | splitdom `RA.equalApprox` splitdomL || splitdom `RA.equalApprox` splitdomR ||
-      length thinvarids == dim ||
-      depth > maxdepth = do -- draw yellow box
-        enqueueBox stateTV (1,1,0,0.5) box
-        currtime <- getCPUTime
-        updateCurrtime currtimeTV currtime
---        putStrLn "Cannot split thin box, search aborted.\nVC undecided over"
---        print cbox
-        plotter maxdeg rad midp ix prec form intvarids boxes currtimeTV stateTV inittime maxdepth
-    | otherwise = do -- draw transparent sub boxes
---        putStrLn "Split box"
---        print box
-        mapM_ (enqueueBox stateTV (0,0,0,0)) [boxL,boxR]
-        currtime <- getCPUTime
-        updateCurrtime currtimeTV currtime
---        print qlength
-{-
-        plotter maxdeg rad midp ix prec form intvarids (boxes Q.|> (depth+1,boxL) Q.|> (depth+1,boxR)) currtimeTV stateTV inittime maxdepth
-        breadth-first above depth-first below
--}
-        plotter maxdeg rad midp ix prec form intvarids ((depth+1,boxL) Q.<| (depth+1,boxR) Q.<| boxes) currtimeTV stateTV inittime maxdepth
-    where
-    (depth,box) = Q.index queue 0
-    boxes = Q.drop 1 queue
-    decided = isJust maybeValue
-    decision = fromJust maybeValue
-    dim = DBox.size box
-    splitdom = DBox.lookup "looking up splitdom in prover" splitvar box
-    splitdomL = DBox.lookup "looking up splitdom in prover" splitvar boxL
-    splitdomR = DBox.lookup "looking up splitdom in prover" splitvar boxR
-    {-
-        Maybe Bool Version Below
-    -}
-    (splitvar,(boxL,boxR)) = TV.split thinvarids box value
-    maybeValue = TV.decide dim value
-    value = evalForm maxdeg ix cbox prec form :: Maybe Bool
-    {-
-        Maybe Bool Version Above
-        
-        LocalGolbal Version Below
-    -}
---    (splitvar,(boxL,boxR)) = TV.split thinvarids box tvlocal -- value
---    maybeValue = TV.decide dim tvglobal -- value
---    TV.LG tvlocal tvglobal = 
---        evalForm maxdeg ix cbox rad form :: TV.LocalGolbal (Integer,Integer) (Maybe Bool)
-    {-
-        LocalGolbal Version Above
-    -}
-    thinvarids = DBox.keys thincbox
-    thincbox = DBox.filter RA.isExact cbox -- thin subbox of contracted box
-    cbox = contractIntVarDoms box intvarids -- box with contracted integer doms
+main = do
+    (vcnumberS : 
+     radiusS : 
+     midpointS : 
+     effortS : 
+     precisionS :
+     maxdegreeS : 
+     maxdepthS : 
+     _) <- getArgs
+    inittime <- getCPUTime
+    initMachineDouble -- round upwards
+    let vcnumber = read vcnumberS :: Int
+        rad = read radiusS :: Double 
+        midp = read midpointS :: Double 
+        ix = read effortS -- :: Int
+        prec = read precisionS -- :: Int
+        maxdeg = read maxdegreeS :: Int
+        maxdepth = read maxdepthS :: Int
+        theorem = 
+--          levelslice
+          teddy
+--          case vcnumber of 
+--          {1 -> vc1; 2 -> vc2; 3 -> vc3; 4 -> vc4;
+--           5 -> vc5; 6 -> vc6; 7 -> vc7}
+        initbox = 
+--          (if vcnumber <= 2 then DBox.delete 1 else id) $ 
+          box rad midp
+        initdepth = 0 in do
+    putStr $ showBox initbox ++ "\n\n"
+--    putStrLn $ "\nProve\n" ++ show thm ++ "\nfor" ++ showBox initbox ++ "\n\nSearching..."
+--    writeFile ("results/erf-true-" ++ maxdegreeS ++ "-" ++ pwdepthS ++ ".gnuplot") $ 
+--      "set term postscript eps enhanced\n" ++
+--      "set output \"erf-true-" ++ maxdegreeS ++ "-" ++ pwdepthS ++ ".eps\"\n" ++
+--      "set datafile missing 'null'\n" ++
+--      "set title 'solving erf-true up to x using enclosure degree " ++ maxdegreeS ++ 
+--      " and integration depth " ++ pwdepthS ++ "'\n" ++
+----      "set key left top\n" ++
+--      "set key left top\n" ++
+--      "set key Left\n" ++
+--      "#set key box linestyle 1\n" ++
+--      "set xlabel 'x'\n" ++
+--      "plot \"erf-true-" ++ maxdegreeS ++ "-" ++ pwdepthS ++ "\" using 1:2 with linespoints lw 4 title 'solving time',\\\n" ++
+--      "     \"erf-true-" ++ maxdegreeS ++ "-" ++ pwdepthS ++ "\" using 1:3 with linespoints lw 4 title 'computed sub-problems'\n"
+--    writeFile ("results/erf-true-" ++ maxdegreeS ++ "-" ++ pwdepthS) $ 
+--      "proved up to | in seconds | computed boxes \n0 0 0\n"
 
-enqueueBox stateTV rgba box =
-  atomically $ do
-    state <- readTVar stateTV
-    writeTVar stateTV ((box,rgba) : state)
-        
-updateCurrtime currtimeTV currtime = 
-  atomically $ do
-    writeTVar currtimeTV currtime 
+    stateTV <- atomically $ newTVar []
+    currtimeTV <- atomically $ newTVar inittime
+    putStrLn "Searching..."
+    tid <- myThreadId
+    forkIO $ do
+      canvas 
+        inittime
+        currtimeTV
+        stateTV 
+        (draw initbox) 
+        500 
+        500
+      killThread tid
+    plotter 
+      maxdeg
+      rad
+      midp
+      ix
+      prec
+      theorem
+      intvarids
+      (Q.singleton (0,initbox))
+      currtimeTV
+      stateTV
+      inittime
+      maxdepth
 
-contractIntVarDoms :: Box (IRA BM) -> [Int] -> Box (IRA BM)
-contractIntVarDoms initbox intvarids =
-    foldl'
-        (
-            \box intvarid 
-            -> 
-            IMap.adjust contractIntVarDom intvarid box
-        )
-        initbox
-        intvarids
-
-{-
-    WARNING: uses floor and therefore
-    RA.doubleBounds
--}
-contractIntVarDom :: IRA BM -> IRA BM
-contractIntVarDom dom
-    | domLclg <= domRflr =
-        ERInterval (fromInteger domLclg) (fromInteger domRflr)
-    | otherwise =
-        RA.bottomApprox
-    where
---    (domLflr,domRclg) = RA.integerBounds dom
-    domLclg = ceiling domL  
-    domRflr = floor domR
-    domL = erintv_left dom
-    domR = erintv_right dom
-
+--    prover
+--      maxdeg -- maximum bound degree
+--      (24*3600) -- 24 hour timeout
+--      rad -- domain width parameter
+--      midp -- midpoint
+--      ix
+--      prec -- mantissa bit size (read precisionS)
+--      theorem -- to be proved, defined in IntegralTest
+--      intvarids -- variable IDs of integer variables, defined in IntegralTest
+--      (Q.singleton (initdepth,initbox)) -- enqueue initial box
+--      1 -- queue length
+--      inittime -- inittime
+--      0 -- prevtime
+--      initdepth -- maxdepth
+--      1 -- number computed boxes
+--      (volume initbox) -- initial
+--      0
