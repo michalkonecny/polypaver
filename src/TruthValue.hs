@@ -1,5 +1,5 @@
 {-# LANGUAGE FlexibleInstances #-}
-module TruthValue where
+module Main.TruthValue where
 
 import qualified Numeric.ER.Real.Approx as RA
 import qualified Numeric.ER.BasicTypes.DomainBox as DBox
