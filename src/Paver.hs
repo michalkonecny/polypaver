@@ -1,15 +1,16 @@
 {-# LANGUAGE DeriveDataTypeable #-}
-module Paver where
+module Main where
 import System.Console.CmdArgs
 
 data Paver = Paver 
-    {bits :: Int
-    ,degree :: Int
+    {degree :: Int
     ,depth :: Int
-    ,timeout :: Int
-    }
-    deriving (Data,Typeable,Show,Eq)
+    ,time :: Int}
+    deriving (Show,Data,Typeable)
 
-paver = Paver
-    {bits = 32 &= help ""
+paver = Paver 
+    {degree = 0 &= help "Maximum polynomial bound degree"
+    ,depth = 10 &= help "Maximum subdivision depth"
+    ,time = 3600 &= help "Maximum solving time in seconds"}
 
+main = print =<< cmdArgs paver
