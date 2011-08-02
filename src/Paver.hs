@@ -48,12 +48,12 @@ defaultMain problem =
         intvarids = ivars problem
         thm = theorem problem
         in do
-    solver
+    loop
+        paver -- constants
         maxdeg -- maximum bound degree
-        maxtime -- 24 hour timeout
-        0 -- domain width parameter
-        0 -- midpoint
+        maxdepth -- maxdepth
         ix
+        maxtime -- 24 hour timeout
         23 -- mantissa bit size (read precisionS)
         thm -- to be proved, defined in IntegralTest
         intvarids -- variable IDs of integer variables, defined in IntegralTest
@@ -61,10 +61,27 @@ defaultMain problem =
         1 -- queue length
         inittime -- inittime
         0 -- prevtime
-        maxdepth -- maxdepth
         1 -- number computed boxes
         (volume initbox) -- initial volume
         0 -- volume of proved boxes
+
+--    solver
+--        maxdeg -- maximum bound degree
+--        maxtime -- 24 hour timeout
+--        0 -- domain width parameter
+--        0 -- midpoint
+--        ix
+--        23 -- mantissa bit size (read precisionS)
+--        thm -- to be proved, defined in IntegralTest
+--        intvarids -- variable IDs of integer variables, defined in IntegralTest
+--        (Q.singleton (0,initbox)) -- enqueue (initial depth, initial box)
+--        qlength -- queue length
+--        inittime -- inittime
+--        0 -- prevtime
+--        maxdepth -- maxdepth
+--        1 -- number computed boxes
+--        (volume initbox) -- initial volume
+--        0 -- volume of proved boxes
 
 readBox  :: [(Int,(Rational,Rational))] -> Box (IRA BM)
 readBox = 
