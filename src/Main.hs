@@ -11,11 +11,11 @@ main =
 
 indices = [0..1]
 
-r = 0.01
+d = 0.5^^6
 
 bench =
-    Leq
       (product . map (Exp . Var) $ indices)
-      (Exp . sum $ Lit r : map Var indices)
+      `Le`
+      (Exp . sum $ Lit d : map Var indices)
 
 
