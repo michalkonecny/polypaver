@@ -22,7 +22,12 @@ import System.CPUTime
     until the stack is empty or a false box is found, i.e.     
     implements breadth-first search. 
 -}
-solver maxdeg maxtime rad midp ix prec form intvarids queue qlength inittime prevtime maxdepth computedboxes initvol truevol -- stateTV 
+solver 
+    maxdeg maxtime rad midp ix prec form intvarids 
+    queue 
+    qlength inittime prevtime maxdepth computedboxes 
+    initvol 
+    truevol 
     | prevtime-inittime > maxtime*1000000000000 = do
         putStr $
           "\nTimeout.\nSearch aborted after " ++
@@ -38,7 +43,6 @@ solver maxdeg maxtime rad midp ix prec form intvarids queue qlength inittime pre
           " boxes.\nReaching max depth : " ++ show maxdepth ++ "\n\n"
     | decided && decision = do -- draw green box
         currtime <- getCPUTime
-----        enqueueBox stateTV (0,1,0,0.5) box
 {-        appendFile 
           ("results/erf-true-" ++ show maxdeg ++ "-" ++ show pwdepth) $
           show (snd $ RA.doubleBounds $ DBox.lookup "" 0 box)
@@ -56,10 +60,14 @@ solver maxdeg maxtime rad midp ix prec form intvarids queue qlength inittime pre
 --          ++ "\nQueue length : " ++ show qlength 
 --          ++   "\nMaxdepth : " ++ show maxdepth ++ 
 --          "\nDepth : " ++ show depth ++ "\n"
-        solver maxdeg maxtime rad midp ix prec form intvarids boxes (qlength-1) inittime currtime maxdepth (computedboxes+1) initvol newtruevol  -- stateTV  
+        solver 
+            maxdeg maxtime rad midp ix prec form intvarids 
+            boxes 
+            (qlength-1) inittime currtime maxdepth (computedboxes+1) 
+            initvol 
+            newtruevol  
     | decided = do -- draw red box
         currtime <- getCPUTime
---        enqueueBox stateTV (1,0,0,0.7) box
         putStr $
           "\nCounter example found, search aborted.\nTheorem proved false for " ++
           showBox box ++
@@ -68,11 +76,9 @@ solver maxdeg maxtime rad midp ix prec form intvarids queue qlength inittime pre
           "\nComputed  boxes : " ++ show computedboxes ++ 
           "\nMax depth : " ++ show maxdepth ++  
           "\nDepth : " ++ show depth ++ "\n\n"
---        solver maxdeg form intvarids boxes -- stateTV
     | splitdom `RA.equalApprox` splitdomL || splitdom `RA.equalApprox` splitdomR ||
       length thinvarids == dim = do -- draw yellow box
         currtime <- getCPUTime
---        enqueueBox stateTV (1,1,0,0.5) box
         putStr $ 
           "\nCannot split box, search aborted.\nUndecided for : " ++
           showBox cbox ++
@@ -82,7 +88,6 @@ solver maxdeg maxtime rad midp ix prec form intvarids queue qlength inittime pre
 --           "\nQueue length : " ++ show qlength ++
           "\nMaxdepth : " ++ show maxdepth ++  
           "\nDepth : " ++ show depth ++ "\n\n"
---        solver maxdeg form intvarids boxes -- stateTV
     | otherwise = do -- draw transparent sub boxes
         currtime <- getCPUTime
 {-        
@@ -96,37 +101,125 @@ solver maxdeg maxtime rad midp ix prec form intvarids queue qlength inittime pre
           ++ "\nDepth : " ++ show depth ++ "\n"
 -}
         {-
-        solver maxdeg maxtime rad midp ix prec form intvarids (boxes Q.|> (depth+1,boxL) Q.|> (depth+1,boxR)) (qlength+1) inittime currtime (max (depth+1) maxdepth) (computedboxes+1) initvol truevol -- stateTV
+        solver 
+            maxdeg maxtime rad midp ix prec form intvarids 
+            (boxes Q.|> (depth+1,boxL) Q.|> (depth+1,boxR)) 
+            (qlength+1) inittime currtime (max (depth+1) maxdepth) (computedboxes+1) 
+            initvol 
+            truevol 
             breadth-first above depth-first below
         -}
-        solver maxdeg maxtime rad midp ix prec form intvarids ((depth+1,boxL) Q.<| (depth+1,boxR) Q.<| boxes) (qlength+1) inittime currtime (max (depth+1) maxdepth) (computedboxes+1) initvol truevol -- stateTV
+        solver 
+            maxdeg maxtime rad midp ix prec form intvarids 
+            ((depth+1,boxL) Q.<| (depth+1,boxR) Q.<| boxes) 
+            (qlength+1) inittime currtime (max (depth+1) maxdepth) (computedboxes+1) 
+            initvol 
+            truevol 
     where
     (depth,box) = Q.index queue 0
     boxes = Q.drop 1 queue
     decided = isJust maybeValue
     decision = fromJust maybeValue
     dim = DBox.size box
-    {-
-        Maybe Bool Version Below
-    -}
     splitdom = DBox.lookup "looking up splitdom in solver" splitvar box
     splitdomL = DBox.lookup "looking up splitdom in solver" splitvar boxL
     splitdomR = DBox.lookup "looking up splitdom in solver" splitvar boxR
     (splitvar,(boxL,boxR)) = L.split thinvarids box value
     maybeValue = L.decide dim value
     value = evalForm maxdeg ix cbox prec form :: Maybe Bool
-    {-
-        Maybe Bool Version Above
-        
-        LocalGolbal Version Below
-    (splitvar,(boxL,boxR)) = L.split thinvarids box tvlocal -- value
-    maybeValue = L.decide dim tvglobal -- value
-    L.LG tvlocal tvglobal = 
-        evalForm maxdeg ix cbox rad form :: L.LocalGolbal (Integer,Integer) (Maybe Bool)
-    -}
-    {-
-        LocalGolbal Version Above
-    -}
+    thinvarids = DBox.keys thincbox
+    thincbox = DBox.filter RA.isExact cbox -- thin subbox of contracted box
+    cbox = contractIntVarDoms box intvarids -- box with contracted integer doms
+    newtruevol = truevol+(volume box)/initvol
+
+data Constants = Constants
+    {maxdegree :: Int
+    ,maxdepth :: Int
+    ,effortindex :: Int
+    ,maxseconds :: Int
+    ,formula :: Form
+    ,intvars :: [Int]
+    ,initvolume :: IRA BM}
+
+loop 
+    constants maxdeg maxdep ix maxtime prec form intvarids 
+    queue 
+    qlength inittime prevtime computedboxes 
+    initvol 
+    truevol 
+    | prevtime-inittime > maxtime*1000000000000 = do
+        putStr $
+          "\nTimeout.\nSearch aborted after " ++
+          show maxtime ++
+          " seconds.\nComputed : " ++ show computedboxes ++ 
+          " boxes.\nReaching max depth : " ++ show maxdep ++ "\n\n"
+    | Q.null queue = do
+        currtime <- getCPUTime
+        putStr $
+          "\nSearch complete.\nTheorem proved true in " ++
+          show ((fromInteger (currtime-inittime)) / 1000000000000) ++
+          " seconds.\nComputed : " ++ show computedboxes ++ 
+          " boxes.\nReaching max depth : " ++ show maxdep ++ "\n\n"
+    | decided && decision = do -- draw green box
+        currtime <- getCPUTime
+        loop 
+            constants maxdeg maxdep ix maxtime prec form intvarids 
+            boxes 
+            (qlength-1) inittime currtime (computedboxes+1) 
+            initvol 
+            newtruevol  
+    | decided = do -- draw red box
+        currtime <- getCPUTime
+        putStr $
+          "\nCounter example found, search aborted.\nTheorem proved false for " ++
+          showBox box ++
+          "\nSeconds elapsed : " ++
+          show ((fromInteger (currtime-inittime)) / 1000000000000) ++
+          "\nComputed  boxes : " ++ show computedboxes ++ 
+          "\nMax depth : " ++ show maxdep ++  
+          "\nDepth : " ++ show depth ++ "\n\n"
+    | splitdom `RA.equalApprox` splitdomL || 
+      splitdom `RA.equalApprox` splitdomR ||
+      length thinvarids == dim = do -- draw yellow box
+        currtime <- getCPUTime
+        putStr $ 
+          "\nCannot split box, search aborted.\nUndecided for : " ++
+          showBox cbox ++
+          "\nSeconds elapsed : " ++
+          show ((fromInteger (currtime-inittime)) / 1000000000000) ++
+          "\nComputed boxes : " ++ show computedboxes ++ 
+--           "\nQueue length : " ++ show qlength ++
+          "\nMaxdepth : " ++ show maxdep ++  
+          "\nDepth : " ++ show depth ++ "\n\n"
+    | otherwise = do -- draw transparent sub boxes
+        currtime <- getCPUTime
+        {-
+        loop 
+            maxdeg maxtime ix prec form intvarids 
+            (boxes Q.|> (depth+1,boxL) Q.|> (depth+1,boxR)) 
+            (qlength+1) inittime currtime (max (depth+1) maxdep) (computedboxes+1) 
+            initvol 
+            truevol 
+            breadth-first above depth-first below
+        -}
+        loop 
+            constants maxdeg (max (depth+1) maxdep) ix maxtime prec form intvarids 
+            ((depth+1,boxL) Q.<| (depth+1,boxR) Q.<| boxes) 
+            (qlength+1) inittime currtime (computedboxes+1) 
+            initvol 
+            truevol 
+    where
+    (depth,box) = Q.index queue 0
+    boxes = Q.drop 1 queue
+    decided = isJust maybeValue
+    decision = fromJust maybeValue
+    dim = DBox.size box
+    splitdom = DBox.lookup "looking up splitdom in solver" splitvar box
+    splitdomL = DBox.lookup "looking up splitdom in solver" splitvar boxL
+    splitdomR = DBox.lookup "looking up splitdom in solver" splitvar boxR
+    (splitvar,(boxL,boxR)) = L.split thinvarids box value
+    maybeValue = L.decide dim value
+    value = evalForm maxdeg ix cbox prec form :: Maybe Bool
     thinvarids = DBox.keys thincbox
     thincbox = DBox.filter RA.isExact cbox -- thin subbox of contracted box
     cbox = contractIntVarDoms box intvarids -- box with contracted integer doms
