@@ -23,7 +23,7 @@ import System.CPUTime
     implements breadth-first search. 
 -}
 solver 
-    maxdeg maxtime rad midp ix prec form intvarids 
+    maxdeg maxtime bisections rad midp ix prec form intvarids 
     queue 
     qlength inittime prevtime maxdepth computedboxes 
     initvol 
@@ -61,7 +61,7 @@ solver
 --          ++   "\nMaxdepth : " ++ show maxdepth ++ 
 --          "\nDepth : " ++ show depth ++ "\n"
         solver 
-            maxdeg maxtime rad midp ix prec form intvarids 
+            maxdeg maxtime bisections rad midp ix prec form intvarids 
             boxes 
             (qlength-1) inittime currtime maxdepth (computedboxes+1) 
             initvol 
@@ -76,7 +76,9 @@ solver
           "\nComputed  boxes : " ++ show computedboxes ++ 
           "\nMax depth : " ++ show maxdepth ++  
           "\nDepth : " ++ show depth ++ "\n\n"
-    | splitdom `RA.equalApprox` splitdomL || splitdom `RA.equalApprox` splitdomR ||
+    | depth >= bisections ||
+      splitdom `RA.equalApprox` splitdomL || 
+      splitdom `RA.equalApprox` splitdomR ||
       length thinvarids == dim = do -- draw yellow box
         currtime <- getCPUTime
         putStr $ 
@@ -102,7 +104,7 @@ solver
 -}
         {-
         solver 
-            maxdeg maxtime rad midp ix prec form intvarids 
+            maxdeg maxtime bisections rad midp ix prec form intvarids 
             (boxes Q.|> (depth+1,boxL) Q.|> (depth+1,boxR)) 
             (qlength+1) inittime currtime (max (depth+1) maxdepth) (computedboxes+1) 
             initvol 
@@ -110,7 +112,7 @@ solver
             breadth-first above depth-first below
         -}
         solver 
-            maxdeg maxtime rad midp ix prec form intvarids 
+            maxdeg maxtime bisections rad midp ix prec form intvarids 
             ((depth+1,boxL) Q.<| (depth+1,boxR) Q.<| boxes) 
             (qlength+1) inittime currtime (max (depth+1) maxdepth) (computedboxes+1) 
             initvol 
@@ -142,7 +144,7 @@ data Constants = Constants
     ,initvolume :: IRA BM}
 
 loop 
-    constants maxdeg maxdep ix maxtime prec form intvarids 
+    constants maxdeg bisections maxdep ix maxtime prec form intvarids 
     queue 
     qlength inittime prevtime computedboxes 
     initvol 
@@ -163,7 +165,7 @@ loop
     | decided && decision = do -- draw green box
         currtime <- getCPUTime
         loop 
-            constants maxdeg maxdep ix maxtime prec form intvarids 
+            constants maxdeg bisections maxdep ix maxtime prec form intvarids 
             boxes 
             (qlength-1) inittime currtime (computedboxes+1) 
             initvol 
@@ -178,7 +180,8 @@ loop
           "\nComputed  boxes : " ++ show computedboxes ++ 
           "\nMax depth : " ++ show maxdep ++  
           "\nDepth : " ++ show depth ++ "\n\n"
-    | splitdom `RA.equalApprox` splitdomL || 
+    | depth >= bisections ||
+      splitdom `RA.equalApprox` splitdomL || 
       splitdom `RA.equalApprox` splitdomR ||
       length thinvarids == dim = do -- draw yellow box
         currtime <- getCPUTime
@@ -195,7 +198,7 @@ loop
         currtime <- getCPUTime
         {-
         loop 
-            maxdeg maxtime ix prec form intvarids 
+            maxdeg maxtime bisections ix prec form intvarids 
             (boxes Q.|> (depth+1,boxL) Q.|> (depth+1,boxR)) 
             (qlength+1) inittime currtime (max (depth+1) maxdep) (computedboxes+1) 
             initvol 
@@ -203,7 +206,7 @@ loop
             breadth-first above depth-first below
         -}
         loop 
-            constants maxdeg (max (depth+1) maxdep) ix maxtime prec form intvarids 
+            constants maxdeg bisections (max (depth+1) maxdep) ix maxtime prec form intvarids 
             ((depth+1,boxL) Q.<| (depth+1,boxR) Q.<| boxes) 
             (qlength+1) inittime currtime (computedboxes+1) 
             initvol 

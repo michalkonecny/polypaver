@@ -1,5 +1,9 @@
 
-module Main where
+module Main 
+(
+  main
+)
+where
 
 import Paver
 
@@ -9,13 +13,13 @@ main =
         ,ivars = []
         ,theorem = bench}
 
-indices = [0..1]
+indices = [0..2]
 
-d = 0.5^^6
+distance = 0.5^^8
 
 bench =
       (product . map (Exp . Var) $ indices)
       `Le`
-      (Exp . sum $ Lit d : map Var indices)
+      (Exp . sum $ Lit distance : map Var indices)
 
 

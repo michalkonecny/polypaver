@@ -24,14 +24,14 @@ data Problem = Problem
 
 data Paver = Paver 
     {degree :: Int
-    ,depth :: Int
+    ,bisect :: Int
     ,effort :: Int
     ,time :: Int}
     deriving (Show,Data,Typeable)
 
 paver = Paver 
-    {degree = 0 &= help "Maximum polynomial bound degree"
-    ,depth = 10 &= help "Maximum subdivision depth"
+    {degree = 0 &= help "Maximum polynomial degree"
+    ,bisect = 10 &= help "Maximum bisections of a box"
     ,effort = 10 &= help "Approximation effort parameter" 
     ,time = 3600 &= help "Maximum solving time in seconds"}
 
@@ -43,7 +43,7 @@ defaultMain problem =
     let maxdeg = degree args
         maxtime = toInteger $ time args
         ix = fromInteger $ toInteger $ effort args
-        maxdepth = depth args 
+        bisections = bisect args 
         initbox = readBox $ box problem 
         intvarids = ivars problem
         thm = theorem problem
@@ -51,7 +51,8 @@ defaultMain problem =
     loop
         paver -- constants
         maxdeg -- maximum bound degree
-        maxdepth -- maxdepth
+        bisections -- maximum bisection depth
+        0 -- maxdepth
         ix
         maxtime -- 24 hour timeout
         23 -- mantissa bit size (read precisionS)
@@ -68,6 +69,7 @@ defaultMain problem =
 --    solver
 --        maxdeg -- maximum bound degree
 --        maxtime -- 24 hour timeout
+--        bisections -- maximum bisection depth
 --        0 -- domain width parameter
 --        0 -- midpoint
 --        ix
