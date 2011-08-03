@@ -9,17 +9,20 @@ import Paver
 
 main = 
     defaultMain Problem 
-        {box = [(i, (0,1)) | i <- indices]
+        {box = [(i, (1,2)) | i <- indices]
         ,ivars = []
-        ,theorem = bench}
+        ,theorem = bench_sqrt}
 
 indices = [0..1]
 
-distance = 0.5^^6
+distance = 0.5^^10
 
-bench =
+bench_sqrt =
+      (Sqrt . product . map Var $ indices)
+      `Le`
+      (Plus (Lit distance) $ product . map (Sqrt . Var) $ indices)
+
+bench_exp =
       (product . map (Exp . Var) $ indices)
       `Le`
       (Exp . sum $ Lit distance : map Var indices)
-
-
