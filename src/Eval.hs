@@ -51,33 +51,43 @@ evalForm maxdeg ix box prec form =
               evalTerm maxdeg ix box prec left
         
 evalTerm maxdeg ix box prec term =
+--  let size = maxdeg * DBox.size box in 
   case term of
       EpsAbs ->
-          FA.setMaxDegree maxdeg $ fromRational $
+          FA.setMaxDegree maxdeg $
+--          FA.setMaxSize size $
+          fromRational $
 --            2^^(-14) -- 16-bit
             2^^(-126) -- 32-bit
 --            2^^(-1022) -- 64-bit
       EpsRel ->
-          FA.setMaxDegree maxdeg $ fromRational $
+          FA.setMaxDegree maxdeg $
+--          FA.setMaxSize size $
+          fromRational $
 --            2^^(-9) -- 16-bit
           2^^(1-prec) -- custom float
 --            2^^(-22)-- 32-bit
 --            2^^(-51) -- 64-bit
       Pi ->
           FA.setMaxDegree maxdeg $
+--          FA.setMaxSize size $
           RAEL.pi 10
       Lit val -> 
-          FA.setMaxDegree maxdeg $ 
-          fromRational val :: FAPDOI BM
+          FA.setMaxDegree maxdeg $
+--          FA.setMaxSize size $
+          fromRational $
+          val :: FAPDOI BM
       Var varid ->
           case RA.isExact vardom of
               True -> -- domain of var thin, so var is a const
                   FA.setMaxDegree maxdeg $ 
+--                  FA.setMaxSize size $
                   FA.const 
                       DBox.noinfo 
                       [vardom]
               False -> -- domain of var not thin, so safe to proj
-                  FA.setMaxDegree maxdeg $ 
+                  FA.setMaxDegree maxdeg $
+--                  FA.setMaxSize size $ 
                   FA.proj
                       (DBox.singleton varid vardom)
                       varid
