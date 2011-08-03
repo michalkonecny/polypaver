@@ -13,9 +13,9 @@ main =
         ,ivars = []
         ,theorem = bench}
 
-indices = [0..2]
+indices = [0..1]
 
-distance = 0.5^^8
+distance = 0.5^^6
 
 bench =
       (product . map (Exp . Var) $ indices)
