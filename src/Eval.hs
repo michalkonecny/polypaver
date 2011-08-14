@@ -100,12 +100,13 @@ evalForm maxdeg ix box prec form =
           Neg arg ->
               - evTerm arg
           Abs arg ->
-            let argEncl = evTerm arg in 
-              case RA.leqReals 0 argEncl of
-                Just True -> -- argument certainly non-negative
-                  argEncl    -- so do nothing
-                _ -> -- otherwise
-                  RAEL.sqrt ix $ argEncl^2 -- do smooth approx of abs           
+            RAEL.abs ix $ evTerm arg
+--            let argEncl = evTerm arg in 
+--              case RA.leqReals 0 argEncl of
+--                Just True -> -- argument certainly non-negative
+--                  argEncl    -- so do nothing
+--                _ -> -- otherwise
+--                  RAEL.sqrt ix $ argEncl^2 -- do smooth approx of abs           
           Times left right ->
               evTerm left * evTerm right
           Square arg ->
