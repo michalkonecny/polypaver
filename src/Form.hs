@@ -1,6 +1,13 @@
 {-# OPTIONS_GHC -fno-warn-missing-methods #-}
 module Form where
 
+infixr 2 --->
+infixl 3 \/
+infixl 4 /\
+infixl 5 |<|, |<=|, |>|, |>=|, |<-|
+infixl 6 +:, -:
+infixl 7 *:, /:
+
 data Form
   = Not Form
   | Or Form Form
@@ -14,6 +21,15 @@ data Form
   | Neq Term Term
   | Ni Term Term
   deriving (Eq,Show,Read)
+
+(/\) = And
+(\/) = Or
+(--->) = Implies
+(|<|) = Le
+(|<=|) = Leq
+(|>|) = Ge
+(|>=|) = Geq
+(|<-|) = Ni
 
 data Term
   = EpsAbs
@@ -48,10 +64,19 @@ instance Num Term
   where
   fromInteger = Lit . fromInteger
   negate = Neg
-  t1 + t2 = Plus t1 t2
-  t1 * t2 = Times t1 t2
+  (+) = Plus
+  (*) = Times
 
 instance Fractional Term
   where
   fromRational = Lit
   recip = Recip
+  (/) = Over
+
+
+(+:) = FPlus
+(-:) = FMinus
+(*:) = FTimes
+(/:) = FOver
+
+plusMinus a = Hull (-a) a
