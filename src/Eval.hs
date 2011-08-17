@@ -15,6 +15,10 @@ evalForm maxdeg ix box prec form =
     where
     evForm form =
         case form of
+          Verum ->
+              L.fromBool box True
+          Falsum ->
+              L.fromBool box False
           Not arg ->
               L.not $ evForm arg
           Or left right ->
