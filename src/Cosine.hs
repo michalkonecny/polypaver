@@ -1,5 +1,5 @@
 
-module Cosine 
+module Main 
 (
   main
 )
