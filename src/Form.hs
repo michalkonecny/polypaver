@@ -9,7 +9,9 @@ infixl 6 +:, -:
 infixl 7 *:, /:
 
 data Form
-  = Not Form
+  = Verum
+  | Falsum
+  | Not Form
   | Or Form Form
   | And Form Form
   | Implies Form Form
