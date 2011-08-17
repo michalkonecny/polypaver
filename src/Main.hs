@@ -34,3 +34,4 @@ bench_exp =
       (product . map (Exp . Var) $ indices)
       `Le`
       (Exp . sum $ Lit distance : map Var indices)
+
