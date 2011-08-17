@@ -107,6 +107,10 @@ evalForm maxdeg ix box prec form =
 --                  argEncl    -- so do nothing
 --                _ -> -- otherwise
 --                  RAEL.sqrt ix $ argEncl^2 -- do smooth approx of abs           
+--          Min left right ->
+--              min (evTerm left) (evTerm right)
+--          Max left right ->
+--              max (evTerm left) (evTerm right)
           Times left right ->
               evTerm left * evTerm right
           Square arg ->
@@ -121,6 +125,18 @@ evalForm maxdeg ix box prec form =
           Exp arg ->
               RAEL.exp 
                     ix $ -- (fromInteger $ 3*(toInteger maxdeg)+10) $ 
+                    evTerm arg                    
+          Sin arg ->
+              RAEL.sin 
+                    ix $ 
+                    evTerm arg                    
+          Cos arg ->
+              RAEL.cos 
+                    ix $ 
+                    evTerm arg                    
+          Atan arg ->
+              RAEL.atan 
+                    ix $ 
                     evTerm arg                    
           Hull left right ->
               evTerm left RA.\/ evTerm right
