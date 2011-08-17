@@ -1,4 +1,3 @@
-
 module Eval where
 
 import qualified Logic as L
@@ -9,7 +8,11 @@ import Numeric.ER.RnToRm.DefaultRepr
 import qualified Numeric.ER.RnToRm.Approx as FA
 import qualified Numeric.ER.BasicTypes.DomainBox as DBox
 import qualified Numeric.ER.Real.Approx.Elementary as RAEL
+import Numeric.ER.BasicTypes
 
+evalForm ::
+    (L.TruthValue tv) =>
+    Int -> EffortIndex -> Box (IRA BM) -> Precision -> Form -> tv
 evalForm maxdeg ix box prec form =
     evForm form
     where
@@ -54,6 +57,13 @@ evalForm maxdeg ix box prec form =
               where
               rightArg = evTerm right
               leftArg = evTerm left
+    evTerm = evalTerm maxdeg ix box prec
+
+evalTerm ::
+    Int -> EffortIndex -> Box (IRA BM) -> Precision -> Term -> FAPDOI BM
+evalTerm maxdeg ix box prec term =
+    evTerm term
+    where
     evTerm term =
     --  let size = maxdeg * DBox.size box in 
       case term of
