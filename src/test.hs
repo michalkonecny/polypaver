@@ -12,8 +12,8 @@ main =
         ,ivars = []
         ,theorem = test_thm}
 
-test_box = [(0, (0,1))]
+test_box = [(0, (-1,1))]
 
 x = Var 0
 
-test_thm = x |<=| cos(x)
+test_thm = x |<=| cos(x)+1
