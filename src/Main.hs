@@ -8,14 +8,14 @@ where
 import Paver
 
 main = 
-    defaultMain Problem 
-        {box = bench_exp_box
-        ,ivars = []
-        ,theorem = bench_exp}
 --    defaultMain Problem 
---        {box = bench_sqrt_box
+--        {box = bench_exp_box
 --        ,ivars = []
---        ,theorem = bench_sqrt}
+--        ,theorem = bench_exp}
+    defaultMain Problem 
+        {box = bench_sqrt_box
+        ,ivars = []
+        ,theorem = bench_sqrt}
 
 indices = [0..1]
 
