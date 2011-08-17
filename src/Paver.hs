@@ -1,7 +1,7 @@
 {-# LANGUAGE DeriveDataTypeable #-}
 module Paver
 (
-    defaultMain,Problem(..),module Form
+    defaultMain,Problem(..),module Form, readBox
 )
 where
 
