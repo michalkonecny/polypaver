@@ -196,21 +196,21 @@ loop
           "\nDepth : " ++ show depth ++ "\n\n"
     | otherwise = do -- draw transparent sub boxes
         currtime <- getCPUTime
-        {-
         loop 
-            maxdeg maxtime bisections ix prec form intvarids 
+            constants maxdeg bisections (max (depth+1) maxdep) ix maxtime prec form intvarids  
             (boxes Q.|> (depth+1,boxL) Q.|> (depth+1,boxR)) 
-            (qlength+1) inittime currtime (max (depth+1) maxdep) (computedboxes+1) 
+            (qlength+1) inittime currtime (computedboxes+1) 
             initvol 
             truevol 
+        {-
             breadth-first above depth-first below
-        -}
         loop 
             constants maxdeg bisections (max (depth+1) maxdep) ix maxtime prec form intvarids 
             ((depth+1,boxL) Q.<| (depth+1,boxR) Q.<| boxes) 
             (qlength+1) inittime currtime (computedboxes+1) 
             initvol 
             truevol 
+        -}
     where
     (depth,box) = Q.index queue 0
     boxes = Q.drop 1 queue
