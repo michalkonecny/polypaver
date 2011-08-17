@@ -41,12 +41,17 @@ data Term
   | Minus Term Term
   | Neg Term
   | Abs Term
+--  | Min Term Term
+--  | Max Term Term
   | Times Term Term
   | Square Term
   | Recip Term
   | Over Term Term
   | Sqrt Term
   | Exp Term
+  | Sin Term
+  | Cos Term
+  | Atan Term
   | Hull Term Term
   | EpsiAbs
   | EpsiRel
@@ -73,6 +78,13 @@ instance Fractional Term
   recip = Recip
   (/) = Over
 
+instance Floating Term
+  where
+  sqrt = Sqrt
+  exp = Exp
+  cos = Cos
+  sin = Sin
+  atan = Atan
 
 (+:) = FPlus
 (-:) = FMinus
