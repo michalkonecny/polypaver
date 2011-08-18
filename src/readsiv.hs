@@ -1,12 +1,14 @@
 module Main where
 
 import Form
+import Vars
 
 import System
 import Data.Char
 import Data.List
 import Data.List.Split (splitOn)
 import Control.Monad
+import qualified System.FilePath as FP
 
 import Text.Parsec
 import Text.Parsec.String
@@ -16,19 +18,44 @@ import Text.Parsec.Expr
 import Text.Parsec.Language
 
 main = do
-  pathS : _ <- getArgs
-  fileS <- readFile pathS
-  let vcs = vcSplitter fileS
-  let forms = map parseVC vcs
-  mapM_ printForm $ forms
+  inputPathS : outputFolder : _ <- getArgs
+  fileS <- readFile inputPathS
+  let vcSs = vcSplitter fileS
+  let vcs = map parseVC vcSs
+  let vcBoxes = map addBox $ filter (notVerum . snd) vcs
+  mapM_ (writeVCMain outputFolder) $ vcBoxes
   
-printForm (name, form) =
+addBox (name, form) =
+    (name, formN, getBox formN)
+    where
+    formN = normaliseVars form
+
+  
+writeVCMain outputFolder (name, form, box) =
     do
-    putStrLn $ replicate 80 '*'
-    putStrLn name
-    putStrLn $ replicate 80 '*'
-    print form
-    putStrLn $ replicate 80 '*'
+    writeFile outputFile mainS 
+    where
+    outputFile = outputFolder `FP.combine` (name ++ ".hs")
+    mainS =
+        unlines $
+            [
+             "module Main(main) where"
+            ,""
+            ,"import Paver"
+            ,"import Data.Ratio ((%))"
+            ,""
+            ,"main ="
+            ,"    defaultMain Problem"
+            ,"        {"
+            ,"          box = " ++ show box
+            ,"          ,ivars = []"
+            ,"          ,theorem = thm"
+            ,"        }"
+            ,"thm ="
+            ,"    " ++ show form
+            ,""
+            ]       
+
      
 
 parseVC s =
