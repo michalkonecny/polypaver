@@ -19,9 +19,17 @@ main = do
   pathS : _ <- getArgs
   fileS <- readFile pathS
   let vcs = vcSplitter fileS
-  putStrLn $ vcs !! 2
   let forms = map parseVC vcs
-  mapM_ print $ zip vcs forms 
+  mapM_ printForm $ forms
+  
+printForm (name, form) =
+    do
+    putStrLn $ replicate 80 '*'
+    putStrLn name
+    putStrLn $ replicate 80 '*'
+    print form
+    putStrLn $ replicate 80 '*'
+     
 
 parseVC s =
     case parse vcParser "vc" s of
