@@ -1,6 +1,7 @@
-
+{-# LANGUAGE DeriveDataTypeable #-}
 module Solver where
 
+import System.Console.CmdArgs
 import Control.Concurrent.STM
 import Data.List
 import Data.Maybe
@@ -16,6 +17,10 @@ import Eval
 import qualified Logic as L
 import Numeric.ER.Misc
 import System.CPUTime
+
+data Order = 
+    B | D
+    deriving (Show,Data,Typeable)
 
 {-
     This bisection search loop postpends undecided boxes 
@@ -144,7 +149,8 @@ data Constants = Constants
     ,initvolume :: IRA BM}
 
 loop 
-    constants maxdeg bisections maxdep ix maxtime prec form intvarids 
+    order maxdeg bisections maxdep 
+    ix maxtime prec form intvarids 
     queue 
     qlength inittime prevtime computedboxes 
     initvol 
@@ -165,7 +171,8 @@ loop
     | decided && decision = do -- draw green box
         currtime <- getCPUTime
         loop 
-            constants maxdeg bisections maxdep ix maxtime prec form intvarids 
+            order maxdeg bisections maxdep 
+            ix maxtime prec form intvarids 
             boxes 
             (qlength-1) inittime currtime (computedboxes+1) 
             initvol 
@@ -196,22 +203,41 @@ loop
           "\nDepth : " ++ show depth ++ "\n\n"
     | otherwise = do -- draw transparent sub boxes
         currtime <- getCPUTime
+        bisectAndRecur currtime
+        {-
         loop 
-            constants maxdeg bisections (max (depth+1) maxdep) ix maxtime prec form intvarids  
+            order maxdeg bisections (max (depth+1) maxdep) ix maxtime prec form intvarids  
             (boxes Q.|> (depth+1,boxL) Q.|> (depth+1,boxR)) 
             (qlength+1) inittime currtime (computedboxes+1) 
             initvol 
             truevol 
-        {-
             breadth-first above depth-first below
         loop 
-            constants maxdeg bisections (max (depth+1) maxdep) ix maxtime prec form intvarids 
+            order maxdeg bisections (max (depth+1) maxdep) ix maxtime prec form intvarids 
             ((depth+1,boxL) Q.<| (depth+1,boxR) Q.<| boxes) 
             (qlength+1) inittime currtime (computedboxes+1) 
             initvol 
             truevol 
         -}
     where
+    bisectAndRecur currtime =
+        case order of 
+            B -> 
+                loop 
+                    order maxdeg bisections (max (depth+1) maxdep) 
+                    ix maxtime prec form intvarids  
+                    (boxes Q.|> (depth+1,boxL) Q.|> (depth+1,boxR)) 
+                    (qlength+1) inittime currtime (computedboxes+1) 
+                    initvol 
+                    truevol 
+            D ->
+                loop 
+                    order maxdeg bisections (max (depth+1) maxdep) 
+                    ix maxtime prec form intvarids 
+                    ((depth+1,boxL) Q.<| (depth+1,boxR) Q.<| boxes) 
+                    (qlength+1) inittime currtime (computedboxes+1) 
+                    initvol 
+                    truevol 
     (depth,box) = Q.index queue 0
     boxes = Q.drop 1 queue
     decided = isJust maybeValue
