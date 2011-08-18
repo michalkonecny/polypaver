@@ -43,7 +43,8 @@ data Paver = Paver
     ,effort :: Int
     ,time :: Int
     ,order :: Order
-    ,report :: Report}
+    ,report :: Report
+    ,fptype :: FPType}
     deriving (Show,Data,Typeable)
 
 paver = Paver 
@@ -52,7 +53,9 @@ paver = Paver
     ,effort = 10 &= help "approximation effort parameter (default = 10)" 
     ,time = 3600 &= help "timeout in seconds (default = 3600)"
     ,order = B &= help "sub-problem processing order, b for breadth-first (default) or d for depth-first"
-    ,report = VOL &= help "progress reporting, v for proved volume fraction (default)"} &=
+    ,report = VOL &= help "progress reporting, v for proved volume fraction (default)"
+    ,fptype = B32 &= help "type of binary floating point number, b32 for 32-bit (default) and b64 for 64-bit"
+    } &=
     help "Decides theorems using polynomial interval arithmetic" &=
     summary "PolyPaver 0.1 (c) 2011 Jan Duracz, Michal Konecny"
 
@@ -70,10 +73,12 @@ defaultMain problem =
         thm = theorem problem
         ordr = order args 
         repor = report args
+        fpt = fptype args
         in do
     loop
         ordr -- sub-problem processing order
         repor -- 
+        fpt -- 
         maxdeg -- maximum bound degree
         bisections -- maximum bisection depth
         0 -- maxdepth
