@@ -1,7 +1,7 @@
 {-# LANGUAGE DeriveDataTypeable #-}
 module Paver
 (
-    defaultMain,Problem(..),module Form, readBox
+    defaultMain,Problem(..),module Form,readBox
 )
 where
 
@@ -26,14 +26,16 @@ data Paver = Paver
     {degree :: Int
     ,bisect :: Int
     ,effort :: Int
-    ,time :: Int}
+    ,time :: Int
+    ,order :: Order}
     deriving (Show,Data,Typeable)
 
 paver = Paver 
     {degree = 0 &= help "Maximum polynomial degree"
     ,bisect = 10 &= help "Maximum bisections of a box"
     ,effort = 10 &= help "Approximation effort parameter" 
-    ,time = 3600 &= help "Maximum solving time in seconds"}
+    ,time = 3600 &= help "Maximum solving time in seconds"
+    ,order = B &= help "Sub-problem processing order, b for breadth-first or d for depth-first"}
 
 defaultMain problem = 
     do
@@ -47,9 +49,10 @@ defaultMain problem =
         initbox = readBox $ box problem 
         intvarids = ivars problem
         thm = theorem problem
+        ordr = order args 
         in do
     loop
-        paver -- constants
+        ordr -- sub-problem processing order
         maxdeg -- maximum bound degree
         bisections -- maximum bisection depth
         0 -- maxdepth
