@@ -35,7 +35,8 @@ paver = Paver
     ,bisect = 10 &= help "maximum bisection depth (default = 10)"
     ,effort = 10 &= help "approximation effort parameter (default = 10)" 
     ,time = 3600 &= help "timeout in seconds (default = 3600)"
-    ,order = B &= help "sub-problem processing order, b for breadth-first (default) or d for depth-first"}
+    ,order = B &= help "sub-problem processing order, b for breadth-first (default) or d for depth-first"} &=
+    summary "PolyPaver 0.1 (c) 2011 Jan Duracz, Michal Konecny"
 
 defaultMain problem = 
     do
