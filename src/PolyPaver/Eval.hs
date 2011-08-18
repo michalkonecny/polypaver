@@ -31,8 +31,8 @@ import Numeric.ER.BasicTypes
 
 evalForm ::
     (L.TruthValue tv) =>
-    Int -> EffortIndex -> Box (IRA BM) -> Precision -> Form -> tv
-evalForm maxdeg ix box prec form =
+    Int -> EffortIndex -> Box (IRA BM) -> (Int,Int) -> Form -> tv
+evalForm maxdeg ix box fptype form =
     evForm form
     where
     evForm form =
@@ -76,11 +76,11 @@ evalForm maxdeg ix box prec form =
               where
               rightArg = evTerm right
               leftArg = evTerm left
-    evTerm = evalTerm maxdeg ix box prec
+    evTerm = evalTerm maxdeg ix box fptype
 
 evalTerm ::
-    Int -> EffortIndex -> Box (IRA BM) -> Precision -> Term -> FAPDOI BM
-evalTerm maxdeg ix box prec term =
+    Int -> EffortIndex -> Box (IRA BM) -> (Int,Int) -> Term -> FAPDOI BM
+evalTerm maxdeg ix box (prec,minexp) term =
     evTerm term
     where
     evTerm term =
@@ -90,17 +90,12 @@ evalTerm maxdeg ix box prec term =
               FA.setMaxDegree maxdeg $
     --          FA.setMaxSize size $
               fromRational $
-    --            2^^(-14) -- 16-bit
-                2^^(-126) -- 32-bit
-    --            2^^(-1022) -- 64-bit
+                2^^minexp -- 32-bit
           EpsRel ->
               FA.setMaxDegree maxdeg $
     --          FA.setMaxSize size $
               fromRational $
-    --            2^^(-9) -- 16-bit
-              2^^(1-prec) -- custom float
-    --            2^^(-22)-- 32-bit
-    --            2^^(-51) -- 64-bit
+              2^^(1-prec)
           Pi ->
               FA.setMaxDegree maxdeg $
     --          FA.setMaxSize size $

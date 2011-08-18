@@ -42,6 +42,10 @@ data Report =
     NO | VOL
     deriving (Show,Data,Typeable)
 
+data FPType =
+    B32 | B64
+    deriving (Show,Data,Typeable)
+
 {-
     This bisection search loop postpends undecided boxes 
     until the stack is empty or a false box is found, i.e.     
@@ -169,7 +173,7 @@ data Constants = Constants
     ,initvolume :: IRA BM}
 
 loop 
-    order report maxdeg bisections maxdep 
+    order report fptype maxdeg bisections maxdep 
     ix maxtime prec form intvarids 
     queue 
     qlength inittime prevtime computedboxes 
@@ -192,7 +196,7 @@ loop
         currtime <- getCPUTime
         putStr reportTrueS
         loop 
-            order report maxdeg bisections maxdep 
+            order report fptype maxdeg bisections maxdep 
             ix maxtime prec form intvarids 
             boxes 
             (qlength-1) inittime currtime (computedboxes+1) 
@@ -228,14 +232,14 @@ loop
         bisectAndRecur currtime
         {-
         loop 
-            order report maxdeg bisections (max (depth+1) maxdep) ix maxtime prec form intvarids  
+            order report fptype maxdeg bisections (max (depth+1) maxdep) ix maxtime prec form intvarids  
             (boxes Q.|> (depth+1,boxL) Q.|> (depth+1,boxR)) 
             (qlength+1) inittime currtime (computedboxes+1) 
             initvol 
             truevol 
             breadth-first above depth-first below
         loop 
-            order report maxdeg bisections (max (depth+1) maxdep) ix maxtime prec form intvarids 
+            order report fptype maxdeg bisections (max (depth+1) maxdep) ix maxtime prec form intvarids 
             ((depth+1,boxL) Q.<| (depth+1,boxR) Q.<| boxes) 
             (qlength+1) inittime currtime (computedboxes+1) 
             initvol 
@@ -246,7 +250,7 @@ loop
         case order of 
             B -> 
                 loop 
-                    order report maxdeg bisections (max (depth+1) maxdep) 
+                    order report fptype maxdeg bisections (max (depth+1) maxdep) 
                     ix maxtime prec form intvarids  
                     (boxes Q.|> (depth+1,boxL) Q.|> (depth+1,boxR)) 
                     (qlength+1) inittime currtime (computedboxes+1) 
@@ -254,7 +258,7 @@ loop
                     truevol 
             D ->
                 loop 
-                    order report maxdeg bisections (max (depth+1) maxdep) 
+                    order report fptype maxdeg bisections (max (depth+1) maxdep) 
                     ix maxtime prec form intvarids 
                     ((depth+1,boxL) Q.<| (depth+1,boxR) Q.<| boxes) 
                     (qlength+1) inittime currtime (computedboxes+1) 
@@ -282,7 +286,10 @@ loop
     splitdomR = DBox.lookup "looking up splitdom in solver" splitvar boxR
     (splitvar,(boxL,boxR)) = L.split thinvarids box value
     maybeValue = L.decide dim value
-    value = evalForm maxdeg ix cbox prec form :: Maybe Bool
+    value = 
+        case fptype of
+             B32 -> evalForm maxdeg ix cbox (32,-126) form :: Maybe Bool
+             B64 -> evalForm maxdeg ix cbox (64,-1022) form :: Maybe Bool
     thinvarids = DBox.keys thincbox
     thincbox = DBox.filter RA.isExact cbox -- thin subbox of contracted box
     cbox = contractIntVarDoms box intvarids -- box with contracted integer doms
