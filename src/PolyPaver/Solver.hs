@@ -190,7 +190,7 @@ loop
           " boxes.\nReaching max depth : " ++ show maxdep ++ "\n\n"
     | decided && decision = do -- draw green box
         currtime <- getCPUTime
-        putStr reportS
+        putStr reportTrueS
         loop 
             order report maxdeg bisections maxdep 
             ix maxtime prec form intvarids 
@@ -224,6 +224,7 @@ loop
           "\nDepth : " ++ show depth ++ "\n\n"
     | otherwise = do -- draw transparent sub boxes
         currtime <- getCPUTime
+--         putStr reportSplitS
         bisectAndRecur currtime
         {-
         loop 
@@ -259,12 +260,18 @@ loop
                     (qlength+1) inittime currtime (computedboxes+1) 
                     initvol 
                     truevol 
-    reportS =
+    reportTrueS =
         case report of
              VOL -> 
                  "Proved fraction : " ++ show newtruevol ++ "\n"
              NO -> 
                  ""
+{-    reportSplitS =
+        case report of
+             VOL -> 
+                 "Proved fraction : " ++ show truevol ++ "\n"
+             NO -> 
+                 ""-}
     (depth,box) = Q.index queue 0
     boxes = Q.drop 1 queue
     decided = isJust maybeValue
