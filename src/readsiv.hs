@@ -129,10 +129,10 @@ term :: Parser Term
 term = buildExpressionParser termTable atomicTerm <?> "term"
 termTable = 
     [ [Prefix (m_reservedOp "-" >> return (Neg))]
+    , [Infix (m_reservedOp "/" >> return (Over)) AssocLeft]
+    , [Infix (m_reservedOp "*" >> return (Times)) AssocLeft]
     , [Infix (m_reservedOp "-" >> return (Minus)) AssocLeft]
     , [Infix (m_reservedOp "+" >> return (Plus)) AssocLeft]
-    , [Infix (m_reservedOp "*" >> return (Times)) AssocLeft]
-    , [Infix (m_reservedOp "/" >> return (Over)) AssocLeft]
     ]
 
 atomicTerm = m_parens term
@@ -151,6 +151,9 @@ decodeFn "numeric__times" [arg1, arg2] = FTimes arg1 arg2
 decodeFn "numeric__plus" [arg1, arg2] = FPlus arg1 arg2
 decodeFn "numeric__minus" [arg1, arg2] = FMinus arg1 arg2
 decodeFn "exact__sqrt" [arg1] = Sqrt arg1
+decodeFn "exact__exp" [arg1] = Exp arg1
+decodeFn "exact__sin" [arg1] = Sin arg1
+decodeFn "exact__cos" [arg1] = Cos arg1
 decodeFn fn args =
     error $ 
         "cannot decode function call " ++ fn ++ 
