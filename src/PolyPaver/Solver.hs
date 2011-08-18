@@ -262,7 +262,7 @@ loop
     reportS =
         case report of
              VOL -> 
-                 "Proved fraction : " ++ show (newtruevol/initvol) ++ "\n"
+                 "Proved fraction : " ++ show newtruevol ++ "\n"
              NO -> 
                  ""
     (depth,box) = Q.index queue 0
