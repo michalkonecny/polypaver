@@ -38,6 +38,10 @@ data Order =
     B | D
     deriving (Show,Data,Typeable)
 
+data Report =
+    NO | VOL
+    deriving (Show,Data,Typeable)
+
 {-
     This bisection search loop postpends undecided boxes 
     until the stack is empty or a false box is found, i.e.     
@@ -165,7 +169,7 @@ data Constants = Constants
     ,initvolume :: IRA BM}
 
 loop 
-    order maxdeg bisections maxdep 
+    order report maxdeg bisections maxdep 
     ix maxtime prec form intvarids 
     queue 
     qlength inittime prevtime computedboxes 
@@ -187,7 +191,7 @@ loop
     | decided && decision = do -- draw green box
         currtime <- getCPUTime
         loop 
-            order maxdeg bisections maxdep 
+            order report maxdeg bisections maxdep 
             ix maxtime prec form intvarids 
             boxes 
             (qlength-1) inittime currtime (computedboxes+1) 
@@ -222,14 +226,14 @@ loop
         bisectAndRecur currtime
         {-
         loop 
-            order maxdeg bisections (max (depth+1) maxdep) ix maxtime prec form intvarids  
+            order report maxdeg bisections (max (depth+1) maxdep) ix maxtime prec form intvarids  
             (boxes Q.|> (depth+1,boxL) Q.|> (depth+1,boxR)) 
             (qlength+1) inittime currtime (computedboxes+1) 
             initvol 
             truevol 
             breadth-first above depth-first below
         loop 
-            order maxdeg bisections (max (depth+1) maxdep) ix maxtime prec form intvarids 
+            order report maxdeg bisections (max (depth+1) maxdep) ix maxtime prec form intvarids 
             ((depth+1,boxL) Q.<| (depth+1,boxR) Q.<| boxes) 
             (qlength+1) inittime currtime (computedboxes+1) 
             initvol 
@@ -240,7 +244,7 @@ loop
         case order of 
             B -> 
                 loop 
-                    order maxdeg bisections (max (depth+1) maxdep) 
+                    order report maxdeg bisections (max (depth+1) maxdep) 
                     ix maxtime prec form intvarids  
                     (boxes Q.|> (depth+1,boxL) Q.|> (depth+1,boxR)) 
                     (qlength+1) inittime currtime (computedboxes+1) 
@@ -248,12 +252,18 @@ loop
                     truevol 
             D ->
                 loop 
-                    order maxdeg bisections (max (depth+1) maxdep) 
+                    order report maxdeg bisections (max (depth+1) maxdep) 
                     ix maxtime prec form intvarids 
                     ((depth+1,boxL) Q.<| (depth+1,boxR) Q.<| boxes) 
                     (qlength+1) inittime currtime (computedboxes+1) 
                     initvol 
                     truevol 
+    reportS =
+        case report of
+             VOL -> 
+                 "Proved fraction : " ++ show (newtruevol/initvol) ++ "\n"
+             NO -> 
+                 ""
     (depth,box) = Q.index queue 0
     boxes = Q.drop 1 queue
     decided = isJust maybeValue
