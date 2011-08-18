@@ -1,4 +1,17 @@
-module Vars 
+{-|
+    Module      :  PolyPaver.Vars
+    Description :  manipulation of variables in formulas 
+    Copyright   :  (c) Michal Konecny, Jan Duracz
+    License     :  BSD3
+
+    Maintainer  :  mikkonecny@gmail.com
+    Stability   :  experimental
+    Portability :  portable
+
+    Manipulation of variables in formulas, including
+    detecting domains of variables.
+-}
+module PolyPaver.Vars 
 (
     getFormFreeVars,
     getTermFreeVars,
@@ -9,7 +22,8 @@ module Vars
 )
 where
 
-import Form
+import PolyPaver.Form
+
 import qualified Data.Set as Set
 import qualified Data.Map as Map
 

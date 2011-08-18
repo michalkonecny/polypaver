@@ -1,10 +1,23 @@
 {-# LANGUAGE DeriveDataTypeable #-}
-module Solver where
 
-import System.Console.CmdArgs
-import Control.Concurrent.STM
-import Data.List
-import Data.Maybe
+{-|
+    Module      :  PolyPaver.Solver
+    Description :  the main counter-example search algorihtm 
+    Copyright   :  (c) Jan Duracz, Michal Konecny 
+    License     :  BSD3
+
+    Maintainer  :  jan@duracz.net
+    Stability   :  experimental
+    Portability :  portable
+
+    The main counter-example search algorihtm.
+-}
+module PolyPaver.Solver where
+
+import PolyPaver.Form
+import PolyPaver.Eval
+import qualified PolyPaver.Logic as L
+
 import qualified Numeric.ER.Real.Approx as RA
 import Numeric.ER.Real.Approx.Interval
 import Numeric.ER.Real.DefaultRepr
@@ -12,10 +25,13 @@ import qualified Data.IntMap as IMap
 import qualified Numeric.ER.BasicTypes.DomainBox as DBox
 import Numeric.ER.BasicTypes.DomainBox.IntMap
 import qualified Data.Sequence as Q
-import Form
-import Eval
-import qualified Logic as L
 import Numeric.ER.Misc
+
+import Data.List
+import Data.Maybe
+
+import System.Console.CmdArgs
+--import Control.Concurrent.STM
 import System.CPUTime
 
 data Order = 
@@ -262,10 +278,10 @@ width dom =
   where
   (domL,domR) = RA.bounds dom
 
-enqueueBox stateTV rgba box =
-    atomically $ do
-        state <- readTVar stateTV
-        writeTVar stateTV ((box,rgba) : state)
+--enqueueBox stateTV rgba box =
+--    atomically $ do
+--        state <- readTVar stateTV
+--        writeTVar stateTV ((box,rgba) : state)
 
 showBox :: Box (IRA BM) -> String
 showBox =

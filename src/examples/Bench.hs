@@ -1,3 +1,15 @@
+{-|
+    Module      :  Main
+    Description :  scalable properties involving elementary functions 
+    Copyright   :  (c) Jan Duracz, Michal Konecny 
+    License     :  BSD3
+
+    Maintainer  :  jan@duracz.net
+    Stability   :  experimental
+    Portability :  portable
+
+    Scalable properties involving elementary functions.
+-}
 
 module Main 
 (
@@ -5,7 +17,7 @@ module Main
 )
 where
 
-import Paver
+import PolyPaver.Paver
 
 main = 
 --    defaultMain Problem 

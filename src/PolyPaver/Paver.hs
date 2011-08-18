@@ -1,20 +1,35 @@
 {-# LANGUAGE DeriveDataTypeable #-}
-module Paver
+
+{-|
+    Module      :  PolyPaver.Paver
+    Description :  user interface for solving PolyPaver problems 
+    Copyright   :  (c) Jan Duracz, Michal Konecny 
+    License     :  BSD3
+
+    Maintainer  :  jan@duracz.net
+    Stability   :  experimental
+    Portability :  portable
+
+    User interface for solving PolyPaver problems.
+-}
+module PolyPaver.Paver
 (
-    defaultMain,Problem(..),module Form,readBox
+    defaultMain,Problem(..),module PolyPaver.Form,readBox
 )
 where
 
-import System.Console.CmdArgs
+import PolyPaver.Form
+import PolyPaver.Solver
+
 import Numeric.ER.BasicTypes.DomainBox.IntMap
 import Numeric.ER.Real.DefaultRepr
-import Form
-import System.CPUTime
 import Numeric.ER.Real.Base.MachineDouble
-import Solver
-import qualified Data.Sequence as Q
 import qualified Numeric.ER.BasicTypes.DomainBox as DBox
 import qualified Numeric.ER.Real.Approx as RA
+
+import qualified Data.Sequence as Q
+import System.Console.CmdArgs
+import System.CPUTime
 
 data Problem = Problem
     {box :: [(Int,(Rational,Rational))]

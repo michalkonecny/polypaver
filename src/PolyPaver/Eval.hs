@@ -1,7 +1,26 @@
-module Eval where
+{-|
+    Module      :  PolyPaver.Eval
+    Description :  evaluation of a formula over a box  
+    Copyright   :  (c) Jan Duracz, Michal Konecny 
+    License     :  BSD3
 
-import qualified Logic as L
-import Form
+    Maintainer  :  jan@duracz.net
+    Stability   :  experimental
+    Portability :  portable
+
+    Evaluation of a formula over a box.
+-}
+
+module PolyPaver.Eval 
+(
+    evalForm,
+    evalTerm
+)
+where
+
+import PolyPaver.Form
+import qualified PolyPaver.Logic as L
+
 import qualified Numeric.ER.Real.Approx as RA
 import Numeric.ER.Real.DefaultRepr
 import Numeric.ER.RnToRm.DefaultRepr
