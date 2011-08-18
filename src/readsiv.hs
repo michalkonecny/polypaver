@@ -22,7 +22,7 @@ main = do
   mapM_ print terms 
 
 parseVC s =
-    case parse termParser "term" s of -- TODO, change this to vcParser
+    case parse vcParser "vc" s of
         Right t -> t
         Left err -> error $ "parse error: " ++ show err 
         
@@ -35,14 +35,20 @@ vcs =
     . tail
     . splitOn "function_"
 
---vc :: Parser Form 
---vc = 
---    do
+--vcParser :: Parser Form 
+vcParser :: Parser (String, Term) -- temporary 
+vcParser = 
+    do
+    vcName <- m_identifier
+    m_symbol "."
+    t <- termParser -- TODO - change this
+    m_symbol "."
+    return (vcName, t)
 
 tokenDef = emptyDef{ commentStart = "/*"
                , commentEnd = "*/"
                , identStart = letter
-               , identLetter = alphaNum
+               , identLetter = alphaNum <|> (oneOf "_")
                , opStart = oneOf "><=-+*/"
                , opLetter = oneOf "="
                , reservedOpNames = [">=", "<=", "=", "-", "+", "*", "/"]
@@ -53,6 +59,7 @@ TokenParser{ parens = m_parens
             , reservedOp = m_reservedOp
             , reserved = m_reserved
             , symbol = m_symbol
+            , integer = m_integer
             , semiSep1 = m_semiSep1
             , whiteSpace = m_whiteSpace } 
             = 
@@ -70,7 +77,9 @@ termTable =
 
 term = m_parens termParser
         <|> try fncall
+        <|> fmap (Lit . fromInteger) m_integer
         <|> fmap var m_identifier
+        
         
 fncall =
     do
