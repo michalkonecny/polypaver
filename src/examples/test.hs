@@ -28,4 +28,4 @@ test_box = [(0, (-1,1))]
 
 x = Var 0
 
-test_thm = x |<=| cos(x)+1
+test_thm = exp(x) |<=| exp(x+0.0001) 
