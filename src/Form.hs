@@ -1,5 +1,8 @@
 {-# OPTIONS_GHC -fno-warn-missing-methods #-}
+{-# LANGUAGE DeriveDataTypeable #-}
 module Form where
+
+import Data.Data
 
 infixr 2 --->
 infixl 3 \/
@@ -22,7 +25,7 @@ data Form
   | Eq Term Term
   | Neq Term Term
   | Ni Term Term
-  deriving (Eq,Show,Read)
+  deriving (Eq,Show,Read,Data,Typeable)
 
 (/\) = And
 (\/) = Or
@@ -32,6 +35,9 @@ data Form
 (|>|) = Ge
 (|>=|) = Geq
 (|<-|) = Ni
+
+notVerum Verum = False
+notVerum _ = True
 
 data Term
   = EpsAbs
@@ -65,7 +71,7 @@ data Term
   | FSquare Term
   | FSqrt Term
   | FExp Term
-  deriving (Eq,Show,Read) 
+  deriving (Eq,Show,Read,Data,Typeable) 
 
 instance Num Term
   where
