@@ -1,6 +1,6 @@
 module Main(main) where
 
-import Paver
+import PolyPaver.Paver
 import Data.Ratio ((%))
 
 main =

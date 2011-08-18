@@ -1,7 +1,23 @@
+{-|
+    Module      :  Main
+    Description :  translator of SPARK VCs to PolyPaver problems 
+    Copyright   :  (c) Michal Konecny, Jan Duracz
+    License     :  BSD3
+
+    Maintainer  :  mikkonecny@gmail.com
+    Stability   :  experimental
+    Portability :  portable
+
+    Translator of SPARK VCs to PolyPaver problems.
+    
+    Example usage in a Unix shell:
+    
+    > runhaskell tools/readsiv.hs test.siv test/
+-}
 module Main where
 
-import Form
-import Vars
+import PolyPaver.Form
+import PolyPaver.Vars
 
 import System
 import Data.Char
@@ -41,7 +57,7 @@ writeVCMain outputFolder (name, form, box) =
             [
              "module Main(main) where"
             ,""
-            ,"import Paver"
+            ,"import PolyPaver.Paver"
             ,"import Data.Ratio ((%))"
             ,""
             ,"main ="

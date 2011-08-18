@@ -1,10 +1,22 @@
+{-|
+    Module      :  Main
+    Description :  a minimal PolyPaver problem 
+    Copyright   :  (c) Jan Duracz, Michal Konecny 
+    License     :  BSD3
+
+    Maintainer  :  jan@duracz.net
+    Stability   :  experimental
+    Portability :  portable
+
+    A minimal PolyPaver problem.
+-}
 module Main 
 (
   main
 )
 where
 
-import Paver
+import PolyPaver.Paver
 
 main = 
     defaultMain Problem 

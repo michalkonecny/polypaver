@@ -1,5 +1,18 @@
 {-# LANGUAGE FlexibleInstances #-}
-module Logic where
+
+{-|
+    Module      :  PolyPaver.Logic
+    Description :  interface to decisions based on arithmetic  
+    Copyright   :  (c) Jan Duracz, Michal Konecny 
+    License     :  BSD3
+
+    Maintainer  :  jan@duracz.net
+    Stability   :  experimental
+    Portability :  portable
+
+    Loosely coupled interface to decisions based on arithmetic.
+-}
+module PolyPaver.Logic where
 
 import Numeric.ER.Misc
 import qualified Numeric.ER.BasicTypes.DomainBox as DBox

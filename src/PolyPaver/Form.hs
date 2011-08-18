@@ -1,6 +1,6 @@
 {-# OPTIONS_GHC -fno-warn-missing-methods #-}
 {-# LANGUAGE DeriveDataTypeable #-}
-module Form where
+module PolyPaver.Form where
 
 import Data.Data
 
