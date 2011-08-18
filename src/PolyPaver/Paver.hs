@@ -42,7 +42,7 @@ data Paver = Paver
     ,bisect :: Int
     ,effort :: Int
     ,time :: Int
-    ,order :: Order}
+    ,order :: Order
     ,report :: Report}
     deriving (Show,Data,Typeable)
 
