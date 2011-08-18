@@ -18,55 +18,80 @@ import Text.Parsec.Language
 main = do
   pathS : _ <- getArgs
   fileS <- readFile pathS
-  let terms = map parseVC (vcs fileS)
-  mapM_ print terms 
+  let vcs = vcSplitter fileS
+  putStrLn $ vcs !! 2
+  let forms = map parseVC vcs
+  mapM_ print $ zip vcs forms 
 
 parseVC s =
     case parse vcParser "vc" s of
         Right t -> t
         Left err -> error $ "parse error: " ++ show err 
         
-vcs :: String -> [String]
-vcs =  
-    intersperse "DELIMETER"
-    . filter (not.isSpace.head)
+vcSplitter :: String -> [String]
+vcSplitter =  
+    filter (not.isSpace.head)
     . filter (not.null)
     . concatMap (splitOn "\n\n")
     . tail
     . splitOn "function_"
 
---vcParser :: Parser Form 
-vcParser :: Parser (String, Term) -- temporary 
+vcParser :: Parser (String, Form) 
 vcParser = 
     do
     vcName <- m_identifier
-    m_symbol "."
-    t <- termParser -- TODO - change this
-    m_symbol "."
+    m_dot
+    t <- formParser <|> emptyFormParser
+    eof
     return (vcName, t)
 
-tokenDef = emptyDef{ commentStart = "/*"
-               , commentEnd = "*/"
-               , identStart = letter
-               , identLetter = alphaNum <|> (oneOf "_")
-               , opStart = oneOf "><=-+*/"
-               , opLetter = oneOf "="
-               , reservedOpNames = [">=", "<=", "=", "-", "+", "*", "/"]
-               }
+formParser :: Parser Form
+formParser = 
+    do
+    hs <- many hypothesis
+    m_whiteSpace
+    m_symbol "->"
+    m_whiteSpace
+    cs <- many1 conclusion
+    return $
+        foldr (--->) (foldl1 (/\) cs) hs 
 
-TokenParser{ parens = m_parens
-            , identifier = m_identifier
-            , reservedOp = m_reservedOp
-            , reserved = m_reserved
-            , symbol = m_symbol
-            , integer = m_integer
-            , semiSep1 = m_semiSep1
-            , whiteSpace = m_whiteSpace } 
-            = 
-            makeTokenParser tokenDef
+emptyFormParser :: Parser Form
+emptyFormParser =
+    do
+    m_symbol "***"
+    manyTill anyToken m_dot 
+    return Verum
 
-termParser :: Parser Term
-termParser = buildExpressionParser termTable term <?> "term"
+hypothesis = atomic "H"
+conclusion = atomic "C"
+
+atomic symb =
+    do
+    m_symbol symb
+    m_integer
+    m_symbol ":"
+    m_whiteSpace
+    f <- inequality
+    m_dot
+    return f
+    
+inequality =
+    do
+    left <- term
+    opF <- op
+    right <- term
+    return $ opF left right 
+    where
+    op =
+        choice $ map o [("<", Le), ("<=", Leq), (">", Ge), (">=", Geq), ("=", Eq)]
+    o (opS, opF) =
+        do
+        m_reservedOp opS
+        return opF
+
+term :: Parser Term
+term = buildExpressionParser termTable atomicTerm <?> "term"
 termTable = 
     [ [Prefix (m_reservedOp "-" >> return (Neg))]
     , [Infix (m_reservedOp "-" >> return (Minus)) AssocLeft]
@@ -75,7 +100,7 @@ termTable =
     , [Infix (m_reservedOp "/" >> return (Over)) AssocLeft]
     ]
 
-term = m_parens termParser
+atomicTerm = m_parens term
         <|> try fncall
         <|> fmap (Lit . fromInteger) m_integer
         <|> fmap var m_identifier
@@ -84,7 +109,7 @@ term = m_parens termParser
 fncall =
     do
     fname <- m_identifier
-    args <- m_parens $ sepBy termParser (m_symbol ",")
+    args <- m_parens $ sepBy term (m_symbol ",")
     return $ decodeFn fname args
 
 decodeFn "numeric__times" [arg1, arg2] = FTimes arg1 arg2
@@ -98,4 +123,24 @@ decodeFn fn args =
 
 var name =
     Var $ sum $ zipWith (*) [1..] $ map ord name
+
+tokenDef = emptyDef{ commentStart = "/*"
+               , commentEnd = "*/"
+               , identStart = letter
+               , identLetter = alphaNum <|> (oneOf "_")
+               , opStart = oneOf "><=-+*/"
+               , opLetter = oneOf "="
+               , reservedOpNames = [">=", "<=", "=", "-", "+", "*", "/"]
+               }
+
+TokenParser{ parens = m_parens
+            , identifier = m_identifier
+            , reservedOp = m_reservedOp
+            , symbol = m_symbol
+            , dot = m_dot
+            , integer = m_integer
+            , whiteSpace = m_whiteSpace } 
+            = 
+            makeTokenParser tokenDef
+
     
