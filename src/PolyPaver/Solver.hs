@@ -190,6 +190,7 @@ loop
           " boxes.\nReaching max depth : " ++ show maxdep ++ "\n\n"
     | decided && decision = do -- draw green box
         currtime <- getCPUTime
+        putStr reportS
         loop 
             order report maxdeg bisections maxdep 
             ix maxtime prec form intvarids 
