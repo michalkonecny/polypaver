@@ -140,13 +140,13 @@ atomicTerm = m_parens term
         <|> fmap (Lit . fromInteger) m_integer
         <|> fmap var m_identifier
         
-        
 fncall =
     do
     fname <- m_identifier
     args <- m_parens $ sepBy term (m_symbol ",")
     return $ decodeFn fname args
 
+-- the following definition is incomplete, add cases as needed:
 decodeFn "numeric__times" [arg1, arg2] = FTimes arg1 arg2
 decodeFn "numeric__plus" [arg1, arg2] = FPlus arg1 arg2
 decodeFn "numeric__minus" [arg1, arg2] = FMinus arg1 arg2

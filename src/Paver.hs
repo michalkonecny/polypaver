@@ -31,11 +31,11 @@ data Paver = Paver
     deriving (Show,Data,Typeable)
 
 paver = Paver 
-    {degree = 0 &= help "Maximum polynomial degree"
-    ,bisect = 10 &= help "Maximum bisections of a box"
-    ,effort = 10 &= help "Approximation effort parameter" 
-    ,time = 3600 &= help "Maximum solving time in seconds"
-    ,order = B &= help "Sub-problem processing order, b for breadth-first or d for depth-first"}
+    {degree = 0 &= help "maximum polynomial degree (default = 0)"
+    ,bisect = 10 &= help "maximum bisection depth (default = 10)"
+    ,effort = 10 &= help "approximation effort parameter (default = 10)" 
+    ,time = 3600 &= help "timeout in seconds (default = 3600)"
+    ,order = B &= help "sub-problem processing order, b for breadth-first (default) or d for depth-first"}
 
 defaultMain problem = 
     do
