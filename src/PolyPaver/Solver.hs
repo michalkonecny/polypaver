@@ -288,8 +288,8 @@ loop
     maybeValue = L.decide dim value
     value = 
         case fptype of
-             B32 -> evalForm maxdeg ix cbox (32,-126) form :: Maybe Bool
-             B64 -> evalForm maxdeg ix cbox (64,-1022) form :: Maybe Bool
+             B32 -> evalForm maxdeg ix cbox (23,-126) form :: Maybe Bool
+             B64 -> evalForm maxdeg ix cbox (52,-1022) form :: Maybe Bool
     thinvarids = DBox.keys thincbox
     thincbox = DBox.filter RA.isExact cbox -- thin subbox of contracted box
     cbox = contractIntVarDoms box intvarids -- box with contracted integer doms
