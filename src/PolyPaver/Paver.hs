@@ -72,7 +72,7 @@ defaultMain problem =
     hSetBuffering stdout LineBuffering -- print progress in real time, not in batches
     let maxdeg = degree args
         startdeg = startDegree args
-        improvementRatioThreshold = 1.5
+        improvementRatioThreshold = 1.2
         maxtime = toInteger $ time args
         ix = fromInteger $ toInteger $ effort args
         mindepth = minDepth args 
@@ -88,7 +88,7 @@ defaultMain problem =
         ordr -- sub-problem processing order
         repor -- 
         fpt -- 
-        startdeg -- first degree bound to try
+        startdeg
         maxdeg -- maximum bound degree
         improvementRatioThreshold -- when to try raising degree/effort and when to give up and split
         mindepth -- minimum bisection depth
@@ -99,7 +99,7 @@ defaultMain problem =
         23 -- mantissa bit size (read precisionS)
         thm -- to be proved, defined in IntegralTest
         intvarids -- variable IDs of integer variables, defined in IntegralTest
-        (Q.singleton (0,initbox)) -- enqueue (initial depth, initial box)
+        (Q.singleton (0,startdeg,initbox)) -- enqueue (initial depth, initial startdegree, initial box)
         1 -- queue length
         inittime -- inittime
         0 -- prevtime

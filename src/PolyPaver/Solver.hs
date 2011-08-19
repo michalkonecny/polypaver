@@ -57,7 +57,7 @@ data Constants = Constants
     ,initvolume :: IRA BM}
 
 loop 
-    order report fptype startdeg maxdeg improvementRatioThreshold
+    order report fptype origstartdeg maxdeg improvementRatioThreshold
     mindepth maxdepth maxDepthReached
     ix maxtime prec form intvarids 
     queue 
@@ -65,9 +65,9 @@ loop
     initvol 
     truevol
     =
-    loopAux maxDepthReached queue qlength prevtime computedboxes truevol startdeg Nothing
+    loopAux maxDepthReached queue qlength prevtime computedboxes truevol Nothing Nothing
     where
-    loopAux maxDepthReached queue qlength prevtime computedboxes truevol currdeg maybePrevMeasure
+    loopAux maxDepthReached queue qlength prevtime computedboxes truevol maybeCurrdeg maybePrevMeasure
         | depth < mindepth = do
             putStrLn $ "initial splitting at depth " ++ show depth
             currtime <- getCPUTime
@@ -91,7 +91,7 @@ loop
             putStr reportTrueS
             loopAux
                 maxDepthReached 
-                boxes (qlength-1) currtime (computedboxes+1) newtruevol startdeg Nothing
+                boxes (qlength-1) currtime (computedboxes+1) newtruevol Nothing Nothing
         | decided = do -- formula false on this box
             currtime <- getCPUTime
             putStr $
@@ -108,7 +108,7 @@ loop
             loopAux
                 maxDepthReached 
                 queue qlength currtime computedboxes truevol
-                (currdeg + 1)
+                (Just $ currdeg + 1)
                 (Just undecidedMeasure)
         | depth >= maxdepth ||
           splitdom `RA.equalApprox` splitdomL || 
@@ -150,13 +150,17 @@ loop
                 B -> 
                     loopAux
                         (max (depth+1) maxDepthReached) 
-                        (boxes Q.|> (depth+1,boxL) Q.|> (depth+1,boxR)) 
-                        (qlength+1) currtime (computedboxes+1) truevol startdeg Nothing
+                        (boxes Q.|> (depth+1,newstartdeg,boxL) Q.|> (depth+1,newstartdeg,boxR)) 
+                        (qlength+1) currtime (computedboxes+1) truevol Nothing Nothing
                 D ->
                     loopAux 
                         (max (depth+1) maxDepthReached) 
-                        ((depth+1,boxL) Q.<| (depth+1,boxR) Q.<| boxes) 
-                        (qlength+1) currtime (computedboxes+1) truevol startdeg Nothing
+                        ((depth+1,newstartdeg,boxL) Q.<| (depth+1,newstartdeg,boxR) Q.<| boxes) 
+                        (qlength+1) currtime (computedboxes+1) truevol Nothing Nothing
+        newstartdeg =
+            (origstartdeg + currdeg) `div` 2
+        currdeg =  
+            case maybeCurrdeg of Just currdeg -> currdeg; _ -> startdeg
         reportTrueS =
             case report of
                  VOL -> 
@@ -169,7 +173,7 @@ loop
                      "Proved fraction : " ++ show truevol ++ "\n"
                  NO -> 
                      ""-}
-        (depth,box) = Q.index queue 0
+        (depth,startdeg,box) = Q.index queue 0
         boxes = Q.drop 1 queue
         decided = isJust maybeValue
         decision = fromJust maybeValue
