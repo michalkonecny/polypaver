@@ -47,14 +47,14 @@ data FPType =
     deriving (Show,Data,Typeable)
 
 
-data Constants = Constants
-    {maxdegree :: Int
-    ,maxdepth :: Int
-    ,effortindex :: Int
-    ,maxseconds :: Int
-    ,formula :: Form
-    ,intvars :: [Int]
-    ,initvolume :: IRA BM}
+--data Constants = Constants
+--    {maxdegree :: Int
+--    ,maxdepth :: Int
+--    ,effortindex :: Int
+--    ,maxseconds :: Int
+--    ,formula :: Form
+--    ,intvars :: [Int]
+--    ,initvolume :: IRA BM}
 
 loop 
     order report fptype 
@@ -128,6 +128,7 @@ loop
               "\nDepth : " ++ show depth ++ "\n\n"
         | otherwise = do -- formula undecided on this box, will split it
             putStrLn $ "splitting at depth " ++ show depth ++ ", new queue size is " ++ show (qlength + 1)
+            putStrLn $ "maxsize = " ++ show maxsize
             currtime <- getCPUTime
 --         putStr reportSplitS
             bisectAndRecur currtime
@@ -249,7 +250,7 @@ contractIntVarDom dom
     domL = erintv_left dom
     domR = erintv_right dom
 
-{-|  conclusion of their_sqrt_25: degree 37
+{-|  conclusion of their_sqrt_25: degree 40
 
 *(x, *** 40
     *( *** 39
