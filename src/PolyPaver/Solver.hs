@@ -57,16 +57,16 @@ data Constants = Constants
     ,initvolume :: IRA BM}
 
 loop 
-    order report fptype maxdeg bisections maxdep 
+    order report fptype startdeg maxdeg bisections maxdep 
     ix maxtime prec form intvarids 
     queue 
     qlength inittime prevtime computedboxes 
     initvol 
     truevol
     =
-    loopAux maxdep queue qlength prevtime computedboxes truevol
+    loopAux maxdep queue qlength prevtime computedboxes truevol startdeg
     where
-    loopAux maxdep queue qlength prevtime computedboxes truevol
+    loopAux maxdep queue qlength prevtime computedboxes truevol currdeg
         | prevtime-inittime > maxtime*1000000000000 = do
             putStr $
               "\nTimeout.\nSearch aborted after " ++
@@ -80,13 +80,13 @@ loop
               show ((fromInteger (currtime-inittime)) / 1000000000000) ++
               " seconds.\nComputed : " ++ show computedboxes ++ 
               " boxes.\nReaching max depth : " ++ show maxdep ++ "\n\n"
-        | decided && decision = do -- draw green box
+        | decided && decision = do -- formula true on this box
             currtime <- getCPUTime
             putStr reportTrueS
             loopAux
                 maxdep 
-                boxes (qlength-1) currtime (computedboxes+1) newtruevol  
-        | decided = do -- draw red box
+                boxes (qlength-1) currtime (computedboxes+1) newtruevol startdeg
+        | decided = do -- formula false on this box
             currtime <- getCPUTime
             putStr $
               "\nCounter example found, search aborted.\nTheorem proved false for " ++
@@ -96,10 +96,16 @@ loop
               "\nComputed  boxes : " ++ show computedboxes ++ 
               "\nMax depth : " ++ show maxdep ++  
               "\nDepth : " ++ show depth ++ "\n\n"
+        | currdeg < maxdeg = do -- try raising the degree before splitting
+            currtime <- getCPUTime
+            loopAux
+                maxdep 
+                queue qlength currtime computedboxes truevol
+                (currdeg + 1)  
         | depth >= bisections ||
           splitdom `RA.equalApprox` splitdomL || 
           splitdom `RA.equalApprox` splitdomR ||
-          length thinvarids == dim = do -- draw yellow box
+          length thinvarids == dim = do -- formula undecided and cannot split any further
             currtime <- getCPUTime
             putStr $ 
               "\nCannot split box, search aborted.\nUndecided for : " ++
@@ -110,7 +116,7 @@ loop
 --           "\nQueue length : " ++ show qlength ++
               "\nMaxdepth : " ++ show maxdep ++  
               "\nDepth : " ++ show depth ++ "\n\n"
-        | otherwise = do -- draw transparent sub boxes
+        | otherwise = do -- formula undecided on this box, will split it
             currtime <- getCPUTime
 --         putStr reportSplitS
             bisectAndRecur currtime
@@ -136,12 +142,12 @@ loop
                     loopAux
                         (max (depth+1) maxdep) 
                         (boxes Q.|> (depth+1,boxL) Q.|> (depth+1,boxR)) 
-                        (qlength+1) currtime (computedboxes+1) truevol
+                        (qlength+1) currtime (computedboxes+1) truevol startdeg
                 D ->
                     loopAux 
                         (max (depth+1) maxdep) 
                         ((depth+1,boxL) Q.<| (depth+1,boxR) Q.<| boxes) 
-                        (qlength+1) currtime (computedboxes+1) truevol 
+                        (qlength+1) currtime (computedboxes+1) truevol startdeg
         reportTrueS =
             case report of
                  VOL -> 
@@ -166,8 +172,8 @@ loop
         maybeValue = L.decide dim value
         value = 
             case fptype of
-                 B32 -> evalForm maxdeg ix cbox (23,-126) form :: Maybe Bool
-                 B64 -> evalForm maxdeg ix cbox (52,-1022) form :: Maybe Bool
+                 B32 -> evalForm currdeg ix cbox (23,-126) form :: Maybe Bool
+                 B64 -> evalForm currdeg ix cbox (52,-1022) form :: Maybe Bool
         thinvarids = DBox.keys thincbox
         thincbox = DBox.filter RA.isExact cbox -- thin subbox of contracted box
         cbox = contractIntVarDoms box intvarids -- box with contracted integer doms
