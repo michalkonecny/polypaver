@@ -31,8 +31,8 @@ import Numeric.ER.BasicTypes
 
 evalForm ::
     (L.TruthValue tv) =>
-    Int -> EffortIndex -> Box (IRA BM) -> (Int,Int) -> Form -> tv
-evalForm maxdeg ix box fptype form =
+    Int -> Int -> EffortIndex -> Box (IRA BM) -> (Int,Int) -> Form -> tv
+evalForm maxdeg maxsize ix box fptype form =
     evForm form
     where
     evForm form =
@@ -76,11 +76,11 @@ evalForm maxdeg ix box fptype form =
               where
               rightArg = evTerm right
               leftArg = evTerm left
-    evTerm = evalTerm maxdeg ix box fptype
+    evTerm = evalTerm maxdeg maxsize ix box fptype
 
 evalTerm ::
-    Int -> EffortIndex -> Box (IRA BM) -> (Int,Int) -> Term -> FAPDOI BM
-evalTerm maxdeg ix box (prec,minexp) term =
+    Int -> Int -> EffortIndex -> Box (IRA BM) -> (Int,Int) -> Term -> FAPDOI BM
+evalTerm maxdeg maxsize ix box (prec,minexp) term =
     evTerm term
     where
     evTerm term =
@@ -109,13 +109,13 @@ evalTerm maxdeg ix box (prec,minexp) term =
               case RA.isExact vardom of
                   True -> -- domain of var thin, so var is a const
                       FA.setMaxDegree maxdeg $ 
-    --                  FA.setMaxSize size $
+                      FA.setMaxSize maxsize $
                       FA.const 
                           DBox.noinfo 
                           [vardom]
                   False -> -- domain of var not thin, so safe to proj
                       FA.setMaxDegree maxdeg $
-    --                  FA.setMaxSize size $ 
+                      FA.setMaxSize maxsize $ 
                       FA.proj
                           (DBox.singleton varid vardom)
                           varid

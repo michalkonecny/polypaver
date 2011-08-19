@@ -57,7 +57,9 @@ data Constants = Constants
     ,initvolume :: IRA BM}
 
 loop 
-    order report fptype origstartdeg maxdeg improvementRatioThreshold
+    order report fptype 
+    origstartdeg maxdeg improvementRatioThreshold 
+    maxsize
     mindepth maxdepth maxDepthReached
     ix maxtime prec form intvarids 
     queue 
@@ -185,8 +187,8 @@ loop
         maybeValue = L.decide dim value
         value = 
             case fptype of
-                 B32 -> evalForm currdeg ix cbox (23,-126) form :: L.TVM -- Maybe Bool
-                 B64 -> evalForm currdeg ix cbox (52,-1022) form :: L.TVM -- Maybe Bool
+                 B32 -> evalForm currdeg maxsize ix cbox (23,-126) form :: L.TVM -- Maybe Bool
+                 B64 -> evalForm currdeg maxsize ix cbox (52,-1022) form :: L.TVM -- Maybe Bool
         (L.TVMUndecided undecidedMeasure) = value
         undecidedMeasureImproved = 
             case maybePrevMeasure of
@@ -247,3 +249,131 @@ contractIntVarDom dom
     domL = erintv_left dom
     domR = erintv_right dom
 
+{-|  conclusion of their_sqrt_25: degree 37
+
+*(x, *** 40
+    *( *** 39
+        *(1 / 2,  *** 13
+            *(
+                *(1 / 2, 
+                    *(
+                        *(1 / 2, t__1), 
+                        -(3, 
+                            *(*(t__1, t__1), x)
+                         )
+                     )
+                 ), 
+                 -(3, 
+                    *(
+                        *(
+                            *(
+                                *(1 / 2, t__1), 
+                                -(3, 
+                                    *(
+                                        *(t__1, t__1), 
+                                        x
+                                    )
+                                )
+                            ), 
+                            *(
+                                *(1 / 2, t__1), 
+                                -(3, 
+                                    *(
+                                        *(t__1, t__1), 
+                                        x
+                                    )
+                                )
+                            )
+                        ), 
+                        x
+                    )
+                )
+            )
+        ), 
+        -(3, 
+            *(
+                *( *** 26
+                    *( *** 13
+                        *( *** 4
+                            1 / 2, 
+                            *(
+                                *(1 / 2, t__1), 
+                                -(3, 
+                                    *(
+                                        *(t__1, t__1), 
+                                        x
+                                    )
+                                )
+                            )
+                        ), 
+                        -(3, 
+                            *( *** 9
+                                *( *** 8
+                                    *( *** 4
+                                        *(1 / 2, t__1), 
+                                        -(3, 
+                                            *(
+                                                *(t__1, t__1), 
+                                                x
+                                            )
+                                        )
+                                    ), 
+                                    *( *** 4
+                                        *(1 / 2, t__1), 
+                                        -(3, 
+                                            *(
+                                                *(t__1, t__1), 
+                                                x
+                                            )
+                                        )
+                                    )
+                                ), 
+                                x
+                            )
+                        )
+                    ), 
+                    *( *** 13
+                        *(1 / 2, 
+                            *( *** 4
+                                *(1 / 2, t__1), 
+                                -(3, 
+                                    *(
+                                        *(t__1, t__1), 
+                                        x
+                                    )
+                                )
+                            )
+                        ), 
+                        -(3, 
+                            *( *** 9
+                                *( *** 8
+                                    *( *** 4
+                                        *(1 / 2, t__1), 
+                                        -(3, 
+                                            *(
+                                                *(t__1, t__1), 
+                                                x
+                                            )
+                                        )
+                                    ), 
+                                    *( ***4
+                                        *(1 / 2, t__1), 
+                                        -(3, 
+                                            *( ***3
+                                                *(t__1, t__1)
+                                                ,x
+                                            )
+                                        )
+                                    )
+                                ), 
+                                x
+                            )
+                        )
+                    )
+                ), 
+                x
+            )
+        )
+    )
+)
+-}

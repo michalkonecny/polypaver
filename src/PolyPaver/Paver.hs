@@ -41,6 +41,7 @@ data Problem = Problem
 data Paver = Paver 
     {degree :: Int
     ,startDegree :: Int
+    ,maxSize :: Int
     ,minDepth :: Int
     ,maxDepth :: Int
     ,effort :: Int
@@ -53,8 +54,9 @@ data Paver = Paver
 paver = Paver 
     {degree = 0 &= help "maximum polynomial degree (default = 0)"
     ,startDegree = 0 &= help "first polynomial degree to try on each box (default = 0)"
+    ,maxSize = 100 &= help "maximum polynomial term size (default = 100)" &= name "z"
     ,minDepth = 0 &= help "minimum bisection depth (default = 0)"
-    ,maxDepth = 10 &= help "maximum bisection depth (default = 10)"
+    ,maxDepth = 10 &= help "maximum bisection depth (default = 10)" &= name "b"
     ,effort = 10 &= help "approximation effort parameter (default = 10)" 
     ,time = 3600 &= help "timeout in seconds (default = 3600)"
     ,order = B &= help "sub-problem processing order, b for breadth-first (default) or d for depth-first"
@@ -77,6 +79,7 @@ defaultMain problem =
         ix = fromInteger $ toInteger $ effort args
         mindepth = minDepth args 
         maxdepth = maxDepth args 
+        maxsize = maxSize args 
         initbox = readBox $ box problem 
         intvarids = ivars problem
         thm = theorem problem
@@ -91,6 +94,7 @@ defaultMain problem =
         startdeg
         maxdeg -- maximum bound degree
         improvementRatioThreshold -- when to try raising degree/effort and when to give up and split
+        maxsize
         mindepth -- minimum bisection depth
         maxdepth -- maximum bisection depth
         0 -- maxdepth
