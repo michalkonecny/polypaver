@@ -57,16 +57,17 @@ data Constants = Constants
     ,initvolume :: IRA BM}
 
 loop 
-    order report fptype startdeg maxdeg bisections maxdep 
+    order report fptype startdeg maxdeg improvementRatioThreshold
+    bisections maxdep 
     ix maxtime prec form intvarids 
     queue 
     qlength inittime prevtime computedboxes 
     initvol 
     truevol
     =
-    loopAux maxdep queue qlength prevtime computedboxes truevol startdeg
+    loopAux maxdep queue qlength prevtime computedboxes truevol startdeg Nothing
     where
-    loopAux maxdep queue qlength prevtime computedboxes truevol currdeg
+    loopAux maxdep queue qlength prevtime computedboxes truevol currdeg maybePrevMeasure
         | prevtime-inittime > maxtime*1000000000000 = do
             putStr $
               "\nTimeout.\nSearch aborted after " ++
@@ -85,7 +86,7 @@ loop
             putStr reportTrueS
             loopAux
                 maxdep 
-                boxes (qlength-1) currtime (computedboxes+1) newtruevol startdeg
+                boxes (qlength-1) currtime (computedboxes+1) newtruevol startdeg Nothing
         | decided = do -- formula false on this box
             currtime <- getCPUTime
             putStr $
@@ -96,12 +97,14 @@ loop
               "\nComputed  boxes : " ++ show computedboxes ++ 
               "\nMax depth : " ++ show maxdep ++  
               "\nDepth : " ++ show depth ++ "\n\n"
-        | currdeg < maxdeg = do -- try raising the degree before splitting
+        | currdeg < maxdeg && undecidedMeasureImproved = do -- try raising the degree before splitting
+            putStrLn $ "raising degree to " ++ show (currdeg + 1)
             currtime <- getCPUTime
             loopAux
                 maxdep 
                 queue qlength currtime computedboxes truevol
-                (currdeg + 1)  
+                (currdeg + 1)
+                (Just undecidedMeasure)
         | depth >= bisections ||
           splitdom `RA.equalApprox` splitdomL || 
           splitdom `RA.equalApprox` splitdomR ||
@@ -117,6 +120,7 @@ loop
               "\nMaxdepth : " ++ show maxdep ++  
               "\nDepth : " ++ show depth ++ "\n\n"
         | otherwise = do -- formula undecided on this box, will split it
+            putStrLn $ "splitting at depth " ++ show depth
             currtime <- getCPUTime
 --         putStr reportSplitS
             bisectAndRecur currtime
@@ -142,12 +146,12 @@ loop
                     loopAux
                         (max (depth+1) maxdep) 
                         (boxes Q.|> (depth+1,boxL) Q.|> (depth+1,boxR)) 
-                        (qlength+1) currtime (computedboxes+1) truevol startdeg
+                        (qlength+1) currtime (computedboxes+1) truevol startdeg Nothing
                 D ->
                     loopAux 
                         (max (depth+1) maxdep) 
                         ((depth+1,boxL) Q.<| (depth+1,boxR) Q.<| boxes) 
-                        (qlength+1) currtime (computedboxes+1) truevol startdeg
+                        (qlength+1) currtime (computedboxes+1) truevol startdeg Nothing
         reportTrueS =
             case report of
                  VOL -> 
@@ -172,8 +176,14 @@ loop
         maybeValue = L.decide dim value
         value = 
             case fptype of
-                 B32 -> evalForm currdeg ix cbox (23,-126) form :: Maybe Bool
-                 B64 -> evalForm currdeg ix cbox (52,-1022) form :: Maybe Bool
+                 B32 -> evalForm currdeg ix cbox (23,-126) form :: L.TVM -- Maybe Bool
+                 B64 -> evalForm currdeg ix cbox (52,-1022) form :: L.TVM -- Maybe Bool
+        (L.TVMUndecided undecidedMeasure) = value
+        undecidedMeasureImproved = 
+            case maybePrevMeasure of
+                Nothing -> True
+                Just prevUndecidedMeasure ->
+                    prevUndecidedMeasure / undecidedMeasure > improvementRatioThreshold
         thinvarids = DBox.keys thincbox
         thincbox = DBox.filter RA.isExact cbox -- thin subbox of contracted box
         cbox = contractIntVarDoms box intvarids -- box with contracted integer doms

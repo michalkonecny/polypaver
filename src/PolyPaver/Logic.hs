@@ -58,3 +58,51 @@ instance TruthValue (Maybe Bool) where
             foldr DBox.delete box thinvarids
     decide _ tv = tv
     bot = Nothing
+
+    
+data TVM =
+    TVMDecided Bool | TVMUndecided { tvmDistanceFromDecision :: Double }
+
+instance TruthValue TVM where
+    not (TVMDecided x) = TVMDecided (Prelude.not x)
+    not tv = tv
+    -- and:
+    (TVMDecided False) && _ = TVMDecided False
+    (TVMDecided True) && tv = tv
+    _ && (TVMDecided False) = TVMDecided False
+    tv && (TVMDecided True) = tv
+    (TVMUndecided m1) && (TVMUndecided m2) = TVMUndecided (max m1 m2)
+    -- or: 
+    (TVMDecided True) || _ = TVMDecided True
+    (TVMDecided False) || tv = tv
+    _ || (TVMDecided True) = TVMDecided True
+    tv || (TVMDecided False) = tv
+    (TVMUndecided m1) || (TVMUndecided m2) = TVMUndecided (max m1 m2)
+    -- implication:
+    (TVMDecided False) ~> _ = TVMDecided True
+    (TVMDecided True) ~> tv = tv
+    _ ~> (TVMDecided True) = TVMDecided True
+    tv ~> (TVMDecided False) = tv
+    (TVMUndecided m1) ~> (TVMUndecided m2) = TVMUndecided (max m1 m2)
+
+    fromBool _ = TVMDecided
+    a `leq` b = 
+        case a `RA.leqReals` b of
+            Just result -> TVMDecided result
+            Nothing -> TVMUndecided measure
+        where
+        measure = snd $ RA.doubleBounds $ a - b
+    a `includes` b = 
+        case a `RA.includes` b of
+            Just result -> TVMDecided result
+            Nothing -> TVMUndecided 1 -- TODO
+    split thinvarids box tv =
+        (var,DBox.split box var Nothing)
+        where
+        (var,_) = DBox.bestSplit splittablesubbox
+        splittablesubbox =
+            foldr DBox.delete box thinvarids
+    decide _ (TVMDecided result) = Just result
+    decide _ (TVMUndecided _) = Nothing
+    bot = TVMUndecided (1/0) -- infinite badness...
+    

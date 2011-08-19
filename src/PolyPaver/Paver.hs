@@ -70,6 +70,7 @@ defaultMain problem =
     hSetBuffering stdout LineBuffering -- print progress in real time, not in batches
     let maxdeg = degree args
         startdeg = startdegree args
+        improvementRatioThreshold = 2
         maxtime = toInteger $ time args
         ix = fromInteger $ toInteger $ effort args
         bisections = bisect args 
@@ -84,8 +85,9 @@ defaultMain problem =
         ordr -- sub-problem processing order
         repor -- 
         fpt -- 
-        startdeg -- 
+        startdeg -- first degree bound to try
         maxdeg -- maximum bound degree
+        improvementRatioThreshold -- when to try raising degree/effort and when to give up and split
         bisections -- maximum bisection depth
         0 -- maxdepth
         ix
