@@ -58,34 +58,39 @@ data Constants = Constants
 
 loop 
     order report fptype startdeg maxdeg improvementRatioThreshold
-    bisections maxdep 
+    mindepth maxdepth maxDepthReached
     ix maxtime prec form intvarids 
     queue 
     qlength inittime prevtime computedboxes 
     initvol 
     truevol
     =
-    loopAux maxdep queue qlength prevtime computedboxes truevol startdeg Nothing
+    loopAux maxDepthReached queue qlength prevtime computedboxes truevol startdeg Nothing
     where
-    loopAux maxdep queue qlength prevtime computedboxes truevol currdeg maybePrevMeasure
+    loopAux maxDepthReached queue qlength prevtime computedboxes truevol currdeg maybePrevMeasure
+        | depth < mindepth = do
+            putStrLn $ "initial splitting at depth " ++ show depth
+            currtime <- getCPUTime
+--         putStr reportSplitS
+            bisectAndRecur currtime
         | prevtime-inittime > maxtime*1000000000000 = do
             putStr $
               "\nTimeout.\nSearch aborted after " ++
               show maxtime ++
               " seconds.\nComputed : " ++ show computedboxes ++ 
-              " boxes.\nReaching max depth : " ++ show maxdep ++ "\n\n"
+              " boxes.\nReaching max depth : " ++ show maxDepthReached ++ "\n\n"
         | Q.null queue = do
             currtime <- getCPUTime
             putStr $
               "\nSearch complete.\nTheorem proved true in " ++
               show ((fromInteger (currtime-inittime)) / 1000000000000) ++
               " seconds.\nComputed : " ++ show computedboxes ++ 
-              " boxes.\nReaching max depth : " ++ show maxdep ++ "\n\n"
+              " boxes.\nReaching max depth : " ++ show maxDepthReached ++ "\n\n"
         | decided && decision = do -- formula true on this box
             currtime <- getCPUTime
             putStr reportTrueS
             loopAux
-                maxdep 
+                maxDepthReached 
                 boxes (qlength-1) currtime (computedboxes+1) newtruevol startdeg Nothing
         | decided = do -- formula false on this box
             currtime <- getCPUTime
@@ -95,17 +100,17 @@ loop
               "\nSeconds elapsed : " ++
               show ((fromInteger (currtime-inittime)) / 1000000000000) ++
               "\nComputed  boxes : " ++ show computedboxes ++ 
-              "\nMax depth : " ++ show maxdep ++  
+              "\nMax depth : " ++ show maxDepthReached ++  
               "\nDepth : " ++ show depth ++ "\n\n"
         | currdeg < maxdeg && undecidedMeasureImproved = do -- try raising the degree before splitting
             putStrLn $ "raising degree to " ++ show (currdeg + 1)
             currtime <- getCPUTime
             loopAux
-                maxdep 
+                maxDepthReached 
                 queue qlength currtime computedboxes truevol
                 (currdeg + 1)
                 (Just undecidedMeasure)
-        | depth >= bisections ||
+        | depth >= maxdepth ||
           splitdom `RA.equalApprox` splitdomL || 
           splitdom `RA.equalApprox` splitdomR ||
           length thinvarids == dim = do -- formula undecided and cannot split any further
@@ -117,23 +122,23 @@ loop
               show ((fromInteger (currtime-inittime)) / 1000000000000) ++
               "\nComputed boxes : " ++ show computedboxes ++ 
 --           "\nQueue length : " ++ show qlength ++
-              "\nMaxdepth : " ++ show maxdep ++  
+              "\nMaxdepth : " ++ show maxDepthReached ++  
               "\nDepth : " ++ show depth ++ "\n\n"
         | otherwise = do -- formula undecided on this box, will split it
-            putStrLn $ "splitting at depth " ++ show depth
+            putStrLn $ "splitting at depth " ++ show depth ++ ", new queue size is " ++ show (qlength + 1)
             currtime <- getCPUTime
 --         putStr reportSplitS
             bisectAndRecur currtime
             {-
             loop 
-                order report fptype maxdeg bisections (max (depth+1) maxdep) ix maxtime prec form intvarids  
+                order report fptype maxdeg maxdepth (max (depth+1) maxDepthReached) ix maxtime prec form intvarids  
                 (boxes Q.|> (depth+1,boxL) Q.|> (depth+1,boxR)) 
                 (qlength+1) inittime currtime (computedboxes+1) 
                 initvol 
                 truevol 
                 breadth-first above depth-first below
             loop 
-                order report fptype maxdeg bisections (max (depth+1) maxdep) ix maxtime prec form intvarids 
+                order report fptype maxdeg maxdepth (max (depth+1) maxDepthReached) ix maxtime prec form intvarids 
                 ((depth+1,boxL) Q.<| (depth+1,boxR) Q.<| boxes) 
                 (qlength+1) inittime currtime (computedboxes+1) 
                 initvol 
@@ -144,12 +149,12 @@ loop
             case order of 
                 B -> 
                     loopAux
-                        (max (depth+1) maxdep) 
+                        (max (depth+1) maxDepthReached) 
                         (boxes Q.|> (depth+1,boxL) Q.|> (depth+1,boxR)) 
                         (qlength+1) currtime (computedboxes+1) truevol startdeg Nothing
                 D ->
                     loopAux 
-                        (max (depth+1) maxdep) 
+                        (max (depth+1) maxDepthReached) 
                         ((depth+1,boxL) Q.<| (depth+1,boxR) Q.<| boxes) 
                         (qlength+1) currtime (computedboxes+1) truevol startdeg Nothing
         reportTrueS =

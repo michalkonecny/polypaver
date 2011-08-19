@@ -40,8 +40,9 @@ data Problem = Problem
 
 data Paver = Paver 
     {degree :: Int
-    ,startdegree :: Int
-    ,bisect :: Int
+    ,startDegree :: Int
+    ,minDepth :: Int
+    ,maxDepth :: Int
     ,effort :: Int
     ,time :: Int
     ,order :: Order
@@ -51,8 +52,9 @@ data Paver = Paver
 
 paver = Paver 
     {degree = 0 &= help "maximum polynomial degree (default = 0)"
-    ,startdegree = 0 &= help "first polynomial degree to try on each box (default = 0)"
-    ,bisect = 10 &= help "maximum bisection depth (default = 10)"
+    ,startDegree = 0 &= help "first polynomial degree to try on each box (default = 0)"
+    ,minDepth = 0 &= help "minimum bisection depth (default = 0)"
+    ,maxDepth = 10 &= help "maximum bisection depth (default = 10)"
     ,effort = 10 &= help "approximation effort parameter (default = 10)" 
     ,time = 3600 &= help "timeout in seconds (default = 3600)"
     ,order = B &= help "sub-problem processing order, b for breadth-first (default) or d for depth-first"
@@ -69,11 +71,12 @@ defaultMain problem =
     initMachineDouble -- round upwards
     hSetBuffering stdout LineBuffering -- print progress in real time, not in batches
     let maxdeg = degree args
-        startdeg = startdegree args
-        improvementRatioThreshold = 2
+        startdeg = startDegree args
+        improvementRatioThreshold = 1.5
         maxtime = toInteger $ time args
         ix = fromInteger $ toInteger $ effort args
-        bisections = bisect args 
+        mindepth = minDepth args 
+        maxdepth = maxDepth args 
         initbox = readBox $ box problem 
         intvarids = ivars problem
         thm = theorem problem
@@ -88,7 +91,8 @@ defaultMain problem =
         startdeg -- first degree bound to try
         maxdeg -- maximum bound degree
         improvementRatioThreshold -- when to try raising degree/effort and when to give up and split
-        bisections -- maximum bisection depth
+        mindepth -- minimum bisection depth
+        maxdepth -- maximum bisection depth
         0 -- maxdepth
         ix
         maxtime -- 24 hour timeout
