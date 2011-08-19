@@ -68,6 +68,13 @@ loop
     loopAux maxDepthReached queue qlength prevtime computedboxes truevol Nothing Nothing
     where
     loopAux maxDepthReached queue qlength prevtime computedboxes truevol maybeCurrdeg maybePrevMeasure
+        | Q.null queue = do
+            currtime <- getCPUTime
+            putStr $
+              "\nSearch complete.\nTheorem proved true in " ++
+              show ((fromInteger (currtime-inittime)) / 1000000000000) ++
+              " seconds.\nComputed : " ++ show computedboxes ++ 
+              " boxes.\nReaching max depth : " ++ show maxDepthReached ++ "\n\n"
         | depth < mindepth = do
             putStrLn $ "initial splitting at depth " ++ show depth
             currtime <- getCPUTime
@@ -77,13 +84,6 @@ loop
             putStr $
               "\nTimeout.\nSearch aborted after " ++
               show maxtime ++
-              " seconds.\nComputed : " ++ show computedboxes ++ 
-              " boxes.\nReaching max depth : " ++ show maxDepthReached ++ "\n\n"
-        | Q.null queue = do
-            currtime <- getCPUTime
-            putStr $
-              "\nSearch complete.\nTheorem proved true in " ++
-              show ((fromInteger (currtime-inittime)) / 1000000000000) ++
               " seconds.\nComputed : " ++ show computedboxes ++ 
               " boxes.\nReaching max depth : " ++ show maxDepthReached ++ "\n\n"
         | decided && decision = do -- formula true on this box
