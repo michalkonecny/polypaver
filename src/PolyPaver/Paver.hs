@@ -40,6 +40,7 @@ data Problem = Problem
 
 data Paver = Paver 
     {degree :: Int
+    ,startdegree :: Int
     ,bisect :: Int
     ,effort :: Int
     ,time :: Int
@@ -50,6 +51,7 @@ data Paver = Paver
 
 paver = Paver 
     {degree = 0 &= help "maximum polynomial degree (default = 0)"
+    ,startdegree = 0 &= help "first polynomial degree to try on each box (default = 0)"
     ,bisect = 10 &= help "maximum bisection depth (default = 10)"
     ,effort = 10 &= help "approximation effort parameter (default = 10)" 
     ,time = 3600 &= help "timeout in seconds (default = 3600)"
@@ -67,6 +69,7 @@ defaultMain problem =
     initMachineDouble -- round upwards
     hSetBuffering stdout LineBuffering -- print progress in real time, not in batches
     let maxdeg = degree args
+        startdeg = startdegree args
         maxtime = toInteger $ time args
         ix = fromInteger $ toInteger $ effort args
         bisections = bisect args 
@@ -81,6 +84,7 @@ defaultMain problem =
         ordr -- sub-problem processing order
         repor -- 
         fpt -- 
+        startdeg -- 
         maxdeg -- maximum bound degree
         bisections -- maximum bisection depth
         0 -- maxdepth
