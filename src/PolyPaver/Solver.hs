@@ -62,122 +62,116 @@ loop
     queue 
     qlength inittime prevtime computedboxes 
     initvol 
-    truevol 
-    | prevtime-inittime > maxtime*1000000000000 = do
-        putStr $
-          "\nTimeout.\nSearch aborted after " ++
-          show maxtime ++
-          " seconds.\nComputed : " ++ show computedboxes ++ 
-          " boxes.\nReaching max depth : " ++ show maxdep ++ "\n\n"
-    | Q.null queue = do
-        currtime <- getCPUTime
-        putStr $
-          "\nSearch complete.\nTheorem proved true in " ++
-          show ((fromInteger (currtime-inittime)) / 1000000000000) ++
-          " seconds.\nComputed : " ++ show computedboxes ++ 
-          " boxes.\nReaching max depth : " ++ show maxdep ++ "\n\n"
-    | decided && decision = do -- draw green box
-        currtime <- getCPUTime
-        putStr reportTrueS
-        loop 
-            order report fptype maxdeg bisections maxdep 
-            ix maxtime prec form intvarids 
-            boxes 
-            (qlength-1) inittime currtime (computedboxes+1) 
-            initvol 
-            newtruevol  
-    | decided = do -- draw red box
-        currtime <- getCPUTime
-        putStr $
-          "\nCounter example found, search aborted.\nTheorem proved false for " ++
-          showBox box ++
-          "\nSeconds elapsed : " ++
-          show ((fromInteger (currtime-inittime)) / 1000000000000) ++
-          "\nComputed  boxes : " ++ show computedboxes ++ 
-          "\nMax depth : " ++ show maxdep ++  
-          "\nDepth : " ++ show depth ++ "\n\n"
-    | depth >= bisections ||
-      splitdom `RA.equalApprox` splitdomL || 
-      splitdom `RA.equalApprox` splitdomR ||
-      length thinvarids == dim = do -- draw yellow box
-        currtime <- getCPUTime
-        putStr $ 
-          "\nCannot split box, search aborted.\nUndecided for : " ++
-          showBox cbox ++
-          "\nSeconds elapsed : " ++
-          show ((fromInteger (currtime-inittime)) / 1000000000000) ++
-          "\nComputed boxes : " ++ show computedboxes ++ 
---           "\nQueue length : " ++ show qlength ++
-          "\nMaxdepth : " ++ show maxdep ++  
-          "\nDepth : " ++ show depth ++ "\n\n"
-    | otherwise = do -- draw transparent sub boxes
-        currtime <- getCPUTime
---         putStr reportSplitS
-        bisectAndRecur currtime
-        {-
-        loop 
-            order report fptype maxdeg bisections (max (depth+1) maxdep) ix maxtime prec form intvarids  
-            (boxes Q.|> (depth+1,boxL) Q.|> (depth+1,boxR)) 
-            (qlength+1) inittime currtime (computedboxes+1) 
-            initvol 
-            truevol 
-            breadth-first above depth-first below
-        loop 
-            order report fptype maxdeg bisections (max (depth+1) maxdep) ix maxtime prec form intvarids 
-            ((depth+1,boxL) Q.<| (depth+1,boxR) Q.<| boxes) 
-            (qlength+1) inittime currtime (computedboxes+1) 
-            initvol 
-            truevol 
-        -}
+    truevol
+    =
+    loopAux maxdep queue qlength prevtime computedboxes truevol
     where
-    bisectAndRecur currtime =
-        case order of 
-            B -> 
-                loop 
-                    order report fptype maxdeg bisections (max (depth+1) maxdep) 
-                    ix maxtime prec form intvarids  
-                    (boxes Q.|> (depth+1,boxL) Q.|> (depth+1,boxR)) 
-                    (qlength+1) inittime currtime (computedboxes+1) 
-                    initvol 
-                    truevol 
-            D ->
-                loop 
-                    order report fptype maxdeg bisections (max (depth+1) maxdep) 
-                    ix maxtime prec form intvarids 
-                    ((depth+1,boxL) Q.<| (depth+1,boxR) Q.<| boxes) 
-                    (qlength+1) inittime currtime (computedboxes+1) 
-                    initvol 
-                    truevol 
-    reportTrueS =
-        case report of
-             VOL -> 
-                 "Proved fraction : " ++ show newtruevol ++ "\n"
-             NO -> 
-                 ""
-{-    reportSplitS =
-        case report of
-             VOL -> 
-                 "Proved fraction : " ++ show truevol ++ "\n"
-             NO -> 
-                 ""-}
-    (depth,box) = Q.index queue 0
-    boxes = Q.drop 1 queue
-    decided = isJust maybeValue
-    decision = fromJust maybeValue
-    dim = DBox.size box
-    splitdom = DBox.lookup "looking up splitdom in solver" splitvar box
-    splitdomL = DBox.lookup "looking up splitdom in solver" splitvar boxL
-    splitdomR = DBox.lookup "looking up splitdom in solver" splitvar boxR
-    (splitvar,(boxL,boxR)) = L.split thinvarids box value
-    maybeValue = L.decide dim value
-    value = 
-        case fptype of
-             B32 -> evalForm maxdeg ix cbox (23,-126) form :: Maybe Bool
-             B64 -> evalForm maxdeg ix cbox (52,-1022) form :: Maybe Bool
-    thinvarids = DBox.keys thincbox
-    thincbox = DBox.filter RA.isExact cbox -- thin subbox of contracted box
-    cbox = contractIntVarDoms box intvarids -- box with contracted integer doms
-    newtruevol = truevol+(volume box)/initvol
+    loopAux maxdep queue qlength prevtime computedboxes truevol
+        | prevtime-inittime > maxtime*1000000000000 = do
+            putStr $
+              "\nTimeout.\nSearch aborted after " ++
+              show maxtime ++
+              " seconds.\nComputed : " ++ show computedboxes ++ 
+              " boxes.\nReaching max depth : " ++ show maxdep ++ "\n\n"
+        | Q.null queue = do
+            currtime <- getCPUTime
+            putStr $
+              "\nSearch complete.\nTheorem proved true in " ++
+              show ((fromInteger (currtime-inittime)) / 1000000000000) ++
+              " seconds.\nComputed : " ++ show computedboxes ++ 
+              " boxes.\nReaching max depth : " ++ show maxdep ++ "\n\n"
+        | decided && decision = do -- draw green box
+            currtime <- getCPUTime
+            putStr reportTrueS
+            loopAux
+                maxdep 
+                boxes (qlength-1) currtime (computedboxes+1) newtruevol  
+        | decided = do -- draw red box
+            currtime <- getCPUTime
+            putStr $
+              "\nCounter example found, search aborted.\nTheorem proved false for " ++
+              showBox box ++
+              "\nSeconds elapsed : " ++
+              show ((fromInteger (currtime-inittime)) / 1000000000000) ++
+              "\nComputed  boxes : " ++ show computedboxes ++ 
+              "\nMax depth : " ++ show maxdep ++  
+              "\nDepth : " ++ show depth ++ "\n\n"
+        | depth >= bisections ||
+          splitdom `RA.equalApprox` splitdomL || 
+          splitdom `RA.equalApprox` splitdomR ||
+          length thinvarids == dim = do -- draw yellow box
+            currtime <- getCPUTime
+            putStr $ 
+              "\nCannot split box, search aborted.\nUndecided for : " ++
+              showBox cbox ++
+              "\nSeconds elapsed : " ++
+              show ((fromInteger (currtime-inittime)) / 1000000000000) ++
+              "\nComputed boxes : " ++ show computedboxes ++ 
+--           "\nQueue length : " ++ show qlength ++
+              "\nMaxdepth : " ++ show maxdep ++  
+              "\nDepth : " ++ show depth ++ "\n\n"
+        | otherwise = do -- draw transparent sub boxes
+            currtime <- getCPUTime
+--         putStr reportSplitS
+            bisectAndRecur currtime
+            {-
+            loop 
+                order report fptype maxdeg bisections (max (depth+1) maxdep) ix maxtime prec form intvarids  
+                (boxes Q.|> (depth+1,boxL) Q.|> (depth+1,boxR)) 
+                (qlength+1) inittime currtime (computedboxes+1) 
+                initvol 
+                truevol 
+                breadth-first above depth-first below
+            loop 
+                order report fptype maxdeg bisections (max (depth+1) maxdep) ix maxtime prec form intvarids 
+                ((depth+1,boxL) Q.<| (depth+1,boxR) Q.<| boxes) 
+                (qlength+1) inittime currtime (computedboxes+1) 
+                initvol 
+                truevol 
+            -}
+        where
+        bisectAndRecur currtime =
+            case order of 
+                B -> 
+                    loopAux
+                        (max (depth+1) maxdep) 
+                        (boxes Q.|> (depth+1,boxL) Q.|> (depth+1,boxR)) 
+                        (qlength+1) currtime (computedboxes+1) truevol
+                D ->
+                    loopAux 
+                        (max (depth+1) maxdep) 
+                        ((depth+1,boxL) Q.<| (depth+1,boxR) Q.<| boxes) 
+                        (qlength+1) currtime (computedboxes+1) truevol 
+        reportTrueS =
+            case report of
+                 VOL -> 
+                     "Proved fraction : " ++ show newtruevol ++ "\n"
+                 NO -> 
+                     ""
+{-      reportSplitS =
+            case report of
+                 VOL -> 
+                     "Proved fraction : " ++ show truevol ++ "\n"
+                 NO -> 
+                     ""-}
+        (depth,box) = Q.index queue 0
+        boxes = Q.drop 1 queue
+        decided = isJust maybeValue
+        decision = fromJust maybeValue
+        dim = DBox.size box
+        splitdom = DBox.lookup "looking up splitdom in solver" splitvar box
+        splitdomL = DBox.lookup "looking up splitdom in solver" splitvar boxL
+        splitdomR = DBox.lookup "looking up splitdom in solver" splitvar boxR
+        (splitvar,(boxL,boxR)) = L.split thinvarids box value
+        maybeValue = L.decide dim value
+        value = 
+            case fptype of
+                 B32 -> evalForm maxdeg ix cbox (23,-126) form :: Maybe Bool
+                 B64 -> evalForm maxdeg ix cbox (52,-1022) form :: Maybe Bool
+        thinvarids = DBox.keys thincbox
+        thincbox = DBox.filter RA.isExact cbox -- thin subbox of contracted box
+        cbox = contractIntVarDoms box intvarids -- box with contracted integer doms
+        newtruevol = truevol+(volume box)/initvol
 
 volume box =
   DBox.fold (\dom vol -> vol * width dom) 1 box
