@@ -84,38 +84,37 @@ evalTerm maxdeg maxsize ix box (prec,minexp) term =
     evTerm term
     where
     evTerm term =
-    --  let size = maxdeg * DBox.size box in 
       case term of
           EpsAbs ->
               FA.setMaxDegree maxdeg $
---              FA.setMaxSize maxsize $
+              FA.setMaxSize maxsize $
               fromRational $
               2^^minexp
           EpsRel ->
               FA.setMaxDegree maxdeg $
---              FA.setMaxSize maxsize $
+              FA.setMaxSize maxsize $
               fromRational $
               2^^(1-prec)
           Pi ->
               FA.setMaxDegree maxdeg $
---              FA.setMaxSize maxsize $
+              FA.setMaxSize maxsize $
               RAEL.pi 10
           Lit val -> 
               FA.setMaxDegree maxdeg $
---              FA.setMaxSize maxsize $
+              FA.setMaxSize maxsize $
               fromRational $
               val :: FAPDOI BM
           Var varid ->
               case RA.isExact vardom of
                   True -> -- domain of var thin, so var is a const
                       FA.setMaxDegree maxdeg $ 
---                      FA.setMaxSize maxsize $
+                      FA.setMaxSize maxsize $
                       FA.const 
                           DBox.noinfo 
                           [vardom]
                   False -> -- domain of var not thin, so safe to proj
                       FA.setMaxDegree maxdeg $
---                      FA.setMaxSize maxsize $ 
+                      FA.setMaxSize maxsize $ 
                       FA.proj
                           (DBox.singleton varid vardom)
                           varid
