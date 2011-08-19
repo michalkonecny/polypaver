@@ -30,6 +30,7 @@ import qualified Numeric.ER.Real.Approx as RA
 import qualified Data.Sequence as Q
 import System.Console.CmdArgs
 import System.CPUTime
+import System.IO
 
 data Problem = Problem
     {box :: [(Int,(Rational,Rational))]
@@ -64,6 +65,7 @@ defaultMain problem =
     args <- cmdArgs paver
     inittime <- getCPUTime
     initMachineDouble -- round upwards
+    hSetBuffering stdout LineBuffering -- print progress in real time, not in batches
     let maxdeg = degree args
         maxtime = toInteger $ time args
         ix = fromInteger $ toInteger $ effort args
