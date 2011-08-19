@@ -128,7 +128,6 @@ loop
               "\nDepth : " ++ show depth ++ "\n\n"
         | otherwise = do -- formula undecided on this box, will split it
             putStrLn $ "splitting at depth " ++ show depth ++ ", new queue size is " ++ show (qlength + 1)
-            putStrLn $ "maxsize = " ++ show maxsize
             currtime <- getCPUTime
 --         putStr reportSplitS
             bisectAndRecur currtime
