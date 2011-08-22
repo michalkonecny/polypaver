@@ -26,7 +26,6 @@ main =
 --        ,theorem = bench_exp}
     defaultMain Problem 
         {box = bench_sqrt_box
-        ,ivars = []
         ,theorem = bench_sqrt}
 
 indices = [0..2]

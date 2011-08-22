@@ -19,13 +19,27 @@ where
 import PolyPaver.Paver
 
 main = 
-    defaultMain Problem 
-        {box = test_box
-        ,ivars = []
-        ,theorem = test_thm}
+--    defaultMain problem_exp 
+    defaultMain test_skew 
+    
+exp_shift =
+    Problem box thm 
+    where
+    box = [(0, (-1,1))]
+    x = Var 0
+    thm = exp(x) |<=| exp(x+0.0001) 
 
-test_box = [(0, (-1,1))]
+test_skew =
+    Problem box thm 
+    where
+    box = [(0, (0,4)), (1, (0,4))]
+    x = Var 0
+    y = Var 1
+    thm = 
+        x |<=| y
+        --->
+        x |<=| y + 1.5
+         
 
-x = Var 0
-
-test_thm = exp(x) |<=| exp(x+0.0001) 
+    
+    

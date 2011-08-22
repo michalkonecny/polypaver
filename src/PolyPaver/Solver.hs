@@ -58,332 +58,187 @@ data FPType =
 --    ,initvolume :: IRA BM}
 
 loop 
-    order report fptype 
+    order report fptype noBoxSkewing
     origstartdeg maxdeg improvementRatioThreshold 
     maxsize
     mindepth maxdepth maxDepthReached
-    ix maxtime prec form intvarids 
+    ix maxtime prec form 
+--    intvarids 
     queue 
     qlength inittime prevtime computedboxes 
-    initvol 
+    problemvol
     truevol
     =
-    loopAux form maxDepthReached queue qlength prevtime computedboxes truevol Nothing Nothing
+    loopAux 
+        form maxDepthReached 
+        queue qlength prevtime 
+        computedboxes problemvol truevol 
+        Nothing Nothing
     where
-    loopAux form maxDepthReached queue qlength prevtime computedboxes truevol maybeCurrdeg maybePrevMeasure
-        | Q.null queue = 
-            do
-            currtime <- getCPUTime
-            putStr $
-              "\nSearch complete.\nTheorem proved true in " ++
-              show ((fromInteger (currtime-inittime)) / 1000000000000) ++
-              " seconds.\nComputed : " ++ show computedboxes ++ 
-              " boxes.\nReaching max depth : " ++ show maxDepthReached ++ "\n\n"
-        | depth < mindepth = 
-            do
-            putStrLn $ "initial splitting at depth " ++ show depth
-            currtime <- getCPUTime
---         putStr reportSplitS
-            bisectAndRecur form currtime
-        | prevtime-inittime > maxtime*1000000000000 = 
-            do
-            putStr $
-              "\nTimeout.\nSearch aborted after " ++
-              show maxtime ++
-              " seconds.\nComputed : " ++ show computedboxes ++ 
-              " boxes.\nReaching max depth : " ++ show maxDepthReached ++ "\n\n"
-        | decided && decision = -- formula true on this box
-            do
-            currtime <- getCPUTime
-            putStr reportTrueS
-            loopAux
-                form
-                maxDepthReached 
-                boxes (qlength-1) currtime (computedboxes+1) newtruevol Nothing Nothing
-        | decided = -- formula false on this box
-            do
-            currtime <- getCPUTime
-            putStr $
-              "\nCounter example found, search aborted.\nTheorem proved false for " ++
-              showBox box ++
-              "\nSeconds elapsed : " ++
-              show ((fromInteger (currtime-inittime)) / 1000000000000) ++
-              "\nComputed  boxes : " ++ show computedboxes ++ 
-              "\nMax depth : " ++ show maxDepthReached ++  
-              "\nDepth : " ++ show depth ++ "\n\n"
-        | currdeg < maxdeg && undecidedMeasureImproved = -- try raising the degree before splitting
-            do
-            putStrLn $ "raising degree to " ++ show (currdeg + 1)
-            currtime <- getCPUTime
-            loopAux
-                form
-                maxDepthReached 
-                queue qlength currtime computedboxes truevol
-                (Just $ currdeg + 1)
-                (Just undecidedMeasure)
-        | depth >= maxdepth || 
-          not splitSuccess ||
-          length thinvarids == dim = -- cannot split any further
-            do
-            currtime <- getCPUTime
-            putStr $ 
-              "\nCannot split box, search aborted.\nUndecided for : " ++
-              showBox cbox ++
-              "\nSeconds elapsed : " ++
-              show ((fromInteger (currtime-inittime)) / 1000000000000) ++
-              "\nComputed boxes : " ++ show computedboxes ++ 
---           "\nQueue length : " ++ show qlength ++
-              "\nMaxdepth : " ++ show maxDepthReached ++  
-              "\nDepth : " ++ show depth ++ "\n\n"
-        | otherwise = -- formula undecided on this box, will split it
-            do
-            putStrLn $ "splitting at depth " ++ show depth ++ ", new queue size is " ++ show (qlength + 1)
-            currtime <- getCPUTime
---         putStr reportSplitS
-            bisectAndRecur undecidedSimplerForm currtime
-            {-
-            loop 
-                order report fptype maxdeg maxdepth (max (depth+1) maxDepthReached) ix maxtime prec form intvarids  
-                (boxes Q.|> (depth+1,boxL) Q.|> (depth+1,boxR)) 
-                (qlength+1) inittime currtime (computedboxes+1) 
-                initvol 
-                truevol 
-                breadth-first above depth-first below
-            loop 
-                order report fptype maxdeg maxdepth (max (depth+1) maxDepthReached) ix maxtime prec form intvarids 
-                ((depth+1,boxL) Q.<| (depth+1,boxR) Q.<| boxes) 
-                (qlength+1) inittime currtime (computedboxes+1) 
-                initvol 
-                truevol 
-            -}
+    loopAux 
+        form maxDepthReached 
+        queue qlength prevtime 
+        computedboxes problemvol truevol 
+        maybeCurrdeg maybePrevMeasure
+        =
+        do
+        if (qlength > 0) then reportBox else return ()
+        trySolvingBox
         where
+        trySolvingBox
+            | Q.null queue = 
+                do
+                currtime <- getCPUTime
+                putStr $
+                  "\nSearch complete.\nTheorem proved true in " ++
+                  show ((fromInteger (currtime-inittime)) / 1000000000000) ++
+                  " seconds.\nComputed : " ++ show computedboxes ++ 
+                  " boxes.\nReaching max depth : " ++ show maxDepthReached ++ "\n\n"
+            | depth < mindepth = 
+                do
+                putStrLn $ "initial splitting at depth " ++ show depth
+                currtime <- getCPUTime
+    --         putStr reportSplitS
+                bisectAndRecur form currtime
+            | prevtime-inittime > maxtime*1000000000000 = 
+                do
+                putStr $
+                  "\nTimeout.\nSearch aborted after " ++
+                  show maxtime ++
+                  " seconds.\nComputed : " ++ show computedboxes ++ 
+                  " boxes.\nReaching max depth : " ++ show maxDepthReached ++ "\n\n"
+            | decided && decision = -- formula true on this box
+                do
+                currtime <- getCPUTime
+                reportVolume
+                loopAux
+                    form maxDepthReached 
+                    boxes (qlength-1) currtime
+                    (computedboxes+1) problemvol newtruevol 
+                    Nothing Nothing
+            | decided = -- formula false on this box
+                do
+                currtime <- getCPUTime
+                putStr $
+                  "\nCounter example found, search aborted.\nTheorem proved false for " ++
+                  ppShow box ++
+                  "\nSeconds elapsed : " ++
+                  show ((fromInteger (currtime-inittime)) / 1000000000000) ++
+                  "\nComputed  boxes : " ++ show computedboxes ++ 
+                  "\nMax depth : " ++ show maxDepthReached ++  
+                  "\nDepth : " ++ show depth ++ "\n\n"
+            | currdeg < maxdeg && undecidedMeasureImproved = -- try raising the degree before splitting
+                do
+                putStrLn $ "raising degree to " ++ show (currdeg + 1)
+                currtime <- getCPUTime
+                loopAux
+                    form maxDepthReached 
+                    queue qlength currtime 
+                    computedboxes problemvol truevol
+                    (Just $ currdeg + 1)
+                    (Just undecidedMeasure)
+            | depth >= maxdepth || 
+              not splitSuccess ||
+              length thinvarids == dim = -- cannot split any further
+                do
+                currtime <- getCPUTime
+                putStr $ 
+                  "\nCannot split box, search aborted.\nUndecided for : " ++
+                  ppShow box ++
+                  "\nSeconds elapsed : " ++
+                  show ((fromInteger (currtime-inittime)) / 1000000000000) ++
+                  "\nComputed boxes : " ++ show computedboxes ++ 
+    --           "\nQueue length : " ++ show qlength ++
+                  "\nMaxdepth : " ++ show maxDepthReached ++  
+                  "\nDepth : " ++ show depth ++ "\n\n"
+            | otherwise = -- formula undecided on this box, will split it
+                do
+                currtime <- getCPUTime
+                reportSplit
+                bisectAndRecur undecidedSimplerForm currtime
+
+        (depth, startdeg, box) = Q.index queue 0
+        dim = DBox.size box
+        boxes = Q.drop 1 queue
+
         bisectAndRecur form currtime =
             case order of 
                 B -> 
                     loopAux
-                        form
-                        (max (depth+1) maxDepthReached) 
+                        form (max (depth+1) maxDepthReached) 
                         (boxes Q.|> (depth+1,newstartdeg,boxL) Q.|> (depth+1,newstartdeg,boxR)) 
-                        (qlength+1) currtime (computedboxes+1) truevol Nothing Nothing
+                        (qlength+1) currtime 
+                        (computedboxes+1) newproblemvol truevol 
+                        Nothing Nothing
                 D ->
                     loopAux 
-                        form
-                        (max (depth+1) maxDepthReached) 
+                        form (max (depth+1) maxDepthReached) 
                         ((depth+1,newstartdeg,boxL) Q.<| (depth+1,newstartdeg,boxR) Q.<| boxes) 
-                        (qlength+1) currtime (computedboxes+1) truevol Nothing Nothing
+                        (qlength+1) currtime 
+                        (computedboxes+1) newproblemvol truevol 
+                        Nothing Nothing
+        (splitSuccess, maybeHP, (boxL,boxR)) 
+            = L.split thinvarids box noBoxSkewing value
+        newproblemvol
+            =
+            case maybeHP of
+                Nothing -> problemvol
+                _ -> problemvol - (ppVolume box) + (ppVolume boxL) + (ppVolume boxR)
+
+        decided = isJust maybeDecision
+        decision = fromJust maybeDecision
+        maybeDecision = L.decide dim value
+        value = 
+            case fptype of
+                 B32 -> evalForm currdeg maxsize ix box (23,-126) form :: L.TVM -- Maybe Bool
+                 B64 -> evalForm currdeg maxsize ix box (52,-1022) form :: L.TVM -- Maybe Bool
+
         newstartdeg =
             (origstartdeg + currdeg) `div` 2
         currdeg =  
             case maybeCurrdeg of Just currdeg -> currdeg; _ -> startdeg
-        reportTrueS =
-            case report of
-                 VOL -> 
-                     "Proved fraction : " ++ show newtruevol ++ "\n"
-                 NO -> 
-                     ""
-{-      reportSplitS =
-            case report of
-                 VOL -> 
-                     "Proved fraction : " ++ show truevol ++ "\n"
-                 NO -> 
-                     ""-}
-        (depth,startdeg,box) = Q.index queue 0
-        boxes = Q.drop 1 queue
-        decided = isJust maybeValue
-        decision = fromJust maybeValue
-        dim = DBox.size box
-         
-        (splitSuccess, splitSkewed,(boxL,boxR)) = L.split thinvarids box value
-        maybeValue = L.decide dim value
-        value = 
-            case fptype of
-                 B32 -> evalForm currdeg maxsize ix cbox (23,-126) form :: L.TVM -- Maybe Bool
-                 B64 -> evalForm currdeg maxsize ix cbox (52,-1022) form :: L.TVM -- Maybe Bool
-        (L.TVMUndecided undecidedSimplerForm undecidedMeasure undecidedDirections) = value
+        (L.TVMUndecided undecidedSimplerForm undecidedMeasure _) = value
         undecidedMeasureImproved = 
             case maybePrevMeasure of
                 Nothing -> True
                 Just prevUndecidedMeasure ->
                     prevUndecidedMeasure / undecidedMeasure > improvementRatioThreshold
+
         thinvarids = DBox.keys thincbox
-        thincbox = DBox.filter (ppCoeffsZero . snd) cbox -- thin subbox of contracted box
-        cbox = box -- contractIntVarDoms box intvarids -- box with contracted integer doms
-        newtruevol = truevol+(ppVolume box)/initvol
+        thincbox = DBox.filter (ppCoeffsZero . snd) box -- thin subbox of contracted box
 
-volume box =
-  DBox.fold (\dom vol -> vol * width dom) 1 box
-
-width dom =
-  domR-domL
-  where
-  (domL,domR) = RA.bounds dom
-
---enqueueBox stateTV rgba box =
---    atomically $ do
---        state <- readTVar stateTV
---        writeTVar stateTV ((box,rgba) : state)
-
-showBox :: PPBox BM -> String
-showBox =
-  DBox.foldWithKey 
-    (\varid vardom boxStr -> "\nx" ++ 
-     show varid ++ " in " ++ 
-     show vardom ++ " " ++ boxStr) 
-    ""
-
---contractIntVarDoms :: PPBox BM -> [Int] -> PPBox BM
---contractIntVarDoms initbox intvarids =
---    foldl'
---        (
---            \box intvarid 
---            -> 
---            IMap.adjust contractIntVarDom intvarid box
---        )
---        initbox
---        intvarids
---
---{-
---    WARNING: uses floor and therefore
---    RA.doubleBounds
----}
---contractIntVarDom :: (IRA BM, Map.Map Int (IRA BM)) -> (IRA BM, Map.Map Int (IRA BM))
---contractIntVarDom dom
---    | domLclg <= domRflr =
---        ERInterval (fromInteger domLclg) (fromInteger domRflr)
---    | otherwise =
---        RA.bottomApprox
---    where
-----    (domLflr,domRclg) = RA.integerBounds dom
---    domLclg = ceiling domL  
---    domRflr = floor domR
---    domL = erintv_left dom
---    domR = erintv_right dom
-
-{-|  conclusion of their_sqrt_25: degree 40
-
-*(x, *** 40
-    *( *** 39
-        *(1 / 2,  *** 13
-            *(
-                *(1 / 2, 
-                    *(
-                        *(1 / 2, t__1), 
-                        -(3, 
-                            *(*(t__1, t__1), x)
-                         )
-                     )
-                 ), 
-                 -(3, 
-                    *(
-                        *(
-                            *(
-                                *(1 / 2, t__1), 
-                                -(3, 
-                                    *(
-                                        *(t__1, t__1), 
-                                        x
-                                    )
-                                )
-                            ), 
-                            *(
-                                *(1 / 2, t__1), 
-                                -(3, 
-                                    *(
-                                        *(t__1, t__1), 
-                                        x
-                                    )
-                                )
-                            )
-                        ), 
-                        x
-                    )
-                )
-            )
-        ), 
-        -(3, 
-            *(
-                *( *** 26
-                    *( *** 13
-                        *( *** 4
-                            1 / 2, 
-                            *(
-                                *(1 / 2, t__1), 
-                                -(3, 
-                                    *(
-                                        *(t__1, t__1), 
-                                        x
-                                    )
-                                )
-                            )
-                        ), 
-                        -(3, 
-                            *( *** 9
-                                *( *** 8
-                                    *( *** 4
-                                        *(1 / 2, t__1), 
-                                        -(3, 
-                                            *(
-                                                *(t__1, t__1), 
-                                                x
-                                            )
-                                        )
-                                    ), 
-                                    *( *** 4
-                                        *(1 / 2, t__1), 
-                                        -(3, 
-                                            *(
-                                                *(t__1, t__1), 
-                                                x
-                                            )
-                                        )
-                                    )
-                                ), 
-                                x
-                            )
-                        )
-                    ), 
-                    *( *** 13
-                        *(1 / 2, 
-                            *( *** 4
-                                *(1 / 2, t__1), 
-                                -(3, 
-                                    *(
-                                        *(t__1, t__1), 
-                                        x
-                                    )
-                                )
-                            )
-                        ), 
-                        -(3, 
-                            *( *** 9
-                                *( *** 8
-                                    *( *** 4
-                                        *(1 / 2, t__1), 
-                                        -(3, 
-                                            *(
-                                                *(t__1, t__1), 
-                                                x
-                                            )
-                                        )
-                                    ), 
-                                    *( ***4
-                                        *(1 / 2, t__1), 
-                                        -(3, 
-                                            *( ***3
-                                                *(t__1, t__1)
-                                                ,x
-                                            )
-                                        )
-                                    )
-                                ), 
-                                x
-                            )
-                        )
-                    )
-                ), 
-                x
-            )
-        )
-    )
-)
--}
+        reportBox
+            =
+            do 
+            putStrLn $ "proving over box: " ++ ppShow box
+            return ()
+        
+        newtruevol = truevol + (ppVolume box)
+        reportVolume 
+            =
+            case report of
+                 VOL ->
+                     putStrLn $
+                        "Proved fraction : " ++ show (newtruevol / problemvol)
+                 NO -> return ()
+        
+        reportSplit 
+            =
+            do
+            case maybeHP of
+                Nothing -> return ()
+                Just hp ->
+                    do
+                    putStrLn $
+                        "skewing using the hyperplane " ++ show hp
+--                    putStrLn $
+--                        "  original box = " ++ ppShow box
+--                    putStrLn $
+--                        "  boxL = " ++ ppShow boxL
+--                    putStrLn $
+--                        "  boxR = " ++ ppShow boxR
+--                _ -> return ()
+            putStrLn $ 
+                "splitting at depth " ++ show depth 
+                ++ ", new queue size is " ++ show (qlength + 1)
+            return ()

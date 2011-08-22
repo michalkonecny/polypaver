@@ -40,11 +40,12 @@ class TruthValue tv where
     bot :: Form -> tv
     decide :: Int -> tv -> Maybe Bool
     split :: 
-        [Int] -> 
-        PPBox BM -> 
-        tv -> 
+        [Int] -> -- vars that must not be split
+        PPBox BM -> -- box to split
+        Bool -> -- True to forbid skewing 
+        tv -> -- undecided truth value that may be used to help guide splitting and/or skewing 
         (Bool, -- whether split succeeded in providing two proper sub-boxes 
-         Bool, -- whether box skewing has been used
+         Maybe (BoxHyperPlane BM), -- whether box skewing has been used
          (PPBox BM, PPBox BM))
 
 data TVM
@@ -53,60 +54,80 @@ data TVM
         { 
             tvmSimplifiedFormula :: Form
         ,   tvmDistanceFromDecision :: Double
-        ,   tvmDecisionDirections :: [BoxDirection BM] 
+        ,   tvmDecisionHyperPlanes :: (Double, [BoxHyperPlane BM]) -- the first one is the best one, keeping its measure 
         }
 
 instance TruthValue TVM where
     not (TVMDecided x) = TVMDecided (Prelude.not x)
-    not (TVMUndecided form dist dirs) = TVMUndecided (Not form) dist dirs
+    not (TVMUndecided form dist hps) = TVMUndecided (Not form) dist hps
     -- and:
     (TVMDecided False) && _ = TVMDecided False
     (TVMDecided True) && tv = tv
     _ && (TVMDecided False) = TVMDecided False
     tv && (TVMDecided True) = tv
-    (TVMUndecided form1 m1 dirs1) && (TVMUndecided form2 m2 dirs2) 
-        = TVMUndecided (And form1 form2) (max m1 m2) (dirs1 ++ dirs2)
+    (TVMUndecided form1 dist1 hps1) && (TVMUndecided form2 dist2 hps2) 
+        = TVMUndecided (And form1 form2) (max dist1 dist2) (combineHPs hps1 hps2)
     -- or: 
     (TVMDecided True) || _ = TVMDecided True
     (TVMDecided False) || tv = tv
     _ || (TVMDecided True) = TVMDecided True
     tv || (TVMDecided False) = tv
-    (TVMUndecided form1 m1 dirs1) || (TVMUndecided form2 m2 dirs2)
-        = TVMUndecided (Or form1 form2) (max m1 m2) (dirs1 ++ dirs2)
+    (TVMUndecided form1 dist1 hps1) || (TVMUndecided form2 dist2 hps2)
+        = TVMUndecided (Or form1 form2) (max dist1 dist2) (combineHPs hps1 hps2)
     -- implication:
     (TVMDecided False) ~> _ = TVMDecided True
     (TVMDecided True) ~> tv = tv
     _ ~> (TVMDecided True) = TVMDecided True
     tv ~> (TVMDecided False) = not tv
-    (TVMUndecided form1 m1 dirs1) ~> (TVMUndecided form2 m2 dirs2)
-        = TVMUndecided (Implies form1 form2) (max m1 m2) (dirs1 ++ dirs2)
+    (TVMUndecided form1 dist1 hps1) ~> (TVMUndecided form2 dist2 hps2)
+        = TVMUndecided (Implies form1 form2) (max dist1 dist2) (combineHPs hps1 hps2)
 
     fromBool _ = TVMDecided
     leq form a b = 
         case a `RA.leqReals` b of
             Just result -> TVMDecided result
-            Nothing -> TVMUndecided form measure [dir]
+            Nothing -> TVMUndecided form distance (distance, [hyperplane])
         where
-        measure = snd $ RA.doubleBounds $ a - b
-        dir = (t c, IMap.map t $ IMap.fromList $ Map.toList coeffs)
+        distance = snd $ RA.doubleBounds $ a - b
+        hyperplane = (t c, IMap.map t $ IMap.fromList $ Map.toList coeffs)
         t [a] = a
         (c, coeffs) = UFA.getAffineUpperBound $ a - b
     includes form a b = 
         case a `RA.includes` b of
             Just result -> TVMDecided result
-            Nothing -> TVMUndecided form 1 [] -- TODO
-    bot form = TVMUndecided form (1/0) [] -- infinite badness...
+            Nothing -> TVMUndecided form 1 (1,[]) -- TODO
+    bot form = TVMUndecided form (1/0) (1/0,[]) -- infinite badness...
     decide _ (TVMDecided result) = Just result
     decide _ (TVMUndecided _ _ _) = Nothing
     
-    split thinvarids prebox tv =
-        (success, skewed,(boxL, boxR))
+    split varsNotToSplit prebox noBoxSkewing tv 
+        = 
+        (success, maybeHP, (boxL, boxR))
         where
-        (box, skewed) = (prebox, False) -- TODO
+        -- investigate need for skewing and possibly skew:
+        (box, maybeHP, maybeSkewVar)         
+            | noBoxSkewing Prelude.|| (Prelude.not hyperplaneClose) = (prebox, Nothing, Nothing)
+            | otherwise = (skewedBox, Just hyperplane, maybeSkewVar)
+            where
+            hyperplaneClose
+                | gotHyperPlane 
+                    = (isecPtDistance `RA.leqReals` 2) == Just True
+                | otherwise = False
+            (isecPtDistance,  maybeSkewVar, skewedBox) = ppSkewAlongHyperPlane prebox hyperplane
+            (gotHyperPlane, hyperplane)
+                = case tv of
+                    (TVMUndecided _ _ (_, hyperplane : _)) -> (True, hyperplane)
+                    _ -> (False, error "PolyPaver.Logic: split: internal error")
+            
+        
+        -- perform split (potentially after skewing):
         success = Prelude.not $ (box `ppEqual` boxL) Prelude.|| (box `ppEqual` boxR)
         (_, var)
             =
-            foldl findWidestVar (0, err) $ IMap.toList widths
+            case maybeSkewVar of
+                Just var -> (0, var)
+                _ ->
+                    foldl findWidestVar (0, err) $ IMap.toList widths
         err = 
             error $ "PolyPaver.Logic: split: failed to find a split for " ++ show box 
         findWidestVar (prevWidth, prevRes) (var, currWidth)
@@ -117,7 +138,7 @@ instance TruthValue TVM where
             foldl (IMap.unionWith (+)) IMap.empty $
                 map (IMap.map abs) $ map snd $ IMap.elems splittablesubbox
         splittablesubbox =
-            foldr IMap.delete box thinvarids
+            foldr IMap.delete box varsNotToSplit
         boxL = IMap.map substL box
         boxR = IMap.map substR box
         substL (c, coeffs) =
@@ -136,4 +157,9 @@ instance TruthValue TVM where
                 case IMap.lookup var coeffs of Just cf -> cf / 2
         lower i = fst $ RA.bounds i
         upper i = snd $ RA.bounds i
+    
+    
+combineHPs (m1, hps1) (m2, hps2) 
+    | m1 < m2 = (m1, hps1 ++ hps2)
+    | otherwise = (m2, hps2 ++ hps1)
     

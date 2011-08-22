@@ -64,7 +64,7 @@ writeVCMain outputFolder (name, form, box) =
             ,"    defaultMain Problem"
             ,"        {"
             ,"          box = " ++ show box
-            ,"          ,ivars = []"
+--            ,"          ,ivars = []"
             ,"          ,theorem = thm"
             ,"        }"
             ,"thm ="

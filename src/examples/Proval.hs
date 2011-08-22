@@ -21,8 +21,7 @@ import PolyPaver.Paver
 main = 
     defaultMain Problem 
         {box = proval_cosine_box
-        ,ivars = []
-        ,theorem = proval_cosine_1}
+        ,theorem = proval_cosine_2}
 --    defaultMain Problem 
 --        {box = proval_sqrt_box
 --        ,ivars = []
@@ -63,7 +62,7 @@ proval_cosine_1 =
 
 proval_cosine_2 =
     ((float_x - exact_x) |<-| (o2e 20)) --->
-    ((float_result3 - exact_result3) |<-| plusMinus ((Abs (float_x - exact_x)) + ((fromInteger 0x20081) * 2^^(-39)))) -- original 2^^(-41)
+    ((float_result3 - exact_result3) |<-| plusMinus ((Abs (float_x - exact_x)) + ((fromInteger 0x20081) * 2^^(-38)))) -- original 2^^(-41)
     where
     float_x = Var 0 -- any float, can shrink to eg [-2^(-4),2^(-4)] thanks to the first premise
     exact_x = Var 1 -- [-2^(-5),2^(-5)]
@@ -72,13 +71,13 @@ proval_cosine_2 =
     float_result0 = (float_x *: float_x);
     float_result1 = 0.5;
     float_result2 = (float_result0 *: float_result1);
-    float_result3 = (float_result -: float_result2);
+    float_result3 = (float_result -: float_result2); -- = 1 - 0.5*float_x*float_x
 
     exact_result = 1.0
     exact_result0 = (exact_x * exact_x);
     exact_result1 = 0.5;
     exact_result2 = (exact_result0 * exact_result1);
-    exact_result3 = (exact_result - exact_result2);
+    exact_result3 = (exact_result - exact_result2); -- = 1 - 0.5*exact_x*exact_x
     
 proval_cosine_3 =
     ((float_x - exact_x) |<-| (o2e 20)) --->

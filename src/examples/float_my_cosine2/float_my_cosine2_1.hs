@@ -7,7 +7,6 @@ main =
     defaultMain Problem
         {
           box = [(0,((-32769) % 1048576,32769 % 1048576))]
-          ,ivars = []
           ,theorem = thm
         }
 thm =
