@@ -19,19 +19,23 @@ module PolyPaver.Eval
 where
 
 import PolyPaver.Form
+import PolyPaver.PPBox
 import qualified PolyPaver.Logic as L
 
 import qualified Numeric.ER.Real.Approx as RA
 import Numeric.ER.Real.DefaultRepr
 import Numeric.ER.RnToRm.DefaultRepr
 import qualified Numeric.ER.RnToRm.Approx as FA
+import qualified Numeric.ER.RnToRm.UnitDom.Approx as UFA
 import qualified Numeric.ER.BasicTypes.DomainBox as DBox
 import qualified Numeric.ER.Real.Approx.Elementary as RAEL
 import Numeric.ER.BasicTypes
 
+import qualified Data.Map as Map
+
 evalForm ::
     (L.TruthValue tv) =>
-    Int -> Int -> EffortIndex -> Box (IRA BM) -> (Int,Int) -> Form -> tv
+    Int -> Int -> EffortIndex -> PPBox BM -> (Int,Int) -> Form -> tv
 evalForm maxdeg maxsize ix box fptype form =
     evForm form
     where
@@ -79,7 +83,7 @@ evalForm maxdeg maxsize ix box fptype form =
     evTerm = evalTerm maxdeg maxsize ix box fptype
 
 evalTerm ::
-    Int -> Int -> EffortIndex -> Box (IRA BM) -> (Int,Int) -> Term -> FAPDOI BM
+    Int -> Int -> EffortIndex -> PPBox BM -> (Int,Int) -> Term -> FAPUOI BM
 evalTerm maxdeg maxsize ix box (prec,minexp) term =
     evTerm term
     where
@@ -103,23 +107,20 @@ evalTerm maxdeg maxsize ix box (prec,minexp) term =
               FA.setMaxDegree maxdeg $
               FA.setMaxSize maxsize $
               fromRational $
-              val :: FAPDOI BM
+              val :: FAPUOI BM
           Var varid ->
-              case RA.isExact vardom of
+              case isConst of
                   True -> -- domain of var thin, so var is a const
                       FA.setMaxDegree maxdeg $ 
                       FA.setMaxSize maxsize $
-                      FA.const 
-                          DBox.noinfo 
-                          [vardom]
+                      UFA.const [c]
                   False -> -- domain of var not thin, so safe to proj
                       FA.setMaxDegree maxdeg $
                       FA.setMaxSize maxsize $ 
-                      FA.proj
-                          (DBox.singleton varid vardom)
-                          varid
+                      UFA.affine [c] (Map.map (:[]) coeffs)
                   where                
-                  vardom = DBox.lookup "" varid box
+                  (c, coeffs) = DBox.lookup "" varid box
+                  isConst = ppCoeffsZero coeffs
           Plus left right ->
               evTerm left + evTerm right
           Minus left right ->

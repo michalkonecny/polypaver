@@ -18,6 +18,7 @@ module PolyPaver.Paver
 )
 where
 
+import PolyPaver.PPBox
 import PolyPaver.Form
 import PolyPaver.Solver
 
@@ -26,6 +27,8 @@ import Numeric.ER.Real.DefaultRepr
 import Numeric.ER.Real.Base.MachineDouble
 import qualified Numeric.ER.BasicTypes.DomainBox as DBox
 import qualified Numeric.ER.Real.Approx as RA
+
+import qualified Data.Map as Map
 
 import qualified Data.Sequence as Q
 import System.Console.CmdArgs
@@ -108,29 +111,20 @@ defaultMain problem =
         inittime -- inittime
         0 -- prevtime
         1 -- number computed boxes
-        (volume initbox) -- initial volume
+        (ppVolume initbox) -- initial volume
         0 -- volume of proved boxes
 
---    solver
---        maxdeg -- maximum bound degree
---        maxtime -- 24 hour timeout
---        bisections -- maximum bisection depth
---        0 -- domain width parameter
---        0 -- midpoint
---        ix
---        23 -- mantissa bit size (read precisionS)
---        thm -- to be proved, defined in IntegralTest
---        intvarids -- variable IDs of integer variables, defined in IntegralTest
---        (Q.singleton (0,initbox)) -- enqueue (initial depth, initial box)
---        qlength -- queue length
---        inittime -- inittime
---        0 -- prevtime
---        maxdepth -- maxdepth
---        1 -- number computed boxes
---        (volume initbox) -- initial volume
---        0 -- volume of proved boxes
-
-readBox  :: [(Int,(Rational,Rational))] -> Box (IRA BM)
-readBox = 
-    DBox.fromList . 
-    map (\(i,(l,r)) -> (i,fromRational l RA.\/ fromRational r))
+readBox  :: [(Int,(Rational,Rational))] -> PPBox BM
+readBox intervals = 
+    DBox.fromList $ map readInterval $ intervals
+    where
+    readInterval (i,(l,r)) =
+        (i, (const,  Map.insert i slope zeroCoeffs))
+        where
+        slope = (rRA - lRA) / 2
+        const = (rRA + lRA) / 2 
+        lRA = fromRational l
+        rRA = fromRational r
+    vars = map fst intervals
+    zeroCoeffs = Map.fromList $ zip vars $ repeat 0
+    
