@@ -71,32 +71,37 @@ loop
     loopAux form maxDepthReached queue qlength prevtime computedboxes truevol Nothing Nothing
     where
     loopAux form maxDepthReached queue qlength prevtime computedboxes truevol maybeCurrdeg maybePrevMeasure
-        | Q.null queue = do
+        | Q.null queue = 
+            do
             currtime <- getCPUTime
             putStr $
               "\nSearch complete.\nTheorem proved true in " ++
               show ((fromInteger (currtime-inittime)) / 1000000000000) ++
               " seconds.\nComputed : " ++ show computedboxes ++ 
               " boxes.\nReaching max depth : " ++ show maxDepthReached ++ "\n\n"
-        | depth < mindepth = do
+        | depth < mindepth = 
+            do
             putStrLn $ "initial splitting at depth " ++ show depth
             currtime <- getCPUTime
 --         putStr reportSplitS
             bisectAndRecur form currtime
-        | prevtime-inittime > maxtime*1000000000000 = do
+        | prevtime-inittime > maxtime*1000000000000 = 
+            do
             putStr $
               "\nTimeout.\nSearch aborted after " ++
               show maxtime ++
               " seconds.\nComputed : " ++ show computedboxes ++ 
               " boxes.\nReaching max depth : " ++ show maxDepthReached ++ "\n\n"
-        | decided && decision = do -- formula true on this box
+        | decided && decision = -- formula true on this box
+            do
             currtime <- getCPUTime
             putStr reportTrueS
             loopAux
                 form
                 maxDepthReached 
                 boxes (qlength-1) currtime (computedboxes+1) newtruevol Nothing Nothing
-        | decided = do -- formula false on this box
+        | decided = -- formula false on this box
+            do
             currtime <- getCPUTime
             putStr $
               "\nCounter example found, search aborted.\nTheorem proved false for " ++
@@ -106,7 +111,8 @@ loop
               "\nComputed  boxes : " ++ show computedboxes ++ 
               "\nMax depth : " ++ show maxDepthReached ++  
               "\nDepth : " ++ show depth ++ "\n\n"
-        | currdeg < maxdeg && undecidedMeasureImproved = do -- try raising the degree before splitting
+        | currdeg < maxdeg && undecidedMeasureImproved = -- try raising the degree before splitting
+            do
             putStrLn $ "raising degree to " ++ show (currdeg + 1)
             currtime <- getCPUTime
             loopAux
@@ -115,10 +121,10 @@ loop
                 queue qlength currtime computedboxes truevol
                 (Just $ currdeg + 1)
                 (Just undecidedMeasure)
-        | depth >= maxdepth ||
-          splitdomL `ppEqual` splitdom || 
-          splitdomR `ppEqual` splitdom   ||
-          length thinvarids == dim = do -- formula undecided and cannot split any further
+        | depth >= maxdepth || 
+          not splitSuccess ||
+          length thinvarids == dim = -- cannot split any further
+            do
             currtime <- getCPUTime
             putStr $ 
               "\nCannot split box, search aborted.\nUndecided for : " ++
@@ -129,7 +135,8 @@ loop
 --           "\nQueue length : " ++ show qlength ++
               "\nMaxdepth : " ++ show maxDepthReached ++  
               "\nDepth : " ++ show depth ++ "\n\n"
-        | otherwise = do -- formula undecided on this box, will split it
+        | otherwise = -- formula undecided on this box, will split it
+            do
             putStrLn $ "splitting at depth " ++ show depth ++ ", new queue size is " ++ show (qlength + 1)
             currtime <- getCPUTime
 --         putStr reportSplitS
@@ -185,11 +192,8 @@ loop
         decided = isJust maybeValue
         decision = fromJust maybeValue
         dim = DBox.size box
-        splitdom = DBox.lookup "looking up splitdom in solver" splitvar box
-        splitdomL = DBox.lookup "looking up splitdom in solver" splitvar boxL
-        splitdomR = DBox.lookup "looking up splitdom in solver" splitvar boxR
          
-        (splitvar,(boxL,boxR)) = L.split thinvarids box value
+        (splitSuccess, splitSkewed,(boxL,boxR)) = L.split thinvarids box value
         maybeValue = L.decide dim value
         value = 
             case fptype of
