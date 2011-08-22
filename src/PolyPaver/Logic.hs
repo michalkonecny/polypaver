@@ -14,7 +14,11 @@
 -}
 module PolyPaver.Logic where
 
+import Prelude hiding (not)
+import qualified Prelude
+
 import PolyPaver.PPBox
+import PolyPaver.Form
 
 import Numeric.ER.Misc
 import qualified Numeric.ER.BasicTypes.DomainBox as DBox
@@ -30,48 +34,57 @@ class TruthValue tv where
     (||) :: tv -> tv -> tv
     (~>) :: tv -> tv -> tv
     fromBool :: PPBox BM -> Bool -> tv
-    leq :: FAPUOI BM -> FAPUOI BM -> tv
-    includes :: FAPUOI BM -> FAPUOI BM -> tv
-    split :: [Int] -> PPBox BM -> tv -> (Int,(PPBox BM, PPBox BM))
+    leq :: Form -> FAPUOI BM -> FAPUOI BM -> tv
+    includes :: Form -> FAPUOI BM -> FAPUOI BM -> tv
+    bot :: Form -> tv
     decide :: Int -> tv -> Maybe Bool
-    bot :: tv
+    split :: [Int] -> PPBox BM -> tv -> (Int,(PPBox BM, PPBox BM))
 
-data TVM =
-    TVMDecided Bool | TVMUndecided { tvmDistanceFromDecision :: Double }
+data TVM
+    = TVMDecided Bool 
+    | TVMUndecided 
+        { 
+            tvmDistanceFromDecision :: Double
+        ,   tvmSimplifiedFormula :: Form
+--            tvmSignificantDirections :: [BoxDirection] 
+        }
 
 instance TruthValue TVM where
     not (TVMDecided x) = TVMDecided (Prelude.not x)
-    not tv = tv
+    not (TVMUndecided dist form) = TVMUndecided dist (Not form)
     -- and:
     (TVMDecided False) && _ = TVMDecided False
     (TVMDecided True) && tv = tv
     _ && (TVMDecided False) = TVMDecided False
     tv && (TVMDecided True) = tv
-    (TVMUndecided m1) && (TVMUndecided m2) = TVMUndecided (max m1 m2)
+    (TVMUndecided m1 form1) && (TVMUndecided m2 form2) = TVMUndecided (max m1 m2) (And form1 form2)
     -- or: 
     (TVMDecided True) || _ = TVMDecided True
     (TVMDecided False) || tv = tv
     _ || (TVMDecided True) = TVMDecided True
     tv || (TVMDecided False) = tv
-    (TVMUndecided m1) || (TVMUndecided m2) = TVMUndecided (max m1 m2)
+    (TVMUndecided m1 form1) || (TVMUndecided m2 form2) = TVMUndecided (max m1 m2) (Or form1 form2)
     -- implication:
     (TVMDecided False) ~> _ = TVMDecided True
     (TVMDecided True) ~> tv = tv
     _ ~> (TVMDecided True) = TVMDecided True
-    tv ~> (TVMDecided False) = tv
-    (TVMUndecided m1) ~> (TVMUndecided m2) = TVMUndecided (max m1 m2)
+    tv ~> (TVMDecided False) = not tv
+    (TVMUndecided m1 form1) ~> (TVMUndecided m2 form2) = TVMUndecided (max m1 m2) (Implies form1 form2)
 
     fromBool _ = TVMDecided
-    a `leq` b = 
+    leq form a b = 
         case a `RA.leqReals` b of
             Just result -> TVMDecided result
-            Nothing -> TVMUndecided measure
+            Nothing -> TVMUndecided measure form
         where
         measure = snd $ RA.doubleBounds $ a - b
-    a `includes` b = 
+    includes form a b = 
         case a `RA.includes` b of
             Just result -> TVMDecided result
-            Nothing -> TVMUndecided 1 -- TODO
+            Nothing -> TVMUndecided 1 form -- TODO
+    bot form = TVMUndecided (1/0) form -- infinite badness...
+    decide _ (TVMDecided result) = Just result
+    decide _ (TVMUndecided _ _) = Nothing
     split thinvarids box tv =
         (var,(boxL, boxR))
         where
@@ -107,7 +120,4 @@ instance TruthValue TVM where
                 case Map.lookup var coeffs of Just cf -> cf / 2
         lower i = fst $ RA.bounds i
         upper i = snd $ RA.bounds i
-    decide _ (TVMDecided result) = Just result
-    decide _ (TVMUndecided _) = Nothing
-    bot = TVMUndecided (1/0) -- infinite badness...
     

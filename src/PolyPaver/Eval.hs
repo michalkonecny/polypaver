@@ -33,6 +33,10 @@ import Numeric.ER.BasicTypes
 
 import qualified Data.Map as Map
 
+{-|
+    Evaluate the truth value of a formula over a box.
+    Also, compute a formula that is equivalent to the original formula over this box but possibly simpler.
+-}
 evalForm ::
     (L.TruthValue tv) =>
     Int -> Int -> EffortIndex -> PPBox BM -> (Int,Int) -> Form -> tv
@@ -41,42 +45,39 @@ evalForm maxdeg maxsize ix box fptype form =
     where
     evForm form =
         case form of
-          Verum ->
-              L.fromBool box True
-          Falsum ->
-              L.fromBool box False
-          Not arg ->
-              L.not $ evForm arg
+          Verum -> L.fromBool box True
+          Falsum -> L.fromBool box False
+          Not arg -> L.not $ evForm arg
           Or left right ->
-              evForm left L.|| evForm right
+               evForm left L.|| evForm right
           And left right ->
               evForm left L.&& evForm right
           Implies left right ->
               evForm left L.~> evForm right
           Le left right ->
               L.not $
-              evTerm right `L.leq` evTerm left
+              L.leq (Leq right left) (evTerm right) (evTerm left)          
           Leq left right ->
-              evTerm left `L.leq` evTerm right          
+              L.leq form (evTerm left) (evTerm right)          
           Ge left right ->
               L.not $
-              evTerm left `L.leq` evTerm right
+              L.leq (Leq left right) (evTerm left) (evTerm right)          
           Geq left right ->
-              evTerm right `L.leq` evTerm left
+              L.leq form (evTerm right) (evTerm left)          
           Eq left right ->
-              (evTerm left `L.leq` evTerm right)
+              (L.leq (Leq left right) (evTerm left) (evTerm right))          
               L.&&
-              (evTerm right `L.leq` evTerm left)
+              (L.leq (Leq right left) (evTerm right) (evTerm left))          
           Neq left right ->
               L.not $ 
-              (evTerm left `L.leq` evTerm right)
+              (L.leq (Leq left right) (evTerm left) (evTerm right))          
               L.&&
-              (evTerm right `L.leq` evTerm left)
+              (L.leq (Leq right left) (evTerm right) (evTerm left))          
           Ni left right -> 
               if RA.isBottom rightArg || RA.isBottom leftArg then
-                  L.bot
+                  L.bot form
               else 
-                  rightArg `L.includes` leftArg
+                  L.includes form rightArg leftArg
               where
               rightArg = evTerm right
               leftArg = evTerm left

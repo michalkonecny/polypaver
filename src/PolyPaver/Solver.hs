@@ -68,9 +68,9 @@ loop
     initvol 
     truevol
     =
-    loopAux maxDepthReached queue qlength prevtime computedboxes truevol Nothing Nothing
+    loopAux form maxDepthReached queue qlength prevtime computedboxes truevol Nothing Nothing
     where
-    loopAux maxDepthReached queue qlength prevtime computedboxes truevol maybeCurrdeg maybePrevMeasure
+    loopAux form maxDepthReached queue qlength prevtime computedboxes truevol maybeCurrdeg maybePrevMeasure
         | Q.null queue = do
             currtime <- getCPUTime
             putStr $
@@ -82,7 +82,7 @@ loop
             putStrLn $ "initial splitting at depth " ++ show depth
             currtime <- getCPUTime
 --         putStr reportSplitS
-            bisectAndRecur currtime
+            bisectAndRecur form currtime
         | prevtime-inittime > maxtime*1000000000000 = do
             putStr $
               "\nTimeout.\nSearch aborted after " ++
@@ -93,6 +93,7 @@ loop
             currtime <- getCPUTime
             putStr reportTrueS
             loopAux
+                form
                 maxDepthReached 
                 boxes (qlength-1) currtime (computedboxes+1) newtruevol Nothing Nothing
         | decided = do -- formula false on this box
@@ -109,6 +110,7 @@ loop
             putStrLn $ "raising degree to " ++ show (currdeg + 1)
             currtime <- getCPUTime
             loopAux
+                form
                 maxDepthReached 
                 queue qlength currtime computedboxes truevol
                 (Just $ currdeg + 1)
@@ -131,7 +133,7 @@ loop
             putStrLn $ "splitting at depth " ++ show depth ++ ", new queue size is " ++ show (qlength + 1)
             currtime <- getCPUTime
 --         putStr reportSplitS
-            bisectAndRecur currtime
+            bisectAndRecur undecidedSimplerForm currtime
             {-
             loop 
                 order report fptype maxdeg maxdepth (max (depth+1) maxDepthReached) ix maxtime prec form intvarids  
@@ -148,15 +150,17 @@ loop
                 truevol 
             -}
         where
-        bisectAndRecur currtime =
+        bisectAndRecur form currtime =
             case order of 
                 B -> 
                     loopAux
+                        form
                         (max (depth+1) maxDepthReached) 
                         (boxes Q.|> (depth+1,newstartdeg,boxL) Q.|> (depth+1,newstartdeg,boxR)) 
                         (qlength+1) currtime (computedboxes+1) truevol Nothing Nothing
                 D ->
                     loopAux 
+                        form
                         (max (depth+1) maxDepthReached) 
                         ((depth+1,newstartdeg,boxL) Q.<| (depth+1,newstartdeg,boxR) Q.<| boxes) 
                         (qlength+1) currtime (computedboxes+1) truevol Nothing Nothing
@@ -191,7 +195,7 @@ loop
             case fptype of
                  B32 -> evalForm currdeg maxsize ix cbox (23,-126) form :: L.TVM -- Maybe Bool
                  B64 -> evalForm currdeg maxsize ix cbox (52,-1022) form :: L.TVM -- Maybe Bool
-        (L.TVMUndecided undecidedMeasure) = value
+        (L.TVMUndecided undecidedMeasure undecidedSimplerForm) = value
         undecidedMeasureImproved = 
             case maybePrevMeasure of
                 Nothing -> True
