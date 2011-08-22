@@ -23,6 +23,7 @@ import PolyPaver.Form
 import Numeric.ER.Misc
 import qualified Numeric.ER.BasicTypes.DomainBox as DBox
 import qualified Numeric.ER.Real.Approx as RA
+import qualified Numeric.ER.RnToRm.UnitDom.Approx as UFA
 import Numeric.ER.Real.DefaultRepr
 import Numeric.ER.RnToRm.DefaultRepr
 
@@ -44,47 +45,53 @@ data TVM
     = TVMDecided Bool 
     | TVMUndecided 
         { 
-            tvmDistanceFromDecision :: Double
-        ,   tvmSimplifiedFormula :: Form
---            tvmSignificantDirections :: [BoxDirection] 
+            tvmSimplifiedFormula :: Form
+        ,   tvmDistanceFromDecision :: Double
+        ,   tvmDecisionDirections :: [BoxDirection BM] 
         }
 
 instance TruthValue TVM where
     not (TVMDecided x) = TVMDecided (Prelude.not x)
-    not (TVMUndecided dist form) = TVMUndecided dist (Not form)
+    not (TVMUndecided form dist dirs) = TVMUndecided (Not form) dist dirs
     -- and:
     (TVMDecided False) && _ = TVMDecided False
     (TVMDecided True) && tv = tv
     _ && (TVMDecided False) = TVMDecided False
     tv && (TVMDecided True) = tv
-    (TVMUndecided m1 form1) && (TVMUndecided m2 form2) = TVMUndecided (max m1 m2) (And form1 form2)
+    (TVMUndecided form1 m1 dirs1) && (TVMUndecided form2 m2 dirs2) 
+        = TVMUndecided (And form1 form2) (max m1 m2) (dirs1 ++ dirs2)
     -- or: 
     (TVMDecided True) || _ = TVMDecided True
     (TVMDecided False) || tv = tv
     _ || (TVMDecided True) = TVMDecided True
     tv || (TVMDecided False) = tv
-    (TVMUndecided m1 form1) || (TVMUndecided m2 form2) = TVMUndecided (max m1 m2) (Or form1 form2)
+    (TVMUndecided form1 m1 dirs1) || (TVMUndecided form2 m2 dirs2)
+        = TVMUndecided (Or form1 form2) (max m1 m2) (dirs1 ++ dirs2)
     -- implication:
     (TVMDecided False) ~> _ = TVMDecided True
     (TVMDecided True) ~> tv = tv
     _ ~> (TVMDecided True) = TVMDecided True
     tv ~> (TVMDecided False) = not tv
-    (TVMUndecided m1 form1) ~> (TVMUndecided m2 form2) = TVMUndecided (max m1 m2) (Implies form1 form2)
+    (TVMUndecided form1 m1 dirs1) ~> (TVMUndecided form2 m2 dirs2)
+        = TVMUndecided (Implies form1 form2) (max m1 m2) (dirs1 ++ dirs2)
 
     fromBool _ = TVMDecided
     leq form a b = 
         case a `RA.leqReals` b of
             Just result -> TVMDecided result
-            Nothing -> TVMUndecided measure form
+            Nothing -> TVMUndecided form measure [dir]
         where
         measure = snd $ RA.doubleBounds $ a - b
+        dir = (t c, Map.map t coeffs)
+        t [a] = a
+        (c, coeffs) = UFA.getAffineUpperBound $ a - b
     includes form a b = 
         case a `RA.includes` b of
             Just result -> TVMDecided result
-            Nothing -> TVMUndecided 1 form -- TODO
-    bot form = TVMUndecided (1/0) form -- infinite badness...
+            Nothing -> TVMUndecided form 1 [] -- TODO
+    bot form = TVMUndecided form (1/0) [] -- infinite badness...
     decide _ (TVMDecided result) = Just result
-    decide _ (TVMUndecided _ _) = Nothing
+    decide _ (TVMUndecided _ _ _) = Nothing
     split thinvarids box tv =
         (var,(boxL, boxR))
         where
