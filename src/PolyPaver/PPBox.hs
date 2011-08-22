@@ -28,6 +28,8 @@ type PPBox b = Box (Affine b)
 type Affine b = (IRA b, Coeffs b)
 type Coeffs b = Map.Map Int (IRA b)
 
+type BoxDirection b = Affine b
+
 ppVolume :: (B.ERRealBase b) => PPBox b -> IRA b
 ppVolume box
     = abs $ determinant $ 
@@ -73,4 +75,5 @@ ppCoeffsZero coeffs =
         case RA.equalReals coeff 0 of 
             Just True -> True
             _ -> False
-    
+
+            

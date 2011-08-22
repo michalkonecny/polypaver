@@ -195,7 +195,7 @@ loop
             case fptype of
                  B32 -> evalForm currdeg maxsize ix cbox (23,-126) form :: L.TVM -- Maybe Bool
                  B64 -> evalForm currdeg maxsize ix cbox (52,-1022) form :: L.TVM -- Maybe Bool
-        (L.TVMUndecided undecidedMeasure undecidedSimplerForm) = value
+        (L.TVMUndecided undecidedSimplerForm undecidedMeasure undecidedDirections) = value
         undecidedMeasureImproved = 
             case maybePrevMeasure of
                 Nothing -> True
