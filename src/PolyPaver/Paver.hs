@@ -25,10 +25,9 @@ import PolyPaver.Solver
 import Numeric.ER.BasicTypes.DomainBox.IntMap
 import Numeric.ER.Real.DefaultRepr
 import Numeric.ER.Real.Base.MachineDouble
-import qualified Numeric.ER.BasicTypes.DomainBox as DBox
 import qualified Numeric.ER.Real.Approx as RA
 
-import qualified Data.Map as Map
+import qualified Data.IntMap as IMap
 
 import qualified Data.Sequence as Q
 import System.Console.CmdArgs
@@ -116,15 +115,15 @@ defaultMain problem =
 
 readBox  :: [(Int,(Rational,Rational))] -> PPBox BM
 readBox intervals = 
-    DBox.fromList $ map readInterval $ intervals
+    IMap.fromList $ map readInterval $ intervals
     where
     readInterval (i,(l,r)) =
-        (i, (const,  Map.insert i slope zeroCoeffs))
+        (i, (const,  IMap.insert i slope zeroCoeffs))
         where
         slope = (rRA - lRA) / 2
         const = (rRA + lRA) / 2 
         lRA = fromRational l
         rRA = fromRational r
     vars = map fst intervals
-    zeroCoeffs = Map.fromList $ zip vars $ repeat 0
+    zeroCoeffs = IMap.fromList $ zip vars $ repeat 0
     

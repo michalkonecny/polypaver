@@ -21,13 +21,13 @@ import PolyPaver.PPBox
 import PolyPaver.Form
 
 import Numeric.ER.Misc
-import qualified Numeric.ER.BasicTypes.DomainBox as DBox
 import qualified Numeric.ER.Real.Approx as RA
 import qualified Numeric.ER.RnToRm.UnitDom.Approx as UFA
 import Numeric.ER.Real.DefaultRepr
 import Numeric.ER.RnToRm.DefaultRepr
 
 import qualified Data.Map as Map
+import qualified Data.IntMap as IMap
 
 class TruthValue tv where
     not :: tv -> tv
@@ -39,7 +39,13 @@ class TruthValue tv where
     includes :: Form -> FAPUOI BM -> FAPUOI BM -> tv
     bot :: Form -> tv
     decide :: Int -> tv -> Maybe Bool
-    split :: [Int] -> PPBox BM -> tv -> (Int,(PPBox BM, PPBox BM))
+    split :: 
+        [Int] -> 
+        PPBox BM -> 
+        tv -> 
+        (Bool, -- whether split succeeded in providing two proper sub-boxes 
+         Bool, -- whether box skewing has been used
+         (PPBox BM, PPBox BM))
 
 data TVM
     = TVMDecided Bool 
@@ -82,7 +88,7 @@ instance TruthValue TVM where
             Nothing -> TVMUndecided form measure [dir]
         where
         measure = snd $ RA.doubleBounds $ a - b
-        dir = (t c, Map.map t coeffs)
+        dir = (t c, IMap.map t $ IMap.fromList $ Map.toList coeffs)
         t [a] = a
         (c, coeffs) = UFA.getAffineUpperBound $ a - b
     includes form a b = 
@@ -92,12 +98,15 @@ instance TruthValue TVM where
     bot form = TVMUndecided form (1/0) [] -- infinite badness...
     decide _ (TVMDecided result) = Just result
     decide _ (TVMUndecided _ _ _) = Nothing
-    split thinvarids box tv =
-        (var,(boxL, boxR))
+    
+    split thinvarids prebox tv =
+        (success, skewed,(boxL, boxR))
         where
+        (box, skewed) = (prebox, False) -- TODO
+        success = Prelude.not $ (box `ppEqual` boxL) Prelude.|| (box `ppEqual` boxR)
         (_, var)
             =
-            foldl findWidestVar (0, err) $ Map.toList widths
+            foldl findWidestVar (0, err) $ IMap.toList widths
         err = 
             error $ "PolyPaver.Logic: split: failed to find a split for " ++ show box 
         findWidestVar (prevWidth, prevRes) (var, currWidth)
@@ -105,26 +114,26 @@ instance TruthValue TVM where
             | otherwise = (currWidth, var)
         widths 
             = 
-            foldl (Map.unionWith (+)) Map.empty $
-                map (Map.map abs) $ map snd $ DBox.elems splittablesubbox
+            foldl (IMap.unionWith (+)) IMap.empty $
+                map (IMap.map abs) $ map snd $ IMap.elems splittablesubbox
         splittablesubbox =
-            foldr DBox.delete box thinvarids
-        boxL = DBox.map substL box
-        boxR = DBox.map substR box
+            foldr IMap.delete box thinvarids
+        boxL = IMap.map substL box
+        boxR = IMap.map substR box
         substL (c, coeffs) =
-            (lower $ c - varCoeffHalf, Map.insert var varCoeffHalf coeffs)
+            (lower $ c - varCoeffHalf, IMap.insert var varCoeffHalf coeffs)
             where
             varCoeffHalf
                 =
                 upper $
-                case Map.lookup var coeffs of Just cf -> cf / 2
+                case IMap.lookup var coeffs of Just cf -> cf / 2
         substR (c, coeffs) =
-            (lower $ c + varCoeffHalf, Map.insert var varCoeffHalf coeffs)
+            (lower $ c + varCoeffHalf, IMap.insert var varCoeffHalf coeffs)
             where
             varCoeffHalf
                 =
                 upper $
-                case Map.lookup var coeffs of Just cf -> cf / 2
+                case IMap.lookup var coeffs of Just cf -> cf / 2
         lower i = fst $ RA.bounds i
         upper i = snd $ RA.bounds i
     

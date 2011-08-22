@@ -27,11 +27,11 @@ import Numeric.ER.Real.DefaultRepr
 import Numeric.ER.RnToRm.DefaultRepr
 import qualified Numeric.ER.RnToRm.Approx as FA
 import qualified Numeric.ER.RnToRm.UnitDom.Approx as UFA
-import qualified Numeric.ER.BasicTypes.DomainBox as DBox
 import qualified Numeric.ER.Real.Approx.Elementary as RAEL
 import Numeric.ER.BasicTypes
 
 import qualified Data.Map as Map
+import qualified Data.IntMap as IMap
 
 {-|
     Evaluate the truth value of a formula over a box.
@@ -118,9 +118,9 @@ evalTerm maxdeg maxsize ix box (prec,minexp) term =
                   False -> -- domain of var not thin, so safe to proj
                       FA.setMaxDegree maxdeg $
                       FA.setMaxSize maxsize $ 
-                      UFA.affine [c] (Map.map (:[]) coeffs)
+                      UFA.affine [c] (Map.map (:[]) $ Map.fromAscList $ IMap.toAscList coeffs)
                   where                
-                  (c, coeffs) = DBox.lookup "" varid box
+                  (c, coeffs) = case IMap.lookup varid box of Just v -> v
                   isConst = ppCoeffsZero coeffs
           Plus left right ->
               evTerm left + evTerm right
