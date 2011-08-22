@@ -15,6 +15,7 @@
 module PolyPaver.Solver where
 
 import PolyPaver.Form
+import PolyPaver.PPBox
 import PolyPaver.Eval
 import qualified PolyPaver.Logic as L
 
@@ -113,8 +114,8 @@ loop
                 (Just $ currdeg + 1)
                 (Just undecidedMeasure)
         | depth >= maxdepth ||
-          splitdom `RA.equalApprox` splitdomL || 
-          splitdom `RA.equalApprox` splitdomR ||
+          splitdomL `ppEqual` splitdom || 
+          splitdomR `ppEqual` splitdom   ||
           length thinvarids == dim = do -- formula undecided and cannot split any further
             currtime <- getCPUTime
             putStr $ 
@@ -183,6 +184,7 @@ loop
         splitdom = DBox.lookup "looking up splitdom in solver" splitvar box
         splitdomL = DBox.lookup "looking up splitdom in solver" splitvar boxL
         splitdomR = DBox.lookup "looking up splitdom in solver" splitvar boxR
+         
         (splitvar,(boxL,boxR)) = L.split thinvarids box value
         maybeValue = L.decide dim value
         value = 
@@ -196,9 +198,9 @@ loop
                 Just prevUndecidedMeasure ->
                     prevUndecidedMeasure / undecidedMeasure > improvementRatioThreshold
         thinvarids = DBox.keys thincbox
-        thincbox = DBox.filter RA.isExact cbox -- thin subbox of contracted box
-        cbox = contractIntVarDoms box intvarids -- box with contracted integer doms
-        newtruevol = truevol+(volume box)/initvol
+        thincbox = DBox.filter (ppCoeffsZero . snd) cbox -- thin subbox of contracted box
+        cbox = box -- contractIntVarDoms box intvarids -- box with contracted integer doms
+        newtruevol = truevol+(ppVolume box)/initvol
 
 volume box =
   DBox.fold (\dom vol -> vol * width dom) 1 box
@@ -213,7 +215,7 @@ width dom =
 --        state <- readTVar stateTV
 --        writeTVar stateTV ((box,rgba) : state)
 
-showBox :: Box (IRA BM) -> String
+showBox :: PPBox BM -> String
 showBox =
   DBox.foldWithKey 
     (\varid vardom boxStr -> "\nx" ++ 
@@ -221,33 +223,33 @@ showBox =
      show vardom ++ " " ++ boxStr) 
     ""
 
-contractIntVarDoms :: Box (IRA BM) -> [Int] -> Box (IRA BM)
-contractIntVarDoms initbox intvarids =
-    foldl'
-        (
-            \box intvarid 
-            -> 
-            IMap.adjust contractIntVarDom intvarid box
-        )
-        initbox
-        intvarids
-
-{-
-    WARNING: uses floor and therefore
-    RA.doubleBounds
--}
-contractIntVarDom :: IRA BM -> IRA BM
-contractIntVarDom dom
-    | domLclg <= domRflr =
-        ERInterval (fromInteger domLclg) (fromInteger domRflr)
-    | otherwise =
-        RA.bottomApprox
-    where
---    (domLflr,domRclg) = RA.integerBounds dom
-    domLclg = ceiling domL  
-    domRflr = floor domR
-    domL = erintv_left dom
-    domR = erintv_right dom
+--contractIntVarDoms :: PPBox BM -> [Int] -> PPBox BM
+--contractIntVarDoms initbox intvarids =
+--    foldl'
+--        (
+--            \box intvarid 
+--            -> 
+--            IMap.adjust contractIntVarDom intvarid box
+--        )
+--        initbox
+--        intvarids
+--
+--{-
+--    WARNING: uses floor and therefore
+--    RA.doubleBounds
+---}
+--contractIntVarDom :: (IRA BM, Map.Map Int (IRA BM)) -> (IRA BM, Map.Map Int (IRA BM))
+--contractIntVarDom dom
+--    | domLclg <= domRflr =
+--        ERInterval (fromInteger domLclg) (fromInteger domRflr)
+--    | otherwise =
+--        RA.bottomApprox
+--    where
+----    (domLflr,domRclg) = RA.integerBounds dom
+--    domLclg = ceiling domL  
+--    domRflr = floor domR
+--    domL = erintv_left dom
+--    domR = erintv_right dom
 
 {-|  conclusion of their_sqrt_25: degree 40
 
