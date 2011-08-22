@@ -22,12 +22,29 @@ import Numeric.ER.Real.DefaultRepr
 import Numeric.ER.RnToRm.DefaultRepr
 
 import qualified Data.IntMap as IMap
+import Data.List (intercalate)
 
 type PPBox b = IMap.IntMap (Affine b)
 type Affine b = (IRA b, Coeffs b)
 type Coeffs b = IMap.IntMap (IRA b)
 
-type BoxDirection b = Affine b
+type BoxHyperPlane b = Affine b
+
+ppShow box =
+    "PP{ centre=" ++ show centre ++ "; "
+    ++ (intercalate ", " $ map showPt vars)
+    ++ "}"
+    where
+    (vars, affines) = unzip $ IMap.toAscList box
+    (centre, coeffsList) = unzip affines
+    showPt pt =
+        "corner" ++ show pt ++ "=" ++ show (getPt pt)
+    getPt pt =
+        zipWith (+) centre $
+        map (getCoord pt) coeffsList
+        where
+        getCoord pt coeffs =
+            case IMap.lookup pt coeffs of Just cf -> cf
 
 ppVolume :: (B.ERRealBase b) => PPBox b -> IRA b
 ppVolume box
@@ -36,7 +53,8 @@ ppVolume box
             map (IMap.map (:[]) . snd) $ IMap.elems box
     
 determinant :: (B.ERRealBase b) => [[IRA b]] -> IRA b
-determinant matrix =
+determinant matrix 
+    =
     case matrix of
         [[a]] -> a
         [[a,b],[c,d]] -> a * d - c * b
@@ -69,8 +87,10 @@ ppAffineEqual (c1, coeffs1) (c2, coeffs2)
             _ -> False
             
 ppCoeffsZero :: 
-    (B.ERRealBase b) => Coeffs b -> Bool
-ppCoeffsZero coeffs = 
+    (B.ERRealBase b) => 
+    Coeffs b -> Bool
+ppCoeffsZero coeffs 
+    = 
     and $ map isZero $ IMap.elems coeffs
     where
     isZero coeff = 
@@ -79,3 +99,60 @@ ppCoeffsZero coeffs =
             _ -> False
 
             
+ppSkewAlongHyperPlane ::
+    (B.ERRealBase b) => 
+    PPBox b -> BoxHyperPlane b -> (IRA b, Maybe Int, PPBox b)
+ppSkewAlongHyperPlane prebox hp@(hp_const, hp_coeffs)
+    | 0 `RA.refines` largest_hp_coeff = (1/0, Nothing, prebox) -- zero skewing - hyperplane parallel to a side of prebox
+    | otherwise 
+        =
+--        unsafePrint
+--        (
+--            "ppSkewAlongHyperPlane: "
+--            ++"\n prebox = " ++ ppShow prebox 
+--            ++"\n box = " ++ ppShow box
+--            ++"\n" 
+--        ) $
+        (isecPtDistance, Just skewVar, box)
+    where
+    isecPtDistance = abs $ hp_const / largest_hp_coeff
+    box = 
+        -- apply skewing to each affine transformation:
+        IMap.map skewAffine prebox
+        where
+        skewAffine (af_const, af_coeffs)
+            -- skewing doew not change the constant, only the coeffs:
+            = (af_const, new_af_coeffs)
+            where
+            new_af_coeffs 
+                =
+                IMap.insert skewVar stretched_af_coeff_skewVar $
+                    IMap.union new_af_coeffs_noSkewVar af_coeffs_outside_hp
+            -- each variable, except the skew variable, feature in the sum as before
+            -- plus its contribution to the new interpretation of skewVar:
+            new_af_coeffs_noSkewVar
+                = IMap.intersectionWith skew af_coeffs hp_coeffs_noSkewVar
+                where
+                skew af_coeff hp_coeff = 
+                    af_coeff - (af_coeff_skewVar * hp_coeff / hp_coeff_skewVar)
+            -- the interpretation of skewVar makes the new box stretch to still cover the original box:
+            stretched_af_coeff_skewVar
+                = af_coeff_skewVar * (1 + (sum $ map absScale $ IMap.elems hp_coeffs_noSkewVar))
+                where
+                absScale hp_coeff
+                    = abs (hp_coeff / hp_coeff_skewVar)
+            af_coeff_skewVar 
+                = case IMap.lookup skewVar af_coeffs of Just cf -> cf
+            af_coeffs_outside_hp
+                = IMap.difference af_coeffs hp_coeffs
+            hp_coeff_skewVar
+                = case IMap.lookup skewVar hp_coeffs of Just cf -> cf 
+            hp_coeffs_noSkewVar 
+                = IMap.delete skewVar hp_coeffs
+    (largest_hp_coeff, skewVar) 
+        = foldl max (0,-1) $ map flipAbs $ IMap.toList hp_coeffs
+        where
+        flipAbs (var, cf) = (abs cf, var)
+     
+    
+    
