@@ -52,7 +52,7 @@ determinant matrix =
         (take i col) ++ (drop (i + 1) col)
     
     
-ppEqual :: (B.ERRealBase b) => PPBox b -> PPBox b -> Bool
+ppEqual :: (B.ERRealBase b) => Affine b -> Affine b -> Bool
 ppEqual box1@(c1, coeffs1) box2@(c2, coeffs2)
     =
     (c1 `eq` c2) &&
