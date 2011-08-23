@@ -18,6 +18,7 @@ import PolyPaver.Form
 import PolyPaver.PPBox
 import PolyPaver.Eval
 import qualified PolyPaver.Logic as L
+import qualified PolyPaver.Plot as Plot
 
 import qualified Numeric.ER.Real.Approx as RA
 import Numeric.ER.Real.Approx.Interval
@@ -32,7 +33,7 @@ import Data.List
 import Data.Maybe
 
 import System.Console.CmdArgs
---import Control.Concurrent.STM
+import Control.Concurrent (threadDelay)
 import System.CPUTime
 
 data Order = 
@@ -47,35 +48,43 @@ data FPType =
     B32 | B64
     deriving (Show,Data,Typeable)
 
-
---data Constants = Constants
---    {maxdegree :: Int
---    ,maxdepth :: Int
---    ,effortindex :: Int
---    ,maxseconds :: Int
---    ,formula :: Form
---    ,intvars :: [Int]
---    ,initvolume :: IRA BM}
-
-loop 
+loop
+    plotSize plotStepDelayMs
     order report fptype noBoxSkewing
     origstartdeg maxdeg improvementRatioThreshold 
     maxsize
     mindepth maxdepth maxDepthReached
     ix maxtime prec form 
 --    intvarids 
-    queue 
-    qlength inittime prevtime computedboxes 
-    problemvol
-    truevol
+    initbox
     =
-    loopAux 
-        form maxDepthReached 
-        queue qlength prevtime 
-        computedboxes problemvol truevol 
+    do
+    -- possibly initialise plotting:
+    mstateTV <- case plotSize of
+        (0,0) -> return Nothing
+        (w,h) -> 
+            do
+            stateTV <- Plot.initPlot initbox w h
+            return $ Just stateTV
+    -- take the clock reading:
+    inittime <- getCPUTime
+    -- start looping:
+    loopAux
+        mstateTV inittime
+        form maxDepthReached
+
+        (Q.singleton (0,origstartdeg,initbox)) -- initial queue with one box only
+        1 -- queue length
+        inittime -- prevtime
+
+        1 -- number computed boxes
+        (ppVolume initbox) -- initial volume
+        0 -- volume of proved boxes
+
         Nothing Nothing
     where
     loopAux 
+        mstateTV inittime
         form maxDepthReached 
         queue qlength prevtime 
         computedboxes problemvol truevol 
@@ -94,12 +103,12 @@ loop
                   show ((fromInteger (currtime-inittime)) / 1000000000000) ++
                   " seconds.\nComputed : " ++ show computedboxes ++ 
                   " boxes.\nReaching max depth : " ++ show maxDepthReached ++ "\n\n"
+                stopProver 
             | depth < mindepth = 
                 do
-                putStrLn $ "initial splitting at depth " ++ show depth
+                reportInitSplit
                 currtime <- getCPUTime
-    --         putStr reportSplitS
-                bisectAndRecur form currtime
+                bisectAndRecur form currtime boxLNoHP boxRNoHP problemvol
             | prevtime-inittime > maxtime*1000000000000 = 
                 do
                 putStr $
@@ -107,11 +116,13 @@ loop
                   show maxtime ++
                   " seconds.\nComputed : " ++ show computedboxes ++ 
                   " boxes.\nReaching max depth : " ++ show maxDepthReached ++ "\n\n"
+                stopProver 
             | decided && decision = -- formula true on this box
                 do
                 currtime <- getCPUTime
-                reportVolume
+                reportProved
                 loopAux
+                    mstateTV inittime
                     form maxDepthReached 
                     boxes (qlength-1) currtime
                     (computedboxes+1) problemvol newtruevol 
@@ -119,6 +130,7 @@ loop
             | decided = -- formula false on this box
                 do
                 currtime <- getCPUTime
+                plotBox red
                 putStr $
                   "\nCounter example found, search aborted.\nTheorem proved false for " ++
                   ppShow box ++
@@ -127,11 +139,13 @@ loop
                   "\nComputed  boxes : " ++ show computedboxes ++ 
                   "\nMax depth : " ++ show maxDepthReached ++  
                   "\nDepth : " ++ show depth ++ "\n\n"
+                stopProver 
             | currdeg < maxdeg && undecidedMeasureImproved = -- try raising the degree before splitting
                 do
                 putStrLn $ "raising degree to " ++ show (currdeg + 1)
                 currtime <- getCPUTime
                 loopAux
+                    mstateTV inittime
                     form maxDepthReached 
                     queue qlength currtime 
                     computedboxes problemvol truevol
@@ -151,20 +165,22 @@ loop
     --           "\nQueue length : " ++ show qlength ++
                   "\nMaxdepth : " ++ show maxDepthReached ++  
                   "\nDepth : " ++ show depth ++ "\n\n"
+                stopProver 
             | otherwise = -- formula undecided on this box, will split it
                 do
                 currtime <- getCPUTime
                 reportSplit
-                bisectAndRecur undecidedSimplerForm currtime
+                bisectAndRecur undecidedSimplerForm currtime boxL boxR newproblemvol
 
         (depth, startdeg, box) = Q.index queue 0
         dim = DBox.size box
         boxes = Q.drop 1 queue
 
-        bisectAndRecur form currtime =
+        bisectAndRecur form currtime boxL boxR newproblemvol =
             case order of 
                 B -> 
                     loopAux
+                        mstateTV inittime
                         form (max (depth+1) maxDepthReached) 
                         (boxes Q.|> (depth+1,newstartdeg,boxL) Q.|> (depth+1,newstartdeg,boxR)) 
                         (qlength+1) currtime 
@@ -172,18 +188,23 @@ loop
                         Nothing Nothing
                 D ->
                     loopAux 
+                        mstateTV inittime
                         form (max (depth+1) maxDepthReached) 
                         ((depth+1,newstartdeg,boxL) Q.<| (depth+1,newstartdeg,boxR) Q.<| boxes) 
                         (qlength+1) currtime 
                         (computedboxes+1) newproblemvol truevol 
                         Nothing Nothing
-        (splitSuccess, maybeHP, (boxL,boxR)) 
+        (splitSuccess, maybeHP, (boxL,boxR))
             = L.split thinvarids box noBoxSkewing value
+        (_, _, (boxLNoHP,boxRNoHP))
+            = L.split thinvarids box True value
         newproblemvol
             =
             case maybeHP of
                 Nothing -> problemvol
                 _ -> problemvol - (ppVolume box) + (ppVolume boxL) + (ppVolume boxR)
+
+        newtruevol = truevol + (ppVolume box)
 
         decided = isJust maybeDecision
         decision = fromJust maybeDecision
@@ -212,19 +233,27 @@ loop
             do 
             putStrLn $ "proving over box: " ++ ppShow box
             return ()
-        
-        newtruevol = truevol + (ppVolume box)
-        reportVolume 
+                
+        reportInitSplit
             =
+            do
+            plotBox yellow
+            putStrLn $ "initial splitting at depth " ++ show depth
+            
+        reportProved
+            =
+            do
+            plotBox green
             case report of
                  VOL ->
                      putStrLn $
                         "Proved fraction : " ++ show (newtruevol / problemvol)
                  NO -> return ()
         
-        reportSplit 
+        reportSplit
             =
             do
+            plotBox yellow
             case maybeHP of
                 Nothing -> return ()
                 Just hp ->
@@ -242,3 +271,22 @@ loop
                 "splitting at depth " ++ show depth 
                 ++ ", new queue size is " ++ show (qlength + 1)
             return ()
+
+        stopProver =
+            case mstateTV of
+                Nothing -> return ()
+                Just stateTV -> Plot.waitForClose stateTV
+        
+        plotBox colour 
+            =
+            case mstateTV of
+                Nothing -> return ()
+                Just stateTV ->
+                    do
+                    Plot.addBox stateTV colour box
+                    threadDelay $ 1000 * plotStepDelayMs
+        green = (0.1,0.6,0.1,0.4)
+        red = (0.1,0.6,0.1,0.4)
+        yellow = (0.6,0.6,0.1,0.4)
+        
+            

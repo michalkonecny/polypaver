@@ -36,7 +36,6 @@ import System.IO
 
 data Problem = Problem
     {box :: [(Int,(Rational,Rational))]
---    ,ivars :: [Int]
     ,theorem :: Form}
     deriving (Show,Read)
 
@@ -52,6 +51,8 @@ data Paver = Paver
     ,report :: Report
     ,fptype :: FPType
     ,noBoxSkewing :: Bool
+    ,plotWidth :: Int
+    ,plotHieght :: Int
     }
     deriving (Show,Data,Typeable)
 
@@ -59,14 +60,16 @@ paver = Paver
     {degree = 0 &= help "maximum polynomial degree (default = 0)"
     ,startDegree = 0 &= help "first polynomial degree to try on each box (default = 0)"
     ,maxSize = 100 &= name "z" &= help "maximum polynomial term size (default = 100)"
+    ,order = B &= help "sub-problem processing order, b for breadth-first (default) or d for depth-first"
     ,minDepth = 0 &= help "minimum bisection depth (default = 0)"
     ,maxDepth = 10 &= name "b" &= help "maximum bisection depth (default = 10)"
     ,effort = 10 &= help "approximation effort parameter (default = 10)" 
     ,time = 3600 &= help "timeout in seconds (default = 3600)"
-    ,order = B &= help "sub-problem processing order, b for breadth-first (default) or d for depth-first"
-    ,report = VOL &= help "progress reporting, v for proved volume fraction (default)"
-    ,fptype = B32 &= help "type of binary floating point number, b32 for 32-bit (default) and b64 for 64-bit"
     ,noBoxSkewing = False &= name "k" &= help "stick to boxes aligned to coordinates, by default allow parallelepipeds"
+    ,fptype = B32 &= help "type of binary floating point number, b32 for 32-bit (default) and b64 for 64-bit"
+    ,report = VOL &= help "progress reporting, v for proved volume fraction (default)"
+    ,plotWidth = 0 &= name "w" &= help "plot width for 2D problems, 0 mean no plotting (default)"
+    ,plotHieght = 0 &= name "h" &= help "plot height for 2D problems, 0 mean no plotting (default)"
     } &=
     help "Decides theorems using polynomial interval arithmetic" &=
     summary "PolyPaver 0.1 (c) 2011 Jan Duracz, Michal Konecny"
@@ -74,7 +77,6 @@ paver = Paver
 defaultMain problem = 
     do
     args <- cmdArgs paver
-    inittime <- getCPUTime
     initMachineDouble -- round upwards
     hSetBuffering stdout LineBuffering -- print progress in real time, not in batches
     let maxdeg = degree args
@@ -86,14 +88,17 @@ defaultMain problem =
         mindepth = minDepth args 
         maxdepth = maxDepth args 
         initbox = readBox $ box problem 
---        intvarids = ivars problem
         thm = theorem problem
         ordr = order args 
         repor = report args
         fpt = fptype args
         noBoxSkewingOpt = noBoxSkewing args
+        plotSizesOpt = (plotWidth args, plotHieght args)
+        plotStepDelayMs = 0
         in do
     loop
+        plotSizesOpt
+        plotStepDelayMs
         ordr -- sub-problem processing order
         repor -- 
         fpt -- 
@@ -110,13 +115,7 @@ defaultMain problem =
         23 -- mantissa bit size (read precisionS)
         thm -- to be proved, defined in IntegralTest
 --        intvarids -- variable IDs of integer variables, defined in IntegralTest
-        (Q.singleton (0,startdeg,initbox)) -- enqueue (initial depth, initial startdegree, initial box)
-        1 -- queue length
-        inittime -- inittime
-        0 -- prevtime
-        1 -- number computed boxes
-        (ppVolume initbox) -- initial volume
-        0 -- volume of proved boxes
+        initbox
 
 readBox  :: [(Int,(Rational,Rational))] -> PPBox BM
 readBox intervals = 

@@ -26,6 +26,7 @@ import qualified Numeric.ER.RnToRm.UnitDom.Approx as UFA
 import Numeric.ER.Real.DefaultRepr
 import Numeric.ER.RnToRm.DefaultRepr
 
+import qualified Data.List as List
 import qualified Data.Map as Map
 import qualified Data.IntMap as IMap
 
@@ -54,7 +55,7 @@ data TVM
         { 
             tvmSimplifiedFormula :: Form
         ,   tvmDistanceFromDecision :: Double
-        ,   tvmDecisionHyperPlanes :: (Double, [BoxHyperPlane BM]) -- the first one is the best one, keeping its measure 
+        ,   tvmDecisionHyperPlanes :: [(Double, BoxHyperPlane BM)] -- the first one is the best one, keeping its measure 
         }
 
 instance TruthValue TVM where
@@ -86,7 +87,7 @@ instance TruthValue TVM where
     leq form a b = 
         case a `RA.leqReals` b of
             Just result -> TVMDecided result
-            Nothing -> TVMUndecided form distance (distance, [hyperplane])
+            Nothing -> TVMUndecided form distance [(distance, hyperplane)]
         where
         distance = snd $ RA.doubleBounds $ a - b
         hyperplane = (t c, IMap.map t $ IMap.fromList $ Map.toList coeffs)
@@ -95,8 +96,8 @@ instance TruthValue TVM where
     includes form a b = 
         case a `RA.includes` b of
             Just result -> TVMDecided result
-            Nothing -> TVMUndecided form 1 (1,[]) -- TODO
-    bot form = TVMUndecided form (1/0) (1/0,[]) -- infinite badness...
+            Nothing -> TVMUndecided form 1 [] -- TODO
+    bot form = TVMUndecided form (1/0) [] -- infinite badness...
     decide _ (TVMDecided result) = Just result
     decide _ (TVMUndecided _ _ _) = Nothing
     
@@ -105,18 +106,21 @@ instance TruthValue TVM where
         (success, maybeHP, (boxL, boxR))
         where
         -- investigate need for skewing and possibly skew:
-        (box, maybeHP, maybeSkewVar)         
-            | noBoxSkewing Prelude.|| (Prelude.not hyperplaneClose) = (prebox, Nothing, Nothing)
+        (box, maybeHP, maybeSkewVar)
+            | noBoxSkewing 
+                Prelude.|| (Prelude.not hyperplaneClose) 
+                = (prebox, Nothing, Nothing)
             | otherwise = (skewedBox, Just hyperplane, maybeSkewVar)
             where
             hyperplaneClose
                 | gotHyperPlane 
-                    = (isecPtDistance `RA.leqReals` 2) == Just True
+                    = 
+                    (isecPtDistance `RA.leqReals` 2) == Just True
                 | otherwise = False
             (isecPtDistance,  maybeSkewVar, skewedBox) = ppSkewAlongHyperPlane prebox hyperplane
             (gotHyperPlane, hyperplane)
                 = case tv of
-                    (TVMUndecided _ _ (_, hyperplane : _)) -> (True, hyperplane)
+                    (TVMUndecided _ _ ((_, hyperplane) : _)) -> (True, hyperplane)
                     _ -> (False, error "PolyPaver.Logic: split: internal error")
             
         
@@ -159,7 +163,6 @@ instance TruthValue TVM where
         upper i = snd $ RA.bounds i
     
     
-combineHPs (m1, hps1) (m2, hps2) 
-    | m1 < m2 = (m1, hps1 ++ hps2)
-    | otherwise = (m2, hps2 ++ hps1)
+combineHPs hps1 hps2
+    = List.sortBy (\(m1, _) (m2, _) -> compare m1 m2) $ hps1 ++ hps2 
     
