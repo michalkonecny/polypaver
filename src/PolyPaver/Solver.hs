@@ -108,7 +108,7 @@ loop
                 do
                 reportInitSplit
                 currtime <- getCPUTime
-                bisectAndRecur form currtime boxLNoHP boxRNoHP problemvol
+                bisectAndRecur form currtime [boxLNoHP, boxRNoHP] problemvol
             | prevtime-inittime > maxtime*1000000000000 = 
                 do
                 putStr $
@@ -170,30 +170,37 @@ loop
                 do
                 currtime <- getCPUTime
                 reportSplit
-                bisectAndRecur undecidedSimplerForm currtime boxL boxR newproblemvol
+                bisectAndRecur undecidedSimplerForm currtime [boxL, boxR] newproblemvol
 
         (depth, startdeg, box) = Q.index queue 0
         dim = DBox.size box
         boxes = Q.drop 1 queue
 
-        bisectAndRecur form currtime boxL boxR newproblemvol =
+        bisectAndRecur form currtime newBoxes newproblemvol =
             case order of 
                 B -> 
                     loopAux
                         mstateTV inittime
                         form (max (depth+1) maxDepthReached) 
-                        (boxes Q.|> (depth+1,newstartdeg,boxL) Q.|> (depth+1,newstartdeg,boxR)) 
-                        (qlength+1) currtime 
+                        (boxes Q.>< (Q.fromList newBoxes2)) 
+                        newQLength currtime 
                         (computedboxes+1) newproblemvol truevol 
                         Nothing Nothing
                 D ->
                     loopAux 
                         mstateTV inittime
                         form (max (depth+1) maxDepthReached) 
-                        ((depth+1,newstartdeg,boxL) Q.<| (depth+1,newstartdeg,boxR) Q.<| boxes) 
-                        (qlength+1) currtime 
+                        ((Q.fromList newBoxes2) Q.>< boxes) 
+                        newQLength currtime 
                         (computedboxes+1) newproblemvol truevol 
                         Nothing Nothing
+            where
+            newQLength =
+                qlength - 1 + (length newBoxes2)
+            newBoxes2 
+                = map prepareBox $ filter (not. (ppOutsideRect initbox)) newBoxes
+            prepareBox box =            
+                (depth+1,newstartdeg,box)
         (splitSuccess, maybeHP, (boxL,boxR))
             = L.split thinvarids box noBoxSkewing value
         (_, _, (boxLNoHP,boxRNoHP))
