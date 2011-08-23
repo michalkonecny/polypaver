@@ -57,6 +57,7 @@ data TVM
         ,   tvmDistanceFromDecision :: Double
         ,   tvmDecisionHyperPlanes :: [(Double, BoxHyperPlane BM)] -- the first one is the best one, keeping its measure 
         }
+    deriving (Show)
 
 instance TruthValue TVM where
     not (TVMDecided x) = TVMDecided (Prelude.not x)
@@ -108,20 +109,29 @@ instance TruthValue TVM where
         -- investigate need for skewing and possibly skew:
         (box, maybeHP, maybeSkewVar)
             | noBoxSkewing 
-                Prelude.|| (Prelude.not hyperplaneClose) 
+                Prelude.|| 
+                (Prelude.not hyperplanesClose) 
                 = (prebox, Nothing, Nothing)
-            | otherwise = (skewedBox, Just hyperplane, maybeSkewVar)
+            | otherwise 
+                = (skewedBox, Just hyperplane1, maybeSkewVar)
             where
-            hyperplaneClose
+            hyperplanesClose
                 | gotHyperPlane 
                     = 
-                    (isecPtDistance `RA.leqReals` 2) == Just True
+                    ((isecPtDistance `RA.leqReals` 2) == Just True)
+                    Prelude.&&
+                    ((isecPtDistance2 `RA.leqReals` 2) == Just True)
                 | otherwise = False
-            (isecPtDistance,  maybeSkewVar, skewedBox) = ppSkewAlongHyperPlane prebox hyperplane
-            (gotHyperPlane, hyperplane)
+            (isecPtDistance,  maybeSkewVar, skewedBox) = ppSkewAlongHyperPlane prebox hyperplane1
+            (isecPtDistance2, _, _) = ppSkewAlongHyperPlane prebox hyperplane2
+            (gotHyperPlane, hyperplane1, hyperplane2)
                 = case tv of
-                    (TVMUndecided _ _ ((_, hyperplane) : _)) -> (True, hyperplane)
-                    _ -> (False, error "PolyPaver.Logic: split: internal error")
+                    (TVMUndecided _ _ ((_, hyperplane1) : (_, hyperplane2) : _)) -> 
+                        (True, hyperplane1, hyperplane2)
+                    _ -> 
+                        (False, err, err)
+                where
+                err = error $ "PolyPaver.Logic: split: internal error, tv = " ++ show tv
             
         
         -- perform split (potentially after skewing):

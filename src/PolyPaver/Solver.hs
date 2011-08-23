@@ -54,7 +54,7 @@ loop
     origstartdeg maxdeg improvementRatioThreshold 
     maxsize
     mindepth maxdepth maxDepthReached
-    ix maxtime prec form 
+    ix maxtime prec originalForm 
 --    intvarids 
     initbox
     =
@@ -71,9 +71,9 @@ loop
     -- start looping:
     loopAux
         mstateTV inittime
-        form maxDepthReached
+        maxDepthReached
 
-        (Q.singleton (0,origstartdeg,initbox)) -- initial queue with one box only
+        (Q.singleton (0,origstartdeg,originalForm,initbox)) -- initial queue with one box only
         1 -- queue length
         inittime -- prevtime
 
@@ -85,7 +85,7 @@ loop
     where
     loopAux 
         mstateTV inittime
-        form maxDepthReached 
+        maxDepthReached 
         queue qlength prevtime 
         computedboxes problemvol truevol 
         maybeCurrdeg maybePrevMeasure
@@ -123,7 +123,7 @@ loop
                 reportProved
                 loopAux
                     mstateTV inittime
-                    form maxDepthReached 
+                    maxDepthReached 
                     boxes (qlength-1) currtime
                     (computedboxes+1) problemvol newtruevol 
                     Nothing Nothing
@@ -146,7 +146,7 @@ loop
                 currtime <- getCPUTime
                 loopAux
                     mstateTV inittime
-                    form maxDepthReached 
+                    maxDepthReached 
                     queue qlength currtime 
                     computedboxes problemvol truevol
                     (Just $ currdeg + 1)
@@ -170,9 +170,9 @@ loop
                 do
                 currtime <- getCPUTime
                 reportSplit
-                bisectAndRecur undecidedSimplerForm currtime [boxL, boxR] newproblemvol
+                bisectAndRecur undecidedMaybeSimplerForm currtime [boxL, boxR] newproblemvol
 
-        (depth, startdeg, box) = Q.index queue 0
+        (depth, startdeg, form, box) = Q.index queue 0
         dim = DBox.size box
         boxes = Q.drop 1 queue
 
@@ -181,7 +181,7 @@ loop
                 B -> 
                     loopAux
                         mstateTV inittime
-                        form (max (depth+1) maxDepthReached) 
+                        (max (depth+1) maxDepthReached) 
                         (boxes Q.>< (Q.fromList newBoxes2)) 
                         newQLength currtime 
                         (computedboxes+1) newproblemvol truevol 
@@ -189,7 +189,7 @@ loop
                 D ->
                     loopAux 
                         mstateTV inittime
-                        form (max (depth+1) maxDepthReached) 
+                        (max (depth+1) maxDepthReached) 
                         ((Q.fromList newBoxes2) Q.>< boxes) 
                         newQLength currtime 
                         (computedboxes+1) newproblemvol truevol 
@@ -200,16 +200,18 @@ loop
             newBoxes2 
                 = map prepareBox $ filter (not. (ppOutsideRect initbox)) newBoxes
             prepareBox box =            
-                (depth+1,newstartdeg,box)
+                (depth+1,newstartdeg, form,box)
         (splitSuccess, maybeHP, (boxL,boxR))
             = L.split thinvarids box noBoxSkewing value
         (_, _, (boxLNoHP,boxRNoHP))
             = L.split thinvarids box True value
-        newproblemvol
+        (newproblemvol, undecidedMaybeSimplerForm)
             =
             case maybeHP of
-                Nothing -> problemvol
-                _ -> problemvol - (ppVolume box) + (ppVolume boxL) + (ppVolume boxR)
+                Nothing -> (problemvol, undecidedSimplerForm)
+                _ -> (problemvol - (ppVolume box) + (ppVolume boxL) + (ppVolume boxR), originalForm)
+                    -- when skewing, the new boxes are not sub-boxes of box and thus we cannot
+                    -- rely on the simplification of form performed while evaluating it over box
 
         newtruevol = truevol + (ppVolume box)
 
