@@ -12,7 +12,19 @@
 
     Parallelepiped boxes for paving domains.
 -}
-module PolyPaver.PPBox where
+module PolyPaver.PPBox 
+(
+    PPBox,
+    BoxHyperPlane,
+    ppShow,
+    ppVolume,
+    ppCentre,
+    ppCorners,
+    ppEqual,
+    ppCoeffsZero,
+    ppSkewAlongHyperPlane
+)
+where
 
 import Numeric.ER.Misc
 import qualified Numeric.ER.Real.Approx as RA
@@ -30,21 +42,51 @@ type Coeffs b = IMap.IntMap (IRA b)
 
 type BoxHyperPlane b = Affine b
 
-ppShow box =
-    "PP{ centre=" ++ show centre ++ "; "
-    ++ (intercalate ", " $ map showPt vars)
+ppShow box 
+    =
+    "PP{ corner0=" ++ show corner0 ++ "; "
+    ++ (intercalate ", " $ map showVarCorner vars)
     ++ "}"
     where
     (vars, affines) = unzip $ IMap.toAscList box
     (centre, coeffsList) = unzip affines
-    showPt pt =
-        "corner" ++ show pt ++ "=" ++ show (getPt pt)
-    getPt pt =
-        zipWith (+) centre $
-        map (getCoord pt) coeffsList
+    corner0 = getCorner centre coeffsList (replicate (length vars) (-1))
+    showVarCorner var =
+        "corner" ++ show (var + 1) ++ "=" ++ show (getVarCorner var)
+    getVarCorner var =
+        getCorner centre coeffsList signs
         where
-        getCoord pt coeffs =
-            case IMap.lookup pt coeffs of Just cf -> cf
+        signs = 
+            replicate var (-1)
+            ++ 
+            [1]
+            ++
+            (replicate (length vars - var - 1) (-1))
+
+ppCentre box =
+    fst $ unzip $ snd $ unzip $ IMap.toAscList box
+
+ppCorners box
+    =
+    map (getCorner centre coeffsList) signCombinations
+    where
+    (vars, affines) = unzip $ IMap.toAscList box
+    (centre, coeffsList) = unzip affines
+    signCombinations
+        = map (map snd) $ allPairsCombinations $ zip vars $ repeat (-1,1)
+
+getCorner ::
+    (B.ERRealBase b) =>
+    [IRA b] -> [IMap.IntMap (IRA b)] -> [IRA b] -> [IRA b]
+getCorner centre coeffsList signs =
+    zipWith (+) centre $
+        map (sumWithSigns signs) coeffsList
+    where
+    sumWithSigns sings coeffs
+        =
+        sum $ zipWith (*) signs $ map snd $ IMap.toAscList coeffs
+    getCoord pt coeffs =
+        case IMap.lookup pt coeffs of Just cf -> cf
 
 ppVolume :: (B.ERRealBase b) => PPBox b -> IRA b
 ppVolume box
@@ -103,7 +145,7 @@ ppSkewAlongHyperPlane ::
     (B.ERRealBase b) => 
     PPBox b -> BoxHyperPlane b -> (IRA b, Maybe Int, PPBox b)
 ppSkewAlongHyperPlane prebox hp@(hp_const, hp_coeffs)
-    | 0 `RA.refines` largest_hp_coeff = (1/0, Nothing, prebox) -- zero skewing - hyperplane parallel to a side of prebox
+    | 0 `RA.refines` skewVar_stretch = (1/0, Nothing, prebox) -- zero skewing - hyperplane parallel to a side of prebox 
     | otherwise 
         =
 --        unsafePrint
@@ -137,18 +179,20 @@ ppSkewAlongHyperPlane prebox hp@(hp_const, hp_coeffs)
                     af_coeff - (af_coeff_skewVar * hp_coeff / hp_coeff_skewVar)
             -- the interpretation of skewVar makes the new box stretch to still cover the original box:
             stretched_af_coeff_skewVar
-                = af_coeff_skewVar * (1 + (sum $ map absScale $ IMap.elems hp_coeffs_noSkewVar))
-                where
-                absScale hp_coeff
-                    = abs (hp_coeff / hp_coeff_skewVar)
+                = af_coeff_skewVar * (1 + skewVar_stretch)
             af_coeff_skewVar 
                 = case IMap.lookup skewVar af_coeffs of Just cf -> cf
             af_coeffs_outside_hp
                 = IMap.difference af_coeffs hp_coeffs
-            hp_coeff_skewVar
-                = case IMap.lookup skewVar hp_coeffs of Just cf -> cf 
-            hp_coeffs_noSkewVar 
-                = IMap.delete skewVar hp_coeffs
+    hp_coeff_skewVar
+        = case IMap.lookup skewVar hp_coeffs of Just cf -> cf 
+    hp_coeffs_noSkewVar 
+        = IMap.delete skewVar hp_coeffs
+    skewVar_stretch
+        = sum $ map absScale $ IMap.elems hp_coeffs_noSkewVar
+        where
+        absScale hp_coeff
+            = abs (hp_coeff / hp_coeff_skewVar)
     (largest_hp_coeff, skewVar) 
         = foldl max (0,-1) $ map flipAbs $ IMap.toList hp_coeffs
         where
