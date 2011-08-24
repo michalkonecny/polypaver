@@ -138,7 +138,10 @@ loop
                   show ((fromInteger (currtime-inittime)) / 1000000000000) ++
                   "\nComputed  boxes : " ++ show computedboxes ++ 
                   "\nMax depth : " ++ show maxDepthReached ++  
-                  "\nDepth : " ++ show depth ++ "\n\n"
+                  "\nDepth : " ++ show depth ++
+                  "\nFormula : " ++ show form ++
+                  "\nFormula details: \n" ++ formDebug ++
+                  "\n\n" 
                 stopProver 
             | currdeg < maxdeg && undecidedMeasureImproved = -- try raising the degree before splitting
                 do
@@ -164,7 +167,8 @@ loop
                   "\nComputed boxes : " ++ show computedboxes ++ 
     --           "\nQueue length : " ++ show qlength ++
                   "\nMaxdepth : " ++ show maxDepthReached ++  
-                  "\nDepth : " ++ show depth ++ "\n\n"
+                  "\nDepth : " ++ show depth ++ 
+                  "\n\n"
                 stopProver 
             | otherwise = -- formula undecided on this box, will split it
                 do
@@ -243,6 +247,10 @@ loop
             case fptype of
                  B32 -> evalForm currdeg maxsize ix box (23,-126) form :: L.TVM -- Maybe Bool
                  B64 -> evalForm currdeg maxsize ix box (52,-1022) form :: L.TVM -- Maybe Bool
+        L.TVDebugReport formDebug = 
+            case fptype of
+                 B32 -> evalForm currdeg maxsize ix box (23,-126) form :: L.TVDebugReport
+                 B64 -> evalForm currdeg maxsize ix box (52,-1022) form :: L.TVDebugReport
 
         newstartdeg =
             (origstartdeg + currdeg) `div` 2
@@ -261,7 +269,7 @@ loop
         reportBox
             =
             do 
-            putStrLn $ "proving over box: " ++ ppShow box
+            putStrLn $ "proving over box" ++ show computedboxes ++  ": " ++ ppShow box
             return ()
                 
         reportInitSplit

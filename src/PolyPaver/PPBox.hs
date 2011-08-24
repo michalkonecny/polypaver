@@ -23,6 +23,7 @@ module PolyPaver.PPBox
     ppEqual,
     ppCoeffsZero,
     ppIsectInterior,
+    ppPointInInterior,
     ppSkewAlongHyperPlane
 )
 where

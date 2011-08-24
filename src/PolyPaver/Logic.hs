@@ -189,3 +189,31 @@ instance TruthValue TVM where
 combineHPs hps1 hps2
     = List.sortBy (\(m1, _) (m2, _) -> compare m1 m2) $ hps1 ++ hps2 
     
+data TVDebugReport = TVDebugReport String    
+    
+instance TruthValue TVDebugReport where
+    not tv = tv
+    (TVDebugReport r1) && (TVDebugReport r2) = TVDebugReport $ r1 ++ r2 
+    (TVDebugReport r1) || (TVDebugReport r2) = TVDebugReport $ r1 ++ r2 
+    (TVDebugReport r1) ~> (TVDebugReport r2) = TVDebugReport $ r1 ++ r2 
+    fromBool _ _ = TVDebugReport ""
+    bot form = TVDebugReport ""
+    leq form a b = 
+        TVDebugReport $
+            banner
+            ++ "\nLEQ:\n" ++ show form
+            ++ "\n\nLHS:\n" ++ show a
+            ++ "\n\nRHS:\n" ++ show b
+            ++ "\n\nRESULT = " ++ show (a `RA.leqReals` b)
+            where
+            banner = concat $ replicate 100 "<="
+    includes form a b = 
+        TVDebugReport $
+            banner
+            ++ "\nINCL:\n" ++ show form
+            ++ "\n\nLHS:\n" ++ show b
+            ++ "\n\nRHS:\n" ++ show a
+            ++ "\n\nRESULT = " ++ show (a `RA.leqReals` b)
+            where
+            banner = concat $ replicate 100 "<="
+            

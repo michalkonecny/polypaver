@@ -37,9 +37,9 @@ o2 n = (- d, d)
     d = 2 ^^ (-n)
     
 o2e n =
-    plusMinus (2^^(-n)) 
+   plusMinus $ Lit (2^^(-n)) 
         
-float_range = plusMinus float_max
+float_range = plusMinus $ Lit float_max
 float_max = (fromInteger 0x1FFFFFE) * 2^(127 - 24)
 
 proval_cosine_1 =
@@ -68,10 +68,10 @@ proval_cosine_2 =
     exact_x = Var 1 -- [-2^(-5),2^(-5)]
     
     float_result = 1.0
-    float_result0 = (float_x *: float_x);
+    float_result0 = (float_x * float_x);
     float_result1 = 0.5;
-    float_result2 = (float_result0 *: float_result1);
-    float_result3 = (float_result -: float_result2); -- = 1 - 0.5*float_x*float_x
+    float_result2 = (float_result0 * float_result1);
+    float_result3 = (float_result - float_result2); -- = 1 - 0.5*float_x*float_x
 
     exact_result = 1.0
     exact_result0 = (exact_x * exact_x);
