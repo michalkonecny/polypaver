@@ -105,8 +105,8 @@ defaultMain problem =
         ordr -- sub-problem processing order
         repor -- 
         fpt -- 
-        splitGuessingOpt
         boxSkewingOpt
+        splitGuessingOpt
         startdeg
         maxdeg -- maximum bound degree
         improvementRatioThreshold -- when to try raising degree/effort and when to give up and split

@@ -14,9 +14,6 @@
 -}
 module PolyPaver.Logic where
 
-import Prelude hiding (not)
-import qualified Prelude
-
 import PolyPaver.PPBox
 import PolyPaver.Form
 
@@ -81,7 +78,7 @@ instance TruthValue TVM where
     (TVMDecided False) ~> _ = TVMDecided True
     (TVMDecided True) ~> tv = tv
     _ ~> (TVMDecided True) = TVMDecided True
-    tv ~> (TVMDecided False) = not tv
+    tv ~> (TVMDecided False) = PolyPaver.Logic.not tv
     (TVMUndecided form1 dist1 hps1) ~> (TVMUndecided form2 dist2 hps2)
         = TVMUndecided (Implies form1 form2) (max dist1 dist2) (combineHPs hps1 hps2)
 
@@ -90,7 +87,7 @@ instance TruthValue TVM where
         case a `RA.leqReals` b of
             Just result -> TVMDecided result
             Nothing ->
-                case vagueness `RA.leqReals` 0.25 of
+                case vagueness `RA.leqReals` (2^^(-10)) of
                     Just True -> TVMUndecided form distance [(distance, hyperplane)]
                     _ -> TVMUndecided form distance []
         where
@@ -98,13 +95,14 @@ instance TruthValue TVM where
         hyperplane = (t c, IMap.map t $ IMap.fromList $ Map.toList coeffs)
         t [a] = a
         (c, coeffs) = UFA.getAffineUpperBound $ a - b
-        vagueness = (t c - t cDn) / slope -- average distance of upper and lower linear bound of a - b
-        slope = sum $ map (abs . head) $ Map.elems coeffs 
+        vagueness = (t c - t cDn) / avgSlope -- average distance of upper and lower linear bound of a - b
+        avgSlope = (sum $ map (abs . head) $ Map.elems coeffs) / (fromIntegral $ Map.size coeffs)
         (cDn, _) = UFA.getAffineUpperBound $ b - a
     includes form a b = 
-        case a `RA.includes` b of
-            Just result -> TVMDecided result
-            Nothing -> TVMUndecided form 1 [] -- TODO
+        (leq form aL bL) PolyPaver.Logic.&& (leq form bR aR)
+        where
+        (_,(aL,aR)) = RA.oiBounds a
+        ((bL,bR),_) = RA.oiBounds b 
     bot form = TVMUndecided form (1/0) [] -- infinite badness...
     decide _ (TVMDecided result) = Just result
     decide _ (TVMUndecided _ _ _) = Nothing
@@ -150,7 +148,7 @@ instance TruthValue TVM where
             =
             case maybeSkewVar2 of
                 Just var
-                    | 10 * varWidth < largestWidth -> widestVar
+                    | 5 * varWidth < largestWidth -> widestVar
                     | otherwise -> var
                     where
                     varWidth = case IMap.lookup var widths of Just w -> w
