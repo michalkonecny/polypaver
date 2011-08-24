@@ -50,7 +50,8 @@ data Paver = Paver
     ,order :: Order
     ,report :: Report
     ,fptype :: FPType
-    ,noBoxSkewing :: Bool
+    ,boxSkewing :: Bool
+    ,splitGuessing :: Bool
     ,plotWidth :: Int
     ,plotHieght :: Int
     }
@@ -65,7 +66,8 @@ paver = Paver
     ,maxDepth = 10 &= name "b" &= help "maximum bisection depth (default = 10)"
     ,effort = 10 &= help "approximation effort parameter (default = 10)" 
     ,time = 3600 &= help "timeout in seconds (default = 3600)"
-    ,noBoxSkewing = False &= name "k" &= help "stick to boxes aligned to coordinates, by default allow parallelepipeds"
+    ,boxSkewing = False &= name "k" &= help "allow parallelepiped boxes, by default only coaxial rectangles"
+    ,splitGuessing = False &= name "g" &= help "try guessing the best direction of splitting, by default tend towards square boxes"
     ,fptype = B32 &= help "type of binary floating point number, b32 for 32-bit (default) and b64 for 64-bit"
     ,report = VOL &= help "progress reporting, v for proved volume fraction (default)"
     ,plotWidth = 0 &= name "w" &= help "plot width for 2D problems, 0 mean no plotting (default)"
@@ -92,7 +94,8 @@ defaultMain problem =
         ordr = order args 
         repor = report args
         fpt = fptype args
-        noBoxSkewingOpt = noBoxSkewing args
+        splitGuessingOpt = splitGuessing args
+        boxSkewingOpt = boxSkewing args
         plotSizesOpt = (plotWidth args, plotHieght args)
         plotStepDelayMs = 0
         in do
@@ -102,7 +105,8 @@ defaultMain problem =
         ordr -- sub-problem processing order
         repor -- 
         fpt -- 
-        noBoxSkewingOpt
+        splitGuessingOpt
+        boxSkewingOpt
         startdeg
         maxdeg -- maximum bound degree
         improvementRatioThreshold -- when to try raising degree/effort and when to give up and split

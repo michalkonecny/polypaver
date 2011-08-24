@@ -43,7 +43,8 @@ class TruthValue tv where
     split :: 
         [Int] -> -- vars that must not be split
         PPBox BM -> -- box to split
-        Bool -> -- True to forbid skewing 
+        Bool -> -- True to allow skewing 
+        Bool -> -- True to allow split direction guessing 
         tv -> -- undecided truth value that may be used to help guide splitting and/or skewing 
         (Bool, -- whether split succeeded in providing two proper sub-boxes 
          Maybe (BoxHyperPlane BM), -- whether box skewing has been used
@@ -97,7 +98,8 @@ instance TruthValue TVM where
         hyperplane = (t c, IMap.map t $ IMap.fromList $ Map.toList coeffs)
         t [a] = a
         (c, coeffs) = UFA.getAffineUpperBound $ a - b
-        vagueness = t c - t cDn -- average distance of upper and lower linear bound of a - b 
+        vagueness = (t c - t cDn) / slope -- average distance of upper and lower linear bound of a - b
+        slope = sum $ map (abs . head) $ Map.elems coeffs 
         (cDn, _) = UFA.getAffineUpperBound $ b - a
     includes form a b = 
         case a `RA.includes` b of
@@ -107,20 +109,20 @@ instance TruthValue TVM where
     decide _ (TVMDecided result) = Just result
     decide _ (TVMUndecided _ _ _) = Nothing
     
-    split varsNotToSplit prebox noBoxSkewing tv 
+    split varsNotToSplit prebox boxSkewing splitGuessing tv 
         = 
         (success, maybeHP, (boxL, boxR))
         where
         -- investigate need for skewing and possibly skew:
         (box, maybeHP, maybeSkewVar2)
-            | noBoxSkewing 
+            | Prelude.not boxSkewing 
                 Prelude.|| 
                 (Prelude.not hyperplanesClose) 
                 = 
-                case gotHyperPlane of
+                case splitGuessing Prelude.&& gotHyperPlane of
                     True -> (prebox, Nothing, maybeSkewVar)
                     False -> (prebox, Nothing, Nothing)
-            | otherwise 
+            | otherwise
                 = (skewedBox, Just hyperplane1, maybeSkewVar)
             where
             hyperplanesClose

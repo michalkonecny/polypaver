@@ -50,7 +50,7 @@ data FPType =
 
 loop
     plotSize plotStepDelayMs
-    order report fptype noBoxSkewing
+    order report fptype boxSkewing splitGuessing
     origstartdeg maxdeg improvementRatioThreshold 
     maxsize
     mindepth maxdepth maxDepthReached
@@ -108,7 +108,7 @@ loop
                 do
                 reportInitSplit
                 currtime <- getCPUTime
-                bisectAndRecur form currtime [boxLNoHP, boxRNoHP] problemvol
+                bisectAndRecur form currtime [boxLNoHP, boxRNoHP] True
             | prevtime-inittime > maxtime*1000000000000 = 
                 do
                 putStr $
@@ -170,19 +170,19 @@ loop
                 do
                 currtime <- getCPUTime
                 reportSplit
-                bisectAndRecur undecidedMaybeSimplerForm currtime [boxL, boxR] newproblemvol
+                bisectAndRecur undecidedMaybeSimplerForm currtime [boxL, boxR] False
 
         (depth, skewParents, startdeg, form, box) = Q.index queue 0
         dim = DBox.size box
         boxes = Q.drop 1 queue
 
-        bisectAndRecur form currtime newBoxes newproblemvol =
+        bisectAndRecur form currtime newBoxes isSimpleSplit =
             case order of 
                 B -> 
                     loopAux
                         mstateTV inittime
                         (max (depth+1) maxDepthReached) 
-                        (boxes Q.>< (Q.fromList newBoxes2)) 
+                        (boxes Q.>< (Q.fromList $ map prepareBox newBoxes2)) 
                         newQLength currtime 
                         (computedboxes+1) newproblemvol truevol 
                         Nothing Nothing
@@ -190,35 +190,49 @@ loop
                     loopAux 
                         mstateTV inittime
                         (max (depth+1) maxDepthReached) 
-                        ((Q.fromList newBoxes2) Q.>< boxes) 
+                        ((Q.fromList $ map prepareBox newBoxes2) Q.>< boxes) 
                         newQLength currtime 
                         (computedboxes+1) newproblemvol truevol 
                         Nothing Nothing
             where
-            newQLength =
-                qlength - 1 + (length newBoxes2)
-            newBoxes2 
-                = map prepareBox $ filter intersectsAllSkewParents newBoxes
-            intersectsAllSkewParents box
-                = and $ map couldIntersectParent skewParents
+            newQLength = qlength - 1 + newBoxes2length
+            newBoxes2length = length newBoxes2
+            newBoxes2
+                = filter intersectsAllSkewAncestors newBoxes
                 where
-                couldIntersectParent parentBox
-                    = ppIsectInterior parentBox box /= Just False
-            prepareBox box =            
+                intersectsAllSkewAncestors box
+                    = and $ map couldIntersectParent skewParents
+                    where
+                    couldIntersectParent parentBox
+                        = ppIsectInterior parentBox box /= Just False
+            prepareBox box =
                 (depth+1,newSkewParents, newstartdeg, form,box)
+            newSkewParents
+                | isSimpleSplit = skewParents
+                | otherwise
+                    = case maybeHP of 
+                        Nothing -> skewParents
+                        _ -> box : skewParents 
+                    -- when skewing, part of the skewed box stretches outside of the original box - 
+                    -- when splitting this box and its subboxes, need to drop any that are completely outside this box
+            newproblemvol
+                | isSimpleSplit = problemvol
+                | otherwise
+                    =
+                    case (maybeHP, newBoxes2length) of
+                        (Nothing, 2) -> problemvol -- no skewing or dropping of boxes - a clean split
+                        _ -> problemvol - (ppVolume box) + (sum $ map ppVolume newBoxes2)
         (splitSuccess, maybeHP, (boxL,boxR))
-            = L.split thinvarids box noBoxSkewing value
+            = L.split thinvarids box boxSkewing splitGuessing value
         (_, _, (boxLNoHP,boxRNoHP))
-            = L.split thinvarids box True value
-        (newproblemvol, undecidedMaybeSimplerForm, newSkewParents)
+            = L.split thinvarids box False False value
+        undecidedMaybeSimplerForm
             =
             case maybeHP of
-                Nothing -> (problemvol, undecidedSimplerForm, skewParents)
-                _ -> (problemvol - (ppVolume box) + (ppVolume boxL) + (ppVolume boxR), 
-                      originalForm,
+                Nothing -> undecidedSimplerForm
+                _ -> originalForm
                     -- when skewing, the new boxes are not sub-boxes of box and thus we cannot
                     -- rely on the simplification of form performed while evaluating it over box
-                      box : skewParents)
 
         newtruevol = truevol + (ppVolume box)
 
@@ -303,6 +317,6 @@ loop
                     threadDelay $ 1000 * plotStepDelayMs
         green = (0.1,0.6,0.1,0.4)
         red = (0.1,0.6,0.1,0.4)
-        yellow = (0.6,0.6,0.1,0.4)
+        yellow = (0.6,0.6,0.1,0.05)
         
             
