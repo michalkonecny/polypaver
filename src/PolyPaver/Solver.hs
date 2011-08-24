@@ -73,7 +73,7 @@ loop
         mstateTV inittime
         maxDepthReached
 
-        (Q.singleton (0,origstartdeg,originalForm,initbox)) -- initial queue with one box only
+        (Q.singleton (0,[],origstartdeg,originalForm,initbox)) -- initial queue with one box only
         1 -- queue length
         inittime -- prevtime
 
@@ -172,7 +172,7 @@ loop
                 reportSplit
                 bisectAndRecur undecidedMaybeSimplerForm currtime [boxL, boxR] newproblemvol
 
-        (depth, startdeg, form, box) = Q.index queue 0
+        (depth, skewParents, startdeg, form, box) = Q.index queue 0
         dim = DBox.size box
         boxes = Q.drop 1 queue
 
@@ -198,20 +198,27 @@ loop
             newQLength =
                 qlength - 1 + (length newBoxes2)
             newBoxes2 
-                = map prepareBox $ filter (not. (ppOutsideRect initbox)) newBoxes
+                = map prepareBox $ filter intersectsAllSkewParents newBoxes
+            intersectsAllSkewParents box
+                = and $ map couldIntersectParent skewParents
+                where
+                couldIntersectParent parentBox
+                    = ppIsectInterior parentBox box /= Just False
             prepareBox box =            
-                (depth+1,newstartdeg, form,box)
+                (depth+1,newSkewParents, newstartdeg, form,box)
         (splitSuccess, maybeHP, (boxL,boxR))
             = L.split thinvarids box noBoxSkewing value
         (_, _, (boxLNoHP,boxRNoHP))
             = L.split thinvarids box True value
-        (newproblemvol, undecidedMaybeSimplerForm)
+        (newproblemvol, undecidedMaybeSimplerForm, newSkewParents)
             =
             case maybeHP of
-                Nothing -> (problemvol, undecidedSimplerForm)
-                _ -> (problemvol - (ppVolume box) + (ppVolume boxL) + (ppVolume boxR), originalForm)
+                Nothing -> (problemvol, undecidedSimplerForm, skewParents)
+                _ -> (problemvol - (ppVolume box) + (ppVolume boxL) + (ppVolume boxR), 
+                      originalForm,
                     -- when skewing, the new boxes are not sub-boxes of box and thus we cannot
                     -- rely on the simplification of form performed while evaluating it over box
+                      box : skewParents)
 
         newtruevol = truevol + (ppVolume box)
 

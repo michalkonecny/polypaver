@@ -23,6 +23,7 @@ module PolyPaver.PPBox
     ppEqual,
     ppCoeffsZero,
     ppOutsideRect,
+    ppIsectInterior,
     ppSkewAlongHyperPlane
 )
 where
@@ -89,6 +90,35 @@ getCorner centre coeffsList signs =
     getCoord pt coeffs =
         case IMap.lookup pt coeffs of Just cf -> cf
 
+ppEvalBox box ptUnitCoords
+    =
+    getCorner centre coeffsList ptUnitCoords
+    where
+    (vars, affines) = unzip $ IMap.toAscList box
+    (centre, coeffsList) = unzip affines
+    
+
+ppInvertBox box
+    =
+    IMap.fromAscList $ map (\(v,(c,cfList)) -> (v,(c, IMap.fromAscList cfList))) $
+    case map (\(v,(c,cfs)) -> (v,(c, IMap.toAscList cfs))) $ IMap.toList box of
+        [(0, (o1, [(0, cf11)]))] -> -- one variable
+            [(0, (-o1/cf11, [(0, 1/cf11)]))]
+        [(0, (o1, [(0, cf11),(1, cf12)])),
+         (1, (o2, [(0, cf21),(1, cf22)]))] -> -- two variables
+            [(0, (io1, [(0, icf11),(1, icf12)])),
+             (1, (io2, [(0, icf21),(1, icf22)]))]
+            where
+            det = cf11 * cf22 - cf12 * cf21
+            io1 = (o2 * cf12 - o1 * cf22) / det
+            io2 = (o1 * cf21 - o2 * cf11) / det
+            icf11 = cf22 / det
+            icf12 = - cf12 / det
+            icf21 = - cf21 / det
+            icf22 = cf11 / det
+        _ ->
+            error "box inversion currently supported only for dimensions 1 and 2"
+
 ppVolume :: (B.ERRealBase b) => PPBox b -> IRA b
 ppVolume box
     = abs $ determinant $ 
@@ -142,14 +172,14 @@ ppCoeffsZero coeffs
             _ -> False
 
 ppOutsideRect rectbox box =
-    unsafePrintReturn
-    (
-        "ppOutsideRect: "
-        ++ "\n rectboxintervals = " ++ show rectboxintervals
-        ++ "\n corners = " ++ show corners
-        ++ "\n map ptIsOut corners = " ++ (show $ map ptIsOut corners)
-        ++ "\n result = "
-    ) $
+--    unsafePrintReturn
+--    (
+--        "ppOutsideRect: "
+--        ++ "\n rectboxintervals = " ++ show rectboxintervals
+--        ++ "\n corners = " ++ show corners
+--        ++ "\n map ptIsOut corners = " ++ (show $ map ptIsOut corners)
+--        ++ "\n result = "
+--    ) $
     and $ map ptIsOut corners
     where
     corners = ppCorners box
@@ -165,13 +195,64 @@ ppOutsideRect rectbox box =
             where
             cf = case IMap.lookup var coeffs of Just cf -> cf ; _ -> 0 
         
-
+ppIsectInterior ::
+    (B.ERRealBase b) => 
+    PPBox b -> PPBox b -> Maybe Bool
+ppIsectInterior box1 box2
+    | dim > 2 = Nothing -- box inversion currently supported only for dim <= 2
+    | otherwise 
+        =
+        do
+        trues1 <- sequence $ filter (/= (Just False)) $ map ptIsInside2 corners1
+        trues2 <- sequence $ filter (/= (Just False)) $ map ptIsInside1 corners2
+        case trues1 ++ trues2 of
+            [] -> Just False -- all corners outside the opposite box
+            _ -> Just True -- at least one point inside
+    where
+    dim = IMap.size box1
+    corners1 = ppCorners box1
+    corners2 = ppCorners box2
+    ptIsInside1 pt =
+        ppPointInInterior box1 pt
+    ptIsInside2 pt =
+        ppPointInInterior box2 pt
+            
+ppPointInInterior box pt
+    =
+--    unsafePrint
+--    (
+--        "ppPointInInterior"
+--        ++ "\n box = " ++ ppShow box
+--        ++ "\n pt = " ++ show pt
+--        ++ "\n invBox = " ++ ppShow invBox
+--        ++ "\n invPt = " ++ show invPt
+--        ++ "\n mapM insideUnitInterval invPt = " ++ show (mapM insideUnitInterval invPt)
+--    ) $
+    do
+    coordsInside <- mapM insideUnitInterval invPt
+    Just $ and coordsInside -- all coords inside [-1,1]
+    where
+    invPt = ppEvalBox invBox pt
+    invBox = ppInvertBox box
+    insideUnitInterval coord
+        | coordR <= (-1)  = Just False
+        | coordL >= 1 = Just False
+        | (-1) < coordL && coordR < 1 = Just True
+        | otherwise = Nothing
+        where
+        (coordL, coordR) = RA.bounds coord
             
 ppSkewAlongHyperPlane ::
     (B.ERRealBase b) => 
     PPBox b -> BoxHyperPlane b -> (IRA b, Maybe Int, PPBox b)
 ppSkewAlongHyperPlane prebox hp@(hp_const, hp_coeffs)
-    | 0 `RA.refines` skewVar_stretch = (1/0, Nothing, prebox) -- zero skewing - hyperplane parallel to a side of prebox 
+    | 0 `RA.refines` skewVar_stretch = 
+--        unsafePrint
+--        (
+--            "ppSkewAlongHyperPlane: hyperplane parallel to box"
+--            ++"\n maybeSkewVar = " ++ show maybeSkewVar 
+--        ) $
+        (1/0, maybeSkewVar, prebox) -- zero skewing - hyperplane parallel to a side of prebox 
     | otherwise 
         =
 --        unsafePrint
@@ -181,7 +262,7 @@ ppSkewAlongHyperPlane prebox hp@(hp_const, hp_coeffs)
 --            ++"\n box = " ++ ppShow box
 --            ++"\n" 
 --        ) $
-        (isecPtDistance, Just skewVar, box)
+        (isecPtDistance, maybeSkewVar, box)
     where
     isecPtDistance = abs $ hp_const / largest_hp_coeff
     box = 
@@ -219,10 +300,11 @@ ppSkewAlongHyperPlane prebox hp@(hp_const, hp_coeffs)
         where
         absScale hp_coeff
             = abs (hp_coeff / hp_coeff_skewVar)
-    (largest_hp_coeff, skewVar) 
-        = foldl max (0,-1) $ map flipAbs $ IMap.toList hp_coeffs
+    Just skewVar = maybeSkewVar 
+    (largest_hp_coeff, maybeSkewVar) 
+        = foldl max (0, Nothing) $ map flipAbs $ IMap.toList hp_coeffs
         where
-        flipAbs (var, cf) = (abs cf, var)
+        flipAbs (var, cf) = (abs cf, Just var)
      
     
     
