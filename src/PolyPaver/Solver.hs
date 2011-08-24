@@ -32,6 +32,7 @@ import Numeric.ER.Misc
 import Data.List
 import Data.Maybe
 
+import System (getArgs, getProgName)
 import System.Console.CmdArgs
 import Control.Concurrent (threadDelay)
 import System.CPUTime
@@ -59,6 +60,10 @@ loop
     initbox
     =
     do
+    args <- getArgs
+    progName <- getProgName
+    putStrLn $ "command line: " ++ progName ++ " " ++ (intercalate " " args)
+    putStrLn $ "proving: " ++ show originalForm
     -- possibly initialise plotting:
     mstateTV <- case plotSize of
         (0,0) -> return Nothing
@@ -319,6 +324,7 @@ loop
             =
             case mstateTV of
                 Nothing -> return ()
+                _ | depth > 16 -> return ()
                 Just stateTV ->
                     do
                     Plot.addBox stateTV colour box
