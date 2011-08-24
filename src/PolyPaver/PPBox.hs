@@ -22,7 +22,6 @@ module PolyPaver.PPBox
     ppCorners,
     ppEqual,
     ppCoeffsZero,
-    ppOutsideRect,
     ppIsectInterior,
     ppSkewAlongHyperPlane
 )
@@ -171,30 +170,6 @@ ppCoeffsZero coeffs
             Just True -> True
             _ -> False
 
-ppOutsideRect rectbox box =
---    unsafePrintReturn
---    (
---        "ppOutsideRect: "
---        ++ "\n rectboxintervals = " ++ show rectboxintervals
---        ++ "\n corners = " ++ show corners
---        ++ "\n map ptIsOut corners = " ++ (show $ map ptIsOut corners)
---        ++ "\n result = "
---    ) $
-    and $ map ptIsOut corners
-    where
-    corners = ppCorners box
-    ptIsOut pt =
-        or $ map coordOutside $ zip pt rectboxintervals
-    coordOutside (coord, interval) = 
-        not $ coord `RA.refines` interval
-    rectboxintervals =
-        map getInterval $ IMap.toAscList rectbox
-        where
-        getInterval (var, (const, coeffs))
-            = (const - cf) RA.\/ (const + cf)
-            where
-            cf = case IMap.lookup var coeffs of Just cf -> cf ; _ -> 0 
-        
 ppIsectInterior ::
     (B.ERRealBase b) => 
     PPBox b -> PPBox b -> Maybe Bool
@@ -235,12 +210,13 @@ ppPointInInterior box pt
     invPt = ppEvalBox invBox pt
     invBox = ppInvertBox box
     insideUnitInterval coord
-        | coordR <= (-1)  = Just False
-        | coordL >= 1 = Just False
-        | (-1) < coordL && coordR < 1 = Just True
-        | otherwise = Nothing
-        where
-        (coordL, coordR) = RA.bounds coord
+        = (RA.bounds coord) `strictlyInsideBounds` (-1,1)
+            
+strictlyInsideBounds (aL,aR) (bL,bR)
+    | aR <= bL  = Just False
+    | aL >= bR = Just False
+    | bL < aL && aR < bR = Just True
+    | otherwise = Nothing
             
 ppSkewAlongHyperPlane ::
     (B.ERRealBase b) => 
