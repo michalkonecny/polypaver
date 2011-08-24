@@ -28,9 +28,9 @@ main =
         {box = bench_sqrt_box
         ,theorem = bench_sqrt}
 
-indices = [0..2]
+indices = [0..1]
 
-distance = 0.5^^8
+distance = 0.5^^4
 
 bench_sqrt_box = [(i, (1,2)) | i <- indices]
 
