@@ -16,6 +16,7 @@
 -}
 module Main where
 
+import PolyPaver.Paver
 import PolyPaver.Form
 import PolyPaver.Vars
 
@@ -24,7 +25,6 @@ import Data.Char
 import Data.List
 import Data.List.Split (splitOn)
 import Control.Monad
-import qualified System.FilePath as FP
 
 import Text.Parsec
 import Text.Parsec.String
@@ -39,41 +39,13 @@ main = do
   let vcSs = vcSplitter fileS
   let vcs = map parseVC vcSs
   let vcBoxes = map addBox $ filter (notVerum . snd) vcs
-  mapM_ (writeVCMain outputFolder) $ vcBoxes
+  mapM_ (writePolyPaverMain outputFolder) $ vcBoxes
   
 addBox (name, form) =
     (name, formN, getBox formN)
     where
     formN = normaliseVars form
-
   
-writeVCMain outputFolder (name, form, box) =
-    do
-    writeFile outputFile mainS 
-    where
-    outputFile = outputFolder `FP.combine` (name ++ ".hs")
-    mainS =
-        unlines $
-            [
-             "module Main(main) where"
-            ,""
-            ,"import PolyPaver.Paver"
-            ,"import Data.Ratio ((%))"
-            ,""
-            ,"main ="
-            ,"    defaultMain Problem"
-            ,"        {"
-            ,"          box = " ++ show box
---            ,"          ,ivars = []"
-            ,"          ,theorem = thm"
-            ,"        }"
-            ,"thm ="
-            ,"    " ++ show form
-            ,""
-            ]       
-
-     
-
 parseVC s =
     case parse vcParser "vc" s of
         Right t -> t
