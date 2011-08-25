@@ -38,12 +38,17 @@ main = do
   fileS <- readFile inputPathS
   let vcSs = vcSplitter fileS
   let vcs = map parseVC vcSs
-  let vcBoxes = map addBox $ filter (notVerum . snd) vcs
+  let vcBoxes = map (addBox inputPathS) $ filter (notVerum . snd) vcs
   mapM_ (writePolyPaverMain outputFolder) $ vcBoxes
   
-addBox (name, form) =
-    (name, formN, getBox formN)
+addBox inputPathS (name, form) =
+    (name, formN, box)
     where
+    box =
+        case getBox formN of
+            Left err -> 
+                error $ "readsiv: problem with VC " ++ name ++ ":\n" ++ err
+            Right box -> box
     formN = normaliseVars form
   
 parseVC s =
