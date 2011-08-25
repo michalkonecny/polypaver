@@ -68,7 +68,7 @@ paver = Paver
     ,time = 3600 &= help "timeout in seconds (default = 3600)"
     ,boxSkewing = False &= name "k" &= help "allow parallelepiped boxes, by default only coaxial rectangles"
     ,splitGuessing = False &= name "g" &= help "try guessing the best direction of splitting, by default tend towards square boxes"
-    ,fptype = B32 &= help "type of binary floating point number, b32 for 32-bit (default) and b64 for 64-bit"
+    ,fptype = B32near &= help "type of binary floating point number and rounding mode, b32 or b32near (default) for 32-bit and b64 or b64near for 64-bit"
     ,report = VOL &= help "progress reporting, v for proved volume fraction (default)"
     ,plotWidth = 0 &= name "w" &= help "plot width for 2D problems, 0 mean no plotting (default)"
     ,plotHieght = 0 &= name "h" &= help "plot height for 2D problems, 0 mean no plotting (default)"

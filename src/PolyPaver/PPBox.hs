@@ -22,8 +22,8 @@ module PolyPaver.PPBox
     ppCorners,
     ppEqual,
     ppCoeffsZero,
-    ppIsectInterior,
-    ppPointInInterior,
+    ppIntersect,
+    ppPointInside,
     ppSkewAlongHyperPlane
 )
 where
@@ -36,7 +36,7 @@ import Numeric.ER.Real.DefaultRepr
 import Numeric.ER.RnToRm.DefaultRepr
 
 import qualified Data.IntMap as IMap
-import Data.List (intercalate)
+import Data.List (intercalate, sort)
 
 type PPBox b = IMap.IntMap (Affine b)
 type Affine b = (IRA b, Coeffs b)
@@ -171,52 +171,55 @@ ppCoeffsZero coeffs
             Just True -> True
             _ -> False
 
-ppIsectInterior ::
+ppIntersect ::
     (B.ERRealBase b) => 
     PPBox b -> PPBox b -> Maybe Bool
-ppIsectInterior box1 box2
+ppIntersect box1 box2
     | dim > 2 = Nothing -- box inversion currently supported only for dim <= 2
     | otherwise 
         =
-        do
-        trues1 <- sequence $ filter (/= (Just False)) $ map ptIsInside2 corners1
-        trues2 <- sequence $ filter (/= (Just False)) $ map ptIsInside1 corners2
-        case trues1 ++ trues2 of
-            [] -> Just False -- all corners outside the opposite box
-            _ -> Just True -- at least one point inside
+        case reverse $ sort $ trues1 ++ trues2 of
+            [] -> Just False -- no corner is inside the opposite box
+            (Nothing : _) -> Nothing -- no corner definitely inside but some undecided
+            _ -> Just True -- at least one corner inside the other box
     where
+    trues1 = filter (/= (Just False)) $ map ptIsInside2 corners1
+    trues2 = filter (/= (Just False)) $ map ptIsInside1 corners2
     dim = IMap.size box1
     corners1 = ppCorners box1
     corners2 = ppCorners box2
     ptIsInside1 pt =
-        ppPointInInterior box1 pt
+        ppPointInside box1 pt
     ptIsInside2 pt =
-        ppPointInInterior box2 pt
+        ppPointInside box2 pt
             
-ppPointInInterior box pt
+ppPointInside box pt
     =
 --    unsafePrint
 --    (
---        "ppPointInInterior"
+--        "ppPointInside"
 --        ++ "\n box = " ++ ppShow box
 --        ++ "\n pt = " ++ show pt
 --        ++ "\n invBox = " ++ ppShow invBox
 --        ++ "\n invPt = " ++ show invPt
 --        ++ "\n mapM insideUnitInterval invPt = " ++ show (mapM insideUnitInterval invPt)
 --    ) $
-    do
-    coordsInside <- mapM insideUnitInterval invPt
-    Just $ and coordsInside -- all coords inside [-1,1]
+    
+    case reverse $ sort falses of
+        [] -> Just True -- all true
+        (Nothing : _) -> Nothing -- all either true or undecided
+        _ -> Just False -- some false is there
     where
+    falses = filter (/= (Just True)) $ map insideUnitInterval invPt
     invPt = ppEvalBox invBox pt
     invBox = ppInvertBox box
     insideUnitInterval coord
-        = (RA.bounds coord) `strictlyInsideBounds` (-1,1)
+        = (RA.bounds coord) `insideBounds` (-1,1)
             
-strictlyInsideBounds (aL,aR) (bL,bR)
-    | aR <= bL  = Just False
-    | aL >= bR = Just False
-    | bL < aL && aR < bR = Just True
+insideBounds (aL,aR) (bL,bR)
+    | aR < bL  = Just False
+    | aL > bR = Just False
+    | bL <= aL && aR <= bR = Just True
     | otherwise = Nothing
             
 ppSkewAlongHyperPlane ::

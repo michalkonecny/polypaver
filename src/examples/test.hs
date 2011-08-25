@@ -32,13 +32,13 @@ exp_shift =
 test_skew =
     Problem box thm 
     where
-    box = [(0, (1,4)), (1, (1,4))]
+    box = [(0, (0,4)), (1, (0,4))]
     x = Var 0
     y = Var 1
     thm = 
         x |<=| y*y
         --->
-        x |<=| y*y + 0.01
+        x |<=| y*y + 0.025
 --        exp x |<=| exp (y*y) + 0.1
          
 
