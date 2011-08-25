@@ -176,13 +176,24 @@ normaliseVars form =
         Map.fromAscList $ zip (Set.toAscList varSet) [0..]
     varSet = getFormFreeVars form
 
-getBox :: Form -> [(Int, (Rational, Rational))]
+getBox :: Form -> Either String [(Int, (Rational, Rational))]
 getBox form =
-    Map.toAscList boxMap
+    checkAllThere $ Map.toAscList boxMap
     where
+    checkAllThere varRanges
+        | allGood = Right $ map removeJust varRanges
+        | otherwise = Left errorMessage
+        where
+        allGood = and $ map isGood varRanges
+        isGood (v, (Just _,Just _)) = True
+        isGood _ = False
+        removeJust (v, (Just l, Just r)) = (v, (l,r))
+        errorMessage =
+            unlines $ map reportBadVar $ filter (not . isGood) varRanges
+        reportBadVar (v, _) =
+            "*** failed to derive a bound for variable " ++ show v ++ " in formula " ++ show form 
     varSet = getFormFreeVars form
-    initBoxMap = Map.fromAscList $ zip (Set.toAscList varSet) (repeat floatRange)
-    floatRange = (- 340282000000000000000000000000000000000, 340282000000000000000000000000000000000)
+    initBoxMap = Map.fromAscList $ zip (Set.toAscList varSet) (repeat (Nothing, Nothing))
     boxMap = findRepeat initBoxMap $ tail $ (iterate $ scanHypotheses form) initBoxMap
     scanHypotheses (Implies h c) =
         scanHypotheses c . scanHypothesis h 
@@ -190,67 +201,69 @@ getBox form =
     scanHypothesis (And h1 h2) box = 
         (scanHypothesis h1 . scanHypothesis h2) box
     scanHypothesis (Le (Var v) t) box = 
-        case evalT box t of
-            Just val -> Map.insertWith updateUpper v val box
-            Nothing -> box
+        Map.insertWith updateUpper v (evalT box t) box
     scanHypothesis (Le t (Var v)) box = 
-        case evalT box t of
-            Just val -> Map.insertWith updateLower v val box
-            Nothing -> box
+        Map.insertWith updateLower v (evalT box t) box
     scanHypothesis (Leq (Var v) t) box = 
-        case evalT box t of
-            Just val -> Map.insertWith updateUpper v val box
-            Nothing -> box
+        Map.insertWith updateUpper v (evalT box t) box
     scanHypothesis (Leq t (Var v)) box = 
-        case evalT box t of
-            Just val -> Map.insertWith updateLower v val box
-            Nothing -> box
+        Map.insertWith updateLower v (evalT box t) box
     scanHypothesis (Ge (Var v) t) box = 
-        case evalT box t of
-            Just val -> Map.insertWith updateLower v val box
-            Nothing -> box
+        Map.insertWith updateLower v (evalT box t) box
     scanHypothesis (Ge t (Var v)) box = 
-        case evalT box t of
-            Just val -> Map.insertWith updateUpper v val box
-            Nothing -> box
+        Map.insertWith updateUpper v (evalT box t) box
     scanHypothesis (Geq (Var v) t) box = 
-        case evalT box t of
-            Just val -> Map.insertWith updateLower v val box
-            Nothing -> box
+        Map.insertWith updateLower v (evalT box t) box
     scanHypothesis (Geq t (Var v)) box = 
-        case evalT box t of
-            Just val -> Map.insertWith updateUpper v val box
-            Nothing -> box
+        Map.insertWith updateUpper v (evalT box t) box
     scanHypothesis _ box = box
-    updateUpper (_,u2) (l,u1) = (l, min u1 u2)
-    updateLower (l2,_) (l1,u) = (max l1 l2, u)
-    evalT _ (Lit val) = Just (val, val)
-    evalT box (Var v) = Map.lookup v box
+    
+    updateUpper (_,Just u2) (l, Just u1) = (l, Just $ min u1 u2)
+    updateUpper (_,Just u2) (l, Nothing) = (l, Just $ u2)
+    updateUpper (_,Nothing) (l, Just u1) = (l, Just $ u1)
+    
+    updateLower (Just l2,_) (Just l1,u) = (Just $ max l1 l2, u)
+    updateLower (Just l2,_) (Nothing,u) = (Just $ l2, u)
+    updateLower (Nothing,_) (Just l1,u) = (Just $ l1, u)
+    
+    evalT _ (Lit val) = (Just val, Just val)
+    evalT box (Var v) = 
+        case Map.lookup v box of
+            Nothing -> (Nothing, Nothing)
+            Just v -> v
     evalT box (Neg a) =
-        do
-        (aL, aR) <- evalT box a
-        return (- aR, -aL)
-    evalT box (Over l r) = 
-        do
-        (lL, lR) <- evalT box l
-        (rL, rR) <- evalT box r
-        case (lL > 0, lR < 0, rL > 0, rR < 0) of
-            (True, _, True, _) -> -- both positive
-                return (lL / rR, lR / rL)
-            (_, True, _, True) -> -- both negative
-                return (lR / rL, lL / rR)
-            (True, _, _, True) -> -- positive, negative
-                return (lR / rR, lL / rL)
-            (_, True, True, _) -> -- negative, positive
-                return (lL / rL, lR / rR)
-            _ -> Nothing -- ignore the difficult cases
-    evalT box (Sqrt a) =
-        do
-        (aL, aR) <- evalT box a
-        case (aL >= 0) of
-            True -> return (sqrtR aL, sqrtR aR)
-            _ -> Nothing
-    evalT _ _ = Nothing
+        (fmap negate maR, fmap negate maL)
+        where
+        (maL, maR) = evalT box a
+    evalT box (Over l r) 
+        | or $ map (== Nothing) [mlL,mlR,mrL,mrR] = (Nothing, Nothing)
+        | otherwise =
+            case (lL > 0, lR < 0, rL > 0, rR < 0) of
+                (True, _, True, _) -> -- both positive
+                    (Just $ lL / rR, Just $ lR / rL)
+                (_, True, _, True) -> -- both negative
+                    (Just $ lR / rL, Just $ lL / rR)
+                (True, _, _, True) -> -- positive, negative
+                    (Just $ lR / rR, Just $ lL / rL)
+                (_, True, True, _) -> -- negative, positive
+                    (Just $ lL / rL, Just $ lR / rR)
+                _ -> (Nothing, Nothing) -- ignore the difficult cases
+        where
+        (Just lL) = mlL
+        (Just lR) = mlR
+        (Just rL) = mrL
+        (Just rR) = mrR
+        (mlL, mlR) = evalT box l
+        (mrL, mrR) = evalT box r
+        
+    evalT box (Sqrt a)
+        | maL == Nothing = (Nothing, Nothing)
+        | aL >= 0 = (Just $ sqrtR aL, fmap sqrtR maR)
+        | otherwise = (Nothing, Nothing)
+        where
+        (maL, maR) = evalT box a
+        (Just aL) = maL
+    evalT _ _ = (Nothing, Nothing)
     
 sqrtR :: Rational -> Rational
 sqrtR =
