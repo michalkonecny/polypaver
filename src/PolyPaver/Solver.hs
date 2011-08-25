@@ -46,7 +46,7 @@ data Report =
     deriving (Show,Data,Typeable)
 
 data FPType =
-    B32 | B64
+    B32 | B64 | B32near | B64near
     deriving (Show,Data,Typeable)
 
 loop
@@ -181,7 +181,7 @@ loop
                 reportSplit
                 bisectAndRecur undecidedMaybeSimplerForm currtime [boxL, boxR] False
 
-        (depth, skewParents, startdeg, form, box) = Q.index queue 0
+        (depth, skewAncestors, startdeg, form, box) = Q.index queue 0
         dim = DBox.size box
         boxes = Q.drop 1 queue
 
@@ -210,18 +210,18 @@ loop
                 = filter intersectsAllSkewAncestors newBoxes
                 where
                 intersectsAllSkewAncestors box
-                    = and $ map couldIntersectParent skewParents
+                    = and $ map couldIntersect skewAncestors
                     where
-                    couldIntersectParent parentBox
-                        = ppIsectInterior parentBox box /= Just False
+                    couldIntersect ancestor
+                        = ppIntersect ancestor box /= Just False
             prepareBox box =
-                (depth+1,newSkewParents, newstartdeg, form,box)
-            newSkewParents
-                | isSimpleSplit = skewParents
+                (depth+1,newSkewAncestors, newstartdeg, form,box)
+            newSkewAncestors
+                | isSimpleSplit = skewAncestors
                 | otherwise
                     = case maybeHP of 
-                        Nothing -> skewParents
-                        _ -> box : skewParents 
+                        Nothing -> skewAncestors
+                        _ -> box : skewAncestors 
                     -- when skewing, part of the skewed box stretches outside of the original box - 
                     -- when splitting this box and its subboxes, need to drop any that are completely outside this box
             newproblemvol
@@ -251,11 +251,15 @@ loop
         value = 
             case fptype of
                  B32 -> evalForm currdeg maxsize ix box (23,-126) form :: L.TVM -- Maybe Bool
+                 B32near -> evalForm currdeg maxsize ix box (24,-126) form :: L.TVM -- Maybe Bool
                  B64 -> evalForm currdeg maxsize ix box (52,-1022) form :: L.TVM -- Maybe Bool
+                 B64near -> evalForm currdeg maxsize ix box (53,-1022) form :: L.TVM -- Maybe Bool
         L.TVDebugReport formDebug = 
             case fptype of
                  B32 -> evalForm currdeg maxsize ix box (23,-126) form :: L.TVDebugReport
+                 B32near -> evalForm currdeg maxsize ix box (24,-126) form :: L.TVDebugReport
                  B64 -> evalForm currdeg maxsize ix box (52,-1022) form :: L.TVDebugReport
+                 B64near -> evalForm currdeg maxsize ix box (53,-1022) form :: L.TVDebugReport
 
         newstartdeg =
             (origstartdeg + currdeg) `div` 2
@@ -273,7 +277,7 @@ loop
 
         reportBox
             =
-            do 
+            do
             putStrLn $ "proving over box" ++ show computedboxes ++  ": " ++ ppShow box
             return ()
                 
