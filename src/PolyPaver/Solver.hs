@@ -63,7 +63,7 @@ loop
     args <- getArgs
     progName <- getProgName
     putStrLn $ "command line: " ++ progName ++ " " ++ (intercalate " " args)
-    putStrLn $ "proving: " ++ show originalForm
+    putStrLn $ "proving: " ++ showForm originalForm
     -- possibly initialise plotting:
     mstateTV <- case plotSize of
         (0,0) -> return Nothing
@@ -144,7 +144,7 @@ loop
                   "\nComputed  boxes : " ++ show computedboxes ++ 
                   "\nMax depth : " ++ show maxDepthReached ++  
                   "\nDepth : " ++ show depth ++
-                  "\nFormula : " ++ show form ++
+                  "\nFormula : " ++ showForm form ++
                   "\nFormula details: \n" ++ formDebug ++
                   "\n\n" 
                 stopProver 
@@ -303,10 +303,12 @@ loop
             plotBox yellow
             case maybeHP of
                 Nothing -> return ()
-                Just hp ->
+                Just (hp, form, vagueness) ->
                     do
                     putStrLn $
                         "skewing using the hyperplane " ++ show hp
+                        ++ "\n  vagueness = " ++ show vagueness
+                        ++ "\n  derived from the formula " ++ showForm form
 --                    putStrLn $
 --                        "  original box = " ++ ppShow box
 --                    putStrLn $

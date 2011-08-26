@@ -27,6 +27,24 @@ data Form
   | Ni Term Term
   deriving (Eq,Show,Read,Data,Typeable)
 
+showForm :: Form -> String
+showForm form
+    = case form of
+          Verum -> "T"
+          Falsum -> "F"
+          Not f -> "¬(" ++ showForm f ++ ")" 
+          Or f1 f2 -> "(" ++ showForm f1 ++ ") ∨ (" ++ showForm f2 ++ ")"
+          And f1 f2 -> "(" ++ showForm f1 ++ ") ∧ (" ++ showForm f2 ++ ")"
+          Implies f1 f2 -> "(" ++ showForm f1 ++ ") ⇒ (" ++ showForm f2 ++ ")"
+          Le t1 t2 -> showTerm t1 ++ " < " ++ showTerm t2
+          Leq t1 t2 -> showTerm t1 ++ " ≤ " ++ showTerm t2
+          Ge t1 t2 -> showTerm t1 ++ " > " ++ showTerm t2
+          Geq t1 t2 -> showTerm t1 ++ " ≥ " ++ showTerm t2
+          Eq t1 t2 -> showTerm t1 ++ " = " ++ showTerm t2
+          Neq t1 t2 -> showTerm t1 ++ " ≠ " ++ showTerm t2
+          Ni t1 t2 -> showTerm t1 ++ " ⊆ " ++ showTerm t2
+
+
 (/\) = And
 (\/) = Or
 (--->) = Implies
@@ -72,6 +90,41 @@ data Term
   | FSqrt Term
   | FExp Term
   deriving (Eq,Show,Read,Data,Typeable) 
+
+showTerm :: Term -> String
+showTerm term
+    = case term of
+          EpsAbs -> "εabs"
+          EpsRel -> "εrel"
+          Pi -> "π"
+          Lit r -> show r 
+          Var n -> "x" ++ show n
+          Plus t1 t2 -> "(" ++ showTerm t1 ++ ") + (" ++ showTerm t2 ++ ")"
+          Minus t1 t2 -> "(" ++ showTerm t1 ++ ")- (" ++ showTerm t2 ++ ")"
+          Neg t -> "-(" ++ showTerm t ++ ")"
+          Abs t -> "|" ++ showTerm t ++ "|"
+        --  Min t1 t2
+        --  Max t1 t2
+          Times t1 t2 -> "(" ++ showTerm t1 ++ ") * (" ++ showTerm t2 ++ ")"
+          Square t -> "(" ++ showTerm t ++ ")^2"
+          Recip t -> "1/(" ++ showTerm t ++ ")"
+          Over t1 t2 -> "(" ++ showTerm t1 ++ ") / (" ++ showTerm t2 ++ ")"
+          Sqrt t -> "sqrt(" ++ showTerm t ++ ")"
+          Exp t -> "exp(" ++ showTerm t ++ ")"
+          Sin t -> "sin(" ++ showTerm t ++ ")"
+          Cos t -> "cos(" ++ showTerm t ++ ")"
+          Atan t -> "atan(" ++ showTerm t ++ ")"
+          Hull t1 t2 -> "(" ++ showTerm t1 ++ ")..(" ++ showTerm t2 ++ ")"
+          EpsiAbs -> "εabsI"
+          EpsiRel -> "εrelI"
+          Round t -> "rnd(" ++ showTerm t ++ ")"
+          FPlus t1 t2 -> "(" ++ showTerm t1 ++ ") ⊕ (" ++ showTerm t2 ++ ")"
+          FMinus t1 t2 -> "(" ++ showTerm t1 ++ ") ⊖ (" ++ showTerm t2 ++ ")"
+          FTimes t1 t2 -> "(" ++ showTerm t1 ++ ") ⊛ (" ++ showTerm t2 ++ ")"
+          FOver t1 t2 -> "(" ++ showTerm t1 ++ ") ⊘ (" ++ showTerm t2 ++ ")"
+          FSquare t -> "fsquare(" ++ showTerm t ++ ")"
+          FSqrt t -> "fsqrt(" ++ showTerm t ++ ")"
+          FExp t -> "fexp(" ++ showTerm t ++ ")"
 
 instance Num Term
   where
