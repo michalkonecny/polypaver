@@ -278,7 +278,9 @@ loop
         reportBox
             =
             do
+            putStrLn $ replicate 100 '*'
             putStrLn $ "proving over box" ++ show computedboxes ++  ": " ++ ppShow box
+            putStrLn $ " evaluation result = " ++ show value
             return ()
                 
         reportInitSplit
@@ -303,10 +305,10 @@ loop
             plotBox yellow
             case maybeHP of
                 Nothing -> return ()
-                Just (hp, form, vagueness) ->
+                Just ((hp, _), form, vagueness) ->
                     do
                     putStrLn $
-                        "skewing using the hyperplane " ++ show hp
+                        "skewing using the hyperplane " ++ showAffine hp
                         ++ "\n  vagueness = " ++ show vagueness
                         ++ "\n  derived from the formula " ++ showForm form
 --                    putStrLn $

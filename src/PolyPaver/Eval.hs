@@ -56,28 +56,28 @@ evalForm maxdeg maxsize ix box fptype form =
               evForm left L.~> evForm right
           Le left right ->
               L.not $
-              L.leq (Leq right left) (evTerm right) (evTerm left)          
+              L.leq (Leq right left) box (evTerm right) (evTerm left)          
           Leq left right ->
-              L.leq form (evTerm left) (evTerm right)          
+              L.leq form box (evTerm left) (evTerm right)          
           Ge left right ->
               L.not $
-              L.leq (Leq left right) (evTerm left) (evTerm right)          
+              L.leq (Leq left right) box (evTerm left) (evTerm right)          
           Geq left right ->
-              L.leq form (evTerm right) (evTerm left)          
+              L.leq form box (evTerm right) (evTerm left)          
           Eq left right ->
-              (L.leq (Leq left right) (evTerm left) (evTerm right))          
+              (L.leq (Leq left right) box (evTerm left) (evTerm right))          
               L.&&
-              (L.leq (Leq right left) (evTerm right) (evTerm left))          
+              (L.leq (Leq right left) box (evTerm right) (evTerm left))          
           Neq left right ->
               L.not $ 
-              (L.leq (Leq left right) (evTerm left) (evTerm right))          
+              (L.leq (Leq left right) box (evTerm left) (evTerm right))          
               L.&&
-              (L.leq (Leq right left) (evTerm right) (evTerm left))          
+              (L.leq (Leq right left) box (evTerm right) (evTerm left))          
           Ni left right -> 
               if RA.isBottom rightArg || RA.isBottom leftArg then
                   L.bot form
               else 
-                  L.includes form rightArg leftArg
+                  L.includes form box rightArg leftArg
               where
               rightArg = evTerm right
               leftArg = evTerm left

@@ -221,10 +221,12 @@ getBox form =
     updateUpper (_,Just u2) (l, Just u1) = (l, Just $ min u1 u2)
     updateUpper (_,Just u2) (l, Nothing) = (l, Just $ u2)
     updateUpper (_,Nothing) (l, Just u1) = (l, Just $ u1)
+    updateUpper (_,Nothing) (l, Nothing) = (l, Nothing)
     
     updateLower (Just l2,_) (Just l1,u) = (Just $ max l1 l2, u)
     updateLower (Just l2,_) (Nothing,u) = (Just $ l2, u)
     updateLower (Nothing,_) (Just l1,u) = (Just $ l1, u)
+    updateLower (Nothing,_) (Nothing,u) = (Nothing, u)
     
     evalT _ (Lit val) = (Just val, Just val)
     evalT box (Var v) = 

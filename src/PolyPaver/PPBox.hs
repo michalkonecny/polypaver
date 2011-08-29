@@ -17,6 +17,7 @@ module PolyPaver.PPBox
     PPBox,
     BoxHyperPlane,
     ppShow,
+    showAffine,
     ppVolume,
     ppCentre,
     ppCorners,
@@ -64,6 +65,12 @@ ppShow box
             [1]
             ++
             (replicate (length vars - var - 1) (-1))
+
+showAffine (c, coeffs)
+    = show c ++ " + " ++ (intercalate " + " $ map showVarCoeff $ IMap.toAscList coeffs)
+    where
+    showVarCoeff (var, cf)
+        = "x" ++ show var ++ "*" ++ show cf
 
 ppCentre box =
     fst $ unzip $ snd $ unzip $ IMap.toAscList box
