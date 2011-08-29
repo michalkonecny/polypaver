@@ -45,12 +45,14 @@ class TruthValue tv where
     decide :: Int -> tv -> Maybe Bool
     split :: 
         [Int] -> -- vars that must not be split
+        Maybe Int -> -- preferred variable to split
         PPBox BM -> -- box to split
         Bool -> -- True to allow skewing 
         Bool -> -- True to allow split direction guessing 
         tv -> -- undecided truth value that may be used to help guide splitting and/or skewing 
         (Bool, -- whether split succeeded in providing two proper sub-boxes 
          Maybe ((BoxHyperPlane BM, BoxHyperPlane BM), Form, IRA BM), -- whether box skewing has been used
+         Int, -- variable whose domain was split
          (PPBox BM, PPBox BM))
 
 data TVM
@@ -151,15 +153,15 @@ instance TruthValue TVM where
     decide _ (TVMDecided result) = Just result
     decide _ (TVMUndecided _ _ _) = Nothing
     
-    split varsNotToSplit prebox boxSkewing splitGuessing tv 
+    split varsNotToSplit maybeVar prebox boxSkewing splitGuessing tv 
         = 
-        (success, maybeHP, boxes)
+        (success, maybeHP, splitVar, boxes)
         where
         -- investigate need for skewing and possibly skew:
         (box, maybeHP, maybeSkewVar)
             = tryToSkew boxSkewing splitGuessing prebox tv
-        (success, boxes)    
-            = makeSplit splitGuessing varsNotToSplit box maybeSkewVar
+        (success, boxes, splitVar)    
+            = makeSplit splitGuessing varsNotToSplit maybeVar box maybeSkewVar
             
 combineHPs hps1 hps2
     = List.sortBy (\(m1, _) (m2, _) -> compare m1 m2) $ hps1 ++ hps2 
@@ -223,9 +225,9 @@ tryToSkew boxSkewing splitGuessing prebox tv
     hyperplanesClose
         | gotHyperPlane
             = 
-            ((isecPtDistance `RA.leqReals` 2) == Just True)
+            ((isecPtDistance `RA.leqReals` 4) == Just True)
             Prelude.&&
-            ((isecPtDistance2 `RA.leqReals` 2) == Just True)
+            ((isecPtDistance2 `RA.leqReals` 4) == Just True)
         | otherwise = False
     (isecPtDistance,  maybeSkewVar, skewedBox) = ppSkewAlongHyperPlane prebox $ hyperplane1
     (isecPtDistance2, _, _) = ppSkewAlongHyperPlane prebox $ hyperplane2
@@ -240,8 +242,8 @@ tryToSkew boxSkewing splitGuessing prebox tv
         where
         err = error $ "PolyPaver.Logic: tryToSkew: internal error, tv = " ++ show tv
 
-makeSplit splitGuessing varsNotToSplit box maybeSkewVar
-    = (success, (boxL, boxR))
+makeSplit splitGuessing varsNotToSplit maybeVar box maybeSkewVar
+    = (success, (boxL, boxR), var)
     where
     -- perform split (potentially after skewing):
     success = Prelude.not $ (box `ppEqual` boxL) Prelude.|| (box `ppEqual` boxR)
@@ -255,7 +257,10 @@ makeSplit splitGuessing varsNotToSplit box maybeSkewVar
                 varWidth =
 --                    unsafePrint ("makeSplit: split direction from HP") $ 
                     case IMap.lookup var widths of Just w -> w
-            _ -> widestVar
+            _ -> 
+                case maybeVar of
+                    Just var -> var
+                    _ -> widestVar
                 
     (largestWidth, widestVar) = foldl findWidestVar (0, err) $ IMap.toList widths
     err = 
