@@ -78,7 +78,7 @@ loop
         mstateTV inittime
         maxDepthReached
 
-        (Q.singleton (0,[],origstartdeg,originalForm,initbox)) -- initial queue with one box only
+        (Q.singleton (0,[],origstartdeg,originalForm,0,initbox)) -- initial queue with one box only
         1 -- queue length
         inittime -- prevtime
 
@@ -113,7 +113,7 @@ loop
                 do
                 reportInitSplit
                 currtime <- getCPUTime
-                bisectAndRecur form currtime [boxLNoHP, boxRNoHP] True
+                bisectAndRecur form currtime [boxLNoHP, boxRNoHP] True splitVarNoHP
             | prevtime-inittime > maxtime*1000000000000 = 
                 do
                 putStr $
@@ -179,13 +179,13 @@ loop
                 do
                 currtime <- getCPUTime
                 reportSplit
-                bisectAndRecur undecidedMaybeSimplerForm currtime [boxL, boxR] False
+                bisectAndRecur undecidedMaybeSimplerForm currtime [boxL, boxR] False splitVar
 
-        (depth, skewAncestors, startdeg, form, box) = Q.index queue 0
+        (depth, skewAncestors, startdeg, form, prevSplitVar, box) = Q.index queue 0
         dim = DBox.size box
         boxes = Q.drop 1 queue
 
-        bisectAndRecur form currtime newBoxes isSimpleSplit =
+        bisectAndRecur form currtime newBoxes isSimpleSplit splitVar =
             case order of 
                 B -> 
                     loopAux
@@ -215,7 +215,7 @@ loop
                     couldIntersect ancestor
                         = ppIntersect ancestor box /= Just False
             prepareBox box =
-                (depth+1,newSkewAncestors, newstartdeg, form,box)
+                (depth+1,newSkewAncestors, newstartdeg, form, splitVar, box)
             newSkewAncestors
                 | isSimpleSplit = skewAncestors
                 | otherwise
@@ -231,10 +231,10 @@ loop
                     case (maybeHP, newBoxes2length) of
                         (Nothing, 2) -> problemvol -- no skewing or dropping of boxes - a clean split
                         _ -> problemvol - (ppVolume box) + (sum $ map ppVolume newBoxes2)
-        (splitSuccess, maybeHP, (boxL,boxR))
-            = L.split thinvarids box boxSkewing splitGuessing value
-        (_, _, (boxLNoHP,boxRNoHP))
-            = L.split thinvarids box False False value
+        (splitSuccess, maybeHP, splitVar, (boxL,boxR))
+            = L.split thinvarids maybeVar box boxSkewing splitGuessing value
+        (_, _, splitVarNoHP, (boxLNoHP,boxRNoHP))
+            = L.split thinvarids maybeVar box False False value
         undecidedMaybeSimplerForm
             =
             case maybeHP of
@@ -272,6 +272,20 @@ loop
                 Just prevUndecidedMeasure ->
                     prevUndecidedMeasure / undecidedMeasure > improvementRatioThreshold
 
+        maybeVar =
+            case splitGuessing of
+                False -> Nothing
+                True -> Just $ advanceVar thinvarids prevSplitVar
+            where
+            advanceVar forbiddenVars var
+                | allVarsForbidden = var
+                | newVar `elem` forbiddenVars = advanceVar forbiddenVars newVar
+                | otherwise = newVar
+                where
+                allVarsForbidden = length forbiddenVars == dim
+                newVar = (var + 1) `mod` dim
+                
+
         thinvarids = DBox.keys thincbox
         thincbox = DBox.filter (ppCoeffsZero . snd) box -- thin subbox of contracted box
 
@@ -284,7 +298,11 @@ loop
                     do
                     putStrLn $ replicate 100 '*'
                     putStrLn $ "proving over box" ++ show computedboxes ++  ": " ++ ppShow box
-                    putStrLn $ " evaluation result = " ++ show value
+                    case report of
+                        ReportALL ->
+                            putStrLn $ " evaluation result = " ++ show value
+                        _ ->
+                            putStrLn $ " evaluation result = " ++ show maybeDecision
                 
         reportInitSplit
             =
