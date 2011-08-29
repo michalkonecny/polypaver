@@ -42,7 +42,7 @@ data Order =
     deriving (Show,Data,Typeable)
 
 data Report =
-    NO | VOL
+    ReportNONE | ReportNORMAL | ReportALL 
     deriving (Show,Data,Typeable)
 
 data FPType =
@@ -275,54 +275,61 @@ loop
         thinvarids = DBox.keys thincbox
         thincbox = DBox.filter (ppCoeffsZero . snd) box -- thin subbox of contracted box
 
+        -- reporting
         reportBox
             =
-            do
-            putStrLn $ replicate 100 '*'
-            putStrLn $ "proving over box" ++ show computedboxes ++  ": " ++ ppShow box
-            putStrLn $ " evaluation result = " ++ show value
-            return ()
+            case report of
+                ReportNONE -> return ()
+                _ ->
+                    do
+                    putStrLn $ replicate 100 '*'
+                    putStrLn $ "proving over box" ++ show computedboxes ++  ": " ++ ppShow box
+                    putStrLn $ " evaluation result = " ++ show value
                 
         reportInitSplit
             =
             do
             plotBox yellow
-            putStrLn $ "initial splitting at depth " ++ show depth
+            case report of
+                ReportNONE -> return ()
+                _ ->
+                    do
+                    putStrLn $ "initial splitting at depth " ++ show depth
             
         reportProved
             =
             do
             plotBox green
             case report of
-                 VOL ->
+                 ReportALL ->
                      putStrLn $
                         "Proved fraction : " ++ show (newtruevol / problemvol)
-                 NO -> return ()
+                 _ -> return ()
         
         reportSplit
             =
             do
             plotBox yellow
-            case maybeHP of
-                Nothing -> return ()
-                Just ((hp, _), form, vagueness) ->
-                    do
-                    putStrLn $
-                        "skewing using the hyperplane " ++ showAffine hp
-                        ++ "\n  vagueness = " ++ show vagueness
-                        ++ "\n  derived from the formula " ++ showForm form
---                    putStrLn $
---                        "  original box = " ++ ppShow box
---                    putStrLn $
---                        "  boxL = " ++ ppShow boxL
---                    putStrLn $
---                        "  boxR = " ++ ppShow boxR
---                _ -> return ()
-            putStrLn $ 
-                "splitting at depth " ++ show depth 
-                ++ ", new queue size is " ++ show (qlength + 1)
+            case report of
+                ReportALL ->
+                    case maybeHP of
+                        Nothing -> return ()
+                        Just ((hp, _), form, vagueness) ->
+                            do
+                            putStrLn $
+                                "skewing using the hyperplane " ++ showAffine hp
+                                ++ "\n  vagueness = " ++ show vagueness
+                                ++ "\n  derived from the formula " ++ showForm form
+                _ -> return ()
+            case report of
+                ReportNONE -> return ()
+                _ ->
+                    putStrLn $ 
+                        "splitting at depth " ++ show depth 
+                        ++ ", new queue size is " ++ show (qlength + 1)
             return ()
 
+        -- plotting
         stopProver =
             case mstateTV of
                 Nothing -> return ()
@@ -338,7 +345,7 @@ loop
                     Plot.addBox stateTV colour box
                     threadDelay $ 1000 * plotStepDelayMs
         green = (0.1,0.6,0.1,0.4)
-        red = (0.1,0.6,0.1,0.4)
+        red = (0.6,0.1,0.1,1)
         yellow = (0.6,0.6,0.1,0.05)
         
             
