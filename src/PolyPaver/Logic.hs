@@ -39,8 +39,8 @@ class TruthValue tv where
     (||) :: tv -> tv -> tv
     (~>) :: tv -> tv -> tv
     fromBool :: PPBox BM -> Bool -> tv
-    leq :: Form -> FAPUOI BM -> FAPUOI BM -> tv
-    includes :: Form -> FAPUOI BM -> FAPUOI BM -> tv
+    leq :: Form -> PPBox BM -> FAPUOI BM -> FAPUOI BM -> tv
+    includes :: Form -> PPBox BM -> FAPUOI BM -> FAPUOI BM -> tv
     bot :: Form -> tv
     decide :: Int -> tv -> Maybe Bool
     split :: 
@@ -50,7 +50,7 @@ class TruthValue tv where
         Bool -> -- True to allow split direction guessing 
         tv -> -- undecided truth value that may be used to help guide splitting and/or skewing 
         (Bool, -- whether split succeeded in providing two proper sub-boxes 
-         Maybe (BoxHyperPlane BM, Form, IRA BM), -- whether box skewing has been used
+         Maybe ((BoxHyperPlane BM, BoxHyperPlane BM), Form, IRA BM), -- whether box skewing has been used
          (PPBox BM, PPBox BM))
 
 data TVM
@@ -58,11 +58,31 @@ data TVM
     | TVMUndecided 
         { 
             tvmSimplifiedFormula :: Form
-        ,   tvmDistanceFromDecision :: Double
-        ,   tvmDecisionHyperPlanes :: [(Double, (BoxHyperPlane BM, Form, IRA BM))] 
+        ,   tvmDistanceFromTruth :: Double
+        ,   tvmDecisionHyperPlanes :: [(Double, ((BoxHyperPlane BM, BoxHyperPlane BM), Form, IRA BM))] 
             -- the first one is the best one, keeping its measure, formula and vagueness 
         }
-    deriving (Show)
+    
+instance Show TVM where
+    show (TVMDecided result) = "TVMDecided " ++ show result
+    show (TVMUndecided form dist hps)
+        =
+        "TVMUndecided"
+        ++ "\n form = " ++ showForm form 
+        ++ "\n distance = " ++ show dist
+        ++ "\n hyperplanes = "
+            ++ (case hps of
+                    [] -> "none"
+                    _ -> (unlines $ map showHP $ zip [1..] hps))
+        where
+        showHP (n,(dist, ((hp, hpDn), hpForm, vagueness)))
+            =
+            "\n   hp" ++ show n ++ ":"
+            ++ "dist = " ++ show dist
+            ++ "; vagueness = " ++ show vagueness
+            ++ "; hp = " ++ showAffine hp
+            ++ "; hpDn = " ++ showAffine hpDn
+            ++ "; form = " ++ showForm hpForm
 
 instance TruthValue TVM where
     not (TVMDecided x) = TVMDecided (Prelude.not x)
@@ -90,7 +110,7 @@ instance TruthValue TVM where
         = TVMUndecided (Implies form1 form2) (max dist1 dist2) (combineHPs hps1 hps2)
 
     fromBool _ = TVMDecided
-    leq form a b = 
+    leq form box a b = 
         case maybeResult of
             Just result -> TVMDecided result
             Nothing ->
@@ -98,8 +118,8 @@ instance TruthValue TVM where
                     Just hyperplane -> TVMUndecided form distance [(distance, (hyperplane, form, vagueness))]
                     _ -> TVMUndecided form distance []
         where
-        (maybeResult, distance, maybeHyperplane, vagueness) = analyseLeq a b
-    includes form a b -- b `Ni` a
+        (maybeResult, distance, maybeHyperplane, vagueness) = analyseLeq box a b
+    includes form box a b -- b `Ni` a
         =
         case (maybeResultL, maybeResultR, maybeResultU, maybeResultD) of
             (Just True, Just True, _, _) -> TVMDecided True
@@ -112,18 +132,19 @@ instance TruthValue TVM where
             =
             case (maybeHyperplaneL, maybeHyperplaneR) of
                 (Just hyperplaneL, Just hyperplaneR) 
-                    -> [(distanceL, (hyperplaneL, form, vaguenessL)), (distanceR, (hyperplaneR, form, vaguenessR))]
+                    -> [(distanceL, (hyperplaneL, form, vaguenessL)), 
+                        (distanceR, (hyperplaneR, form, vaguenessR))]
                 (Just hyperplaneL, _) -> [(distanceL, (hyperplaneL, form, vaguenessL))]
                 (_, Just hyperplaneR) -> [(distanceR, (hyperplaneR, form, vaguenessR))]
                 _ -> []
         (maybeResultL, distanceL, maybeHyperplaneL, vaguenessL) 
-            = analyseLeq aL bL -- testing for truth (part 1)
+            = analyseLeq box aL bL -- testing for truth (part 1)
         (maybeResultR, distanceR, maybeHyperplaneR, vaguenessR) 
-            = analyseLeq bR aR -- testing for truth (part 2)
+            = analyseLeq box bR aR -- testing for truth (part 2)
         (maybeResultU, distanceU, maybeHyperplaneU, _) 
-            = analyseLeq bL aR -- testing for falsity due to b > a
+            = analyseLeq box bL aR -- testing for falsity due to b > a
         (maybeResultD, distanceD, maybeHyperplaneD, _) 
-            = analyseLeq aL bR -- testing for falsity due to b < a
+            = analyseLeq box aL bR -- testing for falsity due to b < a
         (_,(aL,aR)) = RA.oiBounds a
         ((bL,bR),_) = RA.oiBounds b 
     bot form = TVMUndecided form (1/0) [] -- infinite badness...
@@ -143,26 +164,55 @@ instance TruthValue TVM where
 combineHPs hps1 hps2
     = List.sortBy (\(m1, _) (m2, _) -> compare m1 m2) $ hps1 ++ hps2 
 
-analyseLeq a b =
-    (maybeResult, distance, maybeHyperplane, vagueness)
+analyseLeq box a b =
+    (maybeResult, distanceD + vaguenessD, maybeHyperplane, vagueness)
     where
     maybeHyperplane =
-        case vagueness `RA.leqReals` (2^^(-2)) of
-            Just True -> Just hyperplane
-            _ -> Nothing
+        case maybeResult of
+            Just _ -> Nothing
+            Nothing -> 
+                case vagueness `RA.leqReals` (2^^(0)) of
+                    Just True -> Just (hyperplane, hyperplaneDn)
+                    _ -> Nothing
     maybeResult = a `RA.leqReals` b
-    distance = snd $ RA.doubleBounds $ a - b
-    hyperplane = (t c, IMap.map t $ IMap.fromList $ Map.toList coeffs)
+    distanceD = snd $ RA.doubleBounds $ a - b
+    vaguenessD = snd $ RA.doubleBounds vagueness
+    hyperplane
+        = (t c, IMap.map t $ IMap.fromList $ Map.toList coeffs)
+    hyperplaneDn 
+        = (tn cDnNeg, IMap.map tn $ IMap.fromList $ Map.toList coeffsDnNeg)
+        where
+        negateSnd (a,b) = (a, negate $ t b)
     t [a] = a
+    tn [a] = negate a
     (c, coeffs) = UFA.getAffineUpperBound $ a - b
-    vagueness = (t c + t cDnNeg) / avgSlope -- average distance of upper and lower linear bound of a - b
+    (cDnNeg, coeffsDnNeg) = UFA.getAffineUpperBound $ b - a
+    vagueness =
+        (t c + t cDnNeg) / avgSlope -- average distance of upper and lower linear bound of a - b
+--        findMaxCoeffDifference 0 $ 
+--            Map.toAscList $ 
+--                Map.unionWith takeNonZero 
+--                    (Map.map (\[cf] -> (-cf,0)) coeffsDnNeg)
+--                    (Map.map (\[cf] -> (0,cf)) coeffs)
+--        where
+--        takeNonZero (cfL1,cfR1) (cfL2,cfR2) = (cfL, cfR)
+--            where
+--            cfL | cfL1 == 0 = cfL2
+--                | otherwise = cfL1 
+--            cfR | cfR1 == 0 = cfR2
+--                | otherwise = cfR1 
+--        findMaxCoeffDifference prevMax [] = prevMax  
+--        findMaxCoeffDifference prevMax ((v,(l,r)):rest)
+--            =
+--            findMaxCoeffDifference (max prevMax currDiff) rest
+--            where
+--            currDiff = abs $ (r - l) / l
     avgSlope = (sum $ map (abs . head) $ Map.elems coeffs) / (fromIntegral $ Map.size coeffs)
-    (cDnNeg, _) = UFA.getAffineUpperBound $ b - a
     
 tryToSkew boxSkewing splitGuessing prebox tv
     | (Prelude.not boxSkewing) 
-        Prelude.|| 
-        (Prelude.not hyperplanesClose) 
+       Prelude.|| 
+      (Prelude.not hyperplanesClose) 
         = 
         case splitGuessing Prelude.&& gotHyperPlane of
             True -> (prebox, Nothing, maybeSkewVar)
@@ -173,14 +223,14 @@ tryToSkew boxSkewing splitGuessing prebox tv
     hyperplanesClose
         | gotHyperPlane
             = 
-            ((isecPtDistance `RA.leqReals` 1) == Just True)
+            ((isecPtDistance `RA.leqReals` 2) == Just True)
             Prelude.&&
-            ((isecPtDistance2 `RA.leqReals` 1) == Just True)
+            ((isecPtDistance2 `RA.leqReals` 2) == Just True)
         | otherwise = False
     (isecPtDistance,  maybeSkewVar, skewedBox) = ppSkewAlongHyperPlane prebox $ hyperplane1
     (isecPtDistance2, _, _) = ppSkewAlongHyperPlane prebox $ hyperplane2
-    (hyperplane1, _, _) = hp1
-    (hyperplane2, _, _) = hp2
+    ((hyperplane1,_), _, _) = hp1
+    ((hyperplane2,_), _, _) = hp2
     (gotHyperPlane, hp1, hp2)
         = case tv of
             (TVMUndecided _ _ ((_, hp1) : (_, hp2) : _)) -> 
@@ -202,7 +252,9 @@ makeSplit splitGuessing varsNotToSplit box maybeSkewVar
                 | 20 * varWidth < largestWidth -> widestVar
                 | otherwise -> var
                 where
-                varWidth = case IMap.lookup var widths of Just w -> w
+                varWidth =
+--                    unsafePrint ("makeSplit: split direction from HP") $ 
+                    case IMap.lookup var widths of Just w -> w
             _ -> widestVar
                 
     (largestWidth, widestVar) = foldl findWidestVar (0, err) $ IMap.toList widths
@@ -245,7 +297,7 @@ instance TruthValue TVDebugReport where
     (TVDebugReport r1) ~> (TVDebugReport r2) = TVDebugReport $ r1 ++ r2 
     fromBool _ _ = TVDebugReport ""
     bot form = TVDebugReport ""
-    leq form a b = 
+    leq form box a b = 
         TVDebugReport $
             banner
             ++ "\nLEQ:\n" ++ show form
@@ -254,7 +306,7 @@ instance TruthValue TVDebugReport where
             ++ "\n\nRESULT = " ++ show (a `RA.leqReals` b)
             where
             banner = concat $ replicate 100 "<="
-    includes form a b = 
+    includes form box a b = 
         TVDebugReport $
             banner
             ++ "\nINCL:\n" ++ show form
