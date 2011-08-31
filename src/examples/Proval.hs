@@ -62,7 +62,7 @@ proval_cosine_1 =
 
 proval_cosine_2 =
     ((float_x - exact_x) |<-| (o2e 20)) --->
-    ((float_result3 - exact_result3) |<-| plusMinus ((Abs (float_x - exact_x)) + (Lit $ (fromInteger 0x20081) * 2^^(-40)))) -- original 2^^(-41)
+    ((float_result3 - exact_result3) |<-| plusMinus ((Abs (float_x - exact_x)) + (Lit $ (fromInteger 0x20081) * 2^^(-41)))) -- original 2^^(-41)
     where
     float_x = Var 0 -- any float, can shrink to eg [-2^(-4),2^(-4)] thanks to the first premise
     exact_x = Var 1 -- [-2^(-5),2^(-5)]

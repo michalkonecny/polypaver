@@ -30,7 +30,7 @@ main =
 
 indices = [0..1]
 
-distance = 0.5^^4
+distance = 0.5^^14
 
 bench_sqrt_box = [(i, (1,2)) | i <- indices]
 

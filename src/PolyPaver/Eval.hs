@@ -81,11 +81,12 @@ evalForm maxdeg maxsize ix box fptype form =
               where
               rightArg = evTerm right
               leftArg = evTerm left
-    evTerm = evalTerm maxdeg maxsize ix box fptype
+    evTerm = evalTerm (evForm Verum) maxdeg maxsize ix box fptype
 
 evalTerm ::
-    Int -> Int -> EffortIndex -> PPBox BM -> (Int,Int) -> Term -> FAPUOI BM
-evalTerm maxdeg maxsize ix box (prec,minexp) term =
+    (L.TruthValue tv) =>
+    tv -> Int -> Int -> EffortIndex -> PPBox BM -> (Int,Int) -> Term -> FAPUOI BM
+evalTerm sampleTV maxdeg maxsize ix box fptype@(prec,minexp) term =
     evTerm term
     where
     evTerm term =
@@ -99,7 +100,7 @@ evalTerm maxdeg maxsize ix box (prec,minexp) term =
               FA.setMaxDegree maxdeg $
               FA.setMaxSize maxsize $
               fromRational $
-              2^^(1-prec)
+              2^^(-prec)
           Pi ->
               FA.setMaxDegree maxdeg $
               FA.setMaxSize maxsize $
@@ -175,9 +176,22 @@ evalTerm maxdeg maxsize ix box (prec,minexp) term =
           EpsiRel ->
               evTerm $
               (-EpsRel) `Hull` EpsRel
-          Round arg ->
-              evTerm $
-              ((1 + EpsiRel) * arg) + EpsiAbs 
+          Round arg 
+              | epsabsShownIrrelevant ->
+                  evTerm $
+                  (1 + EpsiRel) * arg
+              | otherwise ->
+                  evTerm $
+                  ((1 + EpsiRel) * arg) + EpsiAbs
+              where
+              epsabsShownIrrelevant =
+                case (L.decide 0 aboveEpsTV, L.decide 0 belowEpsTV) of
+                    (Just True, _) -> True
+                    (_, Just True) -> True
+                    _ -> False 
+              _ = [aboveEpsTV, belowEpsTV, sampleTV]
+              aboveEpsTV = evForm $ Leq EpsAbs arg 
+              belowEpsTV = evForm $ Leq arg (Neg EpsAbs) 
           FPlus left right ->
               evTerm $
               Round (left + right)
@@ -199,3 +213,5 @@ evalTerm maxdeg maxsize ix box (prec,minexp) term =
           FExp arg ->
               evTerm $
               Round $ (1+4*EpsiRel) * (Exp arg)
+    evForm = evalForm maxdeg maxsize ix box fptype
+              
