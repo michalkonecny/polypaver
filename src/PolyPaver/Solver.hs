@@ -317,10 +317,12 @@ loop
             do
             plotBox green
             case report of
-                 ReportALL ->
-                     putStrLn $
+                ReportALL ->
+                    do
+                    putStrLn $
                         "Proved fraction : " ++ show (newtruevol / problemvol)
-                 _ -> return ()
+                    putStrLn $ formDebug
+                _ -> return ()
         
         reportSplit
             =
@@ -342,6 +344,7 @@ loop
                 _ ->
                     putStrLn $ 
                         "splitting at depth " ++ show depth 
+                        ++ " domain of variable " ++ show splitVar
                         ++ ", new queue size is " ++ show (qlength + 1)
             return ()
 

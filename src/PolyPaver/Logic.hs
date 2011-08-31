@@ -123,10 +123,20 @@ instance TruthValue TVM where
         (maybeResult, distance, maybeHyperplane, vagueness) = analyseLeq box a b
     includes form box a b -- b `Ni` a
         =
+--        unsafePrintReturn
+--        (
+--            "Logic.includes:"
+--            ++ "\n a = " ++ show a
+--            ++ "\n b = " ++ show b
+--            ++ "\n maybeResultL = " ++ show maybeResultL
+--            ++ "\n maybeResultR = " ++ show maybeResultR
+--            ++ "\n result = "
+--        )
+--        $
         case (maybeResultL, maybeResultR, maybeResultU, maybeResultD) of
             (Just True, Just True, _, _) -> TVMDecided True
-            (_, _, Just False, _) -> TVMDecided False
-            (_, _, _, Just False) -> TVMDecided False
+            (_, _, Just True, _) -> TVMDecided False
+            (_, _, _, Just True) -> TVMDecided False
             _ -> TVMUndecided form distance hyperplanes 
         where
         distance = foldl1 max [distanceL, distanceR, distanceU, distanceD]
@@ -140,15 +150,15 @@ instance TruthValue TVM where
                 (_, Just hyperplaneR) -> [(distanceR, (hyperplaneR, form, vaguenessR))]
                 _ -> []
         (maybeResultL, distanceL, maybeHyperplaneL, vaguenessL) 
-            = analyseLeq box aL bL -- testing for truth (part 1)
+            = analyseLeq box aiL boL -- testing for truth (part 1)
         (maybeResultR, distanceR, maybeHyperplaneR, vaguenessR) 
-            = analyseLeq box bR aR -- testing for truth (part 2)
+            = analyseLeq box boR aiR -- testing for truth (part 2)
         (maybeResultU, distanceU, maybeHyperplaneU, _) 
-            = analyseLeq box bL aR -- testing for falsity due to b > a
+            = analyseLeq box aoR boL -- testing for falsity due to b > a
         (maybeResultD, distanceD, maybeHyperplaneD, _) 
-            = analyseLeq box aL bR -- testing for falsity due to b < a
-        (_,(aL,aR)) = RA.oiBounds a
-        ((bL,bR),_) = RA.oiBounds b 
+            = analyseLeq box boR aoL -- testing for falsity due to b < a
+        ((aoL,aoR),(aiL,aiR)) = RA.oiBounds a
+        ((boL,boR),_) = RA.oiBounds b 
     bot form = TVMUndecided form (1/0) [] -- infinite badness...
     decide _ (TVMDecided result) = Just result
     decide _ (TVMUndecided _ _ _) = Nothing
@@ -305,19 +315,19 @@ instance TruthValue TVDebugReport where
     leq form box a b = 
         TVDebugReport $
             banner
-            ++ "\nLEQ:\n" ++ show form
+            ++ "\nLEQ:\n" ++ showForm form
             ++ "\n\nLHS:\n" ++ show a
             ++ "\n\nRHS:\n" ++ show b
             ++ "\n\nRESULT = " ++ show (a `RA.leqReals` b)
             where
-            banner = concat $ replicate 100 "<="
+            banner = "\n" ++ (concat $ replicate 50 "<=")
     includes form box a b = 
         TVDebugReport $
             banner
-            ++ "\nINCL:\n" ++ show form
+            ++ "\nINCL:\n" ++ showForm form
             ++ "\n\nLHS:\n" ++ show b
             ++ "\n\nRHS:\n" ++ show a
-            ++ "\n\nRESULT = " ++ show (a `RA.leqReals` b)
+            ++ "\n\nRESULT = " ++ show (a `RA.includes` b)
             where
-            banner = concat $ replicate 100 "<="
+            banner = "\n" ++ (concat $ replicate 100 "⊆")
             
