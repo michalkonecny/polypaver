@@ -80,7 +80,8 @@ data Paver = Paver
     ,order :: Order
     ,quiet :: Bool
     ,verbose :: Bool
-    ,fptype :: FPType
+    ,epsrelbits :: Int
+    ,epsabsbits :: Int
     ,boxSkewing :: Bool
     ,splitGuessing :: Bool
     ,plotWidth :: Int
@@ -99,7 +100,9 @@ paver = Paver
     ,time = 3600 &= help "timeout in seconds (default = 3600)"
     ,boxSkewing = False &= name "k" &= help "allow parallelepiped boxes, by default only coaxial rectangles"
     ,splitGuessing = False &= name "g" &= help "try guessing the best direction of splitting, by default tend towards square boxes"
-    ,fptype = B32near &= help "type of binary floating point number and rounding mode, b32 or b32near (default) for 32-bit and b64 or b64near for 64-bit"
+--    ,fptype = B32near &= help "type of binary floating point number and rounding mode, b32 or b32near (default) for 32-bit and b64 or b64near for 64-bit"
+    ,epsrelbits = 23 &= name "r" &= help "n to compute machine epsilon using 2^-n (default = 24)"
+    ,epsabsbits = 126 &= name "a" &= help "n to compute denormalised epsilon using 2^-n (default = 126)"
     ,quiet = False &= help "suppress all output except the final result (default off)"
     ,verbose = False &= help "output extra details while paving (default off)"
     ,plotWidth = 0 &= name "w" &= help "plot width for 2D problems, 0 mean no plotting (default)"
@@ -127,7 +130,9 @@ defaultMain problem =
         quietOpt = quiet args
         verboseOpt = verbose args
         report = if quietOpt then ReportNONE else if verboseOpt then ReportALL else ReportNORMAL
-        fpt = fptype args
+--        fpt = fptype args
+        epsrelbitsOpt = epsrelbits args 
+        epsabsbitsOpt = epsabsbits args 
         splitGuessingOpt = splitGuessing args
         boxSkewingOpt = boxSkewing args
         plotSizesOpt = (plotWidth args, plotHieght args)
@@ -138,7 +143,8 @@ defaultMain problem =
         plotStepDelayMs
         ordr -- sub-problem processing order
         report -- 
-        fpt -- 
+        epsrelbitsOpt
+        epsabsbitsOpt 
         boxSkewingOpt
         splitGuessingOpt
         startdeg

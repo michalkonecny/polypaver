@@ -51,7 +51,7 @@ data FPType =
 
 loop
     plotSize plotStepDelayMs
-    order report fptype boxSkewing splitGuessing
+    order report epsrelbits epsabsbits boxSkewing splitGuessing
     origstartdeg maxdeg improvementRatioThreshold 
     maxsize
     mindepth maxdepth maxDepthReached
@@ -248,18 +248,15 @@ loop
         decided = isJust maybeDecision
         decision = fromJust maybeDecision
         maybeDecision = L.decide dim value
-        value = 
-            case fptype of
-                 B32 -> evalForm currdeg maxsize ix box (23,-126) form :: L.TVM -- Maybe Bool
-                 B32near -> evalForm currdeg maxsize ix box (24,-126) form :: L.TVM -- Maybe Bool
-                 B64 -> evalForm currdeg maxsize ix box (52,-1022) form :: L.TVM -- Maybe Bool
-                 B64near -> evalForm currdeg maxsize ix box (53,-1022) form :: L.TVM -- Maybe Bool
+        value =
+            evalForm currdeg maxsize ix box (epsrelbits,epsabsbits) form :: L.TVM
+--            case fptype of
+--                 B32 -> evalForm currdeg maxsize ix box (23,-126) form :: L.TVM -- Maybe Bool
+--                 B32near -> evalForm currdeg maxsize ix box (24,-126) form :: L.TVM -- Maybe Bool
+--                 B64 -> evalForm currdeg maxsize ix box (52,-1022) form :: L.TVM -- Maybe Bool
+--                 B64near -> evalForm currdeg maxsize ix box (53,-1022) form :: L.TVM -- Maybe Bool
         L.TVDebugReport formDebug = 
-            case fptype of
-                 B32 -> evalForm currdeg maxsize ix box (23,-126) form :: L.TVDebugReport
-                 B32near -> evalForm currdeg maxsize ix box (24,-126) form :: L.TVDebugReport
-                 B64 -> evalForm currdeg maxsize ix box (52,-1022) form :: L.TVDebugReport
-                 B64near -> evalForm currdeg maxsize ix box (53,-1022) form :: L.TVDebugReport
+            evalForm currdeg maxsize ix box (epsrelbits,epsabsbits) form :: L.TVDebugReport
 
         newstartdeg =
             (origstartdeg + currdeg) `div` 2

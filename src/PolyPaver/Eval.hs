@@ -86,7 +86,7 @@ evalForm maxdeg maxsize ix box fptype form =
 evalTerm ::
     (L.TruthValue tv) =>
     tv -> Int -> Int -> EffortIndex -> PPBox BM -> (Int,Int) -> Term -> FAPUOI BM
-evalTerm sampleTV maxdeg maxsize ix box fptype@(prec,minexp) term =
+evalTerm sampleTV maxdeg maxsize ix box fptype@(epsrelbits,epsabsbits) term =
     evTerm term
     where
     evTerm term =
@@ -95,12 +95,12 @@ evalTerm sampleTV maxdeg maxsize ix box fptype@(prec,minexp) term =
               FA.setMaxDegree maxdeg $
               FA.setMaxSize maxsize $
               fromRational $
-              2^^minexp
+              2^^(- epsabsbits)
           EpsRel ->
               FA.setMaxDegree maxdeg $
               FA.setMaxSize maxsize $
               fromRational $
-              2^^(-prec)
+              2^^(- epsrelbits)
           Pi ->
               FA.setMaxDegree maxdeg $
               FA.setMaxSize maxsize $
@@ -177,9 +177,9 @@ evalTerm sampleTV maxdeg maxsize ix box fptype@(prec,minexp) term =
               evTerm $
               (-EpsRel) `Hull` EpsRel
           Round arg 
-              | epsabsShownIrrelevant ->
-                  evTerm $
-                  (1 + EpsiRel) * arg
+--              | epsabsShownIrrelevant -> -- TOOOOOOOO SLOW
+--                  evTerm $
+--                  (1 + EpsiRel) * arg
               | otherwise ->
                   evTerm $
                   ((1 + EpsiRel) * arg) + EpsiAbs
