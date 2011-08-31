@@ -159,7 +159,7 @@ instance TruthValue TVM where
         where
         -- investigate need for skewing and possibly skew:
         (box, maybeHP, maybeSkewVar)
-            = tryToSkew boxSkewing splitGuessing prebox tv
+            = tryToSkew boxSkewing prebox tv
         (success, boxes, splitVar)    
             = makeSplit splitGuessing varsNotToSplit maybeVar box maybeSkewVar
             
@@ -211,12 +211,12 @@ analyseLeq box a b =
 --            currDiff = abs $ (r - l) / l
     avgSlope = (sum $ map (abs . head) $ Map.elems coeffs) / (fromIntegral $ Map.size coeffs)
     
-tryToSkew boxSkewing splitGuessing prebox tv
+tryToSkew boxSkewing prebox tv
     | (Prelude.not boxSkewing) 
        Prelude.|| 
       (Prelude.not hyperplanesClose) 
         = 
-        case splitGuessing Prelude.&& gotHyperPlane of
+        case gotHyperPlane of
             True -> (prebox, Nothing, maybeSkewVar)
             False -> (prebox, Nothing, Nothing)
     | otherwise
@@ -249,8 +249,8 @@ makeSplit splitGuessing varsNotToSplit maybeVar box maybeSkewVar
     success = Prelude.not $ (box `ppEqual` boxL) Prelude.|| (box `ppEqual` boxR)
     var
         =
-        case maybeSkewVar of
-            Just var
+        case (splitGuessing, maybeSkewVar) of
+            (True, Just var)
                 | 20 * varWidth < largestWidth -> widestVar
                 | otherwise -> var
                 where
