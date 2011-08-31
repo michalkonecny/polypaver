@@ -8,7 +8,7 @@
     Stability   :  experimental
     Portability :  portable
 
-    Scalable properties involving elementary functions.
+    sqrt43 benchmark
 -}
 
 module Main 
