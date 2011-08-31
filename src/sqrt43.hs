@@ -31,7 +31,7 @@ x = Var 0
 r = Var 1
 
 test =
-    r |<-| Hull (-x^2/4+x) (x^2/4+1) /\ 
-    Eq r (0.5 *: (r +: x /: r))
+    (r |<-| Hull (-x^2/4+x) (x^2/4+1) /\ 
+    Eq r (0.5 *: (r +: x /: r)))
     ---> 
     0.5 *: (r +: x /: r) |<-| (1+4*EpsiRel) * sqrt(x)

@@ -298,8 +298,9 @@ loop
                     do
                     putStrLn $ replicate 100 '*'
                     putStrLn $ "proving over box" ++ show computedboxes ++  ": " ++ ppShow box
-                    case report of
-                        ReportALL ->
+                    case (depth < mindepth, report) of
+                        (True, _) -> return ()
+                        (_, ReportALL) ->
                             putStrLn $ " evaluation result = " ++ show value
                         _ ->
                             putStrLn $ " evaluation result = " ++ show maybeDecision
