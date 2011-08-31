@@ -251,7 +251,7 @@ makeSplit splitGuessing varsNotToSplit maybeVar box maybeSkewVar
         =
         case (splitGuessing, maybeSkewVar) of
             (True, Just var)
-                | 20 * varWidth < largestWidth -> widestVar
+                | 10 * varWidth < largestWidth -> widestVar
                 | otherwise -> var
                 where
                 varWidth =
