@@ -46,14 +46,32 @@ type Coeffs b = IMap.IntMap (IRA b)
 type BoxHyperPlane b = Affine b
 
 ppShow box 
-    =
-    "PP{ corner0=" ++ show corner0 ++ "; "
-    ++ (intercalate ", " $ map showVarCorner vars)
-    ++ "}"
+    | isInterval =
+        "Box{ "
+        ++ (intercalate ", " $ map showVarInterval vars)
+        ++ " }"
+    | otherwise =
+        "PP{ corner0=" ++ show corner0 ++ "; "
+        ++ (intercalate ", " $ map showVarCorner vars)
+        ++ "}"
     where
     (vars, affines) = unzip $ IMap.toAscList box
     (centre, coeffsList) = unzip affines
+    isInterval 
+        = 
+        and $ map isVarProj $ IMap.toAscList box
+        where
+        isVarProj (var, (_, coeffs))
+            =
+            and $ map isZero $ IMap.elems $ IMap.delete var coeffs
+        isZero cf = cf `RA.equalReals` 0 == Just True
     corner0 = getCorner centre coeffsList (replicate (length vars) (-1))
+    showVarInterval var =
+        case IMap.lookup var box of
+            Just (const, coeffs) ->
+                case IMap.lookup var coeffs of
+                    Nothing -> "x" ++ show var ++ " is thin"
+                    Just cf -> "x" ++ show var ++ " in " ++ show ((const - cf) RA.\/ (const + cf))  
     showVarCorner var =
         "corner" ++ show (var + 1) ++ "=" ++ show (getVarCorner var)
     getVarCorner var =
