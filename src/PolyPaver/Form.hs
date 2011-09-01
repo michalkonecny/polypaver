@@ -68,7 +68,7 @@ data Term
   | Neg Term
   | Abs Term
 --  | Min Term Term
---  | Max Term Term
+  | Max Term Term
   | Times Term Term
   | Square Term
   | Recip Term
@@ -104,7 +104,7 @@ showTerm term
           Neg t -> "-(" ++ showTerm t ++ ")"
           Abs t -> "|" ++ showTerm t ++ "|"
         --  Min t1 t2
-        --  Max t1 t2
+          Max t1 t2 -> "max(" ++ showTerm t1 ++ "," ++ showTerm t2 ++ ")"
           Times t1 t2 -> "(" ++ showTerm t1 ++ ") * (" ++ showTerm t2 ++ ")"
           Square t -> "(" ++ showTerm t ++ ")^2"
           Recip t -> "1/(" ++ showTerm t ++ ")"
