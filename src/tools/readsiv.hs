@@ -70,12 +70,12 @@ vcParser =
     do
     vcName <- m_identifier
     m_dot
-    t <- formParser <|> emptyFormParser
+    t <- vcBodyParser <|> vcEmptyBodyParser
     eof
     return (vcName, t)
 
-formParser :: Parser Form
-formParser = 
+vcBodyParser :: Parser Form
+vcBodyParser = 
     do
     hs <- many hypothesis
     m_whiteSpace
@@ -85,8 +85,8 @@ formParser =
     return $
         foldr (--->) (foldl1 (/\) cs) hs 
 
-emptyFormParser :: Parser Form
-emptyFormParser =
+vcEmptyBodyParser :: Parser Form
+vcEmptyBodyParser =
     do
     m_symbol "***"
     manyTill anyToken m_dot 
@@ -101,9 +101,19 @@ atomic symb =
     m_integer
     m_symbol ":"
     m_whiteSpace
-    f <- inequality
+    f <- formula
     m_dot
     return f
+    
+formula :: Parser Form
+formula = buildExpressionParser formTable atomicFormula <?> "formula"
+formTable = 
+    [ [Infix (m_reserved "and" >> return (And)) AssocLeft]
+    , [Infix (m_reserved "or" >> return (Or)) AssocLeft]
+    , [Infix (m_reservedOp "->" >> return (Implies)) AssocRight]
+    ]
+
+atomicFormula = inequality
     
 inequality =
     do
@@ -164,11 +174,13 @@ tokenDef = emptyDef{ commentStart = "/*"
                , opStart = oneOf "><=-+*/"
                , opLetter = oneOf "="
                , reservedOpNames = [">=", "<=", "=", "-", "+", "*", "/"]
+               , reservedNames = ["and", "or", "implies"]
                }
 
 TokenParser{ parens = m_parens
             , identifier = m_identifier
             , reservedOp = m_reservedOp
+            , reserved = m_reserved
             , symbol = m_symbol
             , dot = m_dot
             , integer = m_integer
