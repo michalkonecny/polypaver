@@ -119,10 +119,12 @@ evalTerm sampleTV maxdeg maxsize ix box fptype@(epsrelbits,epsabsbits) term =
                   False -> -- domain of var not thin, so safe to proj
                       FA.setMaxDegree maxdeg $
                       FA.setMaxSize maxsize $ 
-                      UFA.affine [c] (Map.map (:[]) $ Map.fromAscList $ IMap.toAscList coeffs)
-                  where                
+                      UFA.affine [c] (Map.map (:[]) $ Map.filter nonZero coeffs)
+--                      UFA.affine [c] (Map.singleton varid $ (\(Just cf) -> [cf]) $ Map.lookup varid coeffs)
+                  where
                   (c, coeffs) = case IMap.lookup varid box of Just v -> v
                   isConst = ppCoeffsZero coeffs
+                  nonZero cf = cf `RA.equalReals` 0 /= Just True
           Plus left right ->
               evTerm left + evTerm right
           Minus left right ->

@@ -138,6 +138,9 @@ instance TruthValue TVM where
             (_, _, Just True, _) -> TVMDecided False
             (_, _, _, Just True) -> TVMDecided False
             _ -> TVMUndecided form distance hyperplanes 
+--        case a `RA.includes` b of
+--            Just res -> TVMDecided res
+--            _ -> TVMUndecided form 1 []
         where
         distance = foldl1 max [distanceL, distanceR, distanceU, distanceD]
         hyperplanes 
@@ -177,6 +180,7 @@ combineHPs hps1 hps2
     = List.sortBy (\(m1, _) (m2, _) -> compare m1 m2) $ hps1 ++ hps2 
 
 analyseLeq box a b =
+--    (maybeResult, 1, Nothing, 0)
     (maybeResult, distanceD + vaguenessD, maybeHyperplane, vagueness)
     where
     maybeHyperplane =
@@ -190,11 +194,9 @@ analyseLeq box a b =
     distanceD = snd $ RA.doubleBounds $ a - b
     vaguenessD = snd $ RA.doubleBounds vagueness
     hyperplane
-        = (t c, IMap.map t $ IMap.fromList $ Map.toList coeffs)
+        = (t c, Map.map t coeffs)
     hyperplaneDn 
-        = (tn cDnNeg, IMap.map tn $ IMap.fromList $ Map.toList coeffsDnNeg)
-        where
-        negateSnd (a,b) = (a, negate $ t b)
+        = (tn cDnNeg, Map.map tn coeffsDnNeg)
     t [a] = a
     tn [a] = negate a
     (c, coeffs) = UFA.getAffineUpperBound $ a - b
@@ -261,18 +263,18 @@ makeSplit splitGuessing varsNotToSplit maybeVar box maybeSkewVar
         =
         case (splitGuessing, maybeSkewVar) of
             (True, Just var)
-                | 10 * varWidth < largestWidth -> widestVar
+--                | 10000 * varWidth < largestWidth -> widestVar
                 | otherwise -> var
                 where
                 varWidth =
 --                    unsafePrint ("makeSplit: split direction from HP") $ 
-                    case IMap.lookup var widths of Just w -> w
+                    case Map.lookup var widths of Just w -> w
             _ -> 
                 case maybeVar of
                     Just var -> var
                     _ -> widestVar
                 
-    (largestWidth, widestVar) = foldl findWidestVar (0, err) $ IMap.toList widths
+    (largestWidth, widestVar) = foldl findWidestVar (0, err) $ Map.toList widths
     err = 
         error $ "PolyPaver.Logic: split: failed to find a split for " ++ show box 
     findWidestVar (prevWidth, prevRes) (var, currWidth)
@@ -280,26 +282,26 @@ makeSplit splitGuessing varsNotToSplit maybeVar box maybeSkewVar
         | otherwise = (currWidth, var)
     widths 
         = 
-        foldl (IMap.unionWith (+)) IMap.empty $
-            map (IMap.map abs) $ map snd $ IMap.elems splittablesubbox
+        foldl (Map.unionWith (+)) Map.empty $
+            map (Map.map abs) $ map snd $ IMap.elems splittablesubbox
     splittablesubbox =
         foldr IMap.delete box varsNotToSplit
     boxL = IMap.map substL box
     boxR = IMap.map substR box
     substL (c, coeffs) =
-        (lower $ c - varCoeffHalf, IMap.insert var varCoeffHalf coeffs)
+        (lower $ c - varCoeffHalf, Map.insert var varCoeffHalf coeffs)
         where
         varCoeffHalf
             =
             upper $
-            case IMap.lookup var coeffs of Just cf -> cf / 2
+            case Map.lookup var coeffs of Just cf -> cf / 2
     substR (c, coeffs) =
-        (lower $ c + varCoeffHalf, IMap.insert var varCoeffHalf coeffs)
+        (lower $ c + varCoeffHalf, Map.insert var varCoeffHalf coeffs)
         where
         varCoeffHalf
             =
             upper $
-            case IMap.lookup var coeffs of Just cf -> cf / 2
+            case Map.lookup var coeffs of Just cf -> cf / 2
     lower i = fst $ RA.bounds i
     upper i = snd $ RA.bounds i
 

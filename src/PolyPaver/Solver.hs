@@ -23,7 +23,6 @@ import qualified PolyPaver.Plot as Plot
 import qualified Numeric.ER.Real.Approx as RA
 import Numeric.ER.Real.Approx.Interval
 import Numeric.ER.Real.DefaultRepr
-import qualified Data.IntMap as IMap
 import qualified Numeric.ER.BasicTypes.DomainBox as DBox
 import Numeric.ER.BasicTypes.DomainBox.IntMap
 import qualified Data.Sequence as Q
@@ -82,7 +81,7 @@ loop
         1 -- queue length
         inittime -- prevtime
 
-        1 -- number computed boxes
+        0 -- number of computed boxes
         (ppVolume initbox) -- initial volume
         0 -- volume of proved boxes
 
@@ -215,7 +214,7 @@ loop
                     couldIntersect ancestor
                         = ppIntersect ancestor box /= Just False
             prepareBox box =
-                (depth+1,newSkewAncestors, newstartdeg, form, splitVar, box)
+                (depth+1, newSkewAncestors, newstartdeg, form, splitVar, box)
             newSkewAncestors
                 | isSimpleSplit = skewAncestors
                 | otherwise
@@ -295,12 +294,14 @@ loop
                     do
                     putStrLn $ replicate 100 '*'
                     putStrLn $ "proving over box" ++ show computedboxes ++  ": " ++ ppShow box
-                    case (depth < mindepth, report) of
-                        (True, _) -> return ()
-                        (_, ReportALL) ->
-                            putStrLn $ " evaluation result = " ++ show value
+                    case depth < mindepth of
+                        True -> return ()
                         _ ->
-                            putStrLn $ " evaluation result = " ++ show maybeDecision
+                            case report of
+                                ReportALL ->
+                                    putStrLn $ " evaluation result = " ++ show value
+                                _ ->
+                                    putStrLn $ " evaluation result = " ++ show maybeDecision
                 
         reportInitSplit
             =
@@ -321,7 +322,7 @@ loop
                     do
                     putStrLn $
                         "Proved fraction : " ++ show (newtruevol / problemvol)
-                    putStrLn $ formDebug
+--                    putStrLn $ formDebug
                 _ -> return ()
         
         reportSplit
