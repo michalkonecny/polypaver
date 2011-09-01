@@ -31,6 +31,7 @@ import Numeric.ER.Real.DefaultRepr
 import Numeric.ER.Real.Base.MachineDouble
 import qualified Numeric.ER.Real.Approx as RA
 
+import qualified Data.Map as Map
 import qualified Data.IntMap as IMap
 
 import qualified Data.Sequence as Q
@@ -166,12 +167,12 @@ readBox intervals =
     IMap.fromList $ map readInterval $ intervals
     where
     readInterval (i,(l,r)) =
-        (i, (const,  IMap.insert i slope zeroCoeffs))
+        (i, (const,  Map.insert i slope zeroCoeffs))
         where
         slope = (rRA - lRA) / 2
         const = (rRA + lRA) / 2 
         lRA = fromRational l
         rRA = fromRational r
     vars = map fst intervals
-    zeroCoeffs = IMap.fromList $ zip vars $ repeat 0
+    zeroCoeffs = Map.fromList $ zip vars $ repeat 0
     

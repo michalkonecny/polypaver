@@ -36,12 +36,13 @@ import qualified Numeric.ER.Real.Base as B
 import Numeric.ER.Real.DefaultRepr
 import Numeric.ER.RnToRm.DefaultRepr
 
+import qualified Data.Map as Map
 import qualified Data.IntMap as IMap
 import Data.List (intercalate, sort)
 
 type PPBox b = IMap.IntMap (Affine b)
 type Affine b = (IRA b, Coeffs b)
-type Coeffs b = IMap.IntMap (IRA b)
+type Coeffs b = Map.Map Int (IRA b)
 
 type BoxHyperPlane b = Affine b
 
@@ -63,13 +64,13 @@ ppShow box
         where
         isVarProj (var, (_, coeffs))
             =
-            and $ map isZero $ IMap.elems $ IMap.delete var coeffs
+            and $ map isZero $ Map.elems $ Map.delete var coeffs
         isZero cf = cf `RA.equalReals` 0 == Just True
     corner0 = getCorner centre coeffsList (replicate (length vars) (-1))
     showVarInterval var =
         case IMap.lookup var box of
             Just (const, coeffs) ->
-                case IMap.lookup var coeffs of
+                case Map.lookup var coeffs of
                     Nothing -> "x" ++ show var ++ " is thin"
                     Just cf -> "x" ++ show var ++ " in " ++ show ((const - cf) RA.\/ (const + cf))  
     showVarCorner var =
@@ -85,7 +86,7 @@ ppShow box
             (replicate (length vars - var - 1) (-1))
 
 showAffine (c, coeffs)
-    = show c ++ " + " ++ (intercalate " + " $ map showVarCoeff $ IMap.toAscList coeffs)
+    = show c ++ " + " ++ (intercalate " + " $ map showVarCoeff $ Map.toAscList coeffs)
     where
     showVarCoeff (var, cf)
         = "x" ++ show var ++ "*" ++ show cf
@@ -104,16 +105,16 @@ ppCorners box
 
 getCorner ::
     (B.ERRealBase b) =>
-    [IRA b] -> [IMap.IntMap (IRA b)] -> [IRA b] -> [IRA b]
+    [IRA b] -> [Map.Map Int (IRA b)] -> [IRA b] -> [IRA b]
 getCorner centre coeffsList signs =
     zipWith (+) centre $
         map (sumWithSigns signs) coeffsList
     where
     sumWithSigns sings coeffs
         =
-        sum $ zipWith (*) signs $ map snd $ IMap.toAscList coeffs
+        sum $ zipWith (*) signs $ map snd $ Map.toAscList coeffs
     getCoord pt coeffs =
-        case IMap.lookup pt coeffs of Just cf -> cf
+        case Map.lookup pt coeffs of Just cf -> cf
 
 ppEvalBox box ptUnitCoords
     =
@@ -125,8 +126,8 @@ ppEvalBox box ptUnitCoords
 
 ppInvertBox box
     =
-    IMap.fromAscList $ map (\(v,(c,cfList)) -> (v,(c, IMap.fromAscList cfList))) $
-    case map (\(v,(c,cfs)) -> (v,(c, IMap.toAscList cfs))) $ IMap.toList box of
+    IMap.fromAscList $ map (\(v,(c,cfList)) -> (v,(c, Map.fromAscList cfList))) $
+    case map (\(v,(c,cfs)) -> (v,(c, Map.toAscList cfs))) $ IMap.toList box of
         [(0, (o1, [(0, cf11)]))] -> -- one variable
             [(0, (-o1/cf11, [(0, 1/cf11)]))]
         [(0, (o1, [(0, cf11),(1, cf12)])),
@@ -147,8 +148,8 @@ ppInvertBox box
 ppVolume :: (B.ERRealBase b) => PPBox b -> IRA b
 ppVolume box
     = abs $ determinant $ 
-        IMap.elems $ IMap.unionsWith (++) $ 
-            map (IMap.map (:[]) . snd) $ IMap.elems box
+        Map.elems $ Map.unionsWith (++) $ 
+            map (Map.map (:[]) . snd) $ IMap.elems box
     
 determinant :: (B.ERRealBase b) => [[IRA b]] -> IRA b
 determinant matrix 
@@ -176,8 +177,8 @@ ppAffineEqual :: (B.ERRealBase b) => Affine b -> Affine b -> Bool
 ppAffineEqual (c1, coeffs1) (c2, coeffs2)
     =
     (c1 `eq` c2) &&
-    (and $ map snd $ IMap.toList $
-        IMap.intersectionWith eq coeffs1 coeffs2)
+    (and $ map snd $ Map.toList $
+        Map.intersectionWith eq coeffs1 coeffs2)
     where
     c1 `eq` c2 = 
         case c1 `RA.equalReals` c2 of
@@ -189,7 +190,7 @@ ppCoeffsZero ::
     Coeffs b -> Bool
 ppCoeffsZero coeffs 
     = 
-    and $ map isZero $ IMap.elems coeffs
+    and $ map isZero $ Map.elems coeffs
     where
     isZero coeff = 
         case RA.equalReals coeff 0 of 
@@ -280,12 +281,12 @@ ppSkewAlongHyperPlane prebox hp@(hp_const, hp_coeffs)
             where
             new_af_coeffs 
                 =
-                IMap.insert skewVar stretched_af_coeff_skewVar $
-                    IMap.union new_af_coeffs_noSkewVar af_coeffs_outside_hp
+                Map.insert skewVar stretched_af_coeff_skewVar $
+                    Map.union new_af_coeffs_noSkewVar af_coeffs_outside_hp
             -- each variable, except the skew variable, feature in the sum as before
             -- plus its contribution to the new interpretation of skewVar:
             new_af_coeffs_noSkewVar
-                = IMap.intersectionWith skew af_coeffs hp_coeffs_noSkewVar
+                = Map.intersectionWith skew af_coeffs hp_coeffs_noSkewVar
                 where
                 skew af_coeff hp_coeff = 
                     af_coeff - (af_coeff_skewVar * hp_coeff / hp_coeff_skewVar)
@@ -293,21 +294,21 @@ ppSkewAlongHyperPlane prebox hp@(hp_const, hp_coeffs)
             stretched_af_coeff_skewVar
                 = af_coeff_skewVar * (1 + skewVar_stretch)
             af_coeff_skewVar 
-                = case IMap.lookup skewVar af_coeffs of Just cf -> cf
+                = case Map.lookup skewVar af_coeffs of Just cf -> cf
             af_coeffs_outside_hp
-                = IMap.difference af_coeffs hp_coeffs
+                = Map.difference af_coeffs hp_coeffs
     hp_coeff_skewVar
-        = case IMap.lookup skewVar hp_coeffs of Just cf -> cf 
+        = case Map.lookup skewVar hp_coeffs of Just cf -> cf 
     hp_coeffs_noSkewVar 
-        = IMap.delete skewVar hp_coeffs
+        = Map.delete skewVar hp_coeffs
     skewVar_stretch
-        = sum $ map absScale $ IMap.elems hp_coeffs_noSkewVar
+        = sum $ map absScale $ Map.elems hp_coeffs_noSkewVar
         where
         absScale hp_coeff
             = abs (hp_coeff / hp_coeff_skewVar)
     Just skewVar = maybeSkewVar 
     (largest_hp_coeff, maybeSkewVar) 
-        = foldl max (0, Nothing) $ map flipAbs $ IMap.toList hp_coeffs
+        = foldl max (0, Nothing) $ map flipAbs $ Map.toList hp_coeffs
         where
         flipAbs (var, cf) = (abs cf, Just var)
      
