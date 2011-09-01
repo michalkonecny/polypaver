@@ -224,13 +224,10 @@ analyseLeq box a b =
     avgSlope = (sum $ map (abs . head) $ Map.elems coeffs) / (fromIntegral $ Map.size coeffs)
     
 tryToSkew boxSkewing prebox tv
-    | (Prelude.not boxSkewing) 
-       Prelude.|| 
-      (Prelude.not hyperplanesClose) 
-        = 
-        case gotHyperPlane of
-            True -> (prebox, Nothing, maybeSkewVar)
-            False -> (prebox, Nothing, Nothing)
+    | Prelude.not boxSkewing =
+        (prebox, Nothing, if gotHyperPlane then maybeSkewVar else Nothing)  
+    | Prelude.not hyperplanesClose = 
+        (prebox, Nothing, Nothing)  
     | otherwise
         = (skewedBox, Just hp1, maybeSkewVar)
     where
@@ -260,19 +257,23 @@ makeSplit splitGuessing varsNotToSplit maybeVar box maybeSkewVar
     -- perform split (potentially after skewing):
     success = Prelude.not $ (box `ppEqual` boxL) Prelude.|| (box `ppEqual` boxR)
     var
-        =
-        case (splitGuessing, maybeSkewVar) of
-            (True, Just var)
---                | 10000 * varWidth < largestWidth -> widestVar
-                | otherwise -> var
-                where
-                varWidth =
---                    unsafePrint ("makeSplit: split direction from HP") $ 
-                    case Map.lookup var widths of Just w -> w
-            _ -> 
-                case maybeVar of
-                    Just var -> var
-                    _ -> widestVar
+        | splitGuessing =
+            case maybeSkewVar of
+                Just var
+    --                | 10000 * varWidth < largestWidth -> widestVar
+                    | otherwise -> var
+                    where
+                    varWidth =
+    --                    unsafePrint ("makeSplit: split direction from HP") $ 
+                        case Map.lookup var widths of Just w -> w
+                _ -> 
+                    case maybeVar of
+                        Just var -> var
+                        _ -> widestVar
+        | otherwise =
+                    case maybeVar of
+                        Just var -> var
+                        _ -> widestVar
                 
     (largestWidth, widestVar) = foldl findWidestVar (0, err) $ Map.toList widths
     err = 
