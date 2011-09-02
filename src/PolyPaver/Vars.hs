@@ -200,6 +200,12 @@ getBox form =
     scanHypotheses _ = id
     scanHypothesis (And h1 h2) box = 
         (scanHypothesis h1 . scanHypothesis h2) box
+    scanHypothesis (Or h1 h2) box = 
+        Map.unionWith mergeWorse box1 box2
+        where
+        box1 = scanHypothesis h1 box 
+        box2 = scanHypothesis h2 box
+        mergeWorse (l1,r1) (l2,r2) = (min l1 l2, max r1 r2)
     scanHypothesis (Eq (Var v) t) box = 
         Map.insertWith updateUpper v val $
         Map.insertWith updateLower v val box
