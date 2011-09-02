@@ -35,14 +35,16 @@ distance = 0.5^^14
 bench_sqrt_box = [(i, (1,2)) | i <- indices]
 
 bench_sqrt =
-      (Sqrt . product . map Var $ indices)
+      (Sqrt . product . map var $ indices)
       `Le`
-      (Plus (Lit distance) $ product . map (Sqrt . Var) $ indices)
+      (Plus (Lit distance) $ product . map (Sqrt . var) $ indices)
 
 bench_exp_box = [(i, (0,1)) | i <- indices]
 
 bench_exp =
-      (product . map (Exp . Var) $ indices)
+      (product . map (Exp . var) $ indices)
       `Le`
-      (Exp . sum $ Lit distance : map Var indices)
+      (Exp . sum $ Lit distance : map var indices)
+      
+var i = Var i ("x" ++ show i)
 

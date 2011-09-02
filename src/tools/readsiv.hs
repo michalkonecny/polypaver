@@ -180,7 +180,9 @@ decodeFn fn args =
         "(" ++ (intercalate "," $ map show args) ++ ")"
 
 var name =
-    Var $ sum $ zipWith (*) [1..] $ map ord name
+    Var n name
+    where
+    n = sum $ zipWith (*) [1..] $ map ord name
 
 tokenDef = emptyDef{ commentStart = "/*"
                , commentEnd = "*/"

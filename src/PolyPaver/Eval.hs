@@ -110,7 +110,7 @@ evalTerm sampleTV maxdeg maxsize ix box fptype@(epsrelbits,epsabsbits) term =
               FA.setMaxSize maxsize $
               fromRational $
               val :: FAPUOI BM
-          Var varid ->
+          Var varid _ ->
               case isConst of
                   True -> -- domain of var thin, so var is a const
                       FA.setMaxDegree maxdeg $ 

@@ -26,9 +26,9 @@ main =
 
 b = [(0, (0.5,2)), (1, (0,3))]
 
-x = Var 0
+x = Var 0 "x"
 
-r = Var 1
+r = Var 1 "r"
 
 test =
     r |<-| Hull (-x^2/4+x) (x^2/4+1) /\ 

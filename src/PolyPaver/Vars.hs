@@ -56,7 +56,7 @@ getFormFreeVars form =
 getTermFreeVars :: Term -> Set.Set Int
 getTermFreeVars term =
     case term of
-        Var varid -> Set.singleton varid
+        Var varid _ -> Set.singleton varid
         Plus left right ->
             (getTermFreeVars left) `Set.union` (getTermFreeVars right)
         Minus left right ->
@@ -128,7 +128,7 @@ renameVarsTerm old2new = rnm
     where
     rnm term =
         case term of
-            Var varid -> Var $ old2new varid
+            Var varid s -> Var (old2new varid) s 
             Plus left right ->
                 Plus (rnm left) (rnm right)
             Minus left right ->
@@ -210,31 +210,31 @@ getBox form =
         minM _ _ = Nothing
         maxM (Just a) (Just b) = Just $ max a b
         maxM _ _ = Nothing
-    scanHypothesis (Eq (Var v) t) box = 
+    scanHypothesis (Eq (Var v _) t) box = 
         Map.insertWith updateUpper v val $
         Map.insertWith updateLower v val box
         where
         val = evalT box t
-    scanHypothesis (Eq t (Var v)) box = 
+    scanHypothesis (Eq t (Var v _)) box = 
         Map.insertWith updateUpper v val $
         Map.insertWith updateLower v val box
         where
         val = evalT box t
-    scanHypothesis (Le (Var v) t) box = 
+    scanHypothesis (Le (Var v _) t) box = 
         Map.insertWith updateUpper v (evalT box t) box
-    scanHypothesis (Le t (Var v)) box = 
+    scanHypothesis (Le t (Var v _)) box = 
         Map.insertWith updateLower v (evalT box t) box
-    scanHypothesis (Leq (Var v) t) box = 
+    scanHypothesis (Leq (Var v _) t) box = 
         Map.insertWith updateUpper v (evalT box t) box
-    scanHypothesis (Leq t (Var v)) box = 
+    scanHypothesis (Leq t (Var v _)) box = 
         Map.insertWith updateLower v (evalT box t) box
-    scanHypothesis (Ge (Var v) t) box = 
+    scanHypothesis (Ge (Var v _) t) box = 
         Map.insertWith updateLower v (evalT box t) box
-    scanHypothesis (Ge t (Var v)) box = 
+    scanHypothesis (Ge t (Var v _)) box = 
         Map.insertWith updateUpper v (evalT box t) box
-    scanHypothesis (Geq (Var v) t) box = 
+    scanHypothesis (Geq (Var v _) t) box = 
         Map.insertWith updateLower v (evalT box t) box
-    scanHypothesis (Geq t (Var v)) box = 
+    scanHypothesis (Geq t (Var v _)) box = 
         Map.insertWith updateUpper v (evalT box t) box
     scanHypothesis _ box = box
     
@@ -249,7 +249,7 @@ getBox form =
     updateLower (Nothing,_) (Nothing,u) = (Nothing, u)
     
     evalT _ (Lit val) = (Just val, Just val)
-    evalT box (Var v) = 
+    evalT box (Var v _) = 
         case Map.lookup v box of
             Nothing -> (Nothing, Nothing)
             Just v -> v

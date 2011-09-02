@@ -62,7 +62,7 @@ data Term
   | EpsRel
   | Pi
   | Lit Rational
-  | Var Int
+  | Var Int String -- numeric identifier, string only for printing
   | Plus Term Term
   | Minus Term Term
   | Neg Term
@@ -98,7 +98,7 @@ showTerm term
           EpsRel -> "εrel"
           Pi -> "π"
           Lit r -> show r 
-          Var n -> "x" ++ show n
+          Var n s -> s
           Plus t1 t2 -> "(" ++ showTerm t1 ++ ") + (" ++ showTerm t2 ++ ")"
           Minus t1 t2 -> "(" ++ showTerm t1 ++ ")- (" ++ showTerm t2 ++ ")"
           Neg t -> "-(" ++ showTerm t ++ ")"

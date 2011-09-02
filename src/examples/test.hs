@@ -26,15 +26,15 @@ exp_shift =
     Problem box thm 
     where
     box = [(0, (-1,1))]
-    x = Var 0
+    x = Var 0 "x"
     thm = exp(x) |<=| exp(x+0.0001) 
 
 test_skew =
     Problem box thm 
     where
     box = [(0, (0,4)), (1, (0,4))]
-    x = Var 0
-    y = Var 1
+    x = Var 0 "x"
+    y = Var 1 "y"
     thm = 
         x |<=| y*y
         --->
