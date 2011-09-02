@@ -1,0 +1,17 @@
+TODO
+
+siv parser: parentheses inside formulas, operators < and >
+
+add a preprocessor that drops hypotheses that do not mention any of the variables in the conclusions
+
+switch -g to take an int parameter - a limit on the box edge ratio, 0 = no limit, 1 = dummy splitting
+
+add a tptp parser
+
+fix the slowdown introduced with ppBoxes
+
+executable that reads a tptp file and starts proving it
+
+cabalise all PolyPaver and the required hsreals modules, publish the tar.gz
+  write some documentation on googlecode
+    simple tutorial on an example
