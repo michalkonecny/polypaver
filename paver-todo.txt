@@ -1,6 +1,6 @@
 TODO
 
-siv parser: parentheses inside formulas, operators < and >
+readsiv: remember and use original variable names
 
 add a preprocessor that drops hypotheses that do not mention any of the variables in the conclusions
 

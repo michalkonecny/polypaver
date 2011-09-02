@@ -45,8 +45,8 @@ float_max = (fromInteger 0x1FFFFFE) * 2^(127 - 24)
 proval_cosine_1 =
     (exact_result3 - Cos exact_x) |<-| (o2e 24)
     where
-    float_x = Var 0 -- any float, can shrink to eg [-2^(-4),2^(-4)] thanks to the first premise
-    exact_x = Var 1 -- [-2^(-5),2^(-5)]
+    float_x = Var 0 "float_x" -- any float, can shrink to eg [-2^(-4),2^(-4)] thanks to the first premise
+    exact_x = Var 1 "exact_x" -- [-2^(-5),2^(-5)]
 
     float_result = 1.0
     float_result0 = (float_x *: float_x);
@@ -64,8 +64,8 @@ proval_cosine_2 =
     ((float_x - exact_x) |<-| (o2e 20)) --->
     ((float_result3 - exact_result3) |<-| plusMinus ((Abs (float_x - exact_x)) + (Lit $ (fromInteger 0x20081) * 2^^(-41)))) -- original 2^^(-41)
     where
-    float_x = Var 0 -- any float, can shrink to eg [-2^(-4),2^(-4)] thanks to the first premise
-    exact_x = Var 1 -- [-2^(-5),2^(-5)]
+    float_x = Var 0 "float_x" -- any float, can shrink to eg [-2^(-4),2^(-4)] thanks to the first premise
+    exact_x = Var 1 "exact_x" -- [-2^(-5),2^(-5)]
     
     float_result = 1.0
     float_result0 = (float_x *: float_x);
@@ -83,8 +83,8 @@ proval_cosine_3 =
     ((float_x - exact_x) |<-| (o2e 20)) --->
     (float_x *: float_x) |<-| float_range
     where
-    float_x = Var 0 -- any float, can shrink to eg [-2^(-4),2^(-4)] thanks to the first premise
-    exact_x = Var 1 -- [-2^(-5),2^(-5)]
+    float_x = Var 0 "float_x" -- any float, can shrink to eg [-2^(-4),2^(-4)] thanks to the first premise
+    exact_x = Var 1 "exact_x" -- [-2^(-5),2^(-5)]
 
     float_result = 1.0
     float_result0 = (float_x *: float_x);
@@ -106,7 +106,7 @@ proval_sqrt_3 =
     --->
     (float_result6 -/ (1.0 / Sqrt(float_x))) |<-| (o2e 10)
     where
-    float_x = Var 0 -- any float, can shrink to [0.5,2] thanks to the deleted premises
+    float_x = Var 0 "float_x" -- any float, can shrink to [0.5,2] thanks to the deleted premises
     float_result = Var 1 -- any float, can shrink to eg [0.25,4] thanks to the first premise
 
     float_result0 = 0.5;
