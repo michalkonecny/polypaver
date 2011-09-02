@@ -205,7 +205,11 @@ getBox form =
         where
         box1 = scanHypothesis h1 box 
         box2 = scanHypothesis h2 box
-        mergeWorse (l1,r1) (l2,r2) = (min l1 l2, max r1 r2)
+        mergeWorse (l1,r1) (l2,r2) = (minM l1 l2, maxM r1 r2)
+        minM (Just a) (Just b) = Just $ min a b
+        minM _ _ = Nothing
+        maxM (Just a) (Just b) = Just $ max a b
+        maxM _ _ = Nothing
     scanHypothesis (Eq (Var v) t) box = 
         Map.insertWith updateUpper v val $
         Map.insertWith updateLower v val box
