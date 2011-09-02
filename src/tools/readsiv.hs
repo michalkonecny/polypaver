@@ -20,11 +20,11 @@ import PolyPaver.Paver
 import PolyPaver.Form
 import PolyPaver.Vars
 
+import Numeric.ER.Misc
+
 import System
 import Data.Char
-import Data.List
-import Data.List.Split (splitOn)
-import Control.Monad
+import Data.List (intercalate)
 
 import Text.Parsec
 import Text.Parsec.String
@@ -36,8 +36,7 @@ import Text.Parsec.Language
 main = do
   inputPathS : outputFolder : _ <- getArgs
   fileS <- readFile inputPathS
-  let vcSs = vcSplitter fileS
-  let vcs = map parseVC vcSs
+  let vcs = parseSiv inputPathS fileS
   let vcBoxes = map (addBox inputPathS) $ filter (notVerum . snd) vcs
   mapM_ (writePolyPaverMain outputFolder) $ vcBoxes
   
@@ -47,62 +46,77 @@ addBox inputPathS (name, form) =
     box =
         case getBox formN of
             Left err -> 
-                error $ "readsiv: problem with VC " ++ name ++ ":\n" ++ err
+                error $ "addBox: problem with VC " ++ name ++ ":\n" ++ err
             Right box -> box
     formN = normaliseVars form
   
-parseVC s =
-    case parse vcParser "vc" s of
+parseSiv filePath s =
+    case parse siv "siv" s of
         Right t -> t
-        Left err -> error $ "parse error: " ++ show err 
+        Left err -> error $ "parse error in file " ++ filePath ++ ":" ++ show err 
         
-vcSplitter :: String -> [String]
-vcSplitter =  
-    filter (not.isSpace.head)
-    . filter (not.null)
-    . concatMap (splitOn "\n\n")
-    . tail
-    . concatMap (splitOn "function_")
-    . splitOn "procedure_"
+siv :: Parser [(String, Form)]
+siv =
+    many $
+        do
+        untilStartOfVC
+        vcWhole
+        where
+        untilStartOfVC =
+            (try startOfVC) <|> (manyTill anyToken $ try $ do { newline; startOfVC })
+        startOfVC =
+            (m_symbol "procedure_")
+            <|> 
+            (m_symbol "function_")
 
-vcParser :: Parser (String, Form) 
-vcParser = 
+vcHead =
     do
     vcName <- m_identifier
+--    unsafePrint ("vcHead: got identifier = " ++ vcName) $ return ()
     m_dot
-    t <- vcBodyParser <|> vcEmptyBodyParser
-    eof
+--    unsafePrint ("vcHead: vcName = " ++ vcName) $ return ()
+    return vcName
+
+vcWhole :: Parser (String, Form) 
+vcWhole = 
+    do
+    vcName <- vcHead
+    t <- vcBody <|> vcEmptyBody
+--    unsafePrint ("vcWhole: done vcName = " ++ vcName ++ "; form = " ++ showForm t) $ return ()
     return (vcName, t)
 
-vcBodyParser :: Parser Form
-vcBodyParser = 
+vcBody :: Parser Form
+vcBody = 
     do
     hs <- many hypothesis
     m_whiteSpace
     m_reservedOp "->"
     m_whiteSpace
-    cs <- many1 conclusion
+    cs <- many (try conclusion)
     return $
-        foldr (--->) (foldl1 (/\) cs) hs 
+        case cs of
+            [] -> Verum
+            _ -> foldr (--->) (foldl1 (/\) cs) hs 
 
-vcEmptyBodyParser :: Parser Form
-vcEmptyBodyParser =
+vcEmptyBody :: Parser Form
+vcEmptyBody =
     do
     m_symbol "***"
     manyTill anyToken m_dot 
     return Verum
 
-hypothesis = atomic "H"
-conclusion = atomic "C"
+hypothesis = vcItem "H"
+conclusion = vcItem "C"
 
-atomic symb =
+vcItem symb =
     do
     m_symbol symb
-    m_integer
+    n <- m_integer
     m_symbol ":"
     m_whiteSpace
     f <- formula
     m_dot
+--    unsafePrint ("vcItem: done item = " ++ symb ++ show n ++ "; form = " ++ showForm f) $ return ()
     return f
     
 formula :: Parser Form
@@ -113,7 +127,7 @@ formTable =
     , [Infix (m_reservedOp "->" >> return (Implies)) AssocRight]
     ]
 
-atomicFormula = inequality
+atomicFormula = (try $ m_parens formula) <|> inequality
     
 inequality =
     do
@@ -125,6 +139,7 @@ inequality =
     op =
         choice $ map o [("<", Le), ("<=", Leq), (">", Ge), (">=", Geq), ("=", Eq)]
     o (opS, opF) =
+        try $
         do
         m_reservedOp opS
         return opF
