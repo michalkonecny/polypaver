@@ -200,6 +200,16 @@ getBox form =
     scanHypotheses _ = id
     scanHypothesis (And h1 h2) box = 
         (scanHypothesis h1 . scanHypothesis h2) box
+    scanHypothesis (Eq (Var v) t) box = 
+        Map.insertWith updateUpper v val $
+        Map.insertWith updateLower v val box
+        where
+        val = evalT box t
+    scanHypothesis (Eq t (Var v)) box = 
+        Map.insertWith updateUpper v val $
+        Map.insertWith updateLower v val box
+        where
+        val = evalT box t
     scanHypothesis (Le (Var v) t) box = 
         Map.insertWith updateUpper v (evalT box t) box
     scanHypothesis (Le t (Var v)) box = 
