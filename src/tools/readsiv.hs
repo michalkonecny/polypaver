@@ -79,7 +79,7 @@ vcBodyParser =
     do
     hs <- many hypothesis
     m_whiteSpace
-    m_symbol "->"
+    m_reservedOp "->"
     m_whiteSpace
     cs <- many1 conclusion
     return $
@@ -172,8 +172,8 @@ tokenDef = emptyDef{ commentStart = "/*"
                , identStart = letter
                , identLetter = alphaNum <|> (oneOf "_")
                , opStart = oneOf "><=-+*/"
-               , opLetter = oneOf "="
-               , reservedOpNames = [">=", "<=", "=", "-", "+", "*", "/"]
+               , opLetter = oneOf "=>"
+               , reservedOpNames = [">", "<", ">=", "<=", "=", "-", "+", "*", "/", "->"]
                , reservedNames = ["and", "or", "implies"]
                }
 
