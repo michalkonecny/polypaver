@@ -41,7 +41,7 @@ main = do
   mapM_ (writePolyPaverMain outputFolder) $ vcBoxes
   
 addBox inputPathS (name, form) =
-    (name, formN, box)
+    (name, removeDisjointHypotheses formN, box)
     where
     box =
         case getBox formN of
