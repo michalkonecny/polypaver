@@ -18,6 +18,7 @@ module PolyPaver.Vars
     renameVarsForm,
     renameVarsTerm,
     normaliseVars,
+    removeDisjointHypotheses,
     getBox
 )
 where
@@ -176,6 +177,27 @@ normaliseVars form =
         Map.fromAscList $ zip (Set.toAscList varSet) [0..]
     varSet = getFormFreeVars form
 
+removeDisjointHypotheses :: Form -> Form
+removeDisjointHypotheses form
+    =
+    rmHyps form
+    where
+    rmHyps (Implies h c)
+        | disjoint h = rmHyps c 
+        | otherwise = (Implies (rmConj h) (rmHyps c))
+    rmHyps f = f
+    rmConj (And h1 h2)
+        | disjoint h1 = rmConj h2
+        | disjoint h2 = rmConj h1
+        | otherwise = And (rmConj h1) (rmConj h2)
+    rmConj f = f 
+    disjoint h 
+        = Set.null $ Set.intersection conclusionVars (getFormFreeVars h)
+    conclusionVars
+        = getFormFreeVars conclusion
+    conclusion
+        = getConclusion form
+        
 getBox :: Form -> Either String [(Int, (Rational, Rational))]
 getBox form =
     checkAllThere $ Map.toAscList boxMap

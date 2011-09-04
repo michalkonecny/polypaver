@@ -44,6 +44,9 @@ showForm form
           Neq t1 t2 -> showTerm t1 ++ " ≠ " ++ showTerm t2
           Ni t1 t2 -> showTerm t1 ++ " ⊆ " ++ showTerm t2
 
+getConclusion :: Form -> Form
+getConclusion (Implies f1 f2) = getConclusion f2
+getConclusion f = f
 
 (/\) = And
 (\/) = Or
@@ -153,3 +156,4 @@ instance Floating Term
 (/:) = FOver
 
 plusMinus a = Hull (-a) a
+
