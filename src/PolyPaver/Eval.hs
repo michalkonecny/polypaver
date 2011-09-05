@@ -40,13 +40,13 @@ import qualified Data.IntMap as IMap
 evalForm ::
     (L.TruthValue tv) =>
     Int -> Int -> EffortIndex -> PPBox BM -> (Int,Int) -> Form -> tv
-evalForm maxdeg maxsize ix box fptype form =
+evalForm maxdeg maxsize ix ppb fptype form =
     evForm form
     where
     evForm form =
         case form of
-          Verum -> L.fromBool box True
-          Falsum -> L.fromBool box False
+          Verum -> L.fromBool ppb True
+          Falsum -> L.fromBool ppb False
           Not arg -> L.not $ evForm arg
           Or left right ->
                evForm left L.|| evForm right
@@ -56,37 +56,37 @@ evalForm maxdeg maxsize ix box fptype form =
               evForm left L.~> evForm right
           Le left right ->
               L.not $
-              L.leq (Leq right left) box (evTerm right) (evTerm left)          
+              L.leq (Leq right left) ppb (evTerm right) (evTerm left)          
           Leq left right ->
-              L.leq form box (evTerm left) (evTerm right)          
+              L.leq form ppb (evTerm left) (evTerm right)          
           Ge left right ->
               L.not $
-              L.leq (Leq left right) box (evTerm left) (evTerm right)          
+              L.leq (Leq left right) ppb (evTerm left) (evTerm right)          
           Geq left right ->
-              L.leq form box (evTerm right) (evTerm left)          
+              L.leq form ppb (evTerm right) (evTerm left)          
           Eq left right ->
-              (L.leq (Leq left right) box (evTerm left) (evTerm right))          
+              (L.leq (Leq left right) ppb (evTerm left) (evTerm right))          
               L.&&
-              (L.leq (Leq right left) box (evTerm right) (evTerm left))          
+              (L.leq (Leq right left) ppb (evTerm right) (evTerm left))          
           Neq left right ->
               L.not $ 
-              (L.leq (Leq left right) box (evTerm left) (evTerm right))          
+              (L.leq (Leq left right) ppb (evTerm left) (evTerm right))          
               L.&&
-              (L.leq (Leq right left) box (evTerm right) (evTerm left))          
+              (L.leq (Leq right left) ppb (evTerm right) (evTerm left))          
           Ni left right -> 
               if RA.isBottom rightArg || RA.isBottom leftArg then
                   L.bot form
               else 
-                  L.includes form box rightArg leftArg
+                  L.includes form ppb rightArg leftArg
               where
               rightArg = evTerm right
               leftArg = evTerm left
-    evTerm = evalTerm (evForm Verum) maxdeg maxsize ix box fptype
+    evTerm = evalTerm (evForm Verum) maxdeg maxsize ix ppb fptype
 
 evalTerm ::
     (L.TruthValue tv) =>
     tv -> Int -> Int -> EffortIndex -> PPBox BM -> (Int,Int) -> Term -> FAPUOI BM
-evalTerm sampleTV maxdeg maxsize ix box fptype@(epsrelbits,epsabsbits) term =
+evalTerm sampleTV maxdeg maxsize ix ppb@(box, varNames) fptype@(epsrelbits,epsabsbits) term =
     evTerm term
     where
     evTerm term =
@@ -215,5 +215,5 @@ evalTerm sampleTV maxdeg maxsize ix box fptype@(epsrelbits,epsabsbits) term =
           FExp arg ->
               evTerm $
               Round $ (1+4*EpsiRel) * (Exp arg)
-    evForm = evalForm maxdeg maxsize ix box fptype
+    evForm = evalForm maxdeg maxsize ix ppb fptype
               
