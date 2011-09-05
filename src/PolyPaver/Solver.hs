@@ -12,7 +12,13 @@
 
     The main counter-example search algorihtm.
 -}
-module PolyPaver.Solver where
+module PolyPaver.Solver 
+(
+    Order(..),
+    Report(..),
+    loop
+)
+where
 
 import PolyPaver.Form
 import PolyPaver.PPBox
@@ -42,10 +48,6 @@ data Order =
 
 data Report =
     ReportNONE | ReportNORMAL | ReportALL 
-    deriving (Show,Data,Typeable)
-
-data FPType =
-    B32 | B64 | B32near | B64near
     deriving (Show,Data,Typeable)
 
 loop
@@ -318,12 +320,12 @@ loop
             do
             plotBox green
             case report of
-                ReportALL ->
+                ReportNONE -> return ()
+                _ ->
                     do
                     putStrLn $
                         "Proved fraction : " ++ show (newtruevol / problemvol)
 --                    putStrLn $ formDebug
-                _ -> return ()
         
         reportSplit
             =
