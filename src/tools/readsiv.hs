@@ -9,10 +9,6 @@
     Portability :  portable
 
     Translator of SPARK VCs to PolyPaver problems.
-    
-    Example usage in a Unix shell:
-    
-    > runhaskell tools/readsiv.hs test.siv test/
 -}
 module Main where
 
