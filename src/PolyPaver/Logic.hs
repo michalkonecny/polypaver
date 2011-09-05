@@ -251,7 +251,7 @@ tryToSkew boxSkewing prebox tv
         where
         err = error $ "PolyPaver.Logic: tryToSkew: internal error, tv = " ++ show tv
 
-makeSplit splitGuessing varsNotToSplit maybeVar ppb@(box, varNames) maybeSkewVar
+makeSplit splitGuessing varsNotToSplit maybeVar ppb@(skewed, box, varNames) maybeSkewVar
     = (success, (ppbL, ppbR), var)
     where
     -- perform split (potentially after skewing):
@@ -287,8 +287,8 @@ makeSplit splitGuessing varsNotToSplit maybeVar ppb@(box, varNames) maybeSkewVar
             map (Map.map abs) $ map snd $ IMap.elems splittablesubbox
     splittablesubbox =
         foldr IMap.delete box varsNotToSplit
-    ppbL = (IMap.map substL box, varNames)
-    ppbR = (IMap.map substR box, varNames)
+    ppbL = (skewed, IMap.map substL box, varNames)
+    ppbR = (skewed, IMap.map substR box, varNames)
     substL (c, coeffs) =
         (lower $ c - varCoeffHalf, Map.insert var varCoeffHalf coeffs)
         where

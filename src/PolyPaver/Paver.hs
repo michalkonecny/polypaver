@@ -137,7 +137,7 @@ defaultMain problem =
         initbox
 
 readBox varNames intervals = 
-    (IMap.fromList $ map readInterval $ intervals, varNames) 
+    (False, IMap.fromList $ map readInterval $ intervals, varNames) 
     where
     readInterval (i,(l,r)) =
         (i, (const,  Map.insert i slope zeroCoeffs))

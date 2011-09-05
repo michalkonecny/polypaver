@@ -6,9 +6,9 @@
 
 [DONE] remember and use for any human communication meaningful variable names
 
-keep a boolean indicator with each box whether it is skewed
-  use this info to get rid of the "(possibly skewed)" in output
-  use this info to speed up construction of affine maps when they are projections
+[DONE] keep a boolean indicator with each box whether it is skewed
+  [DONE] use this info to get rid of the "(possibly skewed)" in output
+  [MK] use this info to speed up construction of affine maps when they are projections
   
 use depth-first search by default
 

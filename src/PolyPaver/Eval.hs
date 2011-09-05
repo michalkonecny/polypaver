@@ -86,7 +86,7 @@ evalForm maxdeg maxsize ix ppb fptype form =
 evalTerm ::
     (L.TruthValue tv) =>
     tv -> Int -> Int -> EffortIndex -> PPBox BM -> (Int,Int) -> Term -> FAPUOI BM
-evalTerm sampleTV maxdeg maxsize ix ppb@(box, varNames) fptype@(epsrelbits,epsabsbits) term =
+evalTerm sampleTV maxdeg maxsize ix ppb@(_, box, _) fptype@(epsrelbits,epsabsbits) term =
     evTerm term
     where
     evTerm term =

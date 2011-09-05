@@ -60,7 +60,7 @@ loop
     mindepth maxdepth maxDepthReached
     ix maxtime prec originalForm 
 --    intvarids 
-    initppb@(initbox, varNames)
+    initppb@(_, initbox, varNames)
     =
     do
     args <- getArgs
@@ -184,7 +184,7 @@ loop
                 reportSplit
                 bisectAndRecur undecidedMaybeSimplerForm currtime [boxL, boxR] False splitVar
 
-        (depth, skewAncestors, startdeg, form, prevSplitVar, ppb@(box, _)) = Q.index queue 0
+        (depth, skewAncestors, startdeg, form, prevSplitVar, ppb@(skewed, box, _)) = Q.index queue 0
         dim = DBox.size box
         boxes = Q.drop 1 queue
 
@@ -348,9 +348,13 @@ loop
                 ReportNONE -> return ()
                 _ ->
                     putStrLn $ 
-                        "splitting at depth " ++ show depth 
-                        ++ " domain of (possibly skewed) variable _" ++ showVar splitVar varNames ++ "_"
+                        "splitting at depth " ++ show depth
+                        ++ reportDepth 
                         ++ ", new queue size is " ++ show (qlength + 1)
+                    where
+                    reportDepth 
+                        | skewed = " domain of skewed variable _" ++ showVar splitVar varNames ++ "_"
+                        | otherwise = " domain of variable " ++ showVar splitVar varNames 
             return ()
 
         -- plotting
