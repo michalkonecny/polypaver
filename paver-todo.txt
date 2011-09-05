@@ -9,8 +9,8 @@
 [DONE] keep a boolean indicator with each box whether it is skewed
   [DONE] use this info to get rid of the "(possibly skewed)" in output
   [DONE] use this info to speed up construction of affine maps when they are projections
-  
-use depth-first search by default
+
+[DONE] use depth-first search by default
 
 report queue size only when using depth-first
 
