@@ -23,6 +23,7 @@ where
 import PolyPaver.Form
 import PolyPaver.PPBox
 import PolyPaver.Eval
+import PolyPaver.Vars
 import qualified PolyPaver.Logic as L
 import qualified PolyPaver.Plot as Plot
 
@@ -36,6 +37,7 @@ import Numeric.ER.Misc
 
 import Data.List
 import Data.Maybe
+import qualified Data.Map as Map
 
 import System.Environment (getArgs, getProgName)
 import System.Console.CmdArgs
@@ -347,9 +349,15 @@ loop
                 _ ->
                     putStrLn $ 
                         "splitting at depth " ++ show depth 
-                        ++ " domain of variable " ++ show splitVar
+                        ++ " domain of (possibly skewed) variable " ++ showVar splitVar
                         ++ ", new queue size is " ++ show (qlength + 1)
             return ()
+
+        showVar n = 
+            case Map.lookup n varNames of
+                Nothing -> "_x" ++ show n ++ "'"
+                Just name -> "_" ++ name ++ "_"
+        varNames = getFormVarNames originalForm
 
         -- plotting
         stopProver =

@@ -13,6 +13,7 @@
 -}
 module PolyPaver.Vars 
 (
+    getFormVarNames,
     getFormFreeVars,
     getTermFreeVars,
     renameVarsForm,
@@ -27,6 +28,71 @@ import PolyPaver.Form
 
 import qualified Data.Set as Set
 import qualified Data.Map as Map
+
+getFormVarNames :: Form -> Map.Map Int String
+getFormVarNames form =
+    case form of
+        Not arg -> getFormVarNames arg
+        Or left right ->
+            (getFormVarNames left) `Map.union` (getFormVarNames right)
+        And left right ->
+            (getFormVarNames left) `Map.union` (getFormVarNames right)
+        Implies left right ->
+            (getFormVarNames left) `Map.union` (getFormVarNames right)
+        Le left right ->
+            (getTermVarNames left) `Map.union` (getTermVarNames right)
+        Leq left right ->
+            (getTermVarNames left) `Map.union` (getTermVarNames right)
+        Ge left right ->
+            (getTermVarNames left) `Map.union` (getTermVarNames right)
+        Geq left right ->
+            (getTermVarNames left) `Map.union` (getTermVarNames right)
+        Eq left right ->
+            (getTermVarNames left) `Map.union` (getTermVarNames right)
+        Neq left right ->
+            (getTermVarNames left) `Map.union` (getTermVarNames right)
+        Ni left right -> 
+            (getTermVarNames left) `Map.union` (getTermVarNames right)
+        _ -> Map.empty
+
+getTermVarNames :: Term -> Map.Map Int String
+getTermVarNames term =
+    case term of
+        Var varid name -> Map.singleton varid name
+        Plus left right ->
+            (getTermVarNames left) `Map.union` (getTermVarNames right)
+        Minus left right ->
+            (getTermVarNames left) `Map.union` (getTermVarNames right)
+        Neg arg -> getTermVarNames arg
+        Abs arg -> getTermVarNames arg
+--          Min left right ->
+--          Max left right ->
+        Times left right ->
+            (getTermVarNames left) `Map.union` (getTermVarNames right)
+        Square arg -> getTermVarNames arg
+        Recip arg -> getTermVarNames arg
+        Over left right ->
+            (getTermVarNames left) `Map.union` (getTermVarNames right)
+        Sqrt arg -> getTermVarNames arg
+        Exp arg -> getTermVarNames arg
+        Sin arg -> getTermVarNames arg
+        Cos arg -> getTermVarNames arg
+        Atan arg -> getTermVarNames arg
+        Hull left right ->
+            (getTermVarNames left) `Map.union` (getTermVarNames right)
+        Round arg -> getTermVarNames arg
+        FPlus left right ->
+            (getTermVarNames left) `Map.union` (getTermVarNames right)
+        FMinus left right ->
+            (getTermVarNames left) `Map.union` (getTermVarNames right)
+        FTimes left right ->
+            (getTermVarNames left) `Map.union` (getTermVarNames right)
+        FSquare arg -> getTermVarNames arg
+        FSqrt arg -> getTermVarNames arg
+        FOver left right ->
+            (getTermVarNames left) `Map.union` (getTermVarNames right)
+        FExp arg -> getTermVarNames arg
+        _ -> Map.empty
 
 getFormFreeVars :: Form -> Set.Set Int
 getFormFreeVars form =

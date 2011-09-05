@@ -39,7 +39,7 @@ import System.IO
 
 data Problem = Problem
     {box :: [(Int,(Rational,Rational))]
-    ,theorem :: Form}
+    ,conjecture :: Form}
     deriving (Show,Read)
 
 data Paver = Paver 
@@ -98,7 +98,7 @@ defaultMain problem =
         mindepth = minDepth args 
         maxdepth = maxDepth args 
         initbox = readBox $ box problem 
-        thm = theorem problem
+        conj = conjecture problem
         ordr = order args 
         quietOpt = quiet args
         verboseOpt = verbose args
@@ -130,7 +130,7 @@ defaultMain problem =
         ix
         maxtime -- 24 hour timeout
         23 -- mantissa bit size (read precisionS)
-        thm -- to be proved, defined in IntegralTest
+        conj -- to be decided, defined in IntegralTest
 --        intvarids -- variable IDs of integer variables, defined in IntegralTest
         initbox
 
