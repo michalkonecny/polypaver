@@ -1,6 +1,5 @@
 {-|
-    Module      :  Main
-    Description :  scalable properties involving elementary functions 
+    Description :  main sqrt CV from 2011 AMAI paper  
     Copyright   :  (c) Jan Duracz, Michal Konecny 
     License     :  BSD3
 
@@ -11,13 +10,9 @@
     sqrt43 benchmark
 -}
 
-module Main 
-(
-  main
-)
-where
+module Main where
 
-import PolyPaver.Paver
+import PolyPaver
 
 main = 
     defaultMain Problem 
