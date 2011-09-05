@@ -30,6 +30,8 @@ Description:
 
 Extra-Source-Files:
     CHANGES
+    examples/test.hs
+    examples/bench.hs
 
 Library
   hs-source-dirs: src
