@@ -1,3 +1,4 @@
+----------  WORK IN PROGRESS ------------------
 {-|
     Module      :  Main
     Description :  translator of TPTP theorems to PolyPaver problems 
@@ -9,11 +10,8 @@
     Portability :  portable
 
     Translator of TPTP theorems to PolyPaver problems.
-    
-    Example usage in a Unix shell:
-    
-    > runhaskell tools/readsiv.hs test.siv test/
 -}
+----------  WORK IN PROGRESS ------------------
 module Main where
 
 import PolyPaver.Paver
@@ -32,6 +30,7 @@ import Text.Parsec.Expr
 --import Text.Parsec.Prim
 import Text.Parsec.Language
 
+----------  WORK IN PROGRESS ------------------
 main = 
     do
     inputPathS : outputPathS : _ <- getArgs
@@ -50,6 +49,8 @@ parseTPTPfof s =
     case parse fofParser "TPTP fof" s of
         Right t -> t
         Left err -> error $ "parse error: " ++ show err 
+        
+----------  WORK IN PROGRESS ------------------
         
 fofParser :: Parser (String, Form) 
 fofParser = 
