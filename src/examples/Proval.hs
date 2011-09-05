@@ -1,5 +1,4 @@
 {-|
-    Module      :  Main
     Description :  a few example problems adapted from ProVal 
     Copyright   :  (c) Michal Konecny, Jan Duracz
     License     :  BSD3
@@ -10,13 +9,9 @@
 
     A few example problems adapted from ProVal.
 -}
-module Main 
-(
-  main
-)
-where
+module Main where
 
-import PolyPaver.Paver
+import PolyPaver
 
 main = 
     defaultMain Problem 
@@ -107,7 +102,7 @@ proval_sqrt_3 =
     (float_result6 -/ (1.0 / Sqrt(float_x))) |<-| (o2e 10)
     where
     float_x = Var 0 "float_x" -- any float, can shrink to [0.5,2] thanks to the deleted premises
-    float_result = Var 1 -- any float, can shrink to eg [0.25,4] thanks to the first premise
+    float_result = Var 1 "float_result" -- any float, can shrink to eg [0.25,4] thanks to the first premise
 
     float_result0 = 0.5;
     float_result1 = (float_result0 *: float_result); -- = 0.5r

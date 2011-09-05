@@ -1,0 +1,77 @@
+Name:           polypaver
+Version:        2011.2.0.0
+Cabal-Version:  >= 1.8
+Build-Type:     Simple
+License:        BSD3
+License-File:   LICENCE
+Author:         Jan Duracz and Michal Konecny (Aston University)
+Copyright:      (c) 2011 Jan Duracz, Michal Konecny
+Maintainer:     mikkonecny@gmail.com
+Homepage:       http://code.google.com/p/polypaver/
+Stability:      experimental
+Category:       Numerical, Theorem Provers
+Synopsis:       numerical constraint solver based on polynomial interval arithmetic
+Tested-with:    GHC ==6.12.3
+Description:
+    Tools for deciding systems of real inequalities and interval inclusions over bounded domains, featuring:
+    .    
+    * explicit intervals and interval expressions
+    .
+    * all field operations
+    .
+    * abs
+    .
+    * sqrt, exp, sin, cos
+    .
+    * integrals
+    .
+    The decision procedure consists in constructing tight polynomial approximations
+    to the expressions over parts of the domain. 
+
+Extra-Source-Files:
+    CHANGES
+
+Library
+  hs-source-dirs: src
+  ghc-options:     -O2
+  Build-Depends:
+        base >= 4 && < 5
+  Exposed-modules:
+    Numeric.AERN.RealArithmetic.ExactOps, 
+    Numeric.AERN.RealArithmetic.NumericOrderRounding, 
+    Numeric.AERN.RealArithmetic.NumericOrderRounding.OpsDefaultEffort,
+    Numeric.AERN.RealArithmetic.NumericOrderRounding.InPlace.OpsDefaultEffort,
+    Numeric.AERN.RealArithmetic.NumericOrderRounding.OpsImplicitEffort,
+    Numeric.AERN.RealArithmetic.NumericOrderRounding.InPlace.OpsImplicitEffort,
+    Numeric.AERN.RealArithmetic.RefinementOrderRounding,
+    Numeric.AERN.RealArithmetic.RefinementOrderRounding.ElementaryFromFieldOps.Exponentiation,
+    Numeric.AERN.RealArithmetic.RefinementOrderRounding.OpsDefaultEffort, 
+    Numeric.AERN.RealArithmetic.RefinementOrderRounding.InPlace.OpsDefaultEffort,
+    Numeric.AERN.RealArithmetic.RefinementOrderRounding.OpsImplicitEffort, 
+    Numeric.AERN.RealArithmetic.RefinementOrderRounding.InPlace.OpsImplicitEffort, 
+    Numeric.AERN.RealArithmetic.Measures, 
+    Numeric.AERN.RealArithmetic.Laws, 
+    Numeric.AERN.RealArithmetic.Bench, 
+    Numeric.AERN.Misc.IntegerArithmetic
+    
+  Other-modules:
+    Numeric.AERN.RealArithmetic.Auxiliary
+    Numeric.AERN.RealArithmetic.NumericOrderRounding.Conversion
+    Numeric.AERN.RealArithmetic.NumericOrderRounding.FieldOps
+    Numeric.AERN.RealArithmetic.NumericOrderRounding.MixedFieldOps
+    Numeric.AERN.RealArithmetic.NumericOrderRounding.Elementary
+    Numeric.AERN.RealArithmetic.NumericOrderRounding.SpecialConst
+    Numeric.AERN.RealArithmetic.NumericOrderRounding.InPlace
+    Numeric.AERN.RealArithmetic.NumericOrderRounding.InPlace.FieldOps
+    Numeric.AERN.RealArithmetic.NumericOrderRounding.InPlace.MixedFieldOps
+    Numeric.AERN.RealArithmetic.NumericOrderRounding.InPlace.Elementary
+    Numeric.AERN.RealArithmetic.RefinementOrderRounding.Conversion
+    Numeric.AERN.RealArithmetic.RefinementOrderRounding.FieldOps
+    Numeric.AERN.RealArithmetic.RefinementOrderRounding.MixedFieldOps
+    Numeric.AERN.RealArithmetic.RefinementOrderRounding.Elementary
+    Numeric.AERN.RealArithmetic.RefinementOrderRounding.SpecialConst
+    Numeric.AERN.RealArithmetic.RefinementOrderRounding.InPlace
+    Numeric.AERN.RealArithmetic.RefinementOrderRounding.InPlace.FieldOps
+    Numeric.AERN.RealArithmetic.RefinementOrderRounding.InPlace.MixedFieldOps
+    Numeric.AERN.RealArithmetic.RefinementOrderRounding.InPlace.Elementary
+
