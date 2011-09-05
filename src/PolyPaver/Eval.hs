@@ -86,7 +86,7 @@ evalForm maxdeg maxsize ix ppb fptype form =
 evalTerm ::
     (L.TruthValue tv) =>
     tv -> Int -> Int -> EffortIndex -> PPBox BM -> (Int,Int) -> Term -> FAPUOI BM
-evalTerm sampleTV maxdeg maxsize ix ppb@(_, box, _) fptype@(epsrelbits,epsabsbits) term =
+evalTerm sampleTV maxdeg maxsize ix ppb@(skewed, box, _) fptype@(epsrelbits,epsabsbits) term =
     evTerm term
     where
     evTerm term =
@@ -118,9 +118,12 @@ evalTerm sampleTV maxdeg maxsize ix ppb@(_, box, _) fptype@(epsrelbits,epsabsbit
                       UFA.const [c]
                   False -> -- domain of var not thin, so safe to proj
                       FA.setMaxDegree maxdeg $
-                      FA.setMaxSize maxsize $ 
-                      UFA.affine [c] (Map.map (:[]) $ Map.filter nonZero coeffs)
---                      UFA.affine [c] (Map.singleton varid $ (\(Just cf) -> [cf]) $ Map.lookup varid coeffs)
+                      FA.setMaxSize maxsize $
+                      case skewed of
+                          True -> 
+                              UFA.affine [c] (Map.map (:[]) $ Map.filter nonZero coeffs)
+                          False ->
+                              UFA.affine [c] (Map.singleton varid $ (\(Just cf) -> [cf]) $ Map.lookup varid coeffs)
                   where
                   (c, coeffs) = case IMap.lookup varid box of Just v -> v
                   isConst = ppCoeffsZero coeffs
