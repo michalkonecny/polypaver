@@ -1,5 +1,4 @@
 {-|
-    Module      :  Main
     Description :  scalable properties involving elementary functions 
     Copyright   :  (c) Jan Duracz, Michal Konecny 
     License     :  BSD3
@@ -11,13 +10,9 @@
     Scalable properties involving elementary functions.
 -}
 
-module Main 
-(
-  main
-)
-where
+module Main where
 
-import PolyPaver.Paver
+import PolyPaver
 
 main = 
 --    defaultMain Problem 

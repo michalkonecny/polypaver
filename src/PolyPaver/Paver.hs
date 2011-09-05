@@ -50,7 +50,7 @@ writePolyPaverMain outputFolder (name, form, box) =
             [
              "module Main(main) where"
             ,""
-            ,"import PolyPaver.Paver"
+            ,"import PolyPaver"
             ,"import Data.Ratio ((%))"
             ,""
             ,"main ="
