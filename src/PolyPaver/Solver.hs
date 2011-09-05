@@ -60,7 +60,7 @@ loop
     mindepth maxdepth maxDepthReached
     ix maxtime prec originalForm 
 --    intvarids 
-    initbox
+    initppb@(initbox, varNames)
     =
     do
     args <- getArgs
@@ -81,12 +81,12 @@ loop
         mstateTV inittime
         maxDepthReached
 
-        (Q.singleton (0,[],origstartdeg,originalForm,0,initbox)) -- initial queue with one box only
+        (Q.singleton (0,[],origstartdeg,originalForm,0,initppb)) -- initial queue with one box only
         1 -- queue length
         inittime -- prevtime
 
         0 -- number of computed boxes
-        (ppVolume initbox) -- initial volume
+        (ppVolume initppb) -- initial volume
         0 -- volume of proved boxes
 
         Nothing Nothing
@@ -141,7 +141,7 @@ loop
                 plotBox red
                 putStr $
                   "\nCounter example found, search aborted.\nTheorem proved false for " ++
-                  ppShow box ++
+                  ppShow ppb ++
                   "\nSeconds elapsed : " ++
                   show ((fromInteger (currtime-inittime)) / 1000000000000) ++
                   "\nComputed  boxes : " ++ show computedboxes ++ 
@@ -169,7 +169,7 @@ loop
                 currtime <- getCPUTime
                 putStr $ 
                   "\nCannot split box, search aborted.\nUndecided for : " ++
-                  ppShow box ++
+                  ppShow ppb ++
                   "\nSeconds elapsed : " ++
                   show ((fromInteger (currtime-inittime)) / 1000000000000) ++
                   "\nComputed boxes : " ++ show computedboxes ++ 
@@ -184,7 +184,7 @@ loop
                 reportSplit
                 bisectAndRecur undecidedMaybeSimplerForm currtime [boxL, boxR] False splitVar
 
-        (depth, skewAncestors, startdeg, form, prevSplitVar, box) = Q.index queue 0
+        (depth, skewAncestors, startdeg, form, prevSplitVar, ppb@(box, _)) = Q.index queue 0
         dim = DBox.size box
         boxes = Q.drop 1 queue
 
@@ -212,19 +212,19 @@ loop
             newBoxes2
                 = filter intersectsAllSkewAncestors newBoxes
                 where
-                intersectsAllSkewAncestors box
+                intersectsAllSkewAncestors ppb
                     = and $ map couldIntersect skewAncestors
                     where
                     couldIntersect ancestor
-                        = ppIntersect ancestor box /= Just False
-            prepareBox box =
-                (depth+1, newSkewAncestors, newstartdeg, form, splitVar, box)
+                        = ppIntersect ancestor ppb /= Just False
+            prepareBox ppb =
+                (depth+1, newSkewAncestors, newstartdeg, form, splitVar, ppb)
             newSkewAncestors
                 | isSimpleSplit = skewAncestors
                 | otherwise
                     = case maybeHP of 
                         Nothing -> skewAncestors
-                        _ -> box : skewAncestors 
+                        _ -> ppb : skewAncestors 
                     -- when skewing, part of the skewed box stretches outside of the original box - 
                     -- when splitting this box and its subboxes, need to drop any that are completely outside this box
             newproblemvol
@@ -233,11 +233,11 @@ loop
                     =
                     case (maybeHP, newBoxes2length) of
                         (Nothing, 2) -> problemvol -- no skewing or dropping of boxes - a clean split
-                        _ -> problemvol - (ppVolume box) + (sum $ map ppVolume newBoxes2)
+                        _ -> problemvol - (ppVolume ppb) + (sum $ map ppVolume newBoxes2)
         (splitSuccess, maybeHP, splitVar, (boxL,boxR))
-            = L.split thinvarids maybeVar box boxSkewing splitGuessing value
+            = L.split thinvarids maybeVar ppb boxSkewing splitGuessing value
         (_, _, splitVarNoHP, (boxLNoHP,boxRNoHP))
-            = L.split thinvarids maybeVar box False False value
+            = L.split thinvarids maybeVar ppb False False value
         undecidedMaybeSimplerForm
             =
             case maybeHP of
@@ -246,20 +246,20 @@ loop
                     -- when skewing, the new boxes are not sub-boxes of box and thus we cannot
                     -- rely on the simplification of form performed while evaluating it over box
 
-        newtruevol = truevol + (ppVolume box)
+        newtruevol = truevol + (ppVolume ppb)
 
         decided = isJust maybeDecision
         decision = fromJust maybeDecision
         maybeDecision = L.decide dim value
         value =
-            evalForm currdeg maxsize ix box (epsrelbits,epsabsbits) form :: L.TVM
+            evalForm currdeg maxsize ix ppb (epsrelbits,epsabsbits) form :: L.TVM
 --            case fptype of
 --                 B32 -> evalForm currdeg maxsize ix box (23,-126) form :: L.TVM -- Maybe Bool
 --                 B32near -> evalForm currdeg maxsize ix box (24,-126) form :: L.TVM -- Maybe Bool
 --                 B64 -> evalForm currdeg maxsize ix box (52,-1022) form :: L.TVM -- Maybe Bool
 --                 B64near -> evalForm currdeg maxsize ix box (53,-1022) form :: L.TVM -- Maybe Bool
         L.TVDebugReport formDebug = 
-            evalForm currdeg maxsize ix box (epsrelbits,epsabsbits) form :: L.TVDebugReport
+            evalForm currdeg maxsize ix ppb (epsrelbits,epsabsbits) form :: L.TVDebugReport
 
         newstartdeg =
             (origstartdeg + currdeg) `div` 2
@@ -297,7 +297,7 @@ loop
                 _ ->
                     do
                     putStrLn $ replicate 100 '*'
-                    putStrLn $ "proving over box" ++ show computedboxes ++  ": " ++ ppShow box
+                    putStrLn $ "proving over box" ++ show computedboxes ++  ": " ++ ppShow ppb
                     case depth < mindepth of
                         True -> return ()
                         _ ->
@@ -349,15 +349,9 @@ loop
                 _ ->
                     putStrLn $ 
                         "splitting at depth " ++ show depth 
-                        ++ " domain of (possibly skewed) variable " ++ showVar splitVar
+                        ++ " domain of (possibly skewed) variable _" ++ showVar splitVar varNames ++ "_"
                         ++ ", new queue size is " ++ show (qlength + 1)
             return ()
-
-        showVar n = 
-            case Map.lookup n varNames of
-                Nothing -> "_x" ++ show n ++ "'"
-                Just name -> "_" ++ name ++ "_"
-        varNames = getFormVarNames originalForm
 
         -- plotting
         stopProver =

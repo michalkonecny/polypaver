@@ -251,11 +251,11 @@ tryToSkew boxSkewing prebox tv
         where
         err = error $ "PolyPaver.Logic: tryToSkew: internal error, tv = " ++ show tv
 
-makeSplit splitGuessing varsNotToSplit maybeVar box maybeSkewVar
-    = (success, (boxL, boxR), var)
+makeSplit splitGuessing varsNotToSplit maybeVar ppb@(box, varNames) maybeSkewVar
+    = (success, (ppbL, ppbR), var)
     where
     -- perform split (potentially after skewing):
-    success = Prelude.not $ (box `ppEqual` boxL) Prelude.|| (box `ppEqual` boxR)
+    success = Prelude.not $ (ppb `ppEqual` ppbL) Prelude.|| (ppb `ppEqual` ppbR)
     var
         | splitGuessing =
             case maybeSkewVar of
@@ -277,7 +277,7 @@ makeSplit splitGuessing varsNotToSplit maybeVar box maybeSkewVar
                 
     (largestWidth, widestVar) = foldl findWidestVar (0, err) $ Map.toList widths
     err = 
-        error $ "PolyPaver.Logic: split: failed to find a split for " ++ show box 
+        error $ "PolyPaver.Logic: split: failed to find a split for " ++ ppShow ppb 
     findWidestVar (prevWidth, prevRes) (var, currWidth)
         | currWidth `RA.leqReals` prevWidth == Just True = (prevWidth, prevRes)
         | otherwise = (currWidth, var)
@@ -287,8 +287,8 @@ makeSplit splitGuessing varsNotToSplit maybeVar box maybeSkewVar
             map (Map.map abs) $ map snd $ IMap.elems splittablesubbox
     splittablesubbox =
         foldr IMap.delete box varsNotToSplit
-    boxL = IMap.map substL box
-    boxR = IMap.map substR box
+    ppbL = (IMap.map substL box, varNames)
+    ppbR = (IMap.map substR box, varNames)
     substL (c, coeffs) =
         (lower $ c - varCoeffHalf, Map.insert var varCoeffHalf coeffs)
         where

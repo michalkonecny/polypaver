@@ -23,6 +23,7 @@ where
 import PolyPaver.PPBox
 import PolyPaver.Form
 import PolyPaver.Solver
+import PolyPaver.Vars
 
 import Numeric.ER.BasicTypes.DomainBox.IntMap
 import Numeric.ER.Real.DefaultRepr
@@ -97,8 +98,9 @@ defaultMain problem =
         ix = fromInteger $ toInteger $ effort args
         mindepth = minDepth args 
         maxdepth = maxDepth args 
-        initbox = readBox $ box problem 
         conj = conjecture problem
+        varNames = getFormVarNames conj
+        initbox = readBox varNames $ box problem
         ordr = order args 
         quietOpt = quiet args
         verboseOpt = verbose args
@@ -134,9 +136,8 @@ defaultMain problem =
 --        intvarids -- variable IDs of integer variables, defined in IntegralTest
         initbox
 
-readBox  :: [(Int,(Rational,Rational))] -> PPBox BM
-readBox intervals = 
-    IMap.fromList $ map readInterval $ intervals
+readBox varNames intervals = 
+    (IMap.fromList $ map readInterval $ intervals, varNames) 
     where
     readInterval (i,(l,r)) =
         (i, (const,  Map.insert i slope zeroCoeffs))

@@ -29,6 +29,8 @@ module PolyPaver.PPBox
 )
 where
 
+import PolyPaver.Vars
+
 import Numeric.ER.Misc
 import qualified Numeric.ER.Real.Approx as RA
 import Numeric.ER.Real.Approx.Interval (ERInterval(..))
@@ -40,13 +42,17 @@ import qualified Data.Map as Map
 import qualified Data.IntMap as IMap
 import Data.List (intercalate, sort)
 
-type PPBox b = IMap.IntMap (Affine b)
+type PPBox b = 
+    (IMap.IntMap (Affine b), 
+        -- affine maps from the skewed variables in [-1,1] 
+        --   to individual original coordinates 
+     IMap.IntMap String) -- human-friendly variable names
 type Affine b = (IRA b, Coeffs b)
 type Coeffs b = Map.Map Int (IRA b)
 
 type BoxHyperPlane b = Affine b
 
-ppShow box 
+ppShow (box, varNames) 
     | isInterval =
         "Box{ "
         ++ (intercalate ", " $ map showVarInterval vars)
@@ -71,8 +77,8 @@ ppShow box
         case IMap.lookup var box of
             Just (const, coeffs) ->
                 case Map.lookup var coeffs of
-                    Nothing -> "x" ++ show var ++ " is thin"
-                    Just cf -> "x" ++ show var ++ " in " ++ show ((const - cf) RA.\/ (const + cf))  
+                    Nothing -> showVar var varNames ++ " is thin"
+                    Just cf -> showVar var varNames ++ " in " ++ show ((const - cf) RA.\/ (const + cf))
     showVarCorner var =
         "corner" ++ show (var + 1) ++ "=" ++ show (getVarCorner var)
     getVarCorner var =
@@ -146,7 +152,7 @@ ppInvertBox box
             error "box inversion currently supported only for dimensions 1 and 2"
 
 ppVolume :: (B.ERRealBase b) => PPBox b -> IRA b
-ppVolume box
+ppVolume (box, _)
     = abs $ determinant $ 
         Map.elems $ Map.unionsWith (++) $ 
             map (Map.map (:[]) . snd) $ IMap.elems box
@@ -171,7 +177,7 @@ determinant matrix
     
 
 ppEqual :: (B.ERRealBase b) => PPBox b -> PPBox b -> Bool
-ppEqual box1 box2 = and $ IMap.elems $ IMap.intersectionWith ppAffineEqual box1 box2
+ppEqual (box1, _) (box2, _) = and $ IMap.elems $ IMap.intersectionWith ppAffineEqual box1 box2
     
 ppAffineEqual :: (B.ERRealBase b) => Affine b -> Affine b -> Bool
 ppAffineEqual (c1, coeffs1) (c2, coeffs2)
@@ -200,7 +206,7 @@ ppCoeffsZero coeffs
 ppIntersect ::
     (B.ERRealBase b) => 
     PPBox b -> PPBox b -> Maybe Bool
-ppIntersect box1 box2
+ppIntersect (box1, _) (box2, _)
     | dim > 2 = Nothing -- box inversion currently supported only for dim <= 2
     | otherwise 
         =
@@ -251,14 +257,14 @@ insideBounds (aL,aR) (bL,bR)
 ppSkewAlongHyperPlane ::
     (B.ERRealBase b) => 
     PPBox b -> BoxHyperPlane b -> (IRA b, Maybe Int, PPBox b)
-ppSkewAlongHyperPlane prebox hp@(hp_const, hp_coeffs)
+ppSkewAlongHyperPlane ppbox@(prebox, varNames) hp@(hp_const, hp_coeffs)
     | 0 `RA.refines` skewVar_stretch = 
 --        unsafePrint
 --        (
 --            "ppSkewAlongHyperPlane: hyperplane parallel to box"
 --            ++"\n maybeSkewVar = " ++ show maybeSkewVar 
 --        ) $
-        (1/0, maybeSkewVar, prebox) -- zero skewing - hyperplane parallel to a side of prebox 
+        (1/0, maybeSkewVar, ppbox) -- zero skewing - hyperplane parallel to a side of prebox 
     | otherwise 
         =
 --        unsafePrint
@@ -268,7 +274,7 @@ ppSkewAlongHyperPlane prebox hp@(hp_const, hp_coeffs)
 --            ++"\n box = " ++ ppShow box
 --            ++"\n" 
 --        ) $
-        (isecPtDistance, maybeSkewVar, box)
+        (isecPtDistance, maybeSkewVar, (box, varNames))
     where
     isecPtDistance = abs $ hp_const / largest_hp_coeff
     box = 
