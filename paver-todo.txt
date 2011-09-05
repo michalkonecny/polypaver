@@ -4,7 +4,7 @@
 
 [DONE] cabalise all PolyPaver and the required hsreals modules
 
-[MK, IN PROGRESS] remember and use for any human communication meaningful variable names
+[DONE] remember and use for any human communication meaningful variable names
 
 add an executable that takes siv and a VC name and tries to solve it, publish Linux i386 32bit version
 
