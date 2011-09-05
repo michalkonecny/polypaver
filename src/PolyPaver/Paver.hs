@@ -16,9 +16,7 @@ module PolyPaver.Paver
 (
     defaultMain,
     Problem(..),
-    module PolyPaver.Form,
-    readBox,
-    writePolyPaverMain
+    module PolyPaver.Form
 )
 where
 
@@ -38,32 +36,6 @@ import qualified Data.Sequence as Q
 import System.Console.CmdArgs
 import System.CPUTime
 import System.IO
-import qualified System.FilePath as FP
-
-writePolyPaverMain outputFolder (name, form, box) =
-    do
-    writeFile outputFile mainS 
-    where
-    outputFile = outputFolder `FP.combine` (name ++ ".hs")
-    mainS =
-        unlines $
-            [
-             "module Main(main) where"
-            ,""
-            ,"import PolyPaver"
-            ,"import Data.Ratio ((%))"
-            ,""
-            ,"main ="
-            ,"    defaultMain Problem"
-            ,"        {"
-            ,"          box = " ++ show box
---            ,"          ,ivars = []"
-            ,"          ,theorem = thm"
-            ,"        }"
-            ,"thm ="
-            ,"    " ++ show form
-            ,""
-            ]       
 
 data Problem = Problem
     {box :: [(Int,(Rational,Rational))]

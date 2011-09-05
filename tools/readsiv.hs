@@ -12,14 +12,14 @@
 -}
 module Main where
 
-import PolyPaver.Paver
+import PolyPaver.GenerateMain
 import PolyPaver.Form
 import PolyPaver.Vars
 
 import Numeric.ER.Misc
 
-import System
-import Data.Char
+import System.Environment (getArgs)
+import Data.Char (ord)
 import Data.List (intercalate)
 
 import Text.Parsec
