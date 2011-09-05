@@ -22,3 +22,7 @@ add a tptp parser
 
 executable that reads a tptp file and starts proving it
 
+adapt to ghc7
+
+adapt to new AERN
+
