@@ -6,8 +6,6 @@
 
 [MK, IN PROGRESS] remember and use for any human communication meaningful variable names
 
-publish the cabal package tar.gz on googlecode
-
 add an executable that takes siv and a VC name and tries to solve it, publish Linux i386 32bit version
 
 write some documentation on googlecode
@@ -17,6 +15,8 @@ write some documentation on googlecode
 switch -g to take an int parameter - a limit on the box edge ratio, 0 = no limit, 1 = dummy splitting
 
 *** release 0.1
+
+publish the cabal package tar.gz on googlecode
 
 add a tptp parser
 
