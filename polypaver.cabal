@@ -1,5 +1,5 @@
 Name:           polypaver
-Version:        2011.2.0.0
+Version:        0.1
 Cabal-Version:  >= 1.8
 Build-Type:     Simple
 License:        BSD3
@@ -35,43 +35,77 @@ Library
   hs-source-dirs: src
   ghc-options:     -O2
   Build-Depends:
-        base >= 4 && < 5
+        base >= 4 && < 5,
+        containers >= 0.3.0.0 && < 0.4,
+        gtk >= 0.12.0 && < 0.13,
+        cairo >= 0.12.0 && < 0.13,
+        stm >= 2 && < 3,
+        cmdargs >= 0.7 && < 0.8,
+        filepath >= 1.1 && < 2,
+        regex-compat >= 0.93.1 && < 0.94,
+        html >= 1.0.1.2 && < 2, 
+        binary >= 0.5 && < 1, 
+        syb >= 0.1 && < 1,
+        time >= 1.1 && < 2, 
+        convertible >= 1.0 && < 2 
   Exposed-modules:
-    Numeric.AERN.RealArithmetic.ExactOps, 
-    Numeric.AERN.RealArithmetic.NumericOrderRounding, 
-    Numeric.AERN.RealArithmetic.NumericOrderRounding.OpsDefaultEffort,
-    Numeric.AERN.RealArithmetic.NumericOrderRounding.InPlace.OpsDefaultEffort,
-    Numeric.AERN.RealArithmetic.NumericOrderRounding.OpsImplicitEffort,
-    Numeric.AERN.RealArithmetic.NumericOrderRounding.InPlace.OpsImplicitEffort,
-    Numeric.AERN.RealArithmetic.RefinementOrderRounding,
-    Numeric.AERN.RealArithmetic.RefinementOrderRounding.ElementaryFromFieldOps.Exponentiation,
-    Numeric.AERN.RealArithmetic.RefinementOrderRounding.OpsDefaultEffort, 
-    Numeric.AERN.RealArithmetic.RefinementOrderRounding.InPlace.OpsDefaultEffort,
-    Numeric.AERN.RealArithmetic.RefinementOrderRounding.OpsImplicitEffort, 
-    Numeric.AERN.RealArithmetic.RefinementOrderRounding.InPlace.OpsImplicitEffort, 
-    Numeric.AERN.RealArithmetic.Measures, 
-    Numeric.AERN.RealArithmetic.Laws, 
-    Numeric.AERN.RealArithmetic.Bench, 
-    Numeric.AERN.Misc.IntegerArithmetic
-    
-  Other-modules:
-    Numeric.AERN.RealArithmetic.Auxiliary
-    Numeric.AERN.RealArithmetic.NumericOrderRounding.Conversion
-    Numeric.AERN.RealArithmetic.NumericOrderRounding.FieldOps
-    Numeric.AERN.RealArithmetic.NumericOrderRounding.MixedFieldOps
-    Numeric.AERN.RealArithmetic.NumericOrderRounding.Elementary
-    Numeric.AERN.RealArithmetic.NumericOrderRounding.SpecialConst
-    Numeric.AERN.RealArithmetic.NumericOrderRounding.InPlace
-    Numeric.AERN.RealArithmetic.NumericOrderRounding.InPlace.FieldOps
-    Numeric.AERN.RealArithmetic.NumericOrderRounding.InPlace.MixedFieldOps
-    Numeric.AERN.RealArithmetic.NumericOrderRounding.InPlace.Elementary
-    Numeric.AERN.RealArithmetic.RefinementOrderRounding.Conversion
-    Numeric.AERN.RealArithmetic.RefinementOrderRounding.FieldOps
-    Numeric.AERN.RealArithmetic.RefinementOrderRounding.MixedFieldOps
-    Numeric.AERN.RealArithmetic.RefinementOrderRounding.Elementary
-    Numeric.AERN.RealArithmetic.RefinementOrderRounding.SpecialConst
-    Numeric.AERN.RealArithmetic.RefinementOrderRounding.InPlace
-    Numeric.AERN.RealArithmetic.RefinementOrderRounding.InPlace.FieldOps
-    Numeric.AERN.RealArithmetic.RefinementOrderRounding.InPlace.MixedFieldOps
-    Numeric.AERN.RealArithmetic.RefinementOrderRounding.InPlace.Elementary
+    PolyPaver
 
+  Other-modules:
+    PolyPaver.PPBox
+    PolyPaver.Plot
+    PolyPaver.Form
+    PolyPaver.Logic
+    PolyPaver.Eval
+    PolyPaver.Solver
+    PolyPaver.Paver
+    Numeric.ER.ShowHTML
+    Numeric.ER.BasicTypes.PlusMinus
+    Numeric.ER.Misc
+    Numeric.ER.BasicTypes.ExtendedInteger
+    Numeric.ER.BasicTypes
+    Numeric.ER.Real.Approx
+    Numeric.ER.Real.Arithmetic.Taylor
+    Numeric.ER.Real.Arithmetic.Elementary
+    Numeric.ER.Real.Approx.Elementary
+    Numeric.ER.Real.Approx.OI
+    Numeric.ER.Real.Base
+    Numeric.ER.Real.Base.MachineDouble
+    Numeric.ER.Real.Base.Float
+    Numeric.ER.Real.Base.Rational
+    Numeric.ER.Real.Approx.Interval
+    Numeric.ER.Real.Base.CombinedMachineAP
+    Numeric.ER.Real.Base.MPFR
+    Numeric.ER.Real.DefaultRepr
+    Numeric.ER.BasicTypes.DomainBox
+    Numeric.ER.BasicTypes.DomainBox.IntMap
+    Numeric.ER.RnToRm.Approx
+    Numeric.ER.RnToRm.UnitDom.Approx
+    Numeric.ER.RnToRm.UnitDom.Base
+    Numeric.ER.RnToRm.UnitDom.Approx.Interval
+    Numeric.ER.RnToRm.UnitDom.Approx.IntervalOI
+    Numeric.ER.RnToRm.Approx.DomTransl
+    Numeric.ER.RnToRm.Approx.DomEdges
+    Numeric.ER.RnToRm.Approx.Tuple
+    Numeric.ER.RnToRm.Approx.Derivatives
+    Numeric.ER.RnToRm.BisectionTree
+    Numeric.ER.RnToRm.BisectionTree.Integration
+    Numeric.ER.RnToRm.Approx.PieceWise
+    Numeric.ER.RnToRm.UnitDom.ChebyshevBase.Polynom.Basic
+    Numeric.ER.RnToRm.UnitDom.ChebyshevBase.Polynom.Eval
+    Numeric.ER.RnToRm.UnitDom.ChebyshevBase.Polynom.Reduce
+    Numeric.ER.RnToRm.UnitDom.ChebyshevBase.Polynom.Ring
+    Numeric.ER.RnToRm.UnitDom.ChebyshevBase.Polynom.Derivative
+    Numeric.ER.Real.Arithmetic.LinearSolver
+    Numeric.ER.RnToRm.UnitDom.ChebyshevBase.Polynom.Bounds
+    Numeric.ER.RnToRm.UnitDom.ChebyshevBase.Polynom.Enclosure
+    Numeric.ER.RnToRm.UnitDom.ChebyshevBase.Polynom.EnclosureInner
+    Numeric.ER.RnToRm.UnitDom.ChebyshevBase.Polynom.Compose
+    Numeric.ER.RnToRm.UnitDom.ChebyshevBase.Polynom.ComposeInner
+    Numeric.ER.RnToRm.UnitDom.ChebyshevBase.Polynom.Integration
+    Numeric.ER.RnToRm.UnitDom.ChebyshevBase.Polynom.Division
+    Numeric.ER.RnToRm.UnitDom.ChebyshevBase.Polynom.DivisionInner
+    Numeric.ER.RnToRm.UnitDom.ChebyshevBase.Polynom.Elementary
+    Numeric.ER.RnToRm.UnitDom.ChebyshevBase.Polynom.ElementaryInner
+    Numeric.ER.RnToRm.UnitDom.ChebyshevBase.Polynom
+    Numeric.ER.RnToRm.DefaultRepr

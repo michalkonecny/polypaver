@@ -18,8 +18,8 @@ import Control.Concurrent.STM
 ----canvas-----
 import Graphics.UI.Gtk hiding (drawPolygon)
 import Graphics.Rendering.Cairo
-import Data.Time.Clock.POSIX
-import Time
+--import Data.Time.Clock.POSIX
+--import System.CPUTime
 
 {-|
   sample usage: @addBox stateTV (1,0,0,0.9) box@
