@@ -30,7 +30,7 @@ Description:
 
 Extra-Source-Files:
     CHANGES
-    examples/test.hs
+    examples/mini.hs
     examples/bench.hs
 
 Library
