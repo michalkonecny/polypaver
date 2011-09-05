@@ -2,11 +2,16 @@
 
 [DONE] add a preprocessor that drops hypotheses that do not mention any of the variables in the conclusions
 
+[DONE] cabalise all PolyPaver and the required hsreals modules
+
 [MK, IN PROGRESS] remember and use for any human communication meaningful variable names
 
-[MK] cabalise all PolyPaver and the required hsreals modules, publish the tar.gz
+publish the cabal package tar.gz on googlecode
+
+add an executable that takes siv and a VC name and tries to solve it, publish Linux i386 32bit version
 
 write some documentation on googlecode
+   installation guide
    simple tutorial on an example
 
 switch -g to take an int parameter - a limit on the box edge ratio, 0 = no limit, 1 = dummy splitting
