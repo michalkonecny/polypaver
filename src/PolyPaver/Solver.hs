@@ -31,7 +31,7 @@ import Numeric.ER.Misc
 import Data.List
 import Data.Maybe
 
-import System (getArgs, getProgName)
+import System.Environment (getArgs, getProgName)
 import System.Console.CmdArgs
 import Control.Concurrent (threadDelay)
 import System.CPUTime
