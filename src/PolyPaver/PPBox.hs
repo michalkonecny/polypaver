@@ -79,8 +79,8 @@ ppShow (skewed, box, varNames)
         case IMap.lookup var box of
             Just (const, coeffs) ->
                 case Map.lookup var coeffs of
-                    Nothing -> showVar var varNames ++ " is thin"
-                    Just cf -> showVar var varNames ++ " in " ++ show ((const - cf) RA.\/ (const + cf))
+                    Nothing -> showVar varNames var ++ " is thin"
+                    Just cf -> showVar varNames var ++ " in " ++ show ((const - cf) RA.\/ (const + cf))
     showVarCorner var =
         "corner" ++ show (var + 1) ++ "=" ++ show (getVarCorner var)
     getVarCorner var =
