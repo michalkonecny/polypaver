@@ -1,0 +1,22 @@
+           /*********************************************************/
+                           /*Proof Rule Declarations*/
+                              /*Examiner GPL 2011*/
+             /*Copyright (C) 2011 Altran Praxis Limited, Bath, U.K.*/
+           /*********************************************************/
+
+
+                        /*DATE : 06-SEP-2011 18:04:24.76*/
+
+                             /*procedure peak.max*/
+
+
+rule_family max_rules:
+     X      requires [X:any] &
+     X <= Y requires [X:ire, Y:ire] &
+     X >= Y requires [X:ire, Y:ire].
+
+max_rules(1): float__size >= 0 may_be_deduced.
+max_rules(2): float__first may_be_replaced_by -340282000000000000000000000000000000000.
+max_rules(3): float__last may_be_replaced_by 340282000000000000000000000000000000000.
+max_rules(4): float__base__first may_be_replaced_by -340282000000000000000000000000000000000.
+max_rules(5): float__base__last may_be_replaced_by 340282000000000000000000000000000000000.

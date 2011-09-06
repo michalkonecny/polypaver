@@ -1,0 +1,20 @@
+           *******************************************************
+                            Listing of SPARK Text
+                              Examiner GPL 2011
+             Copyright (C) 2011 Altran Praxis Limited, Bath, U.K.
+           *******************************************************
+
+
+                        DATE : 06-SEP-2011 18:04:24.72
+
+Line
+   1  package exact is
+   2  
+   3    --# function sqrt (x : float) return float;
+   4  
+   5    --# function cos (x : float) return float;
+   6  
+   7  end exact;
+
+
+--End of file--------------------------------------------------

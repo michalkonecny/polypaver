@@ -1,0 +1,34 @@
+           {*******************************************************}
+                               {FDL Declarations}
+                              {Examiner GPL 2011}
+             {Copyright (C) 2011 Altran Praxis Limited, Bath, U.K.}
+           {*******************************************************}
+
+
+                        {DATE : 06-SEP-2011 18:04:24.79}
+
+                            {procedure peak.peakQ}
+
+
+title procedure peakq;
+
+  function round__(real) : integer;
+  const icoeff2__base__first : real = pending; 
+  const icoeff2__base__last : real = pending; 
+  const float__base__first : real = pending; 
+  const float__base__last : real = pending; 
+  const icoeff2__first : real = pending; 
+  const icoeff2__last : real = pending; 
+  const icoeff2__size : integer = pending; 
+  const float__first : real = pending; 
+  const float__last : real = pending; 
+  const float__size : integer = pending; 
+  var a : real;
+  var b : real;
+  var c : real;
+  var x : real;
+  function numeric__minus(real, real) : real;
+  function numeric__times(real, real) : real;
+  function numeric__divide(real, real) : real;
+
+end;

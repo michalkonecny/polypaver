@@ -28,6 +28,8 @@
 
 [DONE] switch -g to take an int parameter - a limit on the box edge ratio, 0 = no limit, 1 = dummy splitting
 
+add spark verification examples to the bundle - sqrt, rr (name it peak) 
+
 *** release 0.1
 
 publish the cabal package tar.gz on googlecode
@@ -36,11 +38,13 @@ write some documentation on googlecode
    installation guide
    simple tutorial on an example
 
+add support for integrals
+
 add a tptp parser
 
 executable that reads a tptp file and starts proving it
 
-adapt to ghc7
-
 adapt to new AERN
+
+adapt to ghc 7.2.1
 

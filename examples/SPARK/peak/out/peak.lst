@@ -1,0 +1,90 @@
+           *******************************************************
+                            Listing of SPARK Text
+                              Examiner GPL 2011
+             Copyright (C) 2011 Altran Praxis Limited, Bath, U.K.
+           *******************************************************
+
+
+                        DATE : 06-SEP-2011 18:04:24.82
+
+Line
+   1  
+   2  package body peak is
+   3  
+   4    procedure max (x,y : in Float; r : out Float) is
+   5    begin
+   6      if x >= y then
+   7        r := x;
+   8      else
+   9        r := y;
+  10      end if;
+  11    end max;
+
++++        Flow analysis of subprogram max performed: no 
+           errors found.
+--- (  1)  Warning           :405: VCs for statements including real numbers are 
+           approximate.
+
+  12  
+  13    procedure coeffs (y1,y2,y3 : in Float; a,b,c : out Float) is
+  14    begin
+  15      a := -- 0.5*(y1-2*y2+y3)
+  16        numeric.times(
+  17          0.5,
+  18          numeric.plus(
+  19            y1,
+  20            numeric.plus(
+  21              numeric.times(-2.0,y2),
+  22              y3)));
+  23      b := -- 0.5*(y3-y1)
+  24        numeric.times(0.5,numeric.minus(y3,y1));
+  25      c := y2;
+  26    end coeffs;
+
++++        Flow analysis of subprogram coeffs performed: no 
+           errors found.
+--- (  2)  Warning           :405: VCs for statements including real numbers are 
+           approximate.
+
+  27  
+  28    procedure peakQ (a,b,c,x : in Float; r : out Float) is
+  29      ghost : Float;
+  30    begin
+  31      ghost := a+(x-x); 
+  32      r :=
+  33        numeric.minus(
+  34          c,
+  35          numeric.divide(
+  36            numeric.times(b,b),
+  37            numeric.times(4.0,ghost)));
+  38    end peakQ;
+
++++        Flow analysis of subprogram peakQ performed: no 
+           errors found.
+--- (  3)  Warning           :405: VCs for statements including real numbers are 
+           approximate.
+
+  39  
+  40    procedure peakUnit (y1,y2,y3 : in Float; r : out Float) is
+  41      a,b,c,m1,m2 : Float;
+  42    begin
+  43      max(y1,y3,m1);
+  44      coeffs(y1,y2,y3,a,b,c);
+  45      if a < -0.2 and 2.0*a <= b and b <= -2.0*a then -- poly has peak within [-1,1]
+  46        peakQ(a,b,c,0.0,m2);
+  47        max(m1,m2,r);
+  48      else
+  49        r := m1;
+  50      end if;
+  51    end peakUnit;
+
++++        Flow analysis of subprogram peakUnit performed: 
+           no errors found.
+--- (  4)  Warning           :405: VCs for statements including real numbers are 
+           approximate.
+
+  52  
+  53  end peak;
+
+
+--End of file--------------------------------------------------

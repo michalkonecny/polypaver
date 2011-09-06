@@ -1,0 +1,400 @@
+           *******************************************************
+                       Semantic Analysis of SPARK Text
+                              Examiner GPL 2011
+             Copyright (C) 2011 Altran Praxis Limited, Bath, U.K.
+           *******************************************************
+
+
+                        DATE : 06-SEP-2011 18:04:24.79
+
+                            procedure peak.peakQ
+
+
+
+
+For path(s) from start to run-time check associated with statement of line 31:
+
+procedure_peakq_1.
+H1:    x >=  -1 .
+H2:    x <= 1 .
+H3:    a <  -(1/10) .
+H4:    a >= icoeff2__first .
+H5:    a <= icoeff2__last .
+H6:    b >= icoeff2__first .
+H7:    b <= icoeff2__last .
+H8:    c >= icoeff2__first .
+H9:    c <= icoeff2__last .
+H10:   a >= float__first .
+H11:   a <= float__last .
+H12:   b >= float__first .
+H13:   b <= float__last .
+H14:   c >= float__first .
+H15:   c <= float__last .
+H16:   x >= float__first .
+H17:   x <= float__last .
+        ->
+C1:    a + (x - x) >= float__first .
+C2:    a + (x - x) <= float__last .
+C3:    x - x >= float__base__first .
+C4:    x - x <= float__base__last .
+ 
+
+For path(s) from start to precondition check associated with statement of line 32:
+
+procedure_peakq_2.
+H1:    x >=  -1 .
+H2:    x <= 1 .
+H3:    a <  -(1/10) .
+H4:    a >= icoeff2__first .
+H5:    a <= icoeff2__last .
+H6:    b >= icoeff2__first .
+H7:    b <= icoeff2__last .
+H8:    c >= icoeff2__first .
+H9:    c <= icoeff2__last .
+H10:   a >= float__first .
+H11:   a <= float__last .
+H12:   b >= float__first .
+H13:   b <= float__last .
+H14:   c >= float__first .
+H15:   c <= float__last .
+H16:   x >= float__first .
+H17:   x <= float__last .
+H18:   a + (x - x) >= float__first .
+H19:   a + (x - x) <= float__last .
+H20:   x - x >= float__base__first .
+H21:   x - x <= float__base__last .
+        ->
+C1:    numeric__times(b, b) >= float__first .
+C2:    numeric__times(b, b) <= float__last .
+C3:    b >= float__first .
+C4:    b <= float__last .
+C5:    b >= float__first .
+C6:    b <= float__last .
+C7:    c >= float__first .
+C8:    c <= float__last .
+ 
+
+For path(s) from start to precondition check associated with statement of line 32:
+
+procedure_peakq_3.
+H1:    x >=  -1 .
+H2:    x <= 1 .
+H3:    a <  -(1/10) .
+H4:    a >= icoeff2__first .
+H5:    a <= icoeff2__last .
+H6:    b >= icoeff2__first .
+H7:    b <= icoeff2__last .
+H8:    c >= icoeff2__first .
+H9:    c <= icoeff2__last .
+H10:   a >= float__first .
+H11:   a <= float__last .
+H12:   b >= float__first .
+H13:   b <= float__last .
+H14:   c >= float__first .
+H15:   c <= float__last .
+H16:   x >= float__first .
+H17:   x <= float__last .
+H18:   a + (x - x) >= float__first .
+H19:   a + (x - x) <= float__last .
+H20:   x - x >= float__base__first .
+H21:   x - x <= float__base__last .
+H22:   numeric__times(b, b) >= float__first .
+H23:   numeric__times(b, b) <= float__last .
+H24:   b >= float__first .
+H25:   b <= float__last .
+H26:   b >= float__first .
+H27:   b <= float__last .
+H28:   c >= float__first .
+H29:   c <= float__last .
+H30:   numeric__times(b, b) >= float__first .
+H31:   numeric__times(b, b) <= float__last .
+H32:   a + (x - x) >= float__first .
+H33:   a + (x - x) <= float__last .
+        ->
+C1:    numeric__times(4, a + (x - x)) >= float__first .
+C2:    numeric__times(4, a + (x - x)) <= float__last .
+C3:    a + (x - x) >= float__first .
+C4:    a + (x - x) <= float__last .
+C5:    4 >= float__first .
+C6:    4 <= float__last .
+C7:    numeric__times(b, b) >= float__first .
+C8:    numeric__times(b, b) <= float__last .
+ 
+
+For path(s) from start to precondition check associated with statement of line 32:
+
+procedure_peakq_4.
+H1:    x >=  -1 .
+H2:    x <= 1 .
+H3:    a <  -(1/10) .
+H4:    a >= icoeff2__first .
+H5:    a <= icoeff2__last .
+H6:    b >= icoeff2__first .
+H7:    b <= icoeff2__last .
+H8:    c >= icoeff2__first .
+H9:    c <= icoeff2__last .
+H10:   a >= float__first .
+H11:   a <= float__last .
+H12:   b >= float__first .
+H13:   b <= float__last .
+H14:   c >= float__first .
+H15:   c <= float__last .
+H16:   x >= float__first .
+H17:   x <= float__last .
+H18:   a + (x - x) >= float__first .
+H19:   a + (x - x) <= float__last .
+H20:   x - x >= float__base__first .
+H21:   x - x <= float__base__last .
+H22:   numeric__times(b, b) >= float__first .
+H23:   numeric__times(b, b) <= float__last .
+H24:   b >= float__first .
+H25:   b <= float__last .
+H26:   b >= float__first .
+H27:   b <= float__last .
+H28:   c >= float__first .
+H29:   c <= float__last .
+H30:   numeric__times(b, b) >= float__first .
+H31:   numeric__times(b, b) <= float__last .
+H32:   a + (x - x) >= float__first .
+H33:   a + (x - x) <= float__last .
+H34:   numeric__times(4, a + (x - x)) >= float__first .
+H35:   numeric__times(4, a + (x - x)) <= float__last .
+H36:   a + (x - x) >= float__first .
+H37:   a + (x - x) <= float__last .
+H38:   4 >= float__first .
+H39:   4 <= float__last .
+H40:   numeric__times(b, b) >= float__first .
+H41:   numeric__times(b, b) <= float__last .
+H42:   numeric__times(4, a + (x - x)) >= float__first .
+H43:   numeric__times(4, a + (x - x)) <= float__last .
+        ->
+C1:    numeric__divide(numeric__times(b, b), numeric__times(4, 
+           a + (x - x))) >= float__first .
+C2:    numeric__divide(numeric__times(b, b), numeric__times(4, 
+           a + (x - x))) <= float__last .
+C3:    numeric__times(4, a + (x - x)) >= float__first .
+C4:    numeric__times(4, a + (x - x)) <= float__last .
+ 
+
+For path(s) from start to precondition check associated with statement of line 32:
+
+procedure_peakq_5.
+H1:    x >=  -1 .
+H2:    x <= 1 .
+H3:    a <  -(1/10) .
+H4:    a >= icoeff2__first .
+H5:    a <= icoeff2__last .
+H6:    b >= icoeff2__first .
+H7:    b <= icoeff2__last .
+H8:    c >= icoeff2__first .
+H9:    c <= icoeff2__last .
+H10:   a >= float__first .
+H11:   a <= float__last .
+H12:   b >= float__first .
+H13:   b <= float__last .
+H14:   c >= float__first .
+H15:   c <= float__last .
+H16:   x >= float__first .
+H17:   x <= float__last .
+H18:   a + (x - x) >= float__first .
+H19:   a + (x - x) <= float__last .
+H20:   x - x >= float__base__first .
+H21:   x - x <= float__base__last .
+H22:   numeric__times(b, b) >= float__first .
+H23:   numeric__times(b, b) <= float__last .
+H24:   b >= float__first .
+H25:   b <= float__last .
+H26:   b >= float__first .
+H27:   b <= float__last .
+H28:   c >= float__first .
+H29:   c <= float__last .
+H30:   numeric__times(b, b) >= float__first .
+H31:   numeric__times(b, b) <= float__last .
+H32:   a + (x - x) >= float__first .
+H33:   a + (x - x) <= float__last .
+H34:   numeric__times(4, a + (x - x)) >= float__first .
+H35:   numeric__times(4, a + (x - x)) <= float__last .
+H36:   a + (x - x) >= float__first .
+H37:   a + (x - x) <= float__last .
+H38:   4 >= float__first .
+H39:   4 <= float__last .
+H40:   numeric__times(b, b) >= float__first .
+H41:   numeric__times(b, b) <= float__last .
+H42:   numeric__times(4, a + (x - x)) >= float__first .
+H43:   numeric__times(4, a + (x - x)) <= float__last .
+H44:   numeric__divide(numeric__times(b, b), numeric__times(4, 
+           a + (x - x))) >= float__first .
+H45:   numeric__divide(numeric__times(b, b), numeric__times(4, 
+           a + (x - x))) <= float__last .
+H46:   numeric__times(4, a + (x - x)) >= float__first .
+H47:   numeric__times(4, a + (x - x)) <= float__last .
+H48:   numeric__divide(numeric__times(b, b), numeric__times(4, 
+           a + (x - x))) >= float__first .
+H49:   numeric__divide(numeric__times(b, b), numeric__times(4, 
+           a + (x - x))) <= float__last .
+        ->
+C1:    numeric__minus(c, numeric__divide(numeric__times(b, 
+           b), numeric__times(4, a + (x - x)))) >= float__first .
+C2:    numeric__minus(c, numeric__divide(numeric__times(b, 
+           b), numeric__times(4, a + (x - x)))) <= float__last .
+C3:    numeric__divide(numeric__times(b, b), numeric__times(4, 
+           a + (x - x))) >= float__first .
+C4:    numeric__divide(numeric__times(b, b), numeric__times(4, 
+           a + (x - x))) <= float__last .
+ 
+
+For path(s) from start to run-time check associated with statement of line 32:
+
+procedure_peakq_6.
+H1:    x >=  -1 .
+H2:    x <= 1 .
+H3:    a <  -(1/10) .
+H4:    a >= icoeff2__first .
+H5:    a <= icoeff2__last .
+H6:    b >= icoeff2__first .
+H7:    b <= icoeff2__last .
+H8:    c >= icoeff2__first .
+H9:    c <= icoeff2__last .
+H10:   a >= float__first .
+H11:   a <= float__last .
+H12:   b >= float__first .
+H13:   b <= float__last .
+H14:   c >= float__first .
+H15:   c <= float__last .
+H16:   x >= float__first .
+H17:   x <= float__last .
+H18:   a + (x - x) >= float__first .
+H19:   a + (x - x) <= float__last .
+H20:   x - x >= float__base__first .
+H21:   x - x <= float__base__last .
+H22:   numeric__times(b, b) >= float__first .
+H23:   numeric__times(b, b) <= float__last .
+H24:   b >= float__first .
+H25:   b <= float__last .
+H26:   b >= float__first .
+H27:   b <= float__last .
+H28:   c >= float__first .
+H29:   c <= float__last .
+H30:   numeric__times(b, b) >= float__first .
+H31:   numeric__times(b, b) <= float__last .
+H32:   a + (x - x) >= float__first .
+H33:   a + (x - x) <= float__last .
+H34:   numeric__times(4, a + (x - x)) >= float__first .
+H35:   numeric__times(4, a + (x - x)) <= float__last .
+H36:   a + (x - x) >= float__first .
+H37:   a + (x - x) <= float__last .
+H38:   4 >= float__first .
+H39:   4 <= float__last .
+H40:   numeric__times(b, b) >= float__first .
+H41:   numeric__times(b, b) <= float__last .
+H42:   numeric__times(4, a + (x - x)) >= float__first .
+H43:   numeric__times(4, a + (x - x)) <= float__last .
+H44:   numeric__divide(numeric__times(b, b), numeric__times(4, 
+           a + (x - x))) >= float__first .
+H45:   numeric__divide(numeric__times(b, b), numeric__times(4, 
+           a + (x - x))) <= float__last .
+H46:   numeric__times(4, a + (x - x)) >= float__first .
+H47:   numeric__times(4, a + (x - x)) <= float__last .
+H48:   numeric__divide(numeric__times(b, b), numeric__times(4, 
+           a + (x - x))) >= float__first .
+H49:   numeric__divide(numeric__times(b, b), numeric__times(4, 
+           a + (x - x))) <= float__last .
+H50:   numeric__minus(c, numeric__divide(numeric__times(b, 
+           b), numeric__times(4, a + (x - x)))) >= float__first .
+H51:   numeric__minus(c, numeric__divide(numeric__times(b, 
+           b), numeric__times(4, a + (x - x)))) <= float__last .
+H52:   numeric__divide(numeric__times(b, b), numeric__times(4, 
+           a + (x - x))) >= float__first .
+H53:   numeric__divide(numeric__times(b, b), numeric__times(4, 
+           a + (x - x))) <= float__last .
+H54:   numeric__minus(c, numeric__divide(numeric__times(b, 
+           b), numeric__times(4, a + (x - x)))) >= float__first .
+H55:   numeric__minus(c, numeric__divide(numeric__times(b, 
+           b), numeric__times(4, a + (x - x)))) <= float__last .
+        ->
+C1:    numeric__minus(c, numeric__divide(numeric__times(b, 
+           b), numeric__times(4, a + (x - x)))) >= float__first .
+C2:    numeric__minus(c, numeric__divide(numeric__times(b, 
+           b), numeric__times(4, a + (x - x)))) <= float__last .
+ 
+
+For path(s) from start to finish:
+
+procedure_peakq_7.
+H1:    x >=  -1 .
+H2:    x <= 1 .
+H3:    a <  -(1/10) .
+H4:    a >= icoeff2__first .
+H5:    a <= icoeff2__last .
+H6:    b >= icoeff2__first .
+H7:    b <= icoeff2__last .
+H8:    c >= icoeff2__first .
+H9:    c <= icoeff2__last .
+H10:   a >= float__first .
+H11:   a <= float__last .
+H12:   b >= float__first .
+H13:   b <= float__last .
+H14:   c >= float__first .
+H15:   c <= float__last .
+H16:   x >= float__first .
+H17:   x <= float__last .
+H18:   a + (x - x) >= float__first .
+H19:   a + (x - x) <= float__last .
+H20:   x - x >= float__base__first .
+H21:   x - x <= float__base__last .
+H22:   numeric__times(b, b) >= float__first .
+H23:   numeric__times(b, b) <= float__last .
+H24:   b >= float__first .
+H25:   b <= float__last .
+H26:   b >= float__first .
+H27:   b <= float__last .
+H28:   c >= float__first .
+H29:   c <= float__last .
+H30:   numeric__times(b, b) >= float__first .
+H31:   numeric__times(b, b) <= float__last .
+H32:   a + (x - x) >= float__first .
+H33:   a + (x - x) <= float__last .
+H34:   numeric__times(4, a + (x - x)) >= float__first .
+H35:   numeric__times(4, a + (x - x)) <= float__last .
+H36:   a + (x - x) >= float__first .
+H37:   a + (x - x) <= float__last .
+H38:   4 >= float__first .
+H39:   4 <= float__last .
+H40:   numeric__times(b, b) >= float__first .
+H41:   numeric__times(b, b) <= float__last .
+H42:   numeric__times(4, a + (x - x)) >= float__first .
+H43:   numeric__times(4, a + (x - x)) <= float__last .
+H44:   numeric__divide(numeric__times(b, b), numeric__times(4, 
+           a + (x - x))) >= float__first .
+H45:   numeric__divide(numeric__times(b, b), numeric__times(4, 
+           a + (x - x))) <= float__last .
+H46:   numeric__times(4, a + (x - x)) >= float__first .
+H47:   numeric__times(4, a + (x - x)) <= float__last .
+H48:   numeric__divide(numeric__times(b, b), numeric__times(4, 
+           a + (x - x))) >= float__first .
+H49:   numeric__divide(numeric__times(b, b), numeric__times(4, 
+           a + (x - x))) <= float__last .
+H50:   numeric__minus(c, numeric__divide(numeric__times(b, 
+           b), numeric__times(4, a + (x - x)))) >= float__first .
+H51:   numeric__minus(c, numeric__divide(numeric__times(b, 
+           b), numeric__times(4, a + (x - x)))) <= float__last .
+H52:   numeric__divide(numeric__times(b, b), numeric__times(4, 
+           a + (x - x))) >= float__first .
+H53:   numeric__divide(numeric__times(b, b), numeric__times(4, 
+           a + (x - x))) <= float__last .
+H54:   numeric__minus(c, numeric__divide(numeric__times(b, 
+           b), numeric__times(4, a + (x - x)))) >= float__first .
+H55:   numeric__minus(c, numeric__divide(numeric__times(b, 
+           b), numeric__times(4, a + (x - x)))) <= float__last .
+H56:   numeric__minus(c, numeric__divide(numeric__times(b, 
+           b), numeric__times(4, a + (x - x)))) >= float__first .
+H57:   numeric__minus(c, numeric__divide(numeric__times(b, 
+           b), numeric__times(4, a + (x - x)))) <= float__last .
+        ->
+C1:    numeric__minus(c, numeric__divide(numeric__times(b, 
+           b), numeric__times(4, a + (x - x)))) >= a * x ** 2 + 
+           b * x + c - (7/10) .
+C2:    numeric__minus(c, numeric__divide(numeric__times(b, 
+           b), numeric__times(4, a + (x - x)))) <= 10 .
+ 
+

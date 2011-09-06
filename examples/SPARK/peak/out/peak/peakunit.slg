@@ -1,0 +1,1468 @@
+*****************************************************************************
+                       Semantic Analysis of SPARK Text
+                              Examiner GPL 2011
+             Copyright (C) 2011 Altran Praxis Limited, Bath, U.K.
+*****************************************************************************
+
+
+CREATED 06-SEP-2011, 18:04:24  SIMPLIFIED 06-SEP-2011, 18:04:28
+
+SPARK Simplifier GPL 2011
+Copyright (C) 2011 Altran Praxis Limited, Bath, U.K.
+
+procedure peak.peakUnit
+
+
+
+
+
+
+@@@@@@@@@@  VC: procedure_peakunit_1.  @@@@@@@@@@
+***  Proved C1:  y3 >= float__first
+     using hypothesis H11.
+***  Proved C2:  y3 <= float__last
+     using hypothesis H12.
+***  Proved C3:  y1 >= float__first
+     using hypothesis H7.
+***  Proved C4:  y1 <= float__last
+     using hypothesis H8.
+***  PROVED VC.
+
+
+@@@@@@@@@@  VC: procedure_peakunit_2.  @@@@@@@@@@
+---  Hypothesis H13 has been replaced by "true".  (It is already present, as 
+          H11).
+---  Hypothesis H14 has been replaced by "true".  (It is already present, as 
+          H12).
+---  Hypothesis H15 has been replaced by "true".  (It is already present, as H7)
+          .
+---  Hypothesis H16 has been replaced by "true".  (It is already present, as H8)
+          .
+***  Proved C1:  m1__1 >= float__first
+     using hypothesis H18.
+***  Proved C2:  m1__1 <= float__last
+     using hypothesis H19.
+***  PROVED VC.
+
+
+@@@@@@@@@@  VC: procedure_peakunit_3.  @@@@@@@@@@
+---  Hypothesis H13 has been replaced by "true".  (It is already present, as 
+          H11).
+---  Hypothesis H14 has been replaced by "true".  (It is already present, as 
+          H12).
+---  Hypothesis H15 has been replaced by "true".  (It is already present, as H7)
+          .
+---  Hypothesis H16 has been replaced by "true".  (It is already present, as H8)
+          .
+---  Hypothesis H20 has been replaced by "true".  (It is already present, as 
+          H18).
+---  Hypothesis H21 has been replaced by "true".  (It is already present, as 
+          H19).
+***  Proved C1:  y3 >= float__first
+     using hypothesis H11.
+***  Proved C2:  y3 <= float__last
+     using hypothesis H12.
+***  Proved C3:  y2 >= float__first
+     using hypothesis H9.
+***  Proved C4:  y2 <= float__last
+     using hypothesis H10.
+***  Proved C5:  y1 >= float__first
+     using hypothesis H7.
+***  Proved C6:  y1 <= float__last
+     using hypothesis H8.
+***  Proved C7:  y1 >= iy__first
+     using hypothesis H1.
+***  Proved C8:  y1 <= iy__last
+     using hypothesis H2.
+***  Proved C9:  y2 >= iy__first
+     using hypothesis H3.
+***  Proved C10:  y2 <= iy__last
+     using hypothesis H4.
+***  Proved C11:  y3 >= iy__first
+     using hypothesis H5.
+***  Proved C12:  y3 <= iy__last
+     using hypothesis H6.
+***  PROVED VC.
+
+
+@@@@@@@@@@  VC: procedure_peakunit_4.  @@@@@@@@@@
+---  Hypothesis H13 has been replaced by "true".  (It is already present, as 
+          H11).
+---  Hypothesis H14 has been replaced by "true".  (It is already present, as 
+          H12).
+---  Hypothesis H15 has been replaced by "true".  (It is already present, as H7)
+          .
+---  Hypothesis H16 has been replaced by "true".  (It is already present, as H8)
+          .
+---  Hypothesis H20 has been replaced by "true".  (It is already present, as 
+          H18).
+---  Hypothesis H21 has been replaced by "true".  (It is already present, as 
+          H19).
+---  Hypothesis H22 has been replaced by "true".  (It is already present, as 
+          H11).
+---  Hypothesis H23 has been replaced by "true".  (It is already present, as 
+          H12).
+---  Hypothesis H24 has been replaced by "true".  (It is already present, as H9)
+          .
+---  Hypothesis H25 has been replaced by "true".  (It is already present, as 
+          H10).
+---  Hypothesis H26 has been replaced by "true".  (It is already present, as H7)
+          .
+---  Hypothesis H27 has been replaced by "true".  (It is already present, as H8)
+          .
+---  Hypothesis H28 has been replaced by "true".  (It is already present, as H1)
+          .
+---  Hypothesis H29 has been replaced by "true".  (It is already present, as H2)
+          .
+---  Hypothesis H30 has been replaced by "true".  (It is already present, as H3)
+          .
+---  Hypothesis H31 has been replaced by "true".  (It is already present, as H4)
+          .
+---  Hypothesis H32 has been replaced by "true".  (It is already present, as H5)
+          .
+---  Hypothesis H33 has been replaced by "true".  (It is already present, as H6)
+          .
+***  Proved C1:  c__2 >= float__first
+     using hypothesis H49.
+***  Proved C2:  c__2 <= float__last
+     using hypothesis H50.
+***  Proved C3:  b__2 >= float__first
+     using hypothesis H47.
+***  Proved C4:  b__2 <= float__last
+     using hypothesis H48.
+***  Proved C5:  a__2 >= float__first
+     using hypothesis H45.
+***  Proved C6:  a__2 <= float__last
+     using hypothesis H46.
+***  PROVED VC.
+
+
+@@@@@@@@@@  VC: procedure_peakunit_5.  @@@@@@@@@@
+---  Hypothesis H13 has been replaced by "true".  (It is already present, as 
+          H11).
+---  Hypothesis H14 has been replaced by "true".  (It is already present, as 
+          H12).
+---  Hypothesis H15 has been replaced by "true".  (It is already present, as H7)
+          .
+---  Hypothesis H16 has been replaced by "true".  (It is already present, as H8)
+          .
+---  Hypothesis H20 has been replaced by "true".  (It is already present, as 
+          H18).
+---  Hypothesis H21 has been replaced by "true".  (It is already present, as 
+          H19).
+---  Hypothesis H22 has been replaced by "true".  (It is already present, as 
+          H11).
+---  Hypothesis H23 has been replaced by "true".  (It is already present, as 
+          H12).
+---  Hypothesis H24 has been replaced by "true".  (It is already present, as H9)
+          .
+---  Hypothesis H25 has been replaced by "true".  (It is already present, as 
+          H10).
+---  Hypothesis H26 has been replaced by "true".  (It is already present, as H7)
+          .
+---  Hypothesis H27 has been replaced by "true".  (It is already present, as H8)
+          .
+---  Hypothesis H28 has been replaced by "true".  (It is already present, as H1)
+          .
+---  Hypothesis H29 has been replaced by "true".  (It is already present, as H2)
+          .
+---  Hypothesis H30 has been replaced by "true".  (It is already present, as H3)
+          .
+---  Hypothesis H31 has been replaced by "true".  (It is already present, as H4)
+          .
+---  Hypothesis H32 has been replaced by "true".  (It is already present, as H5)
+          .
+---  Hypothesis H33 has been replaced by "true".  (It is already present, as H6)
+          .
+---  Hypothesis H51 has been replaced by "true".  (It is already present, as 
+          H49).
+---  Hypothesis H52 has been replaced by "true".  (It is already present, as 
+          H50).
+---  Hypothesis H53 has been replaced by "true".  (It is already present, as 
+          H47).
+---  Hypothesis H54 has been replaced by "true".  (It is already present, as 
+          H48).
+---  Hypothesis H55 has been replaced by "true".  (It is already present, as 
+          H45).
+---  Hypothesis H56 has been replaced by "true".  (It is already present, as 
+          H46).
+---  Hypothesis H57 has been replaced by "true".  (It is already present, as 
+          H45).
+---  Hypothesis H58 has been replaced by "true".  (It is already present, as 
+          H46).
+---  Hypothesis H59 has been replaced by "true".  (It is already present, as 
+          H47).
+---  Hypothesis H60 has been replaced by "true".  (It is already present, as 
+          H48).
+-S-  Applied substitution rule peakunit_rules(9).
+     This was achieved by replacing all occurrences of float__base__first by:
+          - 340282000000000000000000000000000000000.
+<S>  New C1:  - (2 * a__2) >= - 340282000000000000000000000000000000000
+<S>  New C3:  2 * a__2 >= - 340282000000000000000000000000000000000
+<S>  New C5:  2 * a__2 >= - 340282000000000000000000000000000000000
+-S-  Applied substitution rule peakunit_rules(10).
+     This was achieved by replacing all occurrences of float__base__last by:
+          340282000000000000000000000000000000000.
+<S>  New C2:  - (2 * a__2) <= 340282000000000000000000000000000000000
+<S>  New C4:  2 * a__2 <= 340282000000000000000000000000000000000
+<S>  New C6:  2 * a__2 <= 340282000000000000000000000000000000000
+-S-  Applied substitution rule peakunit_rules(7).
+     This was achieved by replacing all occurrences of float__first by:
+          - 340282000000000000000000000000000000000.
+<S>  New H7:  y1 >= - 340282000000000000000000000000000000000
+<S>  New H9:  y2 >= - 340282000000000000000000000000000000000
+<S>  New H11:  y3 >= - 340282000000000000000000000000000000000
+<S>  New H18:  m1__1 >= - 340282000000000000000000000000000000000
+<S>  New H45:  a__2 >= - 340282000000000000000000000000000000000
+<S>  New H47:  b__2 >= - 340282000000000000000000000000000000000
+<S>  New H49:  c__2 >= - 340282000000000000000000000000000000000
+-S-  Applied substitution rule peakunit_rules(8).
+     This was achieved by replacing all occurrences of float__last by:
+          340282000000000000000000000000000000000.
+<S>  New H8:  y1 <= 340282000000000000000000000000000000000
+<S>  New H10:  y2 <= 340282000000000000000000000000000000000
+<S>  New H12:  y3 <= 340282000000000000000000000000000000000
+<S>  New H19:  m1__1 <= 340282000000000000000000000000000000000
+<S>  New H46:  a__2 <= 340282000000000000000000000000000000000
+<S>  New H48:  b__2 <= 340282000000000000000000000000000000000
+<S>  New H50:  c__2 <= 340282000000000000000000000000000000000
+-S-  Applied substitution rule peakunit_rules(12).
+     This was achieved by replacing all occurrences of iy__first by:
+          0.
+<S>  New H1:  y1 >= 0
+<S>  New H3:  y2 >= 0
+<S>  New H5:  y3 >= 0
+-S-  Applied substitution rule peakunit_rules(13).
+     This was achieved by replacing all occurrences of iy__last by:
+          1.
+<S>  New H2:  y1 <= 1
+<S>  New H4:  y2 <= 1
+<S>  New H6:  y3 <= 1
+-S-  Applied substitution rule peakunit_rules(17).
+     This was achieved by replacing all occurrences of ipad__first by:
+          - (1 / 1000000).
+<S>  New H34:  a__2 - b__2 + c__2 - y1 >= - (1 / 1000000)
+<S>  New H37:  a__2 + b__2 + c__2 - y3 >= - (1 / 1000000)
+-S-  Applied substitution rule peakunit_rules(18).
+     This was achieved by replacing all occurrences of ipad__last by:
+          1 / 1000000.
+<S>  New H35:  a__2 - b__2 + c__2 - y1 <= 1 / 1000000
+<S>  New H38:  a__2 + b__2 + c__2 - y3 <= 1 / 1000000
+-S-  Applied substitution rule peakunit_rules(22).
+     This was achieved by replacing all occurrences of icoeff1__first by:
+          - (11 / 10).
+<S>  New H39:  a__2 >= - (11 / 10)
+<S>  New H41:  b__2 >= - (11 / 10)
+<S>  New H43:  c__2 >= - (11 / 10)
+-S-  Applied substitution rule peakunit_rules(23).
+     This was achieved by replacing all occurrences of icoeff1__last by:
+          11 / 10.
+<S>  New H40:  a__2 <= 11 / 10
+<S>  New H42:  b__2 <= 11 / 10
+<S>  New H44:  c__2 <= 11 / 10
+---  Eliminated hypothesis H13 (true-hypothesis).
+---  Eliminated hypothesis H14 (true-hypothesis).
+---  Eliminated hypothesis H15 (true-hypothesis).
+---  Eliminated hypothesis H16 (true-hypothesis).
+---  Eliminated hypothesis H20 (true-hypothesis).
+---  Eliminated hypothesis H21 (true-hypothesis).
+---  Eliminated hypothesis H22 (true-hypothesis).
+---  Eliminated hypothesis H23 (true-hypothesis).
+---  Eliminated hypothesis H24 (true-hypothesis).
+---  Eliminated hypothesis H25 (true-hypothesis).
+---  Eliminated hypothesis H26 (true-hypothesis).
+---  Eliminated hypothesis H27 (true-hypothesis).
+---  Eliminated hypothesis H28 (true-hypothesis).
+---  Eliminated hypothesis H29 (true-hypothesis).
+---  Eliminated hypothesis H30 (true-hypothesis).
+---  Eliminated hypothesis H31 (true-hypothesis).
+---  Eliminated hypothesis H32 (true-hypothesis).
+---  Eliminated hypothesis H33 (true-hypothesis).
+---  Eliminated hypothesis H51 (true-hypothesis).
+---  Eliminated hypothesis H52 (true-hypothesis).
+---  Eliminated hypothesis H53 (true-hypothesis).
+---  Eliminated hypothesis H54 (true-hypothesis).
+---  Eliminated hypothesis H55 (true-hypothesis).
+---  Eliminated hypothesis H56 (true-hypothesis).
+---  Eliminated hypothesis H57 (true-hypothesis).
+---  Eliminated hypothesis H58 (true-hypothesis).
+---  Eliminated hypothesis H59 (true-hypothesis).
+---  Eliminated hypothesis H60 (true-hypothesis).
+---  Eliminated hypothesis H7 (redundant, given H1).
+---  Eliminated hypothesis H8 (redundant, given H2).
+---  Eliminated hypothesis H9 (redundant, given H3).
+---  Eliminated hypothesis H10 (redundant, given H4).
+---  Eliminated hypothesis H11 (redundant, given H5).
+---  Eliminated hypothesis H12 (redundant, given H6).
+---  Eliminated hypothesis H49 (redundant, given H3 & H36).
+---  Eliminated hypothesis H50 (redundant, given H4 & H36).
+-S-  Eliminated hypothesis H36.
+     This was achieved by replacing all occurrences of c__2 by:
+          y2.
+<S>  New H34:  a__2 - b__2 + y2 - y1 >= - (1 / 1000000)
+<S>  New H37:  a__2 + b__2 + y2 - y3 >= - (1 / 1000000)
+<S>  New H35:  a__2 - b__2 + y2 - y1 <= 1 / 1000000
+<S>  New H38:  a__2 + b__2 + y2 - y3 <= 1 / 1000000
+<S>  New H43:  y2 >= - (11 / 10)
+<S>  New H44:  y2 <= 11 / 10
+---  Eliminated conclusion C4, which is a duplicate of C1.
+---  Eliminated conclusion C6, which is a duplicate of C1.
+---  Eliminated conclusion C5, which is a duplicate of C3.
+---  Eliminated conclusion C3, which is a duplicate of C2.
+***  Proved C1:  - (2 * a__2) >= - 340282000000000000000000000000000000000
+     using hypothesis H40.
+***  Proved C2:  - (2 * a__2) <= 340282000000000000000000000000000000000
+     using hypothesis H39.
+     +++  New H61:  universal_real__size >= 0
+     +++  New H62:  universal_real__first <= universal_real__last
+     +++  New H63:  universal_real__base__first <= universal_real__base__last
+     +++  New H64:  universal_real__base__first <= universal_real__first
+     +++  New H65:  universal_real__base__last >= universal_real__last
+     +++  New H66:  float__size >= 0
+     +++  New H67:  iy__size >= 0
+     +++  New H68:  ipad__size >= 0
+     +++  New H69:  icoeff1__size >= 0
+     +++  New H70:  icoeff2__size >= 0
+
+
+@@@@@@@@@@  VC: procedure_peakunit_6.  @@@@@@@@@@
+---  Hypothesis H13 has been replaced by "true".  (It is already present, as 
+          H11).
+---  Hypothesis H14 has been replaced by "true".  (It is already present, as 
+          H12).
+---  Hypothesis H15 has been replaced by "true".  (It is already present, as H7)
+          .
+---  Hypothesis H16 has been replaced by "true".  (It is already present, as H8)
+          .
+---  Hypothesis H20 has been replaced by "true".  (It is already present, as 
+          H18).
+---  Hypothesis H21 has been replaced by "true".  (It is already present, as 
+          H19).
+---  Hypothesis H22 has been replaced by "true".  (It is already present, as 
+          H11).
+---  Hypothesis H23 has been replaced by "true".  (It is already present, as 
+          H12).
+---  Hypothesis H24 has been replaced by "true".  (It is already present, as H9)
+          .
+---  Hypothesis H25 has been replaced by "true".  (It is already present, as 
+          H10).
+---  Hypothesis H26 has been replaced by "true".  (It is already present, as H7)
+          .
+---  Hypothesis H27 has been replaced by "true".  (It is already present, as H8)
+          .
+---  Hypothesis H28 has been replaced by "true".  (It is already present, as H1)
+          .
+---  Hypothesis H29 has been replaced by "true".  (It is already present, as H2)
+          .
+---  Hypothesis H30 has been replaced by "true".  (It is already present, as H3)
+          .
+---  Hypothesis H31 has been replaced by "true".  (It is already present, as H4)
+          .
+---  Hypothesis H32 has been replaced by "true".  (It is already present, as H5)
+          .
+---  Hypothesis H33 has been replaced by "true".  (It is already present, as H6)
+          .
+---  Hypothesis H51 has been replaced by "true".  (It is already present, as 
+          H49).
+---  Hypothesis H52 has been replaced by "true".  (It is already present, as 
+          H50).
+---  Hypothesis H53 has been replaced by "true".  (It is already present, as 
+          H47).
+---  Hypothesis H54 has been replaced by "true".  (It is already present, as 
+          H48).
+---  Hypothesis H55 has been replaced by "true".  (It is already present, as 
+          H45).
+---  Hypothesis H56 has been replaced by "true".  (It is already present, as 
+          H46).
+---  Hypothesis H57 has been replaced by "true".  (It is already present, as 
+          H45).
+---  Hypothesis H58 has been replaced by "true".  (It is already present, as 
+          H46).
+---  Hypothesis H59 has been replaced by "true".  (It is already present, as 
+          H47).
+---  Hypothesis H60 has been replaced by "true".  (It is already present, as 
+          H48).
+---  Hypothesis H65 has been replaced by "true".  (It is already present, as 
+          H63).
+---  Hypothesis H66 has been replaced by "true".  (It is already present, as 
+          H64).
+---  Hypothesis H72 has been replaced by "true".  (It is already present, as 
+          H45).
+---  Hypothesis H73 has been replaced by "true".  (It is already present, as 
+          H46).
+---  Hypothesis H74 has been replaced by "true".  (It is already present, as 
+          H47).
+---  Hypothesis H75 has been replaced by "true".  (It is already present, as 
+          H48).
+---  Hypothesis H76 has been replaced by "true".  (It is already present, as 
+          H49).
+---  Hypothesis H77 has been replaced by "true".  (It is already present, as 
+          H50).
+%%%  Simplified C9 on reading formula in, to give:
+     %%%  C9:  true
+%%%  Simplified C10 on reading formula in, to give:
+     %%%  C10:  true
+***  Proved C1:  0 >= float__first
+     using hypotheses H45 & H69.
+***  Proved C3:  c__2 >= float__first
+     using hypothesis H49.
+***  Proved C4:  c__2 <= float__last
+     using hypothesis H50.
+***  Proved C5:  b__2 >= float__first
+     using hypothesis H47.
+***  Proved C6:  b__2 <= float__last
+     using hypothesis H48.
+***  Proved C7:  a__2 >= float__first
+     using hypothesis H45.
+***  Proved C8:  a__2 <= float__last
+     using hypothesis H46.
+***  Proved C9:  true
+***  Proved C10:  true
+-S-  Applied substitution rule peakunit_rules(8).
+     This was achieved by replacing all occurrences of float__last by:
+          340282000000000000000000000000000000000.
+<S>  New H8:  y1 <= 340282000000000000000000000000000000000
+<S>  New H10:  y2 <= 340282000000000000000000000000000000000
+<S>  New H12:  y3 <= 340282000000000000000000000000000000000
+<S>  New H19:  m1__1 <= 340282000000000000000000000000000000000
+<S>  New H46:  a__2 <= 340282000000000000000000000000000000000
+<S>  New H48:  b__2 <= 340282000000000000000000000000000000000
+<S>  New H50:  c__2 <= 340282000000000000000000000000000000000
+<S>  New C2:  true
+-S-  Applied substitution rule peakunit_rules(27).
+     This was achieved by replacing all occurrences of icoeff2__first by:
+          - (6 / 5).
+<S>  New C12:  a__2 >= - (6 / 5)
+<S>  New C14:  b__2 >= - (6 / 5)
+<S>  New C16:  c__2 >= - (6 / 5)
+-S-  Applied substitution rule peakunit_rules(28).
+     This was achieved by replacing all occurrences of icoeff2__last by:
+          6 / 5.
+<S>  New C13:  a__2 <= 6 / 5
+<S>  New C15:  b__2 <= 6 / 5
+<S>  New C17:  c__2 <= 6 / 5
+***  Proved C2:  true
+***  Proved C13:  a__2 <= 6 / 5
+     using hypothesis H69.
+-S-  Applied substitution rule peakunit_rules(7).
+     This was achieved by replacing all occurrences of float__first by:
+          - 340282000000000000000000000000000000000.
+<S>  New H7:  y1 >= - 340282000000000000000000000000000000000
+<S>  New H9:  y2 >= - 340282000000000000000000000000000000000
+<S>  New H11:  y3 >= - 340282000000000000000000000000000000000
+<S>  New H18:  m1__1 >= - 340282000000000000000000000000000000000
+<S>  New H45:  a__2 >= - 340282000000000000000000000000000000000
+<S>  New H47:  b__2 >= - 340282000000000000000000000000000000000
+<S>  New H49:  c__2 >= - 340282000000000000000000000000000000000
+-S-  Applied substitution rule peakunit_rules(9).
+     This was achieved by replacing all occurrences of float__base__first by:
+          - 340282000000000000000000000000000000000.
+<S>  New H61:  - (2 * a__2) >= - 340282000000000000000000000000000000000
+<S>  New H63:  2 * a__2 >= - 340282000000000000000000000000000000000
+-S-  Applied substitution rule peakunit_rules(10).
+     This was achieved by replacing all occurrences of float__base__last by:
+          340282000000000000000000000000000000000.
+<S>  New H62:  - (2 * a__2) <= 340282000000000000000000000000000000000
+<S>  New H64:  2 * a__2 <= 340282000000000000000000000000000000000
+-S-  Applied substitution rule peakunit_rules(12).
+     This was achieved by replacing all occurrences of iy__first by:
+          0.
+<S>  New H1:  y1 >= 0
+<S>  New H3:  y2 >= 0
+<S>  New H5:  y3 >= 0
+-S-  Applied substitution rule peakunit_rules(13).
+     This was achieved by replacing all occurrences of iy__last by:
+          1.
+<S>  New H2:  y1 <= 1
+<S>  New H4:  y2 <= 1
+<S>  New H6:  y3 <= 1
+-S-  Applied substitution rule peakunit_rules(17).
+     This was achieved by replacing all occurrences of ipad__first by:
+          - (1 / 1000000).
+<S>  New H34:  a__2 - b__2 + c__2 - y1 >= - (1 / 1000000)
+<S>  New H37:  a__2 + b__2 + c__2 - y3 >= - (1 / 1000000)
+-S-  Applied substitution rule peakunit_rules(18).
+     This was achieved by replacing all occurrences of ipad__last by:
+          1 / 1000000.
+<S>  New H35:  a__2 - b__2 + c__2 - y1 <= 1 / 1000000
+<S>  New H38:  a__2 + b__2 + c__2 - y3 <= 1 / 1000000
+-S-  Applied substitution rule peakunit_rules(22).
+     This was achieved by replacing all occurrences of icoeff1__first by:
+          - (11 / 10).
+<S>  New H39:  a__2 >= - (11 / 10)
+<S>  New H41:  b__2 >= - (11 / 10)
+<S>  New H43:  c__2 >= - (11 / 10)
+-S-  Applied substitution rule peakunit_rules(23).
+     This was achieved by replacing all occurrences of icoeff1__last by:
+          11 / 10.
+<S>  New H40:  a__2 <= 11 / 10
+<S>  New H42:  b__2 <= 11 / 10
+<S>  New H44:  c__2 <= 11 / 10
+***  Proved C15:  b__2 <= 6 / 5
+     using hypothesis H42.
+***  Proved C17:  c__2 <= 6 / 5
+     using hypothesis H44.
+---  Eliminated hypothesis H13 (true-hypothesis).
+---  Eliminated hypothesis H14 (true-hypothesis).
+---  Eliminated hypothesis H15 (true-hypothesis).
+---  Eliminated hypothesis H16 (true-hypothesis).
+---  Eliminated hypothesis H20 (true-hypothesis).
+---  Eliminated hypothesis H21 (true-hypothesis).
+---  Eliminated hypothesis H22 (true-hypothesis).
+---  Eliminated hypothesis H23 (true-hypothesis).
+---  Eliminated hypothesis H24 (true-hypothesis).
+---  Eliminated hypothesis H25 (true-hypothesis).
+---  Eliminated hypothesis H26 (true-hypothesis).
+---  Eliminated hypothesis H27 (true-hypothesis).
+---  Eliminated hypothesis H28 (true-hypothesis).
+---  Eliminated hypothesis H29 (true-hypothesis).
+---  Eliminated hypothesis H30 (true-hypothesis).
+---  Eliminated hypothesis H31 (true-hypothesis).
+---  Eliminated hypothesis H32 (true-hypothesis).
+---  Eliminated hypothesis H33 (true-hypothesis).
+---  Eliminated hypothesis H51 (true-hypothesis).
+---  Eliminated hypothesis H52 (true-hypothesis).
+---  Eliminated hypothesis H53 (true-hypothesis).
+---  Eliminated hypothesis H54 (true-hypothesis).
+---  Eliminated hypothesis H55 (true-hypothesis).
+---  Eliminated hypothesis H56 (true-hypothesis).
+---  Eliminated hypothesis H57 (true-hypothesis).
+---  Eliminated hypothesis H58 (true-hypothesis).
+---  Eliminated hypothesis H59 (true-hypothesis).
+---  Eliminated hypothesis H60 (true-hypothesis).
+---  Eliminated hypothesis H65 (true-hypothesis).
+---  Eliminated hypothesis H66 (true-hypothesis).
+---  Eliminated hypothesis H72 (true-hypothesis).
+---  Eliminated hypothesis H73 (true-hypothesis).
+---  Eliminated hypothesis H74 (true-hypothesis).
+---  Eliminated hypothesis H75 (true-hypothesis).
+---  Eliminated hypothesis H76 (true-hypothesis).
+---  Eliminated hypothesis H77 (true-hypothesis).
+---  Eliminated hypothesis H64 (duplicate of H61).
+---  Eliminated hypothesis H63 (duplicate of H62).
+---  Eliminated hypothesis H7 (redundant, given H1).
+---  Eliminated hypothesis H8 (redundant, given H2).
+---  Eliminated hypothesis H9 (redundant, given H3).
+---  Eliminated hypothesis H10 (redundant, given H4).
+---  Eliminated hypothesis H11 (redundant, given H5).
+---  Eliminated hypothesis H12 (redundant, given H6).
+---  Eliminated hypothesis H45 (redundant, given H62).
+---  Eliminated hypothesis H46 (redundant, given H61).
+---  Eliminated hypothesis H49 (redundant, given H3 & H36).
+---  Eliminated hypothesis H50 (redundant, given H4 & H36).
+-S-  Eliminated hypothesis H36.
+     This was achieved by replacing all occurrences of c__2 by:
+          y2.
+<S>  New H34:  a__2 - b__2 + y2 - y1 >= - (1 / 1000000)
+<S>  New H37:  a__2 + b__2 + y2 - y3 >= - (1 / 1000000)
+<S>  New H35:  a__2 - b__2 + y2 - y1 <= 1 / 1000000
+<S>  New H38:  a__2 + b__2 + y2 - y3 <= 1 / 1000000
+<S>  New H43:  y2 >= - (11 / 10)
+<S>  New H44:  y2 <= 11 / 10
+<S>  New C16:  y2 >= - (6 / 5)
+***  Proved C11:  a__2 < - (1 / 10)
+     using hypothesis H69.
+***  Proved C12:  a__2 >= - (6 / 5)
+     using hypothesis H39.
+***  Proved C14:  b__2 >= - (6 / 5)
+     using hypothesis H41.
+***  Proved C16:  y2 >= - (6 / 5)
+     using hypothesis H3.
+***  PROVED VC.
+
+
+@@@@@@@@@@  VC: procedure_peakunit_7.  @@@@@@@@@@
+---  Hypothesis H13 has been replaced by "true".  (It is already present, as 
+          H11).
+---  Hypothesis H14 has been replaced by "true".  (It is already present, as 
+          H12).
+---  Hypothesis H15 has been replaced by "true".  (It is already present, as H7)
+          .
+---  Hypothesis H16 has been replaced by "true".  (It is already present, as H8)
+          .
+---  Hypothesis H20 has been replaced by "true".  (It is already present, as 
+          H18).
+---  Hypothesis H21 has been replaced by "true".  (It is already present, as 
+          H19).
+---  Hypothesis H22 has been replaced by "true".  (It is already present, as 
+          H11).
+---  Hypothesis H23 has been replaced by "true".  (It is already present, as 
+          H12).
+---  Hypothesis H24 has been replaced by "true".  (It is already present, as H9)
+          .
+---  Hypothesis H25 has been replaced by "true".  (It is already present, as 
+          H10).
+---  Hypothesis H26 has been replaced by "true".  (It is already present, as H7)
+          .
+---  Hypothesis H27 has been replaced by "true".  (It is already present, as H8)
+          .
+---  Hypothesis H28 has been replaced by "true".  (It is already present, as H1)
+          .
+---  Hypothesis H29 has been replaced by "true".  (It is already present, as H2)
+          .
+---  Hypothesis H30 has been replaced by "true".  (It is already present, as H3)
+          .
+---  Hypothesis H31 has been replaced by "true".  (It is already present, as H4)
+          .
+---  Hypothesis H32 has been replaced by "true".  (It is already present, as H5)
+          .
+---  Hypothesis H33 has been replaced by "true".  (It is already present, as H6)
+          .
+---  Hypothesis H51 has been replaced by "true".  (It is already present, as 
+          H49).
+---  Hypothesis H52 has been replaced by "true".  (It is already present, as 
+          H50).
+---  Hypothesis H53 has been replaced by "true".  (It is already present, as 
+          H47).
+---  Hypothesis H54 has been replaced by "true".  (It is already present, as 
+          H48).
+---  Hypothesis H55 has been replaced by "true".  (It is already present, as 
+          H45).
+---  Hypothesis H56 has been replaced by "true".  (It is already present, as 
+          H46).
+---  Hypothesis H57 has been replaced by "true".  (It is already present, as 
+          H45).
+---  Hypothesis H58 has been replaced by "true".  (It is already present, as 
+          H46).
+---  Hypothesis H59 has been replaced by "true".  (It is already present, as 
+          H47).
+---  Hypothesis H60 has been replaced by "true".  (It is already present, as 
+          H48).
+---  Hypothesis H65 has been replaced by "true".  (It is already present, as 
+          H63).
+---  Hypothesis H66 has been replaced by "true".  (It is already present, as 
+          H64).
+---  Hypothesis H72 has been replaced by "true".  (It is already present, as 
+          H45).
+---  Hypothesis H73 has been replaced by "true".  (It is already present, as 
+          H46).
+---  Hypothesis H74 has been replaced by "true".  (It is already present, as 
+          H47).
+---  Hypothesis H75 has been replaced by "true".  (It is already present, as 
+          H48).
+---  Hypothesis H76 has been replaced by "true".  (It is already present, as 
+          H49).
+---  Hypothesis H77 has been replaced by "true".  (It is already present, as 
+          H50).
+---  Hypothesis H80 has been replaced by "true".  (It is already present, as 
+          H49).
+---  Hypothesis H81 has been replaced by "true".  (It is already present, as 
+          H50).
+---  Hypothesis H82 has been replaced by "true".  (It is already present, as 
+          H47).
+---  Hypothesis H83 has been replaced by "true".  (It is already present, as 
+          H48).
+---  Hypothesis H84 has been replaced by "true".  (It is already present, as 
+          H45).
+---  Hypothesis H85 has been replaced by "true".  (It is already present, as 
+          H46).
+%%%  Simplified H86 on reading formula in, to give:
+     %%%  H86:  true
+%%%  Simplified H87 on reading formula in, to give:
+     %%%  H87:  true
+%%%  Simplified H95 on reading formula in, to give:
+     %%%  H95:  m2__3 >= c__2 - 7 / 10
+***  Proved C1:  m2__3 >= float__first
+     using hypothesis H97.
+***  Proved C2:  m2__3 <= float__last
+     using hypothesis H98.
+***  PROVED VC.
+
+
+@@@@@@@@@@  VC: procedure_peakunit_8.  @@@@@@@@@@
+---  Hypothesis H13 has been replaced by "true".  (It is already present, as 
+          H11).
+---  Hypothesis H14 has been replaced by "true".  (It is already present, as 
+          H12).
+---  Hypothesis H15 has been replaced by "true".  (It is already present, as H7)
+          .
+---  Hypothesis H16 has been replaced by "true".  (It is already present, as H8)
+          .
+---  Hypothesis H20 has been replaced by "true".  (It is already present, as 
+          H18).
+---  Hypothesis H21 has been replaced by "true".  (It is already present, as 
+          H19).
+---  Hypothesis H22 has been replaced by "true".  (It is already present, as 
+          H11).
+---  Hypothesis H23 has been replaced by "true".  (It is already present, as 
+          H12).
+---  Hypothesis H24 has been replaced by "true".  (It is already present, as H9)
+          .
+---  Hypothesis H25 has been replaced by "true".  (It is already present, as 
+          H10).
+---  Hypothesis H26 has been replaced by "true".  (It is already present, as H7)
+          .
+---  Hypothesis H27 has been replaced by "true".  (It is already present, as H8)
+          .
+---  Hypothesis H28 has been replaced by "true".  (It is already present, as H1)
+          .
+---  Hypothesis H29 has been replaced by "true".  (It is already present, as H2)
+          .
+---  Hypothesis H30 has been replaced by "true".  (It is already present, as H3)
+          .
+---  Hypothesis H31 has been replaced by "true".  (It is already present, as H4)
+          .
+---  Hypothesis H32 has been replaced by "true".  (It is already present, as H5)
+          .
+---  Hypothesis H33 has been replaced by "true".  (It is already present, as H6)
+          .
+---  Hypothesis H51 has been replaced by "true".  (It is already present, as 
+          H49).
+---  Hypothesis H52 has been replaced by "true".  (It is already present, as 
+          H50).
+---  Hypothesis H53 has been replaced by "true".  (It is already present, as 
+          H47).
+---  Hypothesis H54 has been replaced by "true".  (It is already present, as 
+          H48).
+---  Hypothesis H55 has been replaced by "true".  (It is already present, as 
+          H45).
+---  Hypothesis H56 has been replaced by "true".  (It is already present, as 
+          H46).
+---  Hypothesis H57 has been replaced by "true".  (It is already present, as 
+          H45).
+---  Hypothesis H58 has been replaced by "true".  (It is already present, as 
+          H46).
+---  Hypothesis H59 has been replaced by "true".  (It is already present, as 
+          H47).
+---  Hypothesis H60 has been replaced by "true".  (It is already present, as 
+          H48).
+---  Hypothesis H65 has been replaced by "true".  (It is already present, as 
+          H63).
+---  Hypothesis H66 has been replaced by "true".  (It is already present, as 
+          H64).
+---  Hypothesis H72 has been replaced by "true".  (It is already present, as 
+          H45).
+---  Hypothesis H73 has been replaced by "true".  (It is already present, as 
+          H46).
+---  Hypothesis H74 has been replaced by "true".  (It is already present, as 
+          H47).
+---  Hypothesis H75 has been replaced by "true".  (It is already present, as 
+          H48).
+---  Hypothesis H76 has been replaced by "true".  (It is already present, as 
+          H49).
+---  Hypothesis H77 has been replaced by "true".  (It is already present, as 
+          H50).
+---  Hypothesis H80 has been replaced by "true".  (It is already present, as 
+          H49).
+---  Hypothesis H81 has been replaced by "true".  (It is already present, as 
+          H50).
+---  Hypothesis H82 has been replaced by "true".  (It is already present, as 
+          H47).
+---  Hypothesis H83 has been replaced by "true".  (It is already present, as 
+          H48).
+---  Hypothesis H84 has been replaced by "true".  (It is already present, as 
+          H45).
+---  Hypothesis H85 has been replaced by "true".  (It is already present, as 
+          H46).
+%%%  Simplified H86 on reading formula in, to give:
+     %%%  H86:  true
+%%%  Simplified H87 on reading formula in, to give:
+     %%%  H87:  true
+%%%  Simplified H95 on reading formula in, to give:
+     %%%  H95:  m2__3 >= c__2 - 7 / 10
+---  Hypothesis H99 has been replaced by "true".  (It is already present, as 
+          H97).
+---  Hypothesis H100 has been replaced by "true".  (It is already present, as 
+          H98).
+---  Hypothesis H101 has been replaced by "true".  (It is already present, as 
+          H18).
+---  Hypothesis H102 has been replaced by "true".  (It is already present, as 
+          H19).
+---  Hypothesis H103 has been replaced by "true".  (It is already present, as 
+          H97).
+---  Hypothesis H104 has been replaced by "true".  (It is already present, as 
+          H98).
+***  Proved C1:  m2__3 >= float__first
+     using hypothesis H97.
+***  Proved C2:  m2__3 <= float__last
+     using hypothesis H98.
+***  Proved C3:  m1__1 >= float__first
+     using hypothesis H18.
+***  Proved C4:  m1__1 <= float__last
+     using hypothesis H19.
+***  PROVED VC.
+
+
+@@@@@@@@@@  VC: procedure_peakunit_9.  @@@@@@@@@@
+---  Hypothesis H13 has been replaced by "true".  (It is already present, as 
+          H11).
+---  Hypothesis H14 has been replaced by "true".  (It is already present, as 
+          H12).
+---  Hypothesis H15 has been replaced by "true".  (It is already present, as H7)
+          .
+---  Hypothesis H16 has been replaced by "true".  (It is already present, as H8)
+          .
+---  Hypothesis H20 has been replaced by "true".  (It is already present, as 
+          H18).
+---  Hypothesis H21 has been replaced by "true".  (It is already present, as 
+          H19).
+---  Hypothesis H22 has been replaced by "true".  (It is already present, as 
+          H11).
+---  Hypothesis H23 has been replaced by "true".  (It is already present, as 
+          H12).
+---  Hypothesis H24 has been replaced by "true".  (It is already present, as H9)
+          .
+---  Hypothesis H25 has been replaced by "true".  (It is already present, as 
+          H10).
+---  Hypothesis H26 has been replaced by "true".  (It is already present, as H7)
+          .
+---  Hypothesis H27 has been replaced by "true".  (It is already present, as H8)
+          .
+---  Hypothesis H28 has been replaced by "true".  (It is already present, as H1)
+          .
+---  Hypothesis H29 has been replaced by "true".  (It is already present, as H2)
+          .
+---  Hypothesis H30 has been replaced by "true".  (It is already present, as H3)
+          .
+---  Hypothesis H31 has been replaced by "true".  (It is already present, as H4)
+          .
+---  Hypothesis H32 has been replaced by "true".  (It is already present, as H5)
+          .
+---  Hypothesis H33 has been replaced by "true".  (It is already present, as H6)
+          .
+---  Hypothesis H51 has been replaced by "true".  (It is already present, as 
+          H49).
+---  Hypothesis H52 has been replaced by "true".  (It is already present, as 
+          H50).
+---  Hypothesis H53 has been replaced by "true".  (It is already present, as 
+          H47).
+---  Hypothesis H54 has been replaced by "true".  (It is already present, as 
+          H48).
+---  Hypothesis H55 has been replaced by "true".  (It is already present, as 
+          H45).
+---  Hypothesis H56 has been replaced by "true".  (It is already present, as 
+          H46).
+---  Hypothesis H57 has been replaced by "true".  (It is already present, as 
+          H45).
+---  Hypothesis H58 has been replaced by "true".  (It is already present, as 
+          H46).
+---  Hypothesis H59 has been replaced by "true".  (It is already present, as 
+          H47).
+---  Hypothesis H60 has been replaced by "true".  (It is already present, as 
+          H48).
+---  Hypothesis H65 has been replaced by "true".  (It is already present, as 
+          H63).
+---  Hypothesis H66 has been replaced by "true".  (It is already present, as 
+          H64).
+---  Hypothesis H72 has been replaced by "true".  (It is already present, as 
+          H45).
+---  Hypothesis H73 has been replaced by "true".  (It is already present, as 
+          H46).
+---  Hypothesis H74 has been replaced by "true".  (It is already present, as 
+          H47).
+---  Hypothesis H75 has been replaced by "true".  (It is already present, as 
+          H48).
+---  Hypothesis H76 has been replaced by "true".  (It is already present, as 
+          H49).
+---  Hypothesis H77 has been replaced by "true".  (It is already present, as 
+          H50).
+---  Hypothesis H80 has been replaced by "true".  (It is already present, as 
+          H49).
+---  Hypothesis H81 has been replaced by "true".  (It is already present, as 
+          H50).
+---  Hypothesis H82 has been replaced by "true".  (It is already present, as 
+          H47).
+---  Hypothesis H83 has been replaced by "true".  (It is already present, as 
+          H48).
+---  Hypothesis H84 has been replaced by "true".  (It is already present, as 
+          H45).
+---  Hypothesis H85 has been replaced by "true".  (It is already present, as 
+          H46).
+%%%  Simplified H86 on reading formula in, to give:
+     %%%  H86:  true
+%%%  Simplified H87 on reading formula in, to give:
+     %%%  H87:  true
+%%%  Simplified H95 on reading formula in, to give:
+     %%%  H95:  m2__3 >= c__2 - 7 / 10
+---  Hypothesis H99 has been replaced by "true".  (It is already present, as 
+          H97).
+---  Hypothesis H100 has been replaced by "true".  (It is already present, as 
+          H98).
+---  Hypothesis H101 has been replaced by "true".  (It is already present, as 
+          H18).
+---  Hypothesis H102 has been replaced by "true".  (It is already present, as 
+          H19).
+---  Hypothesis H103 has been replaced by "true".  (It is already present, as 
+          H97).
+---  Hypothesis H104 has been replaced by "true".  (It is already present, as 
+          H98).
+---  Hypothesis H105 has been replaced by "true".  (It is already present, as 
+          H97).
+---  Hypothesis H106 has been replaced by "true".  (It is already present, as 
+          H98).
+---  Hypothesis H107 has been replaced by "true".  (It is already present, as 
+          H18).
+---  Hypothesis H108 has been replaced by "true".  (It is already present, as 
+          H19).
+***  Proved C1:  r__4 >= float__first
+     using hypothesis H110.
+***  Proved C2:  r__4 <= float__last
+     using hypothesis H111.
+***  PROVED VC.
+
+
+@@@@@@@@@@  VC: procedure_peakunit_10.  @@@@@@@@@@
+---  Hypothesis H13 has been replaced by "true".  (It is already present, as 
+          H11).
+---  Hypothesis H14 has been replaced by "true".  (It is already present, as 
+          H12).
+---  Hypothesis H15 has been replaced by "true".  (It is already present, as H7)
+          .
+---  Hypothesis H16 has been replaced by "true".  (It is already present, as H8)
+          .
+---  Hypothesis H20 has been replaced by "true".  (It is already present, as 
+          H18).
+---  Hypothesis H21 has been replaced by "true".  (It is already present, as 
+          H19).
+---  Hypothesis H22 has been replaced by "true".  (It is already present, as 
+          H11).
+---  Hypothesis H23 has been replaced by "true".  (It is already present, as 
+          H12).
+---  Hypothesis H24 has been replaced by "true".  (It is already present, as H9)
+          .
+---  Hypothesis H25 has been replaced by "true".  (It is already present, as 
+          H10).
+---  Hypothesis H26 has been replaced by "true".  (It is already present, as H7)
+          .
+---  Hypothesis H27 has been replaced by "true".  (It is already present, as H8)
+          .
+---  Hypothesis H28 has been replaced by "true".  (It is already present, as H1)
+          .
+---  Hypothesis H29 has been replaced by "true".  (It is already present, as H2)
+          .
+---  Hypothesis H30 has been replaced by "true".  (It is already present, as H3)
+          .
+---  Hypothesis H31 has been replaced by "true".  (It is already present, as H4)
+          .
+---  Hypothesis H32 has been replaced by "true".  (It is already present, as H5)
+          .
+---  Hypothesis H33 has been replaced by "true".  (It is already present, as H6)
+          .
+---  Hypothesis H51 has been replaced by "true".  (It is already present, as 
+          H49).
+---  Hypothesis H52 has been replaced by "true".  (It is already present, as 
+          H50).
+---  Hypothesis H53 has been replaced by "true".  (It is already present, as 
+          H47).
+---  Hypothesis H54 has been replaced by "true".  (It is already present, as 
+          H48).
+---  Hypothesis H55 has been replaced by "true".  (It is already present, as 
+          H45).
+---  Hypothesis H56 has been replaced by "true".  (It is already present, as 
+          H46).
+---  Hypothesis H57 has been replaced by "true".  (It is already present, as 
+          H45).
+---  Hypothesis H58 has been replaced by "true".  (It is already present, as 
+          H46).
+---  Hypothesis H59 has been replaced by "true".  (It is already present, as 
+          H47).
+---  Hypothesis H60 has been replaced by "true".  (It is already present, as 
+          H48).
+---  Hypothesis H65 has been replaced by "true".  (It is already present, as 
+          H63).
+---  Hypothesis H66 has been replaced by "true".  (It is already present, as 
+          H64).
+---  Hypothesis H70 has been replaced by "true".  (It is already present, as 
+          H18).
+---  Hypothesis H71 has been replaced by "true".  (It is already present, as 
+          H19).
+***  Proved C1:  m1__1 >= float__first
+     using hypothesis H18.
+***  Proved C2:  m1__1 <= float__last
+     using hypothesis H19.
+***  PROVED VC.
+
+
+@@@@@@@@@@  VC: procedure_peakunit_11.  @@@@@@@@@@
+---  Hypothesis H13 has been replaced by "true".  (It is already present, as 
+          H11).
+---  Hypothesis H14 has been replaced by "true".  (It is already present, as 
+          H12).
+---  Hypothesis H15 has been replaced by "true".  (It is already present, as H7)
+          .
+---  Hypothesis H16 has been replaced by "true".  (It is already present, as H8)
+          .
+---  Hypothesis H20 has been replaced by "true".  (It is already present, as 
+          H18).
+---  Hypothesis H21 has been replaced by "true".  (It is already present, as 
+          H19).
+---  Hypothesis H22 has been replaced by "true".  (It is already present, as 
+          H11).
+---  Hypothesis H23 has been replaced by "true".  (It is already present, as 
+          H12).
+---  Hypothesis H24 has been replaced by "true".  (It is already present, as H9)
+          .
+---  Hypothesis H25 has been replaced by "true".  (It is already present, as 
+          H10).
+---  Hypothesis H26 has been replaced by "true".  (It is already present, as H7)
+          .
+---  Hypothesis H27 has been replaced by "true".  (It is already present, as H8)
+          .
+---  Hypothesis H28 has been replaced by "true".  (It is already present, as H1)
+          .
+---  Hypothesis H29 has been replaced by "true".  (It is already present, as H2)
+          .
+---  Hypothesis H30 has been replaced by "true".  (It is already present, as H3)
+          .
+---  Hypothesis H31 has been replaced by "true".  (It is already present, as H4)
+          .
+---  Hypothesis H32 has been replaced by "true".  (It is already present, as H5)
+          .
+---  Hypothesis H33 has been replaced by "true".  (It is already present, as H6)
+          .
+---  Hypothesis H51 has been replaced by "true".  (It is already present, as 
+          H49).
+---  Hypothesis H52 has been replaced by "true".  (It is already present, as 
+          H50).
+---  Hypothesis H53 has been replaced by "true".  (It is already present, as 
+          H47).
+---  Hypothesis H54 has been replaced by "true".  (It is already present, as 
+          H48).
+---  Hypothesis H55 has been replaced by "true".  (It is already present, as 
+          H45).
+---  Hypothesis H56 has been replaced by "true".  (It is already present, as 
+          H46).
+---  Hypothesis H57 has been replaced by "true".  (It is already present, as 
+          H45).
+---  Hypothesis H58 has been replaced by "true".  (It is already present, as 
+          H46).
+---  Hypothesis H59 has been replaced by "true".  (It is already present, as 
+          H47).
+---  Hypothesis H60 has been replaced by "true".  (It is already present, as 
+          H48).
+---  Hypothesis H65 has been replaced by "true".  (It is already present, as 
+          H63).
+---  Hypothesis H66 has been replaced by "true".  (It is already present, as 
+          H64).
+---  Hypothesis H72 has been replaced by "true".  (It is already present, as 
+          H45).
+---  Hypothesis H73 has been replaced by "true".  (It is already present, as 
+          H46).
+---  Hypothesis H74 has been replaced by "true".  (It is already present, as 
+          H47).
+---  Hypothesis H75 has been replaced by "true".  (It is already present, as 
+          H48).
+---  Hypothesis H76 has been replaced by "true".  (It is already present, as 
+          H49).
+---  Hypothesis H77 has been replaced by "true".  (It is already present, as 
+          H50).
+---  Hypothesis H80 has been replaced by "true".  (It is already present, as 
+          H49).
+---  Hypothesis H81 has been replaced by "true".  (It is already present, as 
+          H50).
+---  Hypothesis H82 has been replaced by "true".  (It is already present, as 
+          H47).
+---  Hypothesis H83 has been replaced by "true".  (It is already present, as 
+          H48).
+---  Hypothesis H84 has been replaced by "true".  (It is already present, as 
+          H45).
+---  Hypothesis H85 has been replaced by "true".  (It is already present, as 
+          H46).
+%%%  Simplified H86 on reading formula in, to give:
+     %%%  H86:  true
+%%%  Simplified H87 on reading formula in, to give:
+     %%%  H87:  true
+%%%  Simplified H95 on reading formula in, to give:
+     %%%  H95:  m2__3 >= c__2 - 7 / 10
+---  Hypothesis H99 has been replaced by "true".  (It is already present, as 
+          H97).
+---  Hypothesis H100 has been replaced by "true".  (It is already present, as 
+          H98).
+---  Hypothesis H101 has been replaced by "true".  (It is already present, as 
+          H18).
+---  Hypothesis H102 has been replaced by "true".  (It is already present, as 
+          H19).
+---  Hypothesis H103 has been replaced by "true".  (It is already present, as 
+          H97).
+---  Hypothesis H104 has been replaced by "true".  (It is already present, as 
+          H98).
+---  Hypothesis H105 has been replaced by "true".  (It is already present, as 
+          H97).
+---  Hypothesis H106 has been replaced by "true".  (It is already present, as 
+          H98).
+---  Hypothesis H107 has been replaced by "true".  (It is already present, as 
+          H18).
+---  Hypothesis H108 has been replaced by "true".  (It is already present, as 
+          H19).
+---  Hypothesis H112 has been replaced by "true".  (It is already present, as 
+          H110).
+---  Hypothesis H113 has been replaced by "true".  (It is already present, as 
+          H111).
+-S-  Applied substitution rule peakunit_rules(7).
+     This was achieved by replacing all occurrences of float__first by:
+          - 340282000000000000000000000000000000000.
+<S>  New H7:  y1 >= - 340282000000000000000000000000000000000
+<S>  New H9:  y2 >= - 340282000000000000000000000000000000000
+<S>  New H11:  y3 >= - 340282000000000000000000000000000000000
+<S>  New H18:  m1__1 >= - 340282000000000000000000000000000000000
+<S>  New H45:  a__2 >= - 340282000000000000000000000000000000000
+<S>  New H47:  b__2 >= - 340282000000000000000000000000000000000
+<S>  New H49:  c__2 >= - 340282000000000000000000000000000000000
+<S>  New H78:  true
+<S>  New H97:  m2__3 >= - 340282000000000000000000000000000000000
+<S>  New H110:  r__4 >= - 340282000000000000000000000000000000000
+-S-  Applied substitution rule peakunit_rules(8).
+     This was achieved by replacing all occurrences of float__last by:
+          340282000000000000000000000000000000000.
+<S>  New H8:  y1 <= 340282000000000000000000000000000000000
+<S>  New H10:  y2 <= 340282000000000000000000000000000000000
+<S>  New H12:  y3 <= 340282000000000000000000000000000000000
+<S>  New H19:  m1__1 <= 340282000000000000000000000000000000000
+<S>  New H46:  a__2 <= 340282000000000000000000000000000000000
+<S>  New H48:  b__2 <= 340282000000000000000000000000000000000
+<S>  New H50:  c__2 <= 340282000000000000000000000000000000000
+<S>  New H79:  true
+<S>  New H98:  m2__3 <= 340282000000000000000000000000000000000
+<S>  New H111:  r__4 <= 340282000000000000000000000000000000000
+-S-  Applied substitution rule peakunit_rules(9).
+     This was achieved by replacing all occurrences of float__base__first by:
+          - 340282000000000000000000000000000000000.
+<S>  New H61:  - (2 * a__2) >= - 340282000000000000000000000000000000000
+<S>  New H63:  2 * a__2 >= - 340282000000000000000000000000000000000
+-S-  Applied substitution rule peakunit_rules(10).
+     This was achieved by replacing all occurrences of float__base__last by:
+          340282000000000000000000000000000000000.
+<S>  New H62:  - (2 * a__2) <= 340282000000000000000000000000000000000
+<S>  New H64:  2 * a__2 <= 340282000000000000000000000000000000000
+-S-  Applied substitution rule peakunit_rules(12).
+     This was achieved by replacing all occurrences of iy__first by:
+          0.
+<S>  New H1:  y1 >= 0
+<S>  New H3:  y2 >= 0
+<S>  New H5:  y3 >= 0
+-S-  Applied substitution rule peakunit_rules(13).
+     This was achieved by replacing all occurrences of iy__last by:
+          1.
+<S>  New H2:  y1 <= 1
+<S>  New H4:  y2 <= 1
+<S>  New H6:  y3 <= 1
+-S-  Applied substitution rule peakunit_rules(17).
+     This was achieved by replacing all occurrences of ipad__first by:
+          - (1 / 1000000).
+<S>  New H34:  a__2 - b__2 + c__2 - y1 >= - (1 / 1000000)
+<S>  New H37:  a__2 + b__2 + c__2 - y3 >= - (1 / 1000000)
+-S-  Applied substitution rule peakunit_rules(18).
+     This was achieved by replacing all occurrences of ipad__last by:
+          1 / 1000000.
+<S>  New H35:  a__2 - b__2 + c__2 - y1 <= 1 / 1000000
+<S>  New H38:  a__2 + b__2 + c__2 - y3 <= 1 / 1000000
+-S-  Applied substitution rule peakunit_rules(22).
+     This was achieved by replacing all occurrences of icoeff1__first by:
+          - (11 / 10).
+<S>  New H39:  a__2 >= - (11 / 10)
+<S>  New H41:  b__2 >= - (11 / 10)
+<S>  New H43:  c__2 >= - (11 / 10)
+-S-  Applied substitution rule peakunit_rules(23).
+     This was achieved by replacing all occurrences of icoeff1__last by:
+          11 / 10.
+<S>  New H40:  a__2 <= 11 / 10
+<S>  New H42:  b__2 <= 11 / 10
+<S>  New H44:  c__2 <= 11 / 10
+-S-  Applied substitution rule peakunit_rules(27).
+     This was achieved by replacing all occurrences of icoeff2__first by:
+          - (6 / 5).
+<S>  New H89:  a__2 >= - (6 / 5)
+<S>  New H91:  b__2 >= - (6 / 5)
+<S>  New H93:  c__2 >= - (6 / 5)
+-S-  Applied substitution rule peakunit_rules(28).
+     This was achieved by replacing all occurrences of icoeff2__last by:
+          6 / 5.
+<S>  New H90:  a__2 <= 6 / 5
+<S>  New H92:  b__2 <= 6 / 5
+<S>  New H94:  c__2 <= 6 / 5
+---  Eliminated hypothesis H13 (true-hypothesis).
+---  Eliminated hypothesis H14 (true-hypothesis).
+---  Eliminated hypothesis H15 (true-hypothesis).
+---  Eliminated hypothesis H16 (true-hypothesis).
+---  Eliminated hypothesis H20 (true-hypothesis).
+---  Eliminated hypothesis H21 (true-hypothesis).
+---  Eliminated hypothesis H22 (true-hypothesis).
+---  Eliminated hypothesis H23 (true-hypothesis).
+---  Eliminated hypothesis H24 (true-hypothesis).
+---  Eliminated hypothesis H25 (true-hypothesis).
+---  Eliminated hypothesis H26 (true-hypothesis).
+---  Eliminated hypothesis H27 (true-hypothesis).
+---  Eliminated hypothesis H28 (true-hypothesis).
+---  Eliminated hypothesis H29 (true-hypothesis).
+---  Eliminated hypothesis H30 (true-hypothesis).
+---  Eliminated hypothesis H31 (true-hypothesis).
+---  Eliminated hypothesis H32 (true-hypothesis).
+---  Eliminated hypothesis H33 (true-hypothesis).
+---  Eliminated hypothesis H51 (true-hypothesis).
+---  Eliminated hypothesis H52 (true-hypothesis).
+---  Eliminated hypothesis H53 (true-hypothesis).
+---  Eliminated hypothesis H54 (true-hypothesis).
+---  Eliminated hypothesis H55 (true-hypothesis).
+---  Eliminated hypothesis H56 (true-hypothesis).
+---  Eliminated hypothesis H57 (true-hypothesis).
+---  Eliminated hypothesis H58 (true-hypothesis).
+---  Eliminated hypothesis H59 (true-hypothesis).
+---  Eliminated hypothesis H60 (true-hypothesis).
+---  Eliminated hypothesis H65 (true-hypothesis).
+---  Eliminated hypothesis H66 (true-hypothesis).
+---  Eliminated hypothesis H72 (true-hypothesis).
+---  Eliminated hypothesis H73 (true-hypothesis).
+---  Eliminated hypothesis H74 (true-hypothesis).
+---  Eliminated hypothesis H75 (true-hypothesis).
+---  Eliminated hypothesis H76 (true-hypothesis).
+---  Eliminated hypothesis H77 (true-hypothesis).
+---  Eliminated hypothesis H80 (true-hypothesis).
+---  Eliminated hypothesis H81 (true-hypothesis).
+---  Eliminated hypothesis H82 (true-hypothesis).
+---  Eliminated hypothesis H83 (true-hypothesis).
+---  Eliminated hypothesis H84 (true-hypothesis).
+---  Eliminated hypothesis H85 (true-hypothesis).
+---  Eliminated hypothesis H86 (true-hypothesis).
+---  Eliminated hypothesis H87 (true-hypothesis).
+---  Eliminated hypothesis H99 (true-hypothesis).
+---  Eliminated hypothesis H100 (true-hypothesis).
+---  Eliminated hypothesis H101 (true-hypothesis).
+---  Eliminated hypothesis H102 (true-hypothesis).
+---  Eliminated hypothesis H103 (true-hypothesis).
+---  Eliminated hypothesis H104 (true-hypothesis).
+---  Eliminated hypothesis H105 (true-hypothesis).
+---  Eliminated hypothesis H106 (true-hypothesis).
+---  Eliminated hypothesis H107 (true-hypothesis).
+---  Eliminated hypothesis H108 (true-hypothesis).
+---  Eliminated hypothesis H112 (true-hypothesis).
+---  Eliminated hypothesis H113 (true-hypothesis).
+---  Eliminated hypothesis H78 (true-hypothesis).
+---  Eliminated hypothesis H79 (true-hypothesis).
+---  Eliminated hypothesis H64 (duplicate of H61).
+---  Eliminated hypothesis H63 (duplicate of H62).
+---  Eliminated hypothesis H7 (redundant, given H1).
+---  Eliminated hypothesis H8 (redundant, given H2).
+---  Eliminated hypothesis H9 (redundant, given H3).
+---  Eliminated hypothesis H10 (redundant, given H4).
+---  Eliminated hypothesis H11 (redundant, given H5).
+---  Eliminated hypothesis H12 (redundant, given H6).
+---  Eliminated hypothesis H45 (redundant, given H62).
+---  Eliminated hypothesis H46 (redundant, given H61).
+---  Eliminated hypothesis H49 (redundant, given H3 & H36).
+---  Eliminated hypothesis H50 (redundant, given H4 & H36).
+---  Eliminated hypothesis H98 (redundant, given H96).
+-S-  Eliminated hypothesis H36.
+     This was achieved by replacing all occurrences of c__2 by:
+          y2.
+<S>  New H95:  m2__3 >= y2 - 7 / 10
+<S>  New H34:  a__2 - b__2 + y2 - y1 >= - (1 / 1000000)
+<S>  New H37:  a__2 + b__2 + y2 - y3 >= - (1 / 1000000)
+<S>  New H35:  a__2 - b__2 + y2 - y1 <= 1 / 1000000
+<S>  New H38:  a__2 + b__2 + y2 - y3 <= 1 / 1000000
+<S>  New H43:  y2 >= - (11 / 10)
+<S>  New H44:  y2 <= 11 / 10
+<S>  New H93:  y2 >= - (6 / 5)
+<S>  New H94:  y2 <= 6 / 5
+     +++  New H114:  universal_real__size >= 0
+     +++  New H115:  universal_real__first <= universal_real__last
+     +++  New H116:  universal_real__base__first <= universal_real__base__last
+     +++  New H117:  universal_real__base__first <= universal_real__first
+     +++  New H118:  universal_real__base__last >= universal_real__last
+     +++  New H119:  float__size >= 0
+     +++  New H120:  iy__size >= 0
+     +++  New H121:  ipad__size >= 0
+     +++  New H122:  icoeff1__size >= 0
+     +++  New H123:  icoeff2__size >= 0
+
+
+@@@@@@@@@@  VC: procedure_peakunit_12.  @@@@@@@@@@
+---  Hypothesis H13 has been replaced by "true".  (It is already present, as 
+          H11).
+---  Hypothesis H14 has been replaced by "true".  (It is already present, as 
+          H12).
+---  Hypothesis H15 has been replaced by "true".  (It is already present, as H7)
+          .
+---  Hypothesis H16 has been replaced by "true".  (It is already present, as H8)
+          .
+---  Hypothesis H20 has been replaced by "true".  (It is already present, as 
+          H18).
+---  Hypothesis H21 has been replaced by "true".  (It is already present, as 
+          H19).
+---  Hypothesis H22 has been replaced by "true".  (It is already present, as 
+          H11).
+---  Hypothesis H23 has been replaced by "true".  (It is already present, as 
+          H12).
+---  Hypothesis H24 has been replaced by "true".  (It is already present, as H9)
+          .
+---  Hypothesis H25 has been replaced by "true".  (It is already present, as 
+          H10).
+---  Hypothesis H26 has been replaced by "true".  (It is already present, as H7)
+          .
+---  Hypothesis H27 has been replaced by "true".  (It is already present, as H8)
+          .
+---  Hypothesis H28 has been replaced by "true".  (It is already present, as H1)
+          .
+---  Hypothesis H29 has been replaced by "true".  (It is already present, as H2)
+          .
+---  Hypothesis H30 has been replaced by "true".  (It is already present, as H3)
+          .
+---  Hypothesis H31 has been replaced by "true".  (It is already present, as H4)
+          .
+---  Hypothesis H32 has been replaced by "true".  (It is already present, as H5)
+          .
+---  Hypothesis H33 has been replaced by "true".  (It is already present, as H6)
+          .
+---  Hypothesis H51 has been replaced by "true".  (It is already present, as 
+          H49).
+---  Hypothesis H52 has been replaced by "true".  (It is already present, as 
+          H50).
+---  Hypothesis H53 has been replaced by "true".  (It is already present, as 
+          H47).
+---  Hypothesis H54 has been replaced by "true".  (It is already present, as 
+          H48).
+---  Hypothesis H55 has been replaced by "true".  (It is already present, as 
+          H45).
+---  Hypothesis H56 has been replaced by "true".  (It is already present, as 
+          H46).
+---  Hypothesis H57 has been replaced by "true".  (It is already present, as 
+          H45).
+---  Hypothesis H58 has been replaced by "true".  (It is already present, as 
+          H46).
+---  Hypothesis H59 has been replaced by "true".  (It is already present, as 
+          H47).
+---  Hypothesis H60 has been replaced by "true".  (It is already present, as 
+          H48).
+---  Hypothesis H65 has been replaced by "true".  (It is already present, as 
+          H63).
+---  Hypothesis H66 has been replaced by "true".  (It is already present, as 
+          H64).
+---  Hypothesis H70 has been replaced by "true".  (It is already present, as 
+          H18).
+---  Hypothesis H71 has been replaced by "true".  (It is already present, as 
+          H19).
+---  Hypothesis H72 has been replaced by "true".  (It is already present, as 
+          H18).
+---  Hypothesis H73 has been replaced by "true".  (It is already present, as 
+          H19).
+>>>  Restructured hypothesis H69 into:
+     >>>  H69:  - (1 / 5) <= a__2 or (b__2 < 2 * a__2 or - (2 * a__2) < b__2)
+-S-  Applied substitution rule peakunit_rules(7).
+     This was achieved by replacing all occurrences of float__first by:
+          - 340282000000000000000000000000000000000.
+<S>  New H7:  y1 >= - 340282000000000000000000000000000000000
+<S>  New H9:  y2 >= - 340282000000000000000000000000000000000
+<S>  New H11:  y3 >= - 340282000000000000000000000000000000000
+<S>  New H18:  m1__1 >= - 340282000000000000000000000000000000000
+<S>  New H45:  a__2 >= - 340282000000000000000000000000000000000
+<S>  New H47:  b__2 >= - 340282000000000000000000000000000000000
+<S>  New H49:  c__2 >= - 340282000000000000000000000000000000000
+-S-  Applied substitution rule peakunit_rules(8).
+     This was achieved by replacing all occurrences of float__last by:
+          340282000000000000000000000000000000000.
+<S>  New H8:  y1 <= 340282000000000000000000000000000000000
+<S>  New H10:  y2 <= 340282000000000000000000000000000000000
+<S>  New H12:  y3 <= 340282000000000000000000000000000000000
+<S>  New H19:  m1__1 <= 340282000000000000000000000000000000000
+<S>  New H46:  a__2 <= 340282000000000000000000000000000000000
+<S>  New H48:  b__2 <= 340282000000000000000000000000000000000
+<S>  New H50:  c__2 <= 340282000000000000000000000000000000000
+-S-  Applied substitution rule peakunit_rules(9).
+     This was achieved by replacing all occurrences of float__base__first by:
+          - 340282000000000000000000000000000000000.
+<S>  New H61:  - (2 * a__2) >= - 340282000000000000000000000000000000000
+<S>  New H63:  2 * a__2 >= - 340282000000000000000000000000000000000
+-S-  Applied substitution rule peakunit_rules(10).
+     This was achieved by replacing all occurrences of float__base__last by:
+          340282000000000000000000000000000000000.
+<S>  New H62:  - (2 * a__2) <= 340282000000000000000000000000000000000
+<S>  New H64:  2 * a__2 <= 340282000000000000000000000000000000000
+-S-  Applied substitution rule peakunit_rules(12).
+     This was achieved by replacing all occurrences of iy__first by:
+          0.
+<S>  New H1:  y1 >= 0
+<S>  New H3:  y2 >= 0
+<S>  New H5:  y3 >= 0
+-S-  Applied substitution rule peakunit_rules(13).
+     This was achieved by replacing all occurrences of iy__last by:
+          1.
+<S>  New H2:  y1 <= 1
+<S>  New H4:  y2 <= 1
+<S>  New H6:  y3 <= 1
+-S-  Applied substitution rule peakunit_rules(17).
+     This was achieved by replacing all occurrences of ipad__first by:
+          - (1 / 1000000).
+<S>  New H34:  a__2 - b__2 + c__2 - y1 >= - (1 / 1000000)
+<S>  New H37:  a__2 + b__2 + c__2 - y3 >= - (1 / 1000000)
+-S-  Applied substitution rule peakunit_rules(18).
+     This was achieved by replacing all occurrences of ipad__last by:
+          1 / 1000000.
+<S>  New H35:  a__2 - b__2 + c__2 - y1 <= 1 / 1000000
+<S>  New H38:  a__2 + b__2 + c__2 - y3 <= 1 / 1000000
+-S-  Applied substitution rule peakunit_rules(22).
+     This was achieved by replacing all occurrences of icoeff1__first by:
+          - (11 / 10).
+<S>  New H39:  a__2 >= - (11 / 10)
+<S>  New H41:  b__2 >= - (11 / 10)
+<S>  New H43:  c__2 >= - (11 / 10)
+-S-  Applied substitution rule peakunit_rules(23).
+     This was achieved by replacing all occurrences of icoeff1__last by:
+          11 / 10.
+<S>  New H40:  a__2 <= 11 / 10
+<S>  New H42:  b__2 <= 11 / 10
+<S>  New H44:  c__2 <= 11 / 10
+---  Eliminated hypothesis H13 (true-hypothesis).
+---  Eliminated hypothesis H14 (true-hypothesis).
+---  Eliminated hypothesis H15 (true-hypothesis).
+---  Eliminated hypothesis H16 (true-hypothesis).
+---  Eliminated hypothesis H20 (true-hypothesis).
+---  Eliminated hypothesis H21 (true-hypothesis).
+---  Eliminated hypothesis H22 (true-hypothesis).
+---  Eliminated hypothesis H23 (true-hypothesis).
+---  Eliminated hypothesis H24 (true-hypothesis).
+---  Eliminated hypothesis H25 (true-hypothesis).
+---  Eliminated hypothesis H26 (true-hypothesis).
+---  Eliminated hypothesis H27 (true-hypothesis).
+---  Eliminated hypothesis H28 (true-hypothesis).
+---  Eliminated hypothesis H29 (true-hypothesis).
+---  Eliminated hypothesis H30 (true-hypothesis).
+---  Eliminated hypothesis H31 (true-hypothesis).
+---  Eliminated hypothesis H32 (true-hypothesis).
+---  Eliminated hypothesis H33 (true-hypothesis).
+---  Eliminated hypothesis H51 (true-hypothesis).
+---  Eliminated hypothesis H52 (true-hypothesis).
+---  Eliminated hypothesis H53 (true-hypothesis).
+---  Eliminated hypothesis H54 (true-hypothesis).
+---  Eliminated hypothesis H55 (true-hypothesis).
+---  Eliminated hypothesis H56 (true-hypothesis).
+---  Eliminated hypothesis H57 (true-hypothesis).
+---  Eliminated hypothesis H58 (true-hypothesis).
+---  Eliminated hypothesis H59 (true-hypothesis).
+---  Eliminated hypothesis H60 (true-hypothesis).
+---  Eliminated hypothesis H65 (true-hypothesis).
+---  Eliminated hypothesis H66 (true-hypothesis).
+---  Eliminated hypothesis H70 (true-hypothesis).
+---  Eliminated hypothesis H71 (true-hypothesis).
+---  Eliminated hypothesis H72 (true-hypothesis).
+---  Eliminated hypothesis H73 (true-hypothesis).
+---  Eliminated hypothesis H64 (duplicate of H61).
+---  Eliminated hypothesis H63 (duplicate of H62).
+---  Eliminated hypothesis H7 (redundant, given H1).
+---  Eliminated hypothesis H8 (redundant, given H2).
+---  Eliminated hypothesis H9 (redundant, given H3).
+---  Eliminated hypothesis H10 (redundant, given H4).
+---  Eliminated hypothesis H11 (redundant, given H5).
+---  Eliminated hypothesis H12 (redundant, given H6).
+---  Eliminated hypothesis H45 (redundant, given H62).
+---  Eliminated hypothesis H46 (redundant, given H61).
+---  Eliminated hypothesis H49 (redundant, given H3 & H36).
+---  Eliminated hypothesis H50 (redundant, given H4 & H36).
+-S-  Eliminated hypothesis H36.
+     This was achieved by replacing all occurrences of c__2 by:
+          y2.
+<S>  New H34:  a__2 - b__2 + y2 - y1 >= - (1 / 1000000)
+<S>  New H37:  a__2 + b__2 + y2 - y3 >= - (1 / 1000000)
+<S>  New H35:  a__2 - b__2 + y2 - y1 <= 1 / 1000000
+<S>  New H38:  a__2 + b__2 + y2 - y3 <= 1 / 1000000
+<S>  New H43:  y2 >= - (11 / 10)
+<S>  New H44:  y2 <= 11 / 10
+     +++  New H74:  universal_real__size >= 0
+     +++  New H75:  universal_real__first <= universal_real__last
+     +++  New H76:  universal_real__base__first <= universal_real__base__last
+     +++  New H77:  universal_real__base__first <= universal_real__first
+     +++  New H78:  universal_real__base__last >= universal_real__last
+     +++  New H79:  float__size >= 0
+     +++  New H80:  iy__size >= 0
+     +++  New H81:  ipad__size >= 0
+     +++  New H82:  icoeff1__size >= 0
+     +++  New H83:  icoeff2__size >= 0
+

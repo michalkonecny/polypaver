@@ -1,0 +1,47 @@
+           /*********************************************************/
+                           /*Proof Rule Declarations*/
+                              /*Examiner GPL 2011*/
+             /*Copyright (C) 2011 Altran Praxis Limited, Bath, U.K.*/
+           /*********************************************************/
+
+
+                        /*DATE : 06-SEP-2011 18:04:24.80*/
+
+                          /*procedure peak.peakUnit*/
+
+
+rule_family peakunit_rules:
+     X      requires [X:any] &
+     X <= Y requires [X:ire, Y:ire] &
+     X >= Y requires [X:ire, Y:ire].
+
+peakunit_rules(1): universal_real__size >= 0 may_be_deduced.
+peakunit_rules(2): universal_real__first <= universal_real__last may_be_deduced.
+peakunit_rules(3): universal_real__base__first <= universal_real__base__last may_be_deduced.
+peakunit_rules(4): universal_real__base__first <= universal_real__first may_be_deduced.
+peakunit_rules(5): universal_real__base__last >= universal_real__last may_be_deduced.
+peakunit_rules(6): float__size >= 0 may_be_deduced.
+peakunit_rules(7): float__first may_be_replaced_by -340282000000000000000000000000000000000.
+peakunit_rules(8): float__last may_be_replaced_by 340282000000000000000000000000000000000.
+peakunit_rules(9): float__base__first may_be_replaced_by -340282000000000000000000000000000000000.
+peakunit_rules(10): float__base__last may_be_replaced_by 340282000000000000000000000000000000000.
+peakunit_rules(11): iy__size >= 0 may_be_deduced.
+peakunit_rules(12): iy__first may_be_replaced_by 0.
+peakunit_rules(13): iy__last may_be_replaced_by 1.
+peakunit_rules(14): iy__base__first may_be_replaced_by -340282000000000000000000000000000000000.
+peakunit_rules(15): iy__base__last may_be_replaced_by 340282000000000000000000000000000000000.
+peakunit_rules(16): ipad__size >= 0 may_be_deduced.
+peakunit_rules(17): ipad__first may_be_replaced_by (-1/1000000).
+peakunit_rules(18): ipad__last may_be_replaced_by (1/1000000).
+peakunit_rules(19): ipad__base__first may_be_replaced_by -340282000000000000000000000000000000000.
+peakunit_rules(20): ipad__base__last may_be_replaced_by 340282000000000000000000000000000000000.
+peakunit_rules(21): icoeff1__size >= 0 may_be_deduced.
+peakunit_rules(22): icoeff1__first may_be_replaced_by (-11/10).
+peakunit_rules(23): icoeff1__last may_be_replaced_by (11/10).
+peakunit_rules(24): icoeff1__base__first may_be_replaced_by -340282000000000000000000000000000000000.
+peakunit_rules(25): icoeff1__base__last may_be_replaced_by 340282000000000000000000000000000000000.
+peakunit_rules(26): icoeff2__size >= 0 may_be_deduced.
+peakunit_rules(27): icoeff2__first may_be_replaced_by (-6/5).
+peakunit_rules(28): icoeff2__last may_be_replaced_by (6/5).
+peakunit_rules(29): icoeff2__base__first may_be_replaced_by -340282000000000000000000000000000000000.
+peakunit_rules(30): icoeff2__base__last may_be_replaced_by 340282000000000000000000000000000000000.

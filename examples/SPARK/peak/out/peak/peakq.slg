@@ -1,0 +1,787 @@
+*****************************************************************************
+                       Semantic Analysis of SPARK Text
+                              Examiner GPL 2011
+             Copyright (C) 2011 Altran Praxis Limited, Bath, U.K.
+*****************************************************************************
+
+
+CREATED 06-SEP-2011, 18:04:24  SIMPLIFIED 06-SEP-2011, 18:04:29
+
+SPARK Simplifier GPL 2011
+Copyright (C) 2011 Altran Praxis Limited, Bath, U.K.
+
+procedure peak.peakQ
+
+
+
+
+
+
+@@@@@@@@@@  VC: procedure_peakq_1.  @@@@@@@@@@
+%%%  Simplified H1 on reading formula in, to give:
+     %%%  H1:  x >= - 1
+%%%  Simplified C1 on reading formula in, to give:
+     %%%  C1:  a >= float__first
+%%%  Simplified C2 on reading formula in, to give:
+     %%%  C2:  a <= float__last
+%%%  Simplified C3 on reading formula in, to give:
+     %%%  C3:  0 >= float__base__first
+%%%  Simplified C4 on reading formula in, to give:
+     %%%  C4:  0 <= float__base__last
+***  Proved C1:  a >= float__first
+     using hypothesis H10.
+***  Proved C2:  a <= float__last
+     using hypothesis H11.
+-S-  Applied substitution rule peakq_rules(4).
+     This was achieved by replacing all occurrences of float__base__first by:
+          - 340282000000000000000000000000000000000.
+<S>  New C3:  true
+-S-  Applied substitution rule peakq_rules(5).
+     This was achieved by replacing all occurrences of float__base__last by:
+          340282000000000000000000000000000000000.
+<S>  New C4:  true
+***  Proved C3:  true
+***  Proved C4:  true
+***  PROVED VC.
+
+
+@@@@@@@@@@  VC: procedure_peakq_2.  @@@@@@@@@@
+%%%  Simplified H1 on reading formula in, to give:
+     %%%  H1:  x >= - 1
+%%%  Simplified H18 on reading formula in, to give:
+     %%%  H18:  a >= float__first
+%%%  Simplified H19 on reading formula in, to give:
+     %%%  H19:  a <= float__last
+%%%  Simplified H20 on reading formula in, to give:
+     %%%  H20:  0 >= float__base__first
+%%%  Simplified H21 on reading formula in, to give:
+     %%%  H21:  0 <= float__base__last
+***  Proved C3:  b >= float__first
+     using hypothesis H12.
+***  Proved C4:  b <= float__last
+     using hypothesis H13.
+***  Proved C5:  b >= float__first
+     using hypothesis H12.
+***  Proved C6:  b <= float__last
+     using hypothesis H13.
+***  Proved C7:  c >= float__first
+     using hypothesis H14.
+***  Proved C8:  c <= float__last
+     using hypothesis H15.
+-S-  Applied substitution rule peakq_rules(2).
+     This was achieved by replacing all occurrences of float__first by:
+          - 340282000000000000000000000000000000000.
+<S>  New H10:  a >= - 340282000000000000000000000000000000000
+<S>  New H12:  b >= - 340282000000000000000000000000000000000
+<S>  New H14:  c >= - 340282000000000000000000000000000000000
+<S>  New H16:  x >= - 340282000000000000000000000000000000000
+<S>  New H18:  a >= - 340282000000000000000000000000000000000
+<S>  New C1:  numeric__times(b, b) >= - 340282000000000000000000000000000000000
+-S-  Applied substitution rule peakq_rules(3).
+     This was achieved by replacing all occurrences of float__last by:
+          340282000000000000000000000000000000000.
+<S>  New H11:  a <= 340282000000000000000000000000000000000
+<S>  New H13:  b <= 340282000000000000000000000000000000000
+<S>  New H15:  c <= 340282000000000000000000000000000000000
+<S>  New H17:  x <= 340282000000000000000000000000000000000
+<S>  New H19:  a <= 340282000000000000000000000000000000000
+<S>  New C2:  numeric__times(b, b) <= 340282000000000000000000000000000000000
+-S-  Applied substitution rule peakq_rules(4).
+     This was achieved by replacing all occurrences of float__base__first by:
+          - 340282000000000000000000000000000000000.
+<S>  New H20:  true
+-S-  Applied substitution rule peakq_rules(5).
+     This was achieved by replacing all occurrences of float__base__last by:
+          340282000000000000000000000000000000000.
+<S>  New H21:  true
+-S-  Applied substitution rule peakq_rules(7).
+     This was achieved by replacing all occurrences of icoeff2__first by:
+          - (6 / 5).
+<S>  New H4:  a >= - (6 / 5)
+<S>  New H6:  b >= - (6 / 5)
+<S>  New H8:  c >= - (6 / 5)
+-S-  Applied substitution rule peakq_rules(8).
+     This was achieved by replacing all occurrences of icoeff2__last by:
+          6 / 5.
+<S>  New H5:  a <= 6 / 5
+<S>  New H7:  b <= 6 / 5
+<S>  New H9:  c <= 6 / 5
+---  Eliminated hypothesis H20 (true-hypothesis).
+---  Eliminated hypothesis H21 (true-hypothesis).
+---  Eliminated hypothesis H18 (duplicate of H10).
+---  Eliminated hypothesis H19 (duplicate of H11).
+---  Eliminated hypothesis H16 (redundant, given H1).
+---  Eliminated hypothesis H17 (redundant, given H2).
+     +++  New H22:  float__size >= 0
+     +++  New H23:  icoeff2__size >= 0
+
+
+@@@@@@@@@@  VC: procedure_peakq_3.  @@@@@@@@@@
+%%%  Simplified H1 on reading formula in, to give:
+     %%%  H1:  x >= - 1
+%%%  Simplified H18 on reading formula in, to give:
+     %%%  H18:  a >= float__first
+%%%  Simplified H19 on reading formula in, to give:
+     %%%  H19:  a <= float__last
+%%%  Simplified H20 on reading formula in, to give:
+     %%%  H20:  0 >= float__base__first
+%%%  Simplified H21 on reading formula in, to give:
+     %%%  H21:  0 <= float__base__last
+---  Hypothesis H24 has been replaced by "true".  (It is already present, as 
+          H12).
+---  Hypothesis H25 has been replaced by "true".  (It is already present, as 
+          H13).
+---  Hypothesis H26 has been replaced by "true".  (It is already present, as 
+          H12).
+---  Hypothesis H27 has been replaced by "true".  (It is already present, as 
+          H13).
+---  Hypothesis H28 has been replaced by "true".  (It is already present, as 
+          H14).
+---  Hypothesis H29 has been replaced by "true".  (It is already present, as 
+          H15).
+---  Hypothesis H30 has been replaced by "true".  (It is already present, as 
+          H22).
+---  Hypothesis H31 has been replaced by "true".  (It is already present, as 
+          H23).
+---  Hypothesis H32 has been replaced by "true".  (It is already present, as 
+          H18).
+---  Hypothesis H33 has been replaced by "true".  (It is already present, as 
+          H19).
+%%%  Simplified C1 on reading formula in, to give:
+     %%%  C1:  numeric__times(4, a) >= float__first
+%%%  Simplified C2 on reading formula in, to give:
+     %%%  C2:  numeric__times(4, a) <= float__last
+%%%  Simplified C3 on reading formula in, to give:
+     %%%  C3:  a >= float__first
+%%%  Simplified C4 on reading formula in, to give:
+     %%%  C4:  a <= float__last
+***  Proved C3:  a >= float__first
+     using hypothesis H10.
+***  Proved C4:  a <= float__last
+     using hypothesis H11.
+***  Proved C5:  4 >= float__first
+     using hypotheses H3 & H10.
+***  Proved C7:  numeric__times(b, b) >= float__first
+     using hypothesis H22.
+***  Proved C8:  numeric__times(b, b) <= float__last
+     using hypothesis H23.
+-S-  Applied substitution rule peakq_rules(2).
+     This was achieved by replacing all occurrences of float__first by:
+          - 340282000000000000000000000000000000000.
+<S>  New H10:  a >= - 340282000000000000000000000000000000000
+<S>  New H12:  b >= - 340282000000000000000000000000000000000
+<S>  New H14:  c >= - 340282000000000000000000000000000000000
+<S>  New H16:  x >= - 340282000000000000000000000000000000000
+<S>  New H18:  a >= - 340282000000000000000000000000000000000
+<S>  New H22:  numeric__times(b, b) >= - 340282000000000000000000000000000000000
+<S>  New C1:  numeric__times(4, a) >= - 340282000000000000000000000000000000000
+-S-  Applied substitution rule peakq_rules(3).
+     This was achieved by replacing all occurrences of float__last by:
+          340282000000000000000000000000000000000.
+<S>  New H11:  a <= 340282000000000000000000000000000000000
+<S>  New H13:  b <= 340282000000000000000000000000000000000
+<S>  New H15:  c <= 340282000000000000000000000000000000000
+<S>  New H17:  x <= 340282000000000000000000000000000000000
+<S>  New H19:  a <= 340282000000000000000000000000000000000
+<S>  New H23:  numeric__times(b, b) <= 340282000000000000000000000000000000000
+<S>  New C2:  numeric__times(4, a) <= 340282000000000000000000000000000000000
+<S>  New C6:  true
+***  Proved C6:  true
+-S-  Applied substitution rule peakq_rules(4).
+     This was achieved by replacing all occurrences of float__base__first by:
+          - 340282000000000000000000000000000000000.
+<S>  New H20:  true
+-S-  Applied substitution rule peakq_rules(5).
+     This was achieved by replacing all occurrences of float__base__last by:
+          340282000000000000000000000000000000000.
+<S>  New H21:  true
+-S-  Applied substitution rule peakq_rules(7).
+     This was achieved by replacing all occurrences of icoeff2__first by:
+          - (6 / 5).
+<S>  New H4:  a >= - (6 / 5)
+<S>  New H6:  b >= - (6 / 5)
+<S>  New H8:  c >= - (6 / 5)
+-S-  Applied substitution rule peakq_rules(8).
+     This was achieved by replacing all occurrences of icoeff2__last by:
+          6 / 5.
+<S>  New H5:  a <= 6 / 5
+<S>  New H7:  b <= 6 / 5
+<S>  New H9:  c <= 6 / 5
+---  Eliminated hypothesis H24 (true-hypothesis).
+---  Eliminated hypothesis H25 (true-hypothesis).
+---  Eliminated hypothesis H26 (true-hypothesis).
+---  Eliminated hypothesis H27 (true-hypothesis).
+---  Eliminated hypothesis H28 (true-hypothesis).
+---  Eliminated hypothesis H29 (true-hypothesis).
+---  Eliminated hypothesis H30 (true-hypothesis).
+---  Eliminated hypothesis H31 (true-hypothesis).
+---  Eliminated hypothesis H32 (true-hypothesis).
+---  Eliminated hypothesis H33 (true-hypothesis).
+---  Eliminated hypothesis H20 (true-hypothesis).
+---  Eliminated hypothesis H21 (true-hypothesis).
+---  Eliminated hypothesis H18 (duplicate of H10).
+---  Eliminated hypothesis H19 (duplicate of H11).
+---  Eliminated hypothesis H16 (redundant, given H1).
+---  Eliminated hypothesis H17 (redundant, given H2).
+     +++  New H34:  float__size >= 0
+     +++  New H35:  icoeff2__size >= 0
+
+
+@@@@@@@@@@  VC: procedure_peakq_4.  @@@@@@@@@@
+%%%  Simplified H1 on reading formula in, to give:
+     %%%  H1:  x >= - 1
+%%%  Simplified H18 on reading formula in, to give:
+     %%%  H18:  a >= float__first
+%%%  Simplified H19 on reading formula in, to give:
+     %%%  H19:  a <= float__last
+%%%  Simplified H20 on reading formula in, to give:
+     %%%  H20:  0 >= float__base__first
+%%%  Simplified H21 on reading formula in, to give:
+     %%%  H21:  0 <= float__base__last
+---  Hypothesis H24 has been replaced by "true".  (It is already present, as 
+          H12).
+---  Hypothesis H25 has been replaced by "true".  (It is already present, as 
+          H13).
+---  Hypothesis H26 has been replaced by "true".  (It is already present, as 
+          H12).
+---  Hypothesis H27 has been replaced by "true".  (It is already present, as 
+          H13).
+---  Hypothesis H28 has been replaced by "true".  (It is already present, as 
+          H14).
+---  Hypothesis H29 has been replaced by "true".  (It is already present, as 
+          H15).
+---  Hypothesis H30 has been replaced by "true".  (It is already present, as 
+          H22).
+---  Hypothesis H31 has been replaced by "true".  (It is already present, as 
+          H23).
+---  Hypothesis H32 has been replaced by "true".  (It is already present, as 
+          H18).
+---  Hypothesis H33 has been replaced by "true".  (It is already present, as 
+          H19).
+%%%  Simplified H34 on reading formula in, to give:
+     %%%  H34:  numeric__times(4, a) >= float__first
+%%%  Simplified H35 on reading formula in, to give:
+     %%%  H35:  numeric__times(4, a) <= float__last
+---  Hypothesis H36 has been replaced by "true".  (It is already present, as 
+          H18).
+---  Hypothesis H37 has been replaced by "true".  (It is already present, as 
+          H19).
+---  Hypothesis H40 has been replaced by "true".  (It is already present, as 
+          H22).
+---  Hypothesis H41 has been replaced by "true".  (It is already present, as 
+          H23).
+---  Hypothesis H42 has been replaced by "true".  (It is already present, as 
+          H34).
+---  Hypothesis H43 has been replaced by "true".  (It is already present, as 
+          H35).
+%%%  Simplified C1 on reading formula in, to give:
+     %%%  C1:  numeric__divide(numeric__times(b, b), numeric__times(4, a)) >= 
+          float__first
+%%%  Simplified C2 on reading formula in, to give:
+     %%%  C2:  numeric__divide(numeric__times(b, b), numeric__times(4, a)) <= 
+          float__last
+%%%  Simplified C3 on reading formula in, to give:
+     %%%  C3:  numeric__times(4, a) >= float__first
+%%%  Simplified C4 on reading formula in, to give:
+     %%%  C4:  numeric__times(4, a) <= float__last
+***  Proved C3:  numeric__times(4, a) >= float__first
+     using hypothesis H34.
+***  Proved C4:  numeric__times(4, a) <= float__last
+     using hypothesis H35.
+-S-  Applied substitution rule peakq_rules(2).
+     This was achieved by replacing all occurrences of float__first by:
+          - 340282000000000000000000000000000000000.
+<S>  New H10:  a >= - 340282000000000000000000000000000000000
+<S>  New H12:  b >= - 340282000000000000000000000000000000000
+<S>  New H14:  c >= - 340282000000000000000000000000000000000
+<S>  New H16:  x >= - 340282000000000000000000000000000000000
+<S>  New H18:  a >= - 340282000000000000000000000000000000000
+<S>  New H22:  numeric__times(b, b) >= - 340282000000000000000000000000000000000
+<S>  New H34:  numeric__times(4, a) >= - 340282000000000000000000000000000000000
+<S>  New H38:  true
+<S>  New C1:  numeric__divide(numeric__times(b, b), numeric__times(4, a)) >= - 
+          340282000000000000000000000000000000000
+-S-  Applied substitution rule peakq_rules(3).
+     This was achieved by replacing all occurrences of float__last by:
+          340282000000000000000000000000000000000.
+<S>  New H11:  a <= 340282000000000000000000000000000000000
+<S>  New H13:  b <= 340282000000000000000000000000000000000
+<S>  New H15:  c <= 340282000000000000000000000000000000000
+<S>  New H17:  x <= 340282000000000000000000000000000000000
+<S>  New H19:  a <= 340282000000000000000000000000000000000
+<S>  New H23:  numeric__times(b, b) <= 340282000000000000000000000000000000000
+<S>  New H35:  numeric__times(4, a) <= 340282000000000000000000000000000000000
+<S>  New H39:  true
+<S>  New C2:  numeric__divide(numeric__times(b, b), numeric__times(4, a)) <= 
+          340282000000000000000000000000000000000
+-S-  Applied substitution rule peakq_rules(4).
+     This was achieved by replacing all occurrences of float__base__first by:
+          - 340282000000000000000000000000000000000.
+<S>  New H20:  true
+-S-  Applied substitution rule peakq_rules(5).
+     This was achieved by replacing all occurrences of float__base__last by:
+          340282000000000000000000000000000000000.
+<S>  New H21:  true
+-S-  Applied substitution rule peakq_rules(7).
+     This was achieved by replacing all occurrences of icoeff2__first by:
+          - (6 / 5).
+<S>  New H4:  a >= - (6 / 5)
+<S>  New H6:  b >= - (6 / 5)
+<S>  New H8:  c >= - (6 / 5)
+-S-  Applied substitution rule peakq_rules(8).
+     This was achieved by replacing all occurrences of icoeff2__last by:
+          6 / 5.
+<S>  New H5:  a <= 6 / 5
+<S>  New H7:  b <= 6 / 5
+<S>  New H9:  c <= 6 / 5
+---  Eliminated hypothesis H24 (true-hypothesis).
+---  Eliminated hypothesis H25 (true-hypothesis).
+---  Eliminated hypothesis H26 (true-hypothesis).
+---  Eliminated hypothesis H27 (true-hypothesis).
+---  Eliminated hypothesis H28 (true-hypothesis).
+---  Eliminated hypothesis H29 (true-hypothesis).
+---  Eliminated hypothesis H30 (true-hypothesis).
+---  Eliminated hypothesis H31 (true-hypothesis).
+---  Eliminated hypothesis H32 (true-hypothesis).
+---  Eliminated hypothesis H33 (true-hypothesis).
+---  Eliminated hypothesis H36 (true-hypothesis).
+---  Eliminated hypothesis H37 (true-hypothesis).
+---  Eliminated hypothesis H38 (true-hypothesis).
+---  Eliminated hypothesis H39 (true-hypothesis).
+---  Eliminated hypothesis H40 (true-hypothesis).
+---  Eliminated hypothesis H41 (true-hypothesis).
+---  Eliminated hypothesis H42 (true-hypothesis).
+---  Eliminated hypothesis H43 (true-hypothesis).
+---  Eliminated hypothesis H20 (true-hypothesis).
+---  Eliminated hypothesis H21 (true-hypothesis).
+---  Eliminated hypothesis H18 (duplicate of H10).
+---  Eliminated hypothesis H19 (duplicate of H11).
+---  Eliminated hypothesis H16 (redundant, given H1).
+---  Eliminated hypothesis H17 (redundant, given H2).
+     +++  New H44:  float__size >= 0
+     +++  New H45:  icoeff2__size >= 0
+
+
+@@@@@@@@@@  VC: procedure_peakq_5.  @@@@@@@@@@
+%%%  Simplified H1 on reading formula in, to give:
+     %%%  H1:  x >= - 1
+%%%  Simplified H18 on reading formula in, to give:
+     %%%  H18:  a >= float__first
+%%%  Simplified H19 on reading formula in, to give:
+     %%%  H19:  a <= float__last
+%%%  Simplified H20 on reading formula in, to give:
+     %%%  H20:  0 >= float__base__first
+%%%  Simplified H21 on reading formula in, to give:
+     %%%  H21:  0 <= float__base__last
+---  Hypothesis H24 has been replaced by "true".  (It is already present, as 
+          H12).
+---  Hypothesis H25 has been replaced by "true".  (It is already present, as 
+          H13).
+---  Hypothesis H26 has been replaced by "true".  (It is already present, as 
+          H12).
+---  Hypothesis H27 has been replaced by "true".  (It is already present, as 
+          H13).
+---  Hypothesis H28 has been replaced by "true".  (It is already present, as 
+          H14).
+---  Hypothesis H29 has been replaced by "true".  (It is already present, as 
+          H15).
+---  Hypothesis H30 has been replaced by "true".  (It is already present, as 
+          H22).
+---  Hypothesis H31 has been replaced by "true".  (It is already present, as 
+          H23).
+---  Hypothesis H32 has been replaced by "true".  (It is already present, as 
+          H18).
+---  Hypothesis H33 has been replaced by "true".  (It is already present, as 
+          H19).
+%%%  Simplified H34 on reading formula in, to give:
+     %%%  H34:  numeric__times(4, a) >= float__first
+%%%  Simplified H35 on reading formula in, to give:
+     %%%  H35:  numeric__times(4, a) <= float__last
+---  Hypothesis H36 has been replaced by "true".  (It is already present, as 
+          H18).
+---  Hypothesis H37 has been replaced by "true".  (It is already present, as 
+          H19).
+---  Hypothesis H40 has been replaced by "true".  (It is already present, as 
+          H22).
+---  Hypothesis H41 has been replaced by "true".  (It is already present, as 
+          H23).
+---  Hypothesis H42 has been replaced by "true".  (It is already present, as 
+          H34).
+---  Hypothesis H43 has been replaced by "true".  (It is already present, as 
+          H35).
+%%%  Simplified H44 on reading formula in, to give:
+     %%%  H44:  numeric__divide(numeric__times(b, b), numeric__times(4, a)) >= 
+          float__first
+%%%  Simplified H45 on reading formula in, to give:
+     %%%  H45:  numeric__divide(numeric__times(b, b), numeric__times(4, a)) <= 
+          float__last
+---  Hypothesis H46 has been replaced by "true".  (It is already present, as 
+          H34).
+---  Hypothesis H47 has been replaced by "true".  (It is already present, as 
+          H35).
+---  Hypothesis H48 has been replaced by "true".  (It is already present, as 
+          H44).
+---  Hypothesis H49 has been replaced by "true".  (It is already present, as 
+          H45).
+%%%  Simplified C1 on reading formula in, to give:
+     %%%  C1:  numeric__minus(c, numeric__divide(numeric__times(b, b), 
+          numeric__times(4, a))) >= float__first
+%%%  Simplified C2 on reading formula in, to give:
+     %%%  C2:  numeric__minus(c, numeric__divide(numeric__times(b, b), 
+          numeric__times(4, a))) <= float__last
+%%%  Simplified C3 on reading formula in, to give:
+     %%%  C3:  numeric__divide(numeric__times(b, b), numeric__times(4, a)) >= 
+          float__first
+%%%  Simplified C4 on reading formula in, to give:
+     %%%  C4:  numeric__divide(numeric__times(b, b), numeric__times(4, a)) <= 
+          float__last
+***  Proved C3:  numeric__divide(numeric__times(b, b), numeric__times(4, a)) >= 
+          float__first
+     using hypothesis H44.
+***  Proved C4:  numeric__divide(numeric__times(b, b), numeric__times(4, a)) <= 
+          float__last
+     using hypothesis H45.
+-S-  Applied substitution rule peakq_rules(2).
+     This was achieved by replacing all occurrences of float__first by:
+          - 340282000000000000000000000000000000000.
+<S>  New H10:  a >= - 340282000000000000000000000000000000000
+<S>  New H12:  b >= - 340282000000000000000000000000000000000
+<S>  New H14:  c >= - 340282000000000000000000000000000000000
+<S>  New H16:  x >= - 340282000000000000000000000000000000000
+<S>  New H18:  a >= - 340282000000000000000000000000000000000
+<S>  New H22:  numeric__times(b, b) >= - 340282000000000000000000000000000000000
+<S>  New H34:  numeric__times(4, a) >= - 340282000000000000000000000000000000000
+<S>  New H38:  true
+<S>  New H44:  numeric__divide(numeric__times(b, b), numeric__times(4, a)) >= - 
+          340282000000000000000000000000000000000
+<S>  New C1:  numeric__minus(c, numeric__divide(numeric__times(b, b), 
+          numeric__times(4, a))) >= - 340282000000000000000000000000000000000
+-S-  Applied substitution rule peakq_rules(3).
+     This was achieved by replacing all occurrences of float__last by:
+          340282000000000000000000000000000000000.
+<S>  New H11:  a <= 340282000000000000000000000000000000000
+<S>  New H13:  b <= 340282000000000000000000000000000000000
+<S>  New H15:  c <= 340282000000000000000000000000000000000
+<S>  New H17:  x <= 340282000000000000000000000000000000000
+<S>  New H19:  a <= 340282000000000000000000000000000000000
+<S>  New H23:  numeric__times(b, b) <= 340282000000000000000000000000000000000
+<S>  New H35:  numeric__times(4, a) <= 340282000000000000000000000000000000000
+<S>  New H39:  true
+<S>  New H45:  numeric__divide(numeric__times(b, b), numeric__times(4, a)) <= 
+          340282000000000000000000000000000000000
+<S>  New C2:  numeric__minus(c, numeric__divide(numeric__times(b, b), 
+          numeric__times(4, a))) <= 340282000000000000000000000000000000000
+-S-  Applied substitution rule peakq_rules(4).
+     This was achieved by replacing all occurrences of float__base__first by:
+          - 340282000000000000000000000000000000000.
+<S>  New H20:  true
+-S-  Applied substitution rule peakq_rules(5).
+     This was achieved by replacing all occurrences of float__base__last by:
+          340282000000000000000000000000000000000.
+<S>  New H21:  true
+-S-  Applied substitution rule peakq_rules(7).
+     This was achieved by replacing all occurrences of icoeff2__first by:
+          - (6 / 5).
+<S>  New H4:  a >= - (6 / 5)
+<S>  New H6:  b >= - (6 / 5)
+<S>  New H8:  c >= - (6 / 5)
+-S-  Applied substitution rule peakq_rules(8).
+     This was achieved by replacing all occurrences of icoeff2__last by:
+          6 / 5.
+<S>  New H5:  a <= 6 / 5
+<S>  New H7:  b <= 6 / 5
+<S>  New H9:  c <= 6 / 5
+---  Eliminated hypothesis H24 (true-hypothesis).
+---  Eliminated hypothesis H25 (true-hypothesis).
+---  Eliminated hypothesis H26 (true-hypothesis).
+---  Eliminated hypothesis H27 (true-hypothesis).
+---  Eliminated hypothesis H28 (true-hypothesis).
+---  Eliminated hypothesis H29 (true-hypothesis).
+---  Eliminated hypothesis H30 (true-hypothesis).
+---  Eliminated hypothesis H31 (true-hypothesis).
+---  Eliminated hypothesis H32 (true-hypothesis).
+---  Eliminated hypothesis H33 (true-hypothesis).
+---  Eliminated hypothesis H36 (true-hypothesis).
+---  Eliminated hypothesis H37 (true-hypothesis).
+---  Eliminated hypothesis H38 (true-hypothesis).
+---  Eliminated hypothesis H39 (true-hypothesis).
+---  Eliminated hypothesis H40 (true-hypothesis).
+---  Eliminated hypothesis H41 (true-hypothesis).
+---  Eliminated hypothesis H42 (true-hypothesis).
+---  Eliminated hypothesis H43 (true-hypothesis).
+---  Eliminated hypothesis H46 (true-hypothesis).
+---  Eliminated hypothesis H47 (true-hypothesis).
+---  Eliminated hypothesis H48 (true-hypothesis).
+---  Eliminated hypothesis H49 (true-hypothesis).
+---  Eliminated hypothesis H20 (true-hypothesis).
+---  Eliminated hypothesis H21 (true-hypothesis).
+---  Eliminated hypothesis H18 (duplicate of H10).
+---  Eliminated hypothesis H19 (duplicate of H11).
+---  Eliminated hypothesis H16 (redundant, given H1).
+---  Eliminated hypothesis H17 (redundant, given H2).
+     +++  New H50:  float__size >= 0
+     +++  New H51:  icoeff2__size >= 0
+
+
+@@@@@@@@@@  VC: procedure_peakq_6.  @@@@@@@@@@
+%%%  Simplified H1 on reading formula in, to give:
+     %%%  H1:  x >= - 1
+%%%  Simplified H18 on reading formula in, to give:
+     %%%  H18:  a >= float__first
+%%%  Simplified H19 on reading formula in, to give:
+     %%%  H19:  a <= float__last
+%%%  Simplified H20 on reading formula in, to give:
+     %%%  H20:  0 >= float__base__first
+%%%  Simplified H21 on reading formula in, to give:
+     %%%  H21:  0 <= float__base__last
+---  Hypothesis H24 has been replaced by "true".  (It is already present, as 
+          H12).
+---  Hypothesis H25 has been replaced by "true".  (It is already present, as 
+          H13).
+---  Hypothesis H26 has been replaced by "true".  (It is already present, as 
+          H12).
+---  Hypothesis H27 has been replaced by "true".  (It is already present, as 
+          H13).
+---  Hypothesis H28 has been replaced by "true".  (It is already present, as 
+          H14).
+---  Hypothesis H29 has been replaced by "true".  (It is already present, as 
+          H15).
+---  Hypothesis H30 has been replaced by "true".  (It is already present, as 
+          H22).
+---  Hypothesis H31 has been replaced by "true".  (It is already present, as 
+          H23).
+---  Hypothesis H32 has been replaced by "true".  (It is already present, as 
+          H18).
+---  Hypothesis H33 has been replaced by "true".  (It is already present, as 
+          H19).
+%%%  Simplified H34 on reading formula in, to give:
+     %%%  H34:  numeric__times(4, a) >= float__first
+%%%  Simplified H35 on reading formula in, to give:
+     %%%  H35:  numeric__times(4, a) <= float__last
+---  Hypothesis H36 has been replaced by "true".  (It is already present, as 
+          H18).
+---  Hypothesis H37 has been replaced by "true".  (It is already present, as 
+          H19).
+---  Hypothesis H40 has been replaced by "true".  (It is already present, as 
+          H22).
+---  Hypothesis H41 has been replaced by "true".  (It is already present, as 
+          H23).
+---  Hypothesis H42 has been replaced by "true".  (It is already present, as 
+          H34).
+---  Hypothesis H43 has been replaced by "true".  (It is already present, as 
+          H35).
+%%%  Simplified H44 on reading formula in, to give:
+     %%%  H44:  numeric__divide(numeric__times(b, b), numeric__times(4, a)) >= 
+          float__first
+%%%  Simplified H45 on reading formula in, to give:
+     %%%  H45:  numeric__divide(numeric__times(b, b), numeric__times(4, a)) <= 
+          float__last
+---  Hypothesis H46 has been replaced by "true".  (It is already present, as 
+          H34).
+---  Hypothesis H47 has been replaced by "true".  (It is already present, as 
+          H35).
+---  Hypothesis H48 has been replaced by "true".  (It is already present, as 
+          H44).
+---  Hypothesis H49 has been replaced by "true".  (It is already present, as 
+          H45).
+%%%  Simplified H50 on reading formula in, to give:
+     %%%  H50:  numeric__minus(c, numeric__divide(numeric__times(b, b), 
+          numeric__times(4, a))) >= float__first
+%%%  Simplified H51 on reading formula in, to give:
+     %%%  H51:  numeric__minus(c, numeric__divide(numeric__times(b, b), 
+          numeric__times(4, a))) <= float__last
+---  Hypothesis H52 has been replaced by "true".  (It is already present, as 
+          H44).
+---  Hypothesis H53 has been replaced by "true".  (It is already present, as 
+          H45).
+---  Hypothesis H54 has been replaced by "true".  (It is already present, as 
+          H50).
+---  Hypothesis H55 has been replaced by "true".  (It is already present, as 
+          H51).
+%%%  Simplified C1 on reading formula in, to give:
+     %%%  C1:  numeric__minus(c, numeric__divide(numeric__times(b, b), 
+          numeric__times(4, a))) >= float__first
+%%%  Simplified C2 on reading formula in, to give:
+     %%%  C2:  numeric__minus(c, numeric__divide(numeric__times(b, b), 
+          numeric__times(4, a))) <= float__last
+***  Proved C1:  numeric__minus(c, numeric__divide(numeric__times(b, b), 
+          numeric__times(4, a))) >= float__first
+     using hypothesis H50.
+***  Proved C2:  numeric__minus(c, numeric__divide(numeric__times(b, b), 
+          numeric__times(4, a))) <= float__last
+     using hypothesis H51.
+***  PROVED VC.
+
+
+@@@@@@@@@@  VC: procedure_peakq_7.  @@@@@@@@@@
+%%%  Simplified H1 on reading formula in, to give:
+     %%%  H1:  x >= - 1
+%%%  Simplified H18 on reading formula in, to give:
+     %%%  H18:  a >= float__first
+%%%  Simplified H19 on reading formula in, to give:
+     %%%  H19:  a <= float__last
+%%%  Simplified H20 on reading formula in, to give:
+     %%%  H20:  0 >= float__base__first
+%%%  Simplified H21 on reading formula in, to give:
+     %%%  H21:  0 <= float__base__last
+---  Hypothesis H24 has been replaced by "true".  (It is already present, as 
+          H12).
+---  Hypothesis H25 has been replaced by "true".  (It is already present, as 
+          H13).
+---  Hypothesis H26 has been replaced by "true".  (It is already present, as 
+          H12).
+---  Hypothesis H27 has been replaced by "true".  (It is already present, as 
+          H13).
+---  Hypothesis H28 has been replaced by "true".  (It is already present, as 
+          H14).
+---  Hypothesis H29 has been replaced by "true".  (It is already present, as 
+          H15).
+---  Hypothesis H30 has been replaced by "true".  (It is already present, as 
+          H22).
+---  Hypothesis H31 has been replaced by "true".  (It is already present, as 
+          H23).
+---  Hypothesis H32 has been replaced by "true".  (It is already present, as 
+          H18).
+---  Hypothesis H33 has been replaced by "true".  (It is already present, as 
+          H19).
+%%%  Simplified H34 on reading formula in, to give:
+     %%%  H34:  numeric__times(4, a) >= float__first
+%%%  Simplified H35 on reading formula in, to give:
+     %%%  H35:  numeric__times(4, a) <= float__last
+---  Hypothesis H36 has been replaced by "true".  (It is already present, as 
+          H18).
+---  Hypothesis H37 has been replaced by "true".  (It is already present, as 
+          H19).
+---  Hypothesis H40 has been replaced by "true".  (It is already present, as 
+          H22).
+---  Hypothesis H41 has been replaced by "true".  (It is already present, as 
+          H23).
+---  Hypothesis H42 has been replaced by "true".  (It is already present, as 
+          H34).
+---  Hypothesis H43 has been replaced by "true".  (It is already present, as 
+          H35).
+%%%  Simplified H44 on reading formula in, to give:
+     %%%  H44:  numeric__divide(numeric__times(b, b), numeric__times(4, a)) >= 
+          float__first
+%%%  Simplified H45 on reading formula in, to give:
+     %%%  H45:  numeric__divide(numeric__times(b, b), numeric__times(4, a)) <= 
+          float__last
+---  Hypothesis H46 has been replaced by "true".  (It is already present, as 
+          H34).
+---  Hypothesis H47 has been replaced by "true".  (It is already present, as 
+          H35).
+---  Hypothesis H48 has been replaced by "true".  (It is already present, as 
+          H44).
+---  Hypothesis H49 has been replaced by "true".  (It is already present, as 
+          H45).
+%%%  Simplified H50 on reading formula in, to give:
+     %%%  H50:  numeric__minus(c, numeric__divide(numeric__times(b, b), 
+          numeric__times(4, a))) >= float__first
+%%%  Simplified H51 on reading formula in, to give:
+     %%%  H51:  numeric__minus(c, numeric__divide(numeric__times(b, b), 
+          numeric__times(4, a))) <= float__last
+---  Hypothesis H52 has been replaced by "true".  (It is already present, as 
+          H44).
+---  Hypothesis H53 has been replaced by "true".  (It is already present, as 
+          H45).
+---  Hypothesis H54 has been replaced by "true".  (It is already present, as 
+          H50).
+---  Hypothesis H55 has been replaced by "true".  (It is already present, as 
+          H51).
+---  Hypothesis H56 has been replaced by "true".  (It is already present, as 
+          H50).
+---  Hypothesis H57 has been replaced by "true".  (It is already present, as 
+          H51).
+%%%  Simplified C1 on reading formula in, to give:
+     %%%  C1:  numeric__minus(c, numeric__divide(numeric__times(b, b), 
+          numeric__times(4, a))) >= a * (x * x) + b * x + c - 7 / 10
+%%%  Simplified C2 on reading formula in, to give:
+     %%%  C2:  numeric__minus(c, numeric__divide(numeric__times(b, b), 
+          numeric__times(4, a))) <= 10
+-S-  Applied substitution rule peakq_rules(2).
+     This was achieved by replacing all occurrences of float__first by:
+          - 340282000000000000000000000000000000000.
+<S>  New H10:  a >= - 340282000000000000000000000000000000000
+<S>  New H12:  b >= - 340282000000000000000000000000000000000
+<S>  New H14:  c >= - 340282000000000000000000000000000000000
+<S>  New H16:  x >= - 340282000000000000000000000000000000000
+<S>  New H18:  a >= - 340282000000000000000000000000000000000
+<S>  New H22:  numeric__times(b, b) >= - 340282000000000000000000000000000000000
+<S>  New H34:  numeric__times(4, a) >= - 340282000000000000000000000000000000000
+<S>  New H38:  true
+<S>  New H44:  numeric__divide(numeric__times(b, b), numeric__times(4, a)) >= - 
+          340282000000000000000000000000000000000
+<S>  New H50:  numeric__minus(c, numeric__divide(numeric__times(b, b), 
+          numeric__times(4, a))) >= - 340282000000000000000000000000000000000
+-S-  Applied substitution rule peakq_rules(3).
+     This was achieved by replacing all occurrences of float__last by:
+          340282000000000000000000000000000000000.
+<S>  New H11:  a <= 340282000000000000000000000000000000000
+<S>  New H13:  b <= 340282000000000000000000000000000000000
+<S>  New H15:  c <= 340282000000000000000000000000000000000
+<S>  New H17:  x <= 340282000000000000000000000000000000000
+<S>  New H19:  a <= 340282000000000000000000000000000000000
+<S>  New H23:  numeric__times(b, b) <= 340282000000000000000000000000000000000
+<S>  New H35:  numeric__times(4, a) <= 340282000000000000000000000000000000000
+<S>  New H39:  true
+<S>  New H45:  numeric__divide(numeric__times(b, b), numeric__times(4, a)) <= 
+          340282000000000000000000000000000000000
+<S>  New H51:  numeric__minus(c, numeric__divide(numeric__times(b, b), 
+          numeric__times(4, a))) <= 340282000000000000000000000000000000000
+-S-  Applied substitution rule peakq_rules(4).
+     This was achieved by replacing all occurrences of float__base__first by:
+          - 340282000000000000000000000000000000000.
+<S>  New H20:  true
+-S-  Applied substitution rule peakq_rules(5).
+     This was achieved by replacing all occurrences of float__base__last by:
+          340282000000000000000000000000000000000.
+<S>  New H21:  true
+-S-  Applied substitution rule peakq_rules(7).
+     This was achieved by replacing all occurrences of icoeff2__first by:
+          - (6 / 5).
+<S>  New H4:  a >= - (6 / 5)
+<S>  New H6:  b >= - (6 / 5)
+<S>  New H8:  c >= - (6 / 5)
+-S-  Applied substitution rule peakq_rules(8).
+     This was achieved by replacing all occurrences of icoeff2__last by:
+          6 / 5.
+<S>  New H5:  a <= 6 / 5
+<S>  New H7:  b <= 6 / 5
+<S>  New H9:  c <= 6 / 5
+---  Eliminated hypothesis H24 (true-hypothesis).
+---  Eliminated hypothesis H25 (true-hypothesis).
+---  Eliminated hypothesis H26 (true-hypothesis).
+---  Eliminated hypothesis H27 (true-hypothesis).
+---  Eliminated hypothesis H28 (true-hypothesis).
+---  Eliminated hypothesis H29 (true-hypothesis).
+---  Eliminated hypothesis H30 (true-hypothesis).
+---  Eliminated hypothesis H31 (true-hypothesis).
+---  Eliminated hypothesis H32 (true-hypothesis).
+---  Eliminated hypothesis H33 (true-hypothesis).
+---  Eliminated hypothesis H36 (true-hypothesis).
+---  Eliminated hypothesis H37 (true-hypothesis).
+---  Eliminated hypothesis H40 (true-hypothesis).
+---  Eliminated hypothesis H41 (true-hypothesis).
+---  Eliminated hypothesis H42 (true-hypothesis).
+---  Eliminated hypothesis H43 (true-hypothesis).
+---  Eliminated hypothesis H46 (true-hypothesis).
+---  Eliminated hypothesis H47 (true-hypothesis).
+---  Eliminated hypothesis H48 (true-hypothesis).
+---  Eliminated hypothesis H49 (true-hypothesis).
+---  Eliminated hypothesis H52 (true-hypothesis).
+---  Eliminated hypothesis H53 (true-hypothesis).
+---  Eliminated hypothesis H54 (true-hypothesis).
+---  Eliminated hypothesis H55 (true-hypothesis).
+---  Eliminated hypothesis H56 (true-hypothesis).
+---  Eliminated hypothesis H57 (true-hypothesis).
+---  Eliminated hypothesis H38 (true-hypothesis).
+---  Eliminated hypothesis H39 (true-hypothesis).
+---  Eliminated hypothesis H20 (true-hypothesis).
+---  Eliminated hypothesis H21 (true-hypothesis).
+---  Eliminated hypothesis H18 (duplicate of H10).
+---  Eliminated hypothesis H19 (duplicate of H11).
+---  Eliminated hypothesis H16 (redundant, given H1).
+---  Eliminated hypothesis H17 (redundant, given H2).
+     +++  New H58:  float__size >= 0
+     +++  New H59:  icoeff2__size >= 0
+

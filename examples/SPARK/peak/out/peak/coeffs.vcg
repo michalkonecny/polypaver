@@ -1,0 +1,705 @@
+           *******************************************************
+                       Semantic Analysis of SPARK Text
+                              Examiner GPL 2011
+             Copyright (C) 2011 Altran Praxis Limited, Bath, U.K.
+           *******************************************************
+
+
+                        DATE : 06-SEP-2011 18:04:24.77
+
+                           procedure peak.coeffs
+
+
+
+
+For path(s) from start to precondition check associated with statement of line 15:
+
+procedure_coeffs_1.
+H1:    y1 >= iy__first .
+H2:    y1 <= iy__last .
+H3:    y2 >= iy__first .
+H4:    y2 <= iy__last .
+H5:    y3 >= iy__first .
+H6:    y3 <= iy__last .
+H7:    y1 >= float__first .
+H8:    y1 <= float__last .
+H9:    y2 >= float__first .
+H10:   y2 <= float__last .
+H11:   y3 >= float__first .
+H12:   y3 <= float__last .
+        ->
+C1:    numeric__times( -2, y2) >= float__first .
+C2:    numeric__times( -2, y2) <= float__last .
+C3:    y2 >= float__first .
+C4:    y2 <= float__last .
+C5:     -2 >= float__first .
+C6:     -2 <= float__last .
+C7:     -2 >= float__base__first .
+C8:     -2 <= float__base__last .
+C9:    y1 >= float__first .
+C10:   y1 <= float__last .
+C11:   (1/2) >= float__first .
+C12:   (1/2) <= float__last .
+ 
+
+For path(s) from start to precondition check associated with statement of line 15:
+
+procedure_coeffs_2.
+H1:    y1 >= iy__first .
+H2:    y1 <= iy__last .
+H3:    y2 >= iy__first .
+H4:    y2 <= iy__last .
+H5:    y3 >= iy__first .
+H6:    y3 <= iy__last .
+H7:    y1 >= float__first .
+H8:    y1 <= float__last .
+H9:    y2 >= float__first .
+H10:   y2 <= float__last .
+H11:   y3 >= float__first .
+H12:   y3 <= float__last .
+H13:   numeric__times( -2, y2) >= float__first .
+H14:   numeric__times( -2, y2) <= float__last .
+H15:   y2 >= float__first .
+H16:   y2 <= float__last .
+H17:    -2 >= float__first .
+H18:    -2 <= float__last .
+H19:    -2 >= float__base__first .
+H20:    -2 <= float__base__last .
+H21:   y1 >= float__first .
+H22:   y1 <= float__last .
+H23:   (1/2) >= float__first .
+H24:   (1/2) <= float__last .
+H25:   numeric__times( -2, y2) >= float__first .
+H26:   numeric__times( -2, y2) <= float__last .
+        ->
+C1:    numeric__plus(numeric__times( -2, y2), y3) >= float__first .
+C2:    numeric__plus(numeric__times( -2, y2), y3) <= float__last .
+C3:    y3 >= float__first .
+C4:    y3 <= float__last .
+C5:    numeric__times( -2, y2) >= float__first .
+C6:    numeric__times( -2, y2) <= float__last .
+ 
+
+For path(s) from start to precondition check associated with statement of line 15:
+
+procedure_coeffs_3.
+H1:    y1 >= iy__first .
+H2:    y1 <= iy__last .
+H3:    y2 >= iy__first .
+H4:    y2 <= iy__last .
+H5:    y3 >= iy__first .
+H6:    y3 <= iy__last .
+H7:    y1 >= float__first .
+H8:    y1 <= float__last .
+H9:    y2 >= float__first .
+H10:   y2 <= float__last .
+H11:   y3 >= float__first .
+H12:   y3 <= float__last .
+H13:   numeric__times( -2, y2) >= float__first .
+H14:   numeric__times( -2, y2) <= float__last .
+H15:   y2 >= float__first .
+H16:   y2 <= float__last .
+H17:    -2 >= float__first .
+H18:    -2 <= float__last .
+H19:    -2 >= float__base__first .
+H20:    -2 <= float__base__last .
+H21:   y1 >= float__first .
+H22:   y1 <= float__last .
+H23:   (1/2) >= float__first .
+H24:   (1/2) <= float__last .
+H25:   numeric__times( -2, y2) >= float__first .
+H26:   numeric__times( -2, y2) <= float__last .
+H27:   numeric__plus(numeric__times( -2, y2), y3) >= float__first .
+H28:   numeric__plus(numeric__times( -2, y2), y3) <= float__last .
+H29:   y3 >= float__first .
+H30:   y3 <= float__last .
+H31:   numeric__times( -2, y2) >= float__first .
+H32:   numeric__times( -2, y2) <= float__last .
+H33:   numeric__plus(numeric__times( -2, y2), y3) >= float__first .
+H34:   numeric__plus(numeric__times( -2, y2), y3) <= float__last .
+        ->
+C1:    numeric__plus(y1, numeric__plus(numeric__times( -2, 
+           y2), y3)) >= float__first .
+C2:    numeric__plus(y1, numeric__plus(numeric__times( -2, 
+           y2), y3)) <= float__last .
+C3:    numeric__plus(numeric__times( -2, y2), y3) >= float__first .
+C4:    numeric__plus(numeric__times( -2, y2), y3) <= float__last .
+ 
+
+For path(s) from start to precondition check associated with statement of line 15:
+
+procedure_coeffs_4.
+H1:    y1 >= iy__first .
+H2:    y1 <= iy__last .
+H3:    y2 >= iy__first .
+H4:    y2 <= iy__last .
+H5:    y3 >= iy__first .
+H6:    y3 <= iy__last .
+H7:    y1 >= float__first .
+H8:    y1 <= float__last .
+H9:    y2 >= float__first .
+H10:   y2 <= float__last .
+H11:   y3 >= float__first .
+H12:   y3 <= float__last .
+H13:   numeric__times( -2, y2) >= float__first .
+H14:   numeric__times( -2, y2) <= float__last .
+H15:   y2 >= float__first .
+H16:   y2 <= float__last .
+H17:    -2 >= float__first .
+H18:    -2 <= float__last .
+H19:    -2 >= float__base__first .
+H20:    -2 <= float__base__last .
+H21:   y1 >= float__first .
+H22:   y1 <= float__last .
+H23:   (1/2) >= float__first .
+H24:   (1/2) <= float__last .
+H25:   numeric__times( -2, y2) >= float__first .
+H26:   numeric__times( -2, y2) <= float__last .
+H27:   numeric__plus(numeric__times( -2, y2), y3) >= float__first .
+H28:   numeric__plus(numeric__times( -2, y2), y3) <= float__last .
+H29:   y3 >= float__first .
+H30:   y3 <= float__last .
+H31:   numeric__times( -2, y2) >= float__first .
+H32:   numeric__times( -2, y2) <= float__last .
+H33:   numeric__plus(numeric__times( -2, y2), y3) >= float__first .
+H34:   numeric__plus(numeric__times( -2, y2), y3) <= float__last .
+H35:   numeric__plus(y1, numeric__plus(numeric__times( -2, 
+           y2), y3)) >= float__first .
+H36:   numeric__plus(y1, numeric__plus(numeric__times( -2, 
+           y2), y3)) <= float__last .
+H37:   numeric__plus(numeric__times( -2, y2), y3) >= float__first .
+H38:   numeric__plus(numeric__times( -2, y2), y3) <= float__last .
+H39:   numeric__plus(y1, numeric__plus(numeric__times( -2, 
+           y2), y3)) >= float__first .
+H40:   numeric__plus(y1, numeric__plus(numeric__times( -2, 
+           y2), y3)) <= float__last .
+        ->
+C1:    numeric__times((1/2), numeric__plus(y1, numeric__plus(
+           numeric__times( -2, y2), y3))) >= float__first .
+C2:    numeric__times((1/2), numeric__plus(y1, numeric__plus(
+           numeric__times( -2, y2), y3))) <= float__last .
+C3:    numeric__plus(y1, numeric__plus(numeric__times( -2, 
+           y2), y3)) >= float__first .
+C4:    numeric__plus(y1, numeric__plus(numeric__times( -2, 
+           y2), y3)) <= float__last .
+ 
+
+For path(s) from start to run-time check associated with statement of line 15:
+
+procedure_coeffs_5.
+H1:    y1 >= iy__first .
+H2:    y1 <= iy__last .
+H3:    y2 >= iy__first .
+H4:    y2 <= iy__last .
+H5:    y3 >= iy__first .
+H6:    y3 <= iy__last .
+H7:    y1 >= float__first .
+H8:    y1 <= float__last .
+H9:    y2 >= float__first .
+H10:   y2 <= float__last .
+H11:   y3 >= float__first .
+H12:   y3 <= float__last .
+H13:   numeric__times( -2, y2) >= float__first .
+H14:   numeric__times( -2, y2) <= float__last .
+H15:   y2 >= float__first .
+H16:   y2 <= float__last .
+H17:    -2 >= float__first .
+H18:    -2 <= float__last .
+H19:    -2 >= float__base__first .
+H20:    -2 <= float__base__last .
+H21:   y1 >= float__first .
+H22:   y1 <= float__last .
+H23:   (1/2) >= float__first .
+H24:   (1/2) <= float__last .
+H25:   numeric__times( -2, y2) >= float__first .
+H26:   numeric__times( -2, y2) <= float__last .
+H27:   numeric__plus(numeric__times( -2, y2), y3) >= float__first .
+H28:   numeric__plus(numeric__times( -2, y2), y3) <= float__last .
+H29:   y3 >= float__first .
+H30:   y3 <= float__last .
+H31:   numeric__times( -2, y2) >= float__first .
+H32:   numeric__times( -2, y2) <= float__last .
+H33:   numeric__plus(numeric__times( -2, y2), y3) >= float__first .
+H34:   numeric__plus(numeric__times( -2, y2), y3) <= float__last .
+H35:   numeric__plus(y1, numeric__plus(numeric__times( -2, 
+           y2), y3)) >= float__first .
+H36:   numeric__plus(y1, numeric__plus(numeric__times( -2, 
+           y2), y3)) <= float__last .
+H37:   numeric__plus(numeric__times( -2, y2), y3) >= float__first .
+H38:   numeric__plus(numeric__times( -2, y2), y3) <= float__last .
+H39:   numeric__plus(y1, numeric__plus(numeric__times( -2, 
+           y2), y3)) >= float__first .
+H40:   numeric__plus(y1, numeric__plus(numeric__times( -2, 
+           y2), y3)) <= float__last .
+H41:   numeric__times((1/2), numeric__plus(y1, numeric__plus(
+           numeric__times( -2, y2), y3))) >= float__first .
+H42:   numeric__times((1/2), numeric__plus(y1, numeric__plus(
+           numeric__times( -2, y2), y3))) <= float__last .
+H43:   numeric__plus(y1, numeric__plus(numeric__times( -2, 
+           y2), y3)) >= float__first .
+H44:   numeric__plus(y1, numeric__plus(numeric__times( -2, 
+           y2), y3)) <= float__last .
+H45:   numeric__times((1/2), numeric__plus(y1, numeric__plus(
+           numeric__times( -2, y2), y3))) >= float__first .
+H46:   numeric__times((1/2), numeric__plus(y1, numeric__plus(
+           numeric__times( -2, y2), y3))) <= float__last .
+        ->
+C1:    numeric__times((1/2), numeric__plus(y1, numeric__plus(
+           numeric__times( -2, y2), y3))) >= float__first .
+C2:    numeric__times((1/2), numeric__plus(y1, numeric__plus(
+           numeric__times( -2, y2), y3))) <= float__last .
+ 
+
+For path(s) from start to precondition check associated with statement of line 23:
+
+procedure_coeffs_6.
+H1:    y1 >= iy__first .
+H2:    y1 <= iy__last .
+H3:    y2 >= iy__first .
+H4:    y2 <= iy__last .
+H5:    y3 >= iy__first .
+H6:    y3 <= iy__last .
+H7:    y1 >= float__first .
+H8:    y1 <= float__last .
+H9:    y2 >= float__first .
+H10:   y2 <= float__last .
+H11:   y3 >= float__first .
+H12:   y3 <= float__last .
+H13:   numeric__times( -2, y2) >= float__first .
+H14:   numeric__times( -2, y2) <= float__last .
+H15:   y2 >= float__first .
+H16:   y2 <= float__last .
+H17:    -2 >= float__first .
+H18:    -2 <= float__last .
+H19:    -2 >= float__base__first .
+H20:    -2 <= float__base__last .
+H21:   y1 >= float__first .
+H22:   y1 <= float__last .
+H23:   (1/2) >= float__first .
+H24:   (1/2) <= float__last .
+H25:   numeric__times( -2, y2) >= float__first .
+H26:   numeric__times( -2, y2) <= float__last .
+H27:   numeric__plus(numeric__times( -2, y2), y3) >= float__first .
+H28:   numeric__plus(numeric__times( -2, y2), y3) <= float__last .
+H29:   y3 >= float__first .
+H30:   y3 <= float__last .
+H31:   numeric__times( -2, y2) >= float__first .
+H32:   numeric__times( -2, y2) <= float__last .
+H33:   numeric__plus(numeric__times( -2, y2), y3) >= float__first .
+H34:   numeric__plus(numeric__times( -2, y2), y3) <= float__last .
+H35:   numeric__plus(y1, numeric__plus(numeric__times( -2, 
+           y2), y3)) >= float__first .
+H36:   numeric__plus(y1, numeric__plus(numeric__times( -2, 
+           y2), y3)) <= float__last .
+H37:   numeric__plus(numeric__times( -2, y2), y3) >= float__first .
+H38:   numeric__plus(numeric__times( -2, y2), y3) <= float__last .
+H39:   numeric__plus(y1, numeric__plus(numeric__times( -2, 
+           y2), y3)) >= float__first .
+H40:   numeric__plus(y1, numeric__plus(numeric__times( -2, 
+           y2), y3)) <= float__last .
+H41:   numeric__times((1/2), numeric__plus(y1, numeric__plus(
+           numeric__times( -2, y2), y3))) >= float__first .
+H42:   numeric__times((1/2), numeric__plus(y1, numeric__plus(
+           numeric__times( -2, y2), y3))) <= float__last .
+H43:   numeric__plus(y1, numeric__plus(numeric__times( -2, 
+           y2), y3)) >= float__first .
+H44:   numeric__plus(y1, numeric__plus(numeric__times( -2, 
+           y2), y3)) <= float__last .
+H45:   numeric__times((1/2), numeric__plus(y1, numeric__plus(
+           numeric__times( -2, y2), y3))) >= float__first .
+H46:   numeric__times((1/2), numeric__plus(y1, numeric__plus(
+           numeric__times( -2, y2), y3))) <= float__last .
+H47:   numeric__times((1/2), numeric__plus(y1, numeric__plus(
+           numeric__times( -2, y2), y3))) >= float__first .
+H48:   numeric__times((1/2), numeric__plus(y1, numeric__plus(
+           numeric__times( -2, y2), y3))) <= float__last .
+        ->
+C1:    numeric__minus(y3, y1) >= float__first .
+C2:    numeric__minus(y3, y1) <= float__last .
+C3:    y1 >= float__first .
+C4:    y1 <= float__last .
+C5:    y3 >= float__first .
+C6:    y3 <= float__last .
+C7:    (1/2) >= float__first .
+C8:    (1/2) <= float__last .
+ 
+
+For path(s) from start to precondition check associated with statement of line 23:
+
+procedure_coeffs_7.
+H1:    y1 >= iy__first .
+H2:    y1 <= iy__last .
+H3:    y2 >= iy__first .
+H4:    y2 <= iy__last .
+H5:    y3 >= iy__first .
+H6:    y3 <= iy__last .
+H7:    y1 >= float__first .
+H8:    y1 <= float__last .
+H9:    y2 >= float__first .
+H10:   y2 <= float__last .
+H11:   y3 >= float__first .
+H12:   y3 <= float__last .
+H13:   numeric__times( -2, y2) >= float__first .
+H14:   numeric__times( -2, y2) <= float__last .
+H15:   y2 >= float__first .
+H16:   y2 <= float__last .
+H17:    -2 >= float__first .
+H18:    -2 <= float__last .
+H19:    -2 >= float__base__first .
+H20:    -2 <= float__base__last .
+H21:   y1 >= float__first .
+H22:   y1 <= float__last .
+H23:   (1/2) >= float__first .
+H24:   (1/2) <= float__last .
+H25:   numeric__times( -2, y2) >= float__first .
+H26:   numeric__times( -2, y2) <= float__last .
+H27:   numeric__plus(numeric__times( -2, y2), y3) >= float__first .
+H28:   numeric__plus(numeric__times( -2, y2), y3) <= float__last .
+H29:   y3 >= float__first .
+H30:   y3 <= float__last .
+H31:   numeric__times( -2, y2) >= float__first .
+H32:   numeric__times( -2, y2) <= float__last .
+H33:   numeric__plus(numeric__times( -2, y2), y3) >= float__first .
+H34:   numeric__plus(numeric__times( -2, y2), y3) <= float__last .
+H35:   numeric__plus(y1, numeric__plus(numeric__times( -2, 
+           y2), y3)) >= float__first .
+H36:   numeric__plus(y1, numeric__plus(numeric__times( -2, 
+           y2), y3)) <= float__last .
+H37:   numeric__plus(numeric__times( -2, y2), y3) >= float__first .
+H38:   numeric__plus(numeric__times( -2, y2), y3) <= float__last .
+H39:   numeric__plus(y1, numeric__plus(numeric__times( -2, 
+           y2), y3)) >= float__first .
+H40:   numeric__plus(y1, numeric__plus(numeric__times( -2, 
+           y2), y3)) <= float__last .
+H41:   numeric__times((1/2), numeric__plus(y1, numeric__plus(
+           numeric__times( -2, y2), y3))) >= float__first .
+H42:   numeric__times((1/2), numeric__plus(y1, numeric__plus(
+           numeric__times( -2, y2), y3))) <= float__last .
+H43:   numeric__plus(y1, numeric__plus(numeric__times( -2, 
+           y2), y3)) >= float__first .
+H44:   numeric__plus(y1, numeric__plus(numeric__times( -2, 
+           y2), y3)) <= float__last .
+H45:   numeric__times((1/2), numeric__plus(y1, numeric__plus(
+           numeric__times( -2, y2), y3))) >= float__first .
+H46:   numeric__times((1/2), numeric__plus(y1, numeric__plus(
+           numeric__times( -2, y2), y3))) <= float__last .
+H47:   numeric__times((1/2), numeric__plus(y1, numeric__plus(
+           numeric__times( -2, y2), y3))) >= float__first .
+H48:   numeric__times((1/2), numeric__plus(y1, numeric__plus(
+           numeric__times( -2, y2), y3))) <= float__last .
+H49:   numeric__minus(y3, y1) >= float__first .
+H50:   numeric__minus(y3, y1) <= float__last .
+H51:   y1 >= float__first .
+H52:   y1 <= float__last .
+H53:   y3 >= float__first .
+H54:   y3 <= float__last .
+H55:   (1/2) >= float__first .
+H56:   (1/2) <= float__last .
+H57:   numeric__minus(y3, y1) >= float__first .
+H58:   numeric__minus(y3, y1) <= float__last .
+        ->
+C1:    numeric__times((1/2), numeric__minus(y3, y1)) >= 
+           float__first .
+C2:    numeric__times((1/2), numeric__minus(y3, y1)) <= 
+           float__last .
+C3:    numeric__minus(y3, y1) >= float__first .
+C4:    numeric__minus(y3, y1) <= float__last .
+ 
+
+For path(s) from start to run-time check associated with statement of line 23:
+
+procedure_coeffs_8.
+H1:    y1 >= iy__first .
+H2:    y1 <= iy__last .
+H3:    y2 >= iy__first .
+H4:    y2 <= iy__last .
+H5:    y3 >= iy__first .
+H6:    y3 <= iy__last .
+H7:    y1 >= float__first .
+H8:    y1 <= float__last .
+H9:    y2 >= float__first .
+H10:   y2 <= float__last .
+H11:   y3 >= float__first .
+H12:   y3 <= float__last .
+H13:   numeric__times( -2, y2) >= float__first .
+H14:   numeric__times( -2, y2) <= float__last .
+H15:   y2 >= float__first .
+H16:   y2 <= float__last .
+H17:    -2 >= float__first .
+H18:    -2 <= float__last .
+H19:    -2 >= float__base__first .
+H20:    -2 <= float__base__last .
+H21:   y1 >= float__first .
+H22:   y1 <= float__last .
+H23:   (1/2) >= float__first .
+H24:   (1/2) <= float__last .
+H25:   numeric__times( -2, y2) >= float__first .
+H26:   numeric__times( -2, y2) <= float__last .
+H27:   numeric__plus(numeric__times( -2, y2), y3) >= float__first .
+H28:   numeric__plus(numeric__times( -2, y2), y3) <= float__last .
+H29:   y3 >= float__first .
+H30:   y3 <= float__last .
+H31:   numeric__times( -2, y2) >= float__first .
+H32:   numeric__times( -2, y2) <= float__last .
+H33:   numeric__plus(numeric__times( -2, y2), y3) >= float__first .
+H34:   numeric__plus(numeric__times( -2, y2), y3) <= float__last .
+H35:   numeric__plus(y1, numeric__plus(numeric__times( -2, 
+           y2), y3)) >= float__first .
+H36:   numeric__plus(y1, numeric__plus(numeric__times( -2, 
+           y2), y3)) <= float__last .
+H37:   numeric__plus(numeric__times( -2, y2), y3) >= float__first .
+H38:   numeric__plus(numeric__times( -2, y2), y3) <= float__last .
+H39:   numeric__plus(y1, numeric__plus(numeric__times( -2, 
+           y2), y3)) >= float__first .
+H40:   numeric__plus(y1, numeric__plus(numeric__times( -2, 
+           y2), y3)) <= float__last .
+H41:   numeric__times((1/2), numeric__plus(y1, numeric__plus(
+           numeric__times( -2, y2), y3))) >= float__first .
+H42:   numeric__times((1/2), numeric__plus(y1, numeric__plus(
+           numeric__times( -2, y2), y3))) <= float__last .
+H43:   numeric__plus(y1, numeric__plus(numeric__times( -2, 
+           y2), y3)) >= float__first .
+H44:   numeric__plus(y1, numeric__plus(numeric__times( -2, 
+           y2), y3)) <= float__last .
+H45:   numeric__times((1/2), numeric__plus(y1, numeric__plus(
+           numeric__times( -2, y2), y3))) >= float__first .
+H46:   numeric__times((1/2), numeric__plus(y1, numeric__plus(
+           numeric__times( -2, y2), y3))) <= float__last .
+H47:   numeric__times((1/2), numeric__plus(y1, numeric__plus(
+           numeric__times( -2, y2), y3))) >= float__first .
+H48:   numeric__times((1/2), numeric__plus(y1, numeric__plus(
+           numeric__times( -2, y2), y3))) <= float__last .
+H49:   numeric__minus(y3, y1) >= float__first .
+H50:   numeric__minus(y3, y1) <= float__last .
+H51:   y1 >= float__first .
+H52:   y1 <= float__last .
+H53:   y3 >= float__first .
+H54:   y3 <= float__last .
+H55:   (1/2) >= float__first .
+H56:   (1/2) <= float__last .
+H57:   numeric__minus(y3, y1) >= float__first .
+H58:   numeric__minus(y3, y1) <= float__last .
+H59:   numeric__times((1/2), numeric__minus(y3, y1)) >= 
+           float__first .
+H60:   numeric__times((1/2), numeric__minus(y3, y1)) <= 
+           float__last .
+H61:   numeric__minus(y3, y1) >= float__first .
+H62:   numeric__minus(y3, y1) <= float__last .
+H63:   numeric__times((1/2), numeric__minus(y3, y1)) >= 
+           float__first .
+H64:   numeric__times((1/2), numeric__minus(y3, y1)) <= 
+           float__last .
+        ->
+C1:    numeric__times((1/2), numeric__minus(y3, y1)) >= 
+           float__first .
+C2:    numeric__times((1/2), numeric__minus(y3, y1)) <= 
+           float__last .
+ 
+
+For path(s) from start to run-time check associated with statement of line 25:
+
+procedure_coeffs_9.
+H1:    y1 >= iy__first .
+H2:    y1 <= iy__last .
+H3:    y2 >= iy__first .
+H4:    y2 <= iy__last .
+H5:    y3 >= iy__first .
+H6:    y3 <= iy__last .
+H7:    y1 >= float__first .
+H8:    y1 <= float__last .
+H9:    y2 >= float__first .
+H10:   y2 <= float__last .
+H11:   y3 >= float__first .
+H12:   y3 <= float__last .
+H13:   numeric__times( -2, y2) >= float__first .
+H14:   numeric__times( -2, y2) <= float__last .
+H15:   y2 >= float__first .
+H16:   y2 <= float__last .
+H17:    -2 >= float__first .
+H18:    -2 <= float__last .
+H19:    -2 >= float__base__first .
+H20:    -2 <= float__base__last .
+H21:   y1 >= float__first .
+H22:   y1 <= float__last .
+H23:   (1/2) >= float__first .
+H24:   (1/2) <= float__last .
+H25:   numeric__times( -2, y2) >= float__first .
+H26:   numeric__times( -2, y2) <= float__last .
+H27:   numeric__plus(numeric__times( -2, y2), y3) >= float__first .
+H28:   numeric__plus(numeric__times( -2, y2), y3) <= float__last .
+H29:   y3 >= float__first .
+H30:   y3 <= float__last .
+H31:   numeric__times( -2, y2) >= float__first .
+H32:   numeric__times( -2, y2) <= float__last .
+H33:   numeric__plus(numeric__times( -2, y2), y3) >= float__first .
+H34:   numeric__plus(numeric__times( -2, y2), y3) <= float__last .
+H35:   numeric__plus(y1, numeric__plus(numeric__times( -2, 
+           y2), y3)) >= float__first .
+H36:   numeric__plus(y1, numeric__plus(numeric__times( -2, 
+           y2), y3)) <= float__last .
+H37:   numeric__plus(numeric__times( -2, y2), y3) >= float__first .
+H38:   numeric__plus(numeric__times( -2, y2), y3) <= float__last .
+H39:   numeric__plus(y1, numeric__plus(numeric__times( -2, 
+           y2), y3)) >= float__first .
+H40:   numeric__plus(y1, numeric__plus(numeric__times( -2, 
+           y2), y3)) <= float__last .
+H41:   numeric__times((1/2), numeric__plus(y1, numeric__plus(
+           numeric__times( -2, y2), y3))) >= float__first .
+H42:   numeric__times((1/2), numeric__plus(y1, numeric__plus(
+           numeric__times( -2, y2), y3))) <= float__last .
+H43:   numeric__plus(y1, numeric__plus(numeric__times( -2, 
+           y2), y3)) >= float__first .
+H44:   numeric__plus(y1, numeric__plus(numeric__times( -2, 
+           y2), y3)) <= float__last .
+H45:   numeric__times((1/2), numeric__plus(y1, numeric__plus(
+           numeric__times( -2, y2), y3))) >= float__first .
+H46:   numeric__times((1/2), numeric__plus(y1, numeric__plus(
+           numeric__times( -2, y2), y3))) <= float__last .
+H47:   numeric__times((1/2), numeric__plus(y1, numeric__plus(
+           numeric__times( -2, y2), y3))) >= float__first .
+H48:   numeric__times((1/2), numeric__plus(y1, numeric__plus(
+           numeric__times( -2, y2), y3))) <= float__last .
+H49:   numeric__minus(y3, y1) >= float__first .
+H50:   numeric__minus(y3, y1) <= float__last .
+H51:   y1 >= float__first .
+H52:   y1 <= float__last .
+H53:   y3 >= float__first .
+H54:   y3 <= float__last .
+H55:   (1/2) >= float__first .
+H56:   (1/2) <= float__last .
+H57:   numeric__minus(y3, y1) >= float__first .
+H58:   numeric__minus(y3, y1) <= float__last .
+H59:   numeric__times((1/2), numeric__minus(y3, y1)) >= 
+           float__first .
+H60:   numeric__times((1/2), numeric__minus(y3, y1)) <= 
+           float__last .
+H61:   numeric__minus(y3, y1) >= float__first .
+H62:   numeric__minus(y3, y1) <= float__last .
+H63:   numeric__times((1/2), numeric__minus(y3, y1)) >= 
+           float__first .
+H64:   numeric__times((1/2), numeric__minus(y3, y1)) <= 
+           float__last .
+H65:   numeric__times((1/2), numeric__minus(y3, y1)) >= 
+           float__first .
+H66:   numeric__times((1/2), numeric__minus(y3, y1)) <= 
+           float__last .
+        ->
+C1:    y2 >= float__first .
+C2:    y2 <= float__last .
+ 
+
+For path(s) from start to finish:
+
+procedure_coeffs_10.
+H1:    y1 >= iy__first .
+H2:    y1 <= iy__last .
+H3:    y2 >= iy__first .
+H4:    y2 <= iy__last .
+H5:    y3 >= iy__first .
+H6:    y3 <= iy__last .
+H7:    y1 >= float__first .
+H8:    y1 <= float__last .
+H9:    y2 >= float__first .
+H10:   y2 <= float__last .
+H11:   y3 >= float__first .
+H12:   y3 <= float__last .
+H13:   numeric__times( -2, y2) >= float__first .
+H14:   numeric__times( -2, y2) <= float__last .
+H15:   y2 >= float__first .
+H16:   y2 <= float__last .
+H17:    -2 >= float__first .
+H18:    -2 <= float__last .
+H19:    -2 >= float__base__first .
+H20:    -2 <= float__base__last .
+H21:   y1 >= float__first .
+H22:   y1 <= float__last .
+H23:   (1/2) >= float__first .
+H24:   (1/2) <= float__last .
+H25:   numeric__times( -2, y2) >= float__first .
+H26:   numeric__times( -2, y2) <= float__last .
+H27:   numeric__plus(numeric__times( -2, y2), y3) >= float__first .
+H28:   numeric__plus(numeric__times( -2, y2), y3) <= float__last .
+H29:   y3 >= float__first .
+H30:   y3 <= float__last .
+H31:   numeric__times( -2, y2) >= float__first .
+H32:   numeric__times( -2, y2) <= float__last .
+H33:   numeric__plus(numeric__times( -2, y2), y3) >= float__first .
+H34:   numeric__plus(numeric__times( -2, y2), y3) <= float__last .
+H35:   numeric__plus(y1, numeric__plus(numeric__times( -2, 
+           y2), y3)) >= float__first .
+H36:   numeric__plus(y1, numeric__plus(numeric__times( -2, 
+           y2), y3)) <= float__last .
+H37:   numeric__plus(numeric__times( -2, y2), y3) >= float__first .
+H38:   numeric__plus(numeric__times( -2, y2), y3) <= float__last .
+H39:   numeric__plus(y1, numeric__plus(numeric__times( -2, 
+           y2), y3)) >= float__first .
+H40:   numeric__plus(y1, numeric__plus(numeric__times( -2, 
+           y2), y3)) <= float__last .
+H41:   numeric__times((1/2), numeric__plus(y1, numeric__plus(
+           numeric__times( -2, y2), y3))) >= float__first .
+H42:   numeric__times((1/2), numeric__plus(y1, numeric__plus(
+           numeric__times( -2, y2), y3))) <= float__last .
+H43:   numeric__plus(y1, numeric__plus(numeric__times( -2, 
+           y2), y3)) >= float__first .
+H44:   numeric__plus(y1, numeric__plus(numeric__times( -2, 
+           y2), y3)) <= float__last .
+H45:   numeric__times((1/2), numeric__plus(y1, numeric__plus(
+           numeric__times( -2, y2), y3))) >= float__first .
+H46:   numeric__times((1/2), numeric__plus(y1, numeric__plus(
+           numeric__times( -2, y2), y3))) <= float__last .
+H47:   numeric__times((1/2), numeric__plus(y1, numeric__plus(
+           numeric__times( -2, y2), y3))) >= float__first .
+H48:   numeric__times((1/2), numeric__plus(y1, numeric__plus(
+           numeric__times( -2, y2), y3))) <= float__last .
+H49:   numeric__minus(y3, y1) >= float__first .
+H50:   numeric__minus(y3, y1) <= float__last .
+H51:   y1 >= float__first .
+H52:   y1 <= float__last .
+H53:   y3 >= float__first .
+H54:   y3 <= float__last .
+H55:   (1/2) >= float__first .
+H56:   (1/2) <= float__last .
+H57:   numeric__minus(y3, y1) >= float__first .
+H58:   numeric__minus(y3, y1) <= float__last .
+H59:   numeric__times((1/2), numeric__minus(y3, y1)) >= 
+           float__first .
+H60:   numeric__times((1/2), numeric__minus(y3, y1)) <= 
+           float__last .
+H61:   numeric__minus(y3, y1) >= float__first .
+H62:   numeric__minus(y3, y1) <= float__last .
+H63:   numeric__times((1/2), numeric__minus(y3, y1)) >= 
+           float__first .
+H64:   numeric__times((1/2), numeric__minus(y3, y1)) <= 
+           float__last .
+H65:   numeric__times((1/2), numeric__minus(y3, y1)) >= 
+           float__first .
+H66:   numeric__times((1/2), numeric__minus(y3, y1)) <= 
+           float__last .
+H67:   y2 >= float__first .
+H68:   y2 <= float__last .
+        ->
+C1:    numeric__times((1/2), numeric__plus(y1, numeric__plus(
+           numeric__times( -2, y2), y3))) - numeric__times((1/2), 
+           numeric__minus(y3, y1)) + y2 - y1 >= ipad__first .
+C2:    numeric__times((1/2), numeric__plus(y1, numeric__plus(
+           numeric__times( -2, y2), y3))) - numeric__times((1/2), 
+           numeric__minus(y3, y1)) + y2 - y1 <= ipad__last .
+C3:    y2 = y2 .
+C4:    numeric__times((1/2), numeric__plus(y1, numeric__plus(
+           numeric__times( -2, y2), y3))) + numeric__times((1/2), 
+           numeric__minus(y3, y1)) + y2 - y3 >= ipad__first .
+C5:    numeric__times((1/2), numeric__plus(y1, numeric__plus(
+           numeric__times( -2, y2), y3))) + numeric__times((1/2), 
+           numeric__minus(y3, y1)) + y2 - y3 <= ipad__last .
+C6:    numeric__times((1/2), numeric__plus(y1, numeric__plus(
+           numeric__times( -2, y2), y3))) >= icoeff1__first .
+C7:    numeric__times((1/2), numeric__plus(y1, numeric__plus(
+           numeric__times( -2, y2), y3))) <= icoeff1__last .
+C8:    numeric__times((1/2), numeric__minus(y3, y1)) >= 
+           icoeff1__first .
+C9:    numeric__times((1/2), numeric__minus(y3, y1)) <= 
+           icoeff1__last .
+C10:   y2 >= icoeff1__first .
+C11:   y2 <= icoeff1__last .
+ 
+

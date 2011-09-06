@@ -1,0 +1,78 @@
+V "SPARK 2011"
+A -noindex_file
+A -nowarning_file
+A -notarget_compiler_data
+A -config_file=gnat.cfg
+A -source_extension=ada
+A -listing_extension=lst
+A -nodictionary_file
+A -report_file=spark.rep
+A -nohtml
+A -vcg
+A -nostatistics
+A -fdl_identifiers=accept
+A -flow_analysis=information
+A -language=95
+A -profile=sequential
+A -annotation_character=#
+A -rules=none
+A -error_explanations=off
+A -justification_option=full
+A -output_directory=out
+A -output_directory (actual)=/home/mik/research/spark/floats/paver/examples/SPARK/peak/out/
+P
+R
+
+U peak%b peak.adb
+U peak%s peak.ads
+W exact%s exact.ads exact.sli
+W numeric%s numeric.ads numeric.sli
+
+D exact.ads 00000000000000 00000000
+D numeric.ads 00000000000000 00000000
+D peak.ads 00000000000000 00000000
+D peak.adb 00000000000000 00000000
+
+X 1 exact.ads
+1K9 exact 2|19r37 19r65 2w13
+3V16 sqrt 3>22 2|19r43 19r71
+5V16 cos 5>21
+X 2 numeric.ads
+3K9 numeric 3|2w13
+5f18 x 6r16
+5f20 y 6r18
+5V38 plus 6r11
+8f19 x 9r17
+8f21 y 9r19
+8V39 minus 9r11
+11f19 x 12r17
+11f21 y 12r19
+11V39 times 12r11
+14f20 x 15r18
+14f22 y 15r20
+14V40 divide 15r11
+17f23 x 18r12 19r48 19r76
+19f14 r 19r19
+X 3 peak.ads
+5f18 x 6r22 7r17 7r23 7r50
+5f20 y 6r24 7r28 7r39 7r45
+5f34 r 6m15 7r13 7r35
+12F11 Iy 27r18 27r31 27r44 42r17 42r30 42r43
+16F11 Ipad 28r26 30r26
+18F11 Icoeff1 31r17 31r34 31r51
+19F11 Icoeff2 37r17 37r34 37r51
+23f21 y1 24r22 25r22 27r12 28r20
+23f24 y2 24r25 26r22 27r25 29r20
+23f27 y3 24r28 25r25 27r38 30r20
+23f42 a 24m15 28r12 30r12 31r12
+23f44 b 25m15 28r14 30r14 31r29
+23f46 c 26m15 28r16 29r16 30r16 31r46
+33f20 a 34r22 36r12 37r12 38r17
+33f22 b 34r24 37r29 38r24
+33f24 c 34r26 37r46 38r28
+33f26 x 34r28 35r12 38r19 38r26
+33f40 r 34m15 38r12 38r38
+40f23 y1 41r22 42r11 43r17
+40f26 y2 41r25 42r24 43r35
+40f29 y3 41r28 42r37 43r53
+40f44 r 41m15 43r12 43r30 43r48

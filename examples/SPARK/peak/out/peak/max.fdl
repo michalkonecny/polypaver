@@ -1,0 +1,24 @@
+           {*******************************************************}
+                               {FDL Declarations}
+                              {Examiner GPL 2011}
+             {Copyright (C) 2011 Altran Praxis Limited, Bath, U.K.}
+           {*******************************************************}
+
+
+                        {DATE : 06-SEP-2011 18:04:24.76}
+
+                             {procedure peak.max}
+
+
+title procedure max;
+
+  function round__(real) : integer;
+  const float__base__first : real = pending; 
+  const float__base__last : real = pending; 
+  const float__first : real = pending; 
+  const float__last : real = pending; 
+  const float__size : integer = pending; 
+  var x : real;
+  var y : real;
+
+end;

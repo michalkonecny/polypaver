@@ -1,0 +1,1462 @@
+*****************************************************************************
+                       Semantic Analysis of SPARK Text
+                              Examiner GPL 2011
+             Copyright (C) 2011 Altran Praxis Limited, Bath, U.K.
+*****************************************************************************
+
+
+CREATED 06-SEP-2011, 18:04:24  SIMPLIFIED 06-SEP-2011, 18:04:30
+
+SPARK Simplifier GPL 2011
+Copyright (C) 2011 Altran Praxis Limited, Bath, U.K.
+
+procedure peak.coeffs
+
+
+
+
+
+
+@@@@@@@@@@  VC: procedure_coeffs_1.  @@@@@@@@@@
+%%%  Simplified C1 on reading formula in, to give:
+     %%%  C1:  numeric__times(- 2, y2) >= float__first
+%%%  Simplified C2 on reading formula in, to give:
+     %%%  C2:  numeric__times(- 2, y2) <= float__last
+%%%  Simplified C5 on reading formula in, to give:
+     %%%  C5:  - 2 >= float__first
+%%%  Simplified C6 on reading formula in, to give:
+     %%%  C6:  - 2 <= float__last
+%%%  Simplified C7 on reading formula in, to give:
+     %%%  C7:  - 2 >= float__base__first
+%%%  Simplified C8 on reading formula in, to give:
+     %%%  C8:  - 2 <= float__base__last
+***  Proved C3:  y2 >= float__first
+     using hypothesis H9.
+***  Proved C4:  y2 <= float__last
+     using hypothesis H10.
+***  Proved C9:  y1 >= float__first
+     using hypothesis H7.
+***  Proved C10:  y1 <= float__last
+     using hypothesis H8.
+-S-  Applied substitution rule coeffs_rules(2).
+     This was achieved by replacing all occurrences of float__first by:
+          - 340282000000000000000000000000000000000.
+<S>  New H7:  y1 >= - 340282000000000000000000000000000000000
+<S>  New H9:  y2 >= - 340282000000000000000000000000000000000
+<S>  New H11:  y3 >= - 340282000000000000000000000000000000000
+<S>  New C1:  numeric__times(- 2, y2) >= - 
+          340282000000000000000000000000000000000
+<S>  New C5:  true
+<S>  New C11:  true
+-S-  Applied substitution rule coeffs_rules(3).
+     This was achieved by replacing all occurrences of float__last by:
+          340282000000000000000000000000000000000.
+<S>  New H8:  y1 <= 340282000000000000000000000000000000000
+<S>  New H10:  y2 <= 340282000000000000000000000000000000000
+<S>  New H12:  y3 <= 340282000000000000000000000000000000000
+<S>  New C2:  numeric__times(- 2, y2) <= 340282000000000000000000000000000000000
+<S>  New C6:  true
+<S>  New C12:  true
+-S-  Applied substitution rule coeffs_rules(4).
+     This was achieved by replacing all occurrences of float__base__first by:
+          - 340282000000000000000000000000000000000.
+<S>  New C7:  true
+-S-  Applied substitution rule coeffs_rules(5).
+     This was achieved by replacing all occurrences of float__base__last by:
+          340282000000000000000000000000000000000.
+<S>  New C8:  true
+***  Proved C5:  true
+***  Proved C11:  true
+***  Proved C6:  true
+***  Proved C12:  true
+***  Proved C7:  true
+***  Proved C8:  true
+-S-  Applied substitution rule coeffs_rules(7).
+     This was achieved by replacing all occurrences of iy__first by:
+          0.
+<S>  New H1:  y1 >= 0
+<S>  New H3:  y2 >= 0
+<S>  New H5:  y3 >= 0
+-S-  Applied substitution rule coeffs_rules(8).
+     This was achieved by replacing all occurrences of iy__last by:
+          1.
+<S>  New H2:  y1 <= 1
+<S>  New H4:  y2 <= 1
+<S>  New H6:  y3 <= 1
+---  Eliminated hypothesis H7 (redundant, given H1).
+---  Eliminated hypothesis H8 (redundant, given H2).
+---  Eliminated hypothesis H9 (redundant, given H3).
+---  Eliminated hypothesis H10 (redundant, given H4).
+---  Eliminated hypothesis H11 (redundant, given H5).
+---  Eliminated hypothesis H12 (redundant, given H6).
+     +++  New H13:  float__size >= 0
+     +++  New H14:  iy__size >= 0
+     +++  New H15:  ipad__size >= 0
+     +++  New H16:  icoeff1__size >= 0
+
+
+@@@@@@@@@@  VC: procedure_coeffs_2.  @@@@@@@@@@
+%%%  Simplified H13 on reading formula in, to give:
+     %%%  H13:  numeric__times(- 2, y2) >= float__first
+%%%  Simplified H14 on reading formula in, to give:
+     %%%  H14:  numeric__times(- 2, y2) <= float__last
+---  Hypothesis H15 has been replaced by "true".  (It is already present, as H9)
+          .
+---  Hypothesis H16 has been replaced by "true".  (It is already present, as 
+          H10).
+%%%  Simplified H17 on reading formula in, to give:
+     %%%  H17:  - 2 >= float__first
+%%%  Simplified H18 on reading formula in, to give:
+     %%%  H18:  - 2 <= float__last
+%%%  Simplified H19 on reading formula in, to give:
+     %%%  H19:  - 2 >= float__base__first
+%%%  Simplified H20 on reading formula in, to give:
+     %%%  H20:  - 2 <= float__base__last
+---  Hypothesis H21 has been replaced by "true".  (It is already present, as H7)
+          .
+---  Hypothesis H22 has been replaced by "true".  (It is already present, as H8)
+          .
+---  Hypothesis H25 has been replaced by "true".  (It is already present, as 
+          H13).
+---  Hypothesis H26 has been replaced by "true".  (It is already present, as 
+          H14).
+%%%  Simplified C1 on reading formula in, to give:
+     %%%  C1:  numeric__plus(numeric__times(- 2, y2), y3) >= float__first
+%%%  Simplified C2 on reading formula in, to give:
+     %%%  C2:  numeric__plus(numeric__times(- 2, y2), y3) <= float__last
+%%%  Simplified C5 on reading formula in, to give:
+     %%%  C5:  numeric__times(- 2, y2) >= float__first
+%%%  Simplified C6 on reading formula in, to give:
+     %%%  C6:  numeric__times(- 2, y2) <= float__last
+***  Proved C3:  y3 >= float__first
+     using hypothesis H11.
+***  Proved C4:  y3 <= float__last
+     using hypothesis H12.
+***  Proved C5:  numeric__times(- 2, y2) >= float__first
+     using hypothesis H13.
+***  Proved C6:  numeric__times(- 2, y2) <= float__last
+     using hypothesis H14.
+-S-  Applied substitution rule coeffs_rules(2).
+     This was achieved by replacing all occurrences of float__first by:
+          - 340282000000000000000000000000000000000.
+<S>  New H7:  y1 >= - 340282000000000000000000000000000000000
+<S>  New H9:  y2 >= - 340282000000000000000000000000000000000
+<S>  New H11:  y3 >= - 340282000000000000000000000000000000000
+<S>  New H13:  numeric__times(- 2, y2) >= - 
+          340282000000000000000000000000000000000
+<S>  New H17:  true
+<S>  New H23:  true
+<S>  New C1:  numeric__plus(numeric__times(- 2, y2), y3) >= - 
+          340282000000000000000000000000000000000
+-S-  Applied substitution rule coeffs_rules(3).
+     This was achieved by replacing all occurrences of float__last by:
+          340282000000000000000000000000000000000.
+<S>  New H8:  y1 <= 340282000000000000000000000000000000000
+<S>  New H10:  y2 <= 340282000000000000000000000000000000000
+<S>  New H12:  y3 <= 340282000000000000000000000000000000000
+<S>  New H14:  numeric__times(- 2, y2) <= 
+          340282000000000000000000000000000000000
+<S>  New H18:  true
+<S>  New H24:  true
+<S>  New C2:  numeric__plus(numeric__times(- 2, y2), y3) <= 
+          340282000000000000000000000000000000000
+-S-  Applied substitution rule coeffs_rules(4).
+     This was achieved by replacing all occurrences of float__base__first by:
+          - 340282000000000000000000000000000000000.
+<S>  New H19:  true
+-S-  Applied substitution rule coeffs_rules(5).
+     This was achieved by replacing all occurrences of float__base__last by:
+          340282000000000000000000000000000000000.
+<S>  New H20:  true
+-S-  Applied substitution rule coeffs_rules(7).
+     This was achieved by replacing all occurrences of iy__first by:
+          0.
+<S>  New H1:  y1 >= 0
+<S>  New H3:  y2 >= 0
+<S>  New H5:  y3 >= 0
+-S-  Applied substitution rule coeffs_rules(8).
+     This was achieved by replacing all occurrences of iy__last by:
+          1.
+<S>  New H2:  y1 <= 1
+<S>  New H4:  y2 <= 1
+<S>  New H6:  y3 <= 1
+---  Eliminated hypothesis H15 (true-hypothesis).
+---  Eliminated hypothesis H16 (true-hypothesis).
+---  Eliminated hypothesis H17 (true-hypothesis).
+---  Eliminated hypothesis H18 (true-hypothesis).
+---  Eliminated hypothesis H21 (true-hypothesis).
+---  Eliminated hypothesis H22 (true-hypothesis).
+---  Eliminated hypothesis H23 (true-hypothesis).
+---  Eliminated hypothesis H24 (true-hypothesis).
+---  Eliminated hypothesis H25 (true-hypothesis).
+---  Eliminated hypothesis H26 (true-hypothesis).
+---  Eliminated hypothesis H19 (true-hypothesis).
+---  Eliminated hypothesis H20 (true-hypothesis).
+---  Eliminated hypothesis H7 (redundant, given H1).
+---  Eliminated hypothesis H8 (redundant, given H2).
+---  Eliminated hypothesis H9 (redundant, given H3).
+---  Eliminated hypothesis H10 (redundant, given H4).
+---  Eliminated hypothesis H11 (redundant, given H5).
+---  Eliminated hypothesis H12 (redundant, given H6).
+     +++  New H27:  float__size >= 0
+     +++  New H28:  iy__size >= 0
+     +++  New H29:  ipad__size >= 0
+     +++  New H30:  icoeff1__size >= 0
+
+
+@@@@@@@@@@  VC: procedure_coeffs_3.  @@@@@@@@@@
+%%%  Simplified H13 on reading formula in, to give:
+     %%%  H13:  numeric__times(- 2, y2) >= float__first
+%%%  Simplified H14 on reading formula in, to give:
+     %%%  H14:  numeric__times(- 2, y2) <= float__last
+---  Hypothesis H15 has been replaced by "true".  (It is already present, as H9)
+          .
+---  Hypothesis H16 has been replaced by "true".  (It is already present, as 
+          H10).
+%%%  Simplified H17 on reading formula in, to give:
+     %%%  H17:  - 2 >= float__first
+%%%  Simplified H18 on reading formula in, to give:
+     %%%  H18:  - 2 <= float__last
+%%%  Simplified H19 on reading formula in, to give:
+     %%%  H19:  - 2 >= float__base__first
+%%%  Simplified H20 on reading formula in, to give:
+     %%%  H20:  - 2 <= float__base__last
+---  Hypothesis H21 has been replaced by "true".  (It is already present, as H7)
+          .
+---  Hypothesis H22 has been replaced by "true".  (It is already present, as H8)
+          .
+---  Hypothesis H25 has been replaced by "true".  (It is already present, as 
+          H13).
+---  Hypothesis H26 has been replaced by "true".  (It is already present, as 
+          H14).
+%%%  Simplified H27 on reading formula in, to give:
+     %%%  H27:  numeric__plus(numeric__times(- 2, y2), y3) >= float__first
+%%%  Simplified H28 on reading formula in, to give:
+     %%%  H28:  numeric__plus(numeric__times(- 2, y2), y3) <= float__last
+---  Hypothesis H29 has been replaced by "true".  (It is already present, as 
+          H11).
+---  Hypothesis H30 has been replaced by "true".  (It is already present, as 
+          H12).
+---  Hypothesis H31 has been replaced by "true".  (It is already present, as 
+          H13).
+---  Hypothesis H32 has been replaced by "true".  (It is already present, as 
+          H14).
+---  Hypothesis H33 has been replaced by "true".  (It is already present, as 
+          H27).
+---  Hypothesis H34 has been replaced by "true".  (It is already present, as 
+          H28).
+%%%  Simplified C1 on reading formula in, to give:
+     %%%  C1:  numeric__plus(y1, numeric__plus(numeric__times(- 2, y2), y3)) >= 
+          float__first
+%%%  Simplified C2 on reading formula in, to give:
+     %%%  C2:  numeric__plus(y1, numeric__plus(numeric__times(- 2, y2), y3)) <= 
+          float__last
+%%%  Simplified C3 on reading formula in, to give:
+     %%%  C3:  numeric__plus(numeric__times(- 2, y2), y3) >= float__first
+%%%  Simplified C4 on reading formula in, to give:
+     %%%  C4:  numeric__plus(numeric__times(- 2, y2), y3) <= float__last
+***  Proved C3:  numeric__plus(numeric__times(- 2, y2), y3) >= float__first
+     using hypothesis H27.
+***  Proved C4:  numeric__plus(numeric__times(- 2, y2), y3) <= float__last
+     using hypothesis H28.
+-S-  Applied substitution rule coeffs_rules(2).
+     This was achieved by replacing all occurrences of float__first by:
+          - 340282000000000000000000000000000000000.
+<S>  New H7:  y1 >= - 340282000000000000000000000000000000000
+<S>  New H9:  y2 >= - 340282000000000000000000000000000000000
+<S>  New H11:  y3 >= - 340282000000000000000000000000000000000
+<S>  New H13:  numeric__times(- 2, y2) >= - 
+          340282000000000000000000000000000000000
+<S>  New H17:  true
+<S>  New H23:  true
+<S>  New H27:  numeric__plus(numeric__times(- 2, y2), y3) >= - 
+          340282000000000000000000000000000000000
+<S>  New C1:  numeric__plus(y1, numeric__plus(numeric__times(- 2, y2), y3)) >= 
+          - 340282000000000000000000000000000000000
+-S-  Applied substitution rule coeffs_rules(3).
+     This was achieved by replacing all occurrences of float__last by:
+          340282000000000000000000000000000000000.
+<S>  New H8:  y1 <= 340282000000000000000000000000000000000
+<S>  New H10:  y2 <= 340282000000000000000000000000000000000
+<S>  New H12:  y3 <= 340282000000000000000000000000000000000
+<S>  New H14:  numeric__times(- 2, y2) <= 
+          340282000000000000000000000000000000000
+<S>  New H18:  true
+<S>  New H24:  true
+<S>  New H28:  numeric__plus(numeric__times(- 2, y2), y3) <= 
+          340282000000000000000000000000000000000
+<S>  New C2:  numeric__plus(y1, numeric__plus(numeric__times(- 2, y2), y3)) <= 
+          340282000000000000000000000000000000000
+-S-  Applied substitution rule coeffs_rules(4).
+     This was achieved by replacing all occurrences of float__base__first by:
+          - 340282000000000000000000000000000000000.
+<S>  New H19:  true
+-S-  Applied substitution rule coeffs_rules(5).
+     This was achieved by replacing all occurrences of float__base__last by:
+          340282000000000000000000000000000000000.
+<S>  New H20:  true
+-S-  Applied substitution rule coeffs_rules(7).
+     This was achieved by replacing all occurrences of iy__first by:
+          0.
+<S>  New H1:  y1 >= 0
+<S>  New H3:  y2 >= 0
+<S>  New H5:  y3 >= 0
+-S-  Applied substitution rule coeffs_rules(8).
+     This was achieved by replacing all occurrences of iy__last by:
+          1.
+<S>  New H2:  y1 <= 1
+<S>  New H4:  y2 <= 1
+<S>  New H6:  y3 <= 1
+---  Eliminated hypothesis H15 (true-hypothesis).
+---  Eliminated hypothesis H16 (true-hypothesis).
+---  Eliminated hypothesis H17 (true-hypothesis).
+---  Eliminated hypothesis H18 (true-hypothesis).
+---  Eliminated hypothesis H21 (true-hypothesis).
+---  Eliminated hypothesis H22 (true-hypothesis).
+---  Eliminated hypothesis H23 (true-hypothesis).
+---  Eliminated hypothesis H24 (true-hypothesis).
+---  Eliminated hypothesis H25 (true-hypothesis).
+---  Eliminated hypothesis H26 (true-hypothesis).
+---  Eliminated hypothesis H29 (true-hypothesis).
+---  Eliminated hypothesis H30 (true-hypothesis).
+---  Eliminated hypothesis H31 (true-hypothesis).
+---  Eliminated hypothesis H32 (true-hypothesis).
+---  Eliminated hypothesis H33 (true-hypothesis).
+---  Eliminated hypothesis H34 (true-hypothesis).
+---  Eliminated hypothesis H19 (true-hypothesis).
+---  Eliminated hypothesis H20 (true-hypothesis).
+---  Eliminated hypothesis H7 (redundant, given H1).
+---  Eliminated hypothesis H8 (redundant, given H2).
+---  Eliminated hypothesis H9 (redundant, given H3).
+---  Eliminated hypothesis H10 (redundant, given H4).
+---  Eliminated hypothesis H11 (redundant, given H5).
+---  Eliminated hypothesis H12 (redundant, given H6).
+     +++  New H35:  float__size >= 0
+     +++  New H36:  iy__size >= 0
+     +++  New H37:  ipad__size >= 0
+     +++  New H38:  icoeff1__size >= 0
+
+
+@@@@@@@@@@  VC: procedure_coeffs_4.  @@@@@@@@@@
+%%%  Simplified H13 on reading formula in, to give:
+     %%%  H13:  numeric__times(- 2, y2) >= float__first
+%%%  Simplified H14 on reading formula in, to give:
+     %%%  H14:  numeric__times(- 2, y2) <= float__last
+---  Hypothesis H15 has been replaced by "true".  (It is already present, as H9)
+          .
+---  Hypothesis H16 has been replaced by "true".  (It is already present, as 
+          H10).
+%%%  Simplified H17 on reading formula in, to give:
+     %%%  H17:  - 2 >= float__first
+%%%  Simplified H18 on reading formula in, to give:
+     %%%  H18:  - 2 <= float__last
+%%%  Simplified H19 on reading formula in, to give:
+     %%%  H19:  - 2 >= float__base__first
+%%%  Simplified H20 on reading formula in, to give:
+     %%%  H20:  - 2 <= float__base__last
+---  Hypothesis H21 has been replaced by "true".  (It is already present, as H7)
+          .
+---  Hypothesis H22 has been replaced by "true".  (It is already present, as H8)
+          .
+---  Hypothesis H25 has been replaced by "true".  (It is already present, as 
+          H13).
+---  Hypothesis H26 has been replaced by "true".  (It is already present, as 
+          H14).
+%%%  Simplified H27 on reading formula in, to give:
+     %%%  H27:  numeric__plus(numeric__times(- 2, y2), y3) >= float__first
+%%%  Simplified H28 on reading formula in, to give:
+     %%%  H28:  numeric__plus(numeric__times(- 2, y2), y3) <= float__last
+---  Hypothesis H29 has been replaced by "true".  (It is already present, as 
+          H11).
+---  Hypothesis H30 has been replaced by "true".  (It is already present, as 
+          H12).
+---  Hypothesis H31 has been replaced by "true".  (It is already present, as 
+          H13).
+---  Hypothesis H32 has been replaced by "true".  (It is already present, as 
+          H14).
+---  Hypothesis H33 has been replaced by "true".  (It is already present, as 
+          H27).
+---  Hypothesis H34 has been replaced by "true".  (It is already present, as 
+          H28).
+%%%  Simplified H35 on reading formula in, to give:
+     %%%  H35:  numeric__plus(y1, numeric__plus(numeric__times(- 2, y2), y3)) 
+          >= float__first
+%%%  Simplified H36 on reading formula in, to give:
+     %%%  H36:  numeric__plus(y1, numeric__plus(numeric__times(- 2, y2), y3)) 
+          <= float__last
+---  Hypothesis H37 has been replaced by "true".  (It is already present, as 
+          H27).
+---  Hypothesis H38 has been replaced by "true".  (It is already present, as 
+          H28).
+---  Hypothesis H39 has been replaced by "true".  (It is already present, as 
+          H35).
+---  Hypothesis H40 has been replaced by "true".  (It is already present, as 
+          H36).
+%%%  Simplified C1 on reading formula in, to give:
+     %%%  C1:  numeric__times(1 / 2, numeric__plus(y1, numeric__plus(
+          numeric__times(- 2, y2), y3))) >= float__first
+%%%  Simplified C2 on reading formula in, to give:
+     %%%  C2:  numeric__times(1 / 2, numeric__plus(y1, numeric__plus(
+          numeric__times(- 2, y2), y3))) <= float__last
+%%%  Simplified C3 on reading formula in, to give:
+     %%%  C3:  numeric__plus(y1, numeric__plus(numeric__times(- 2, y2), y3)) >= 
+          float__first
+%%%  Simplified C4 on reading formula in, to give:
+     %%%  C4:  numeric__plus(y1, numeric__plus(numeric__times(- 2, y2), y3)) <= 
+          float__last
+***  Proved C3:  numeric__plus(y1, numeric__plus(numeric__times(- 2, y2), y3)) 
+          >= float__first
+     using hypothesis H35.
+***  Proved C4:  numeric__plus(y1, numeric__plus(numeric__times(- 2, y2), y3)) 
+          <= float__last
+     using hypothesis H36.
+-S-  Applied substitution rule coeffs_rules(2).
+     This was achieved by replacing all occurrences of float__first by:
+          - 340282000000000000000000000000000000000.
+<S>  New H7:  y1 >= - 340282000000000000000000000000000000000
+<S>  New H9:  y2 >= - 340282000000000000000000000000000000000
+<S>  New H11:  y3 >= - 340282000000000000000000000000000000000
+<S>  New H13:  numeric__times(- 2, y2) >= - 
+          340282000000000000000000000000000000000
+<S>  New H17:  true
+<S>  New H23:  true
+<S>  New H27:  numeric__plus(numeric__times(- 2, y2), y3) >= - 
+          340282000000000000000000000000000000000
+<S>  New H35:  numeric__plus(y1, numeric__plus(numeric__times(- 2, y2), y3)) >= 
+          - 340282000000000000000000000000000000000
+<S>  New C1:  numeric__times(1 / 2, numeric__plus(y1, numeric__plus(
+          numeric__times(- 2, y2), y3))) >= - 
+          340282000000000000000000000000000000000
+-S-  Applied substitution rule coeffs_rules(3).
+     This was achieved by replacing all occurrences of float__last by:
+          340282000000000000000000000000000000000.
+<S>  New H8:  y1 <= 340282000000000000000000000000000000000
+<S>  New H10:  y2 <= 340282000000000000000000000000000000000
+<S>  New H12:  y3 <= 340282000000000000000000000000000000000
+<S>  New H14:  numeric__times(- 2, y2) <= 
+          340282000000000000000000000000000000000
+<S>  New H18:  true
+<S>  New H24:  true
+<S>  New H28:  numeric__plus(numeric__times(- 2, y2), y3) <= 
+          340282000000000000000000000000000000000
+<S>  New H36:  numeric__plus(y1, numeric__plus(numeric__times(- 2, y2), y3)) <= 
+          340282000000000000000000000000000000000
+<S>  New C2:  numeric__times(1 / 2, numeric__plus(y1, numeric__plus(
+          numeric__times(- 2, y2), y3))) <= 
+          340282000000000000000000000000000000000
+-S-  Applied substitution rule coeffs_rules(4).
+     This was achieved by replacing all occurrences of float__base__first by:
+          - 340282000000000000000000000000000000000.
+<S>  New H19:  true
+-S-  Applied substitution rule coeffs_rules(5).
+     This was achieved by replacing all occurrences of float__base__last by:
+          340282000000000000000000000000000000000.
+<S>  New H20:  true
+-S-  Applied substitution rule coeffs_rules(7).
+     This was achieved by replacing all occurrences of iy__first by:
+          0.
+<S>  New H1:  y1 >= 0
+<S>  New H3:  y2 >= 0
+<S>  New H5:  y3 >= 0
+-S-  Applied substitution rule coeffs_rules(8).
+     This was achieved by replacing all occurrences of iy__last by:
+          1.
+<S>  New H2:  y1 <= 1
+<S>  New H4:  y2 <= 1
+<S>  New H6:  y3 <= 1
+---  Eliminated hypothesis H15 (true-hypothesis).
+---  Eliminated hypothesis H16 (true-hypothesis).
+---  Eliminated hypothesis H17 (true-hypothesis).
+---  Eliminated hypothesis H18 (true-hypothesis).
+---  Eliminated hypothesis H21 (true-hypothesis).
+---  Eliminated hypothesis H22 (true-hypothesis).
+---  Eliminated hypothesis H23 (true-hypothesis).
+---  Eliminated hypothesis H24 (true-hypothesis).
+---  Eliminated hypothesis H25 (true-hypothesis).
+---  Eliminated hypothesis H26 (true-hypothesis).
+---  Eliminated hypothesis H29 (true-hypothesis).
+---  Eliminated hypothesis H30 (true-hypothesis).
+---  Eliminated hypothesis H31 (true-hypothesis).
+---  Eliminated hypothesis H32 (true-hypothesis).
+---  Eliminated hypothesis H33 (true-hypothesis).
+---  Eliminated hypothesis H34 (true-hypothesis).
+---  Eliminated hypothesis H37 (true-hypothesis).
+---  Eliminated hypothesis H38 (true-hypothesis).
+---  Eliminated hypothesis H39 (true-hypothesis).
+---  Eliminated hypothesis H40 (true-hypothesis).
+---  Eliminated hypothesis H19 (true-hypothesis).
+---  Eliminated hypothesis H20 (true-hypothesis).
+---  Eliminated hypothesis H7 (redundant, given H1).
+---  Eliminated hypothesis H8 (redundant, given H2).
+---  Eliminated hypothesis H9 (redundant, given H3).
+---  Eliminated hypothesis H10 (redundant, given H4).
+---  Eliminated hypothesis H11 (redundant, given H5).
+---  Eliminated hypothesis H12 (redundant, given H6).
+     +++  New H41:  float__size >= 0
+     +++  New H42:  iy__size >= 0
+     +++  New H43:  ipad__size >= 0
+     +++  New H44:  icoeff1__size >= 0
+
+
+@@@@@@@@@@  VC: procedure_coeffs_5.  @@@@@@@@@@
+%%%  Simplified H13 on reading formula in, to give:
+     %%%  H13:  numeric__times(- 2, y2) >= float__first
+%%%  Simplified H14 on reading formula in, to give:
+     %%%  H14:  numeric__times(- 2, y2) <= float__last
+---  Hypothesis H15 has been replaced by "true".  (It is already present, as H9)
+          .
+---  Hypothesis H16 has been replaced by "true".  (It is already present, as 
+          H10).
+%%%  Simplified H17 on reading formula in, to give:
+     %%%  H17:  - 2 >= float__first
+%%%  Simplified H18 on reading formula in, to give:
+     %%%  H18:  - 2 <= float__last
+%%%  Simplified H19 on reading formula in, to give:
+     %%%  H19:  - 2 >= float__base__first
+%%%  Simplified H20 on reading formula in, to give:
+     %%%  H20:  - 2 <= float__base__last
+---  Hypothesis H21 has been replaced by "true".  (It is already present, as H7)
+          .
+---  Hypothesis H22 has been replaced by "true".  (It is already present, as H8)
+          .
+---  Hypothesis H25 has been replaced by "true".  (It is already present, as 
+          H13).
+---  Hypothesis H26 has been replaced by "true".  (It is already present, as 
+          H14).
+%%%  Simplified H27 on reading formula in, to give:
+     %%%  H27:  numeric__plus(numeric__times(- 2, y2), y3) >= float__first
+%%%  Simplified H28 on reading formula in, to give:
+     %%%  H28:  numeric__plus(numeric__times(- 2, y2), y3) <= float__last
+---  Hypothesis H29 has been replaced by "true".  (It is already present, as 
+          H11).
+---  Hypothesis H30 has been replaced by "true".  (It is already present, as 
+          H12).
+---  Hypothesis H31 has been replaced by "true".  (It is already present, as 
+          H13).
+---  Hypothesis H32 has been replaced by "true".  (It is already present, as 
+          H14).
+---  Hypothesis H33 has been replaced by "true".  (It is already present, as 
+          H27).
+---  Hypothesis H34 has been replaced by "true".  (It is already present, as 
+          H28).
+%%%  Simplified H35 on reading formula in, to give:
+     %%%  H35:  numeric__plus(y1, numeric__plus(numeric__times(- 2, y2), y3)) 
+          >= float__first
+%%%  Simplified H36 on reading formula in, to give:
+     %%%  H36:  numeric__plus(y1, numeric__plus(numeric__times(- 2, y2), y3)) 
+          <= float__last
+---  Hypothesis H37 has been replaced by "true".  (It is already present, as 
+          H27).
+---  Hypothesis H38 has been replaced by "true".  (It is already present, as 
+          H28).
+---  Hypothesis H39 has been replaced by "true".  (It is already present, as 
+          H35).
+---  Hypothesis H40 has been replaced by "true".  (It is already present, as 
+          H36).
+%%%  Simplified H41 on reading formula in, to give:
+     %%%  H41:  numeric__times(1 / 2, numeric__plus(y1, numeric__plus(
+          numeric__times(- 2, y2), y3))) >= float__first
+%%%  Simplified H42 on reading formula in, to give:
+     %%%  H42:  numeric__times(1 / 2, numeric__plus(y1, numeric__plus(
+          numeric__times(- 2, y2), y3))) <= float__last
+---  Hypothesis H43 has been replaced by "true".  (It is already present, as 
+          H35).
+---  Hypothesis H44 has been replaced by "true".  (It is already present, as 
+          H36).
+---  Hypothesis H45 has been replaced by "true".  (It is already present, as 
+          H41).
+---  Hypothesis H46 has been replaced by "true".  (It is already present, as 
+          H42).
+%%%  Simplified C1 on reading formula in, to give:
+     %%%  C1:  numeric__times(1 / 2, numeric__plus(y1, numeric__plus(
+          numeric__times(- 2, y2), y3))) >= float__first
+%%%  Simplified C2 on reading formula in, to give:
+     %%%  C2:  numeric__times(1 / 2, numeric__plus(y1, numeric__plus(
+          numeric__times(- 2, y2), y3))) <= float__last
+***  Proved C1:  numeric__times(1 / 2, numeric__plus(y1, numeric__plus(
+          numeric__times(- 2, y2), y3))) >= float__first
+     using hypothesis H41.
+***  Proved C2:  numeric__times(1 / 2, numeric__plus(y1, numeric__plus(
+          numeric__times(- 2, y2), y3))) <= float__last
+     using hypothesis H42.
+***  PROVED VC.
+
+
+@@@@@@@@@@  VC: procedure_coeffs_6.  @@@@@@@@@@
+%%%  Simplified H13 on reading formula in, to give:
+     %%%  H13:  numeric__times(- 2, y2) >= float__first
+%%%  Simplified H14 on reading formula in, to give:
+     %%%  H14:  numeric__times(- 2, y2) <= float__last
+---  Hypothesis H15 has been replaced by "true".  (It is already present, as H9)
+          .
+---  Hypothesis H16 has been replaced by "true".  (It is already present, as 
+          H10).
+%%%  Simplified H17 on reading formula in, to give:
+     %%%  H17:  - 2 >= float__first
+%%%  Simplified H18 on reading formula in, to give:
+     %%%  H18:  - 2 <= float__last
+%%%  Simplified H19 on reading formula in, to give:
+     %%%  H19:  - 2 >= float__base__first
+%%%  Simplified H20 on reading formula in, to give:
+     %%%  H20:  - 2 <= float__base__last
+---  Hypothesis H21 has been replaced by "true".  (It is already present, as H7)
+          .
+---  Hypothesis H22 has been replaced by "true".  (It is already present, as H8)
+          .
+---  Hypothesis H25 has been replaced by "true".  (It is already present, as 
+          H13).
+---  Hypothesis H26 has been replaced by "true".  (It is already present, as 
+          H14).
+%%%  Simplified H27 on reading formula in, to give:
+     %%%  H27:  numeric__plus(numeric__times(- 2, y2), y3) >= float__first
+%%%  Simplified H28 on reading formula in, to give:
+     %%%  H28:  numeric__plus(numeric__times(- 2, y2), y3) <= float__last
+---  Hypothesis H29 has been replaced by "true".  (It is already present, as 
+          H11).
+---  Hypothesis H30 has been replaced by "true".  (It is already present, as 
+          H12).
+---  Hypothesis H31 has been replaced by "true".  (It is already present, as 
+          H13).
+---  Hypothesis H32 has been replaced by "true".  (It is already present, as 
+          H14).
+---  Hypothesis H33 has been replaced by "true".  (It is already present, as 
+          H27).
+---  Hypothesis H34 has been replaced by "true".  (It is already present, as 
+          H28).
+%%%  Simplified H35 on reading formula in, to give:
+     %%%  H35:  numeric__plus(y1, numeric__plus(numeric__times(- 2, y2), y3)) 
+          >= float__first
+%%%  Simplified H36 on reading formula in, to give:
+     %%%  H36:  numeric__plus(y1, numeric__plus(numeric__times(- 2, y2), y3)) 
+          <= float__last
+---  Hypothesis H37 has been replaced by "true".  (It is already present, as 
+          H27).
+---  Hypothesis H38 has been replaced by "true".  (It is already present, as 
+          H28).
+---  Hypothesis H39 has been replaced by "true".  (It is already present, as 
+          H35).
+---  Hypothesis H40 has been replaced by "true".  (It is already present, as 
+          H36).
+%%%  Simplified H41 on reading formula in, to give:
+     %%%  H41:  numeric__times(1 / 2, numeric__plus(y1, numeric__plus(
+          numeric__times(- 2, y2), y3))) >= float__first
+%%%  Simplified H42 on reading formula in, to give:
+     %%%  H42:  numeric__times(1 / 2, numeric__plus(y1, numeric__plus(
+          numeric__times(- 2, y2), y3))) <= float__last
+---  Hypothesis H43 has been replaced by "true".  (It is already present, as 
+          H35).
+---  Hypothesis H44 has been replaced by "true".  (It is already present, as 
+          H36).
+---  Hypothesis H45 has been replaced by "true".  (It is already present, as 
+          H41).
+---  Hypothesis H46 has been replaced by "true".  (It is already present, as 
+          H42).
+---  Hypothesis H47 has been replaced by "true".  (It is already present, as 
+          H41).
+---  Hypothesis H48 has been replaced by "true".  (It is already present, as 
+          H42).
+***  Proved C3:  y1 >= float__first
+     using hypothesis H7.
+***  Proved C4:  y1 <= float__last
+     using hypothesis H8.
+***  Proved C5:  y3 >= float__first
+     using hypothesis H11.
+***  Proved C6:  y3 <= float__last
+     using hypothesis H12.
+***  Proved C7:  1 / 2 >= float__first
+     using hypothesis H23.
+***  Proved C8:  1 / 2 <= float__last
+     using hypothesis H24.
+-S-  Applied substitution rule coeffs_rules(2).
+     This was achieved by replacing all occurrences of float__first by:
+          - 340282000000000000000000000000000000000.
+<S>  New H7:  y1 >= - 340282000000000000000000000000000000000
+<S>  New H9:  y2 >= - 340282000000000000000000000000000000000
+<S>  New H11:  y3 >= - 340282000000000000000000000000000000000
+<S>  New H13:  numeric__times(- 2, y2) >= - 
+          340282000000000000000000000000000000000
+<S>  New H17:  true
+<S>  New H23:  true
+<S>  New H27:  numeric__plus(numeric__times(- 2, y2), y3) >= - 
+          340282000000000000000000000000000000000
+<S>  New H35:  numeric__plus(y1, numeric__plus(numeric__times(- 2, y2), y3)) >= 
+          - 340282000000000000000000000000000000000
+<S>  New H41:  numeric__times(1 / 2, numeric__plus(y1, numeric__plus(
+          numeric__times(- 2, y2), y3))) >= - 
+          340282000000000000000000000000000000000
+<S>  New C1:  numeric__minus(y3, y1) >= - 
+          340282000000000000000000000000000000000
+-S-  Applied substitution rule coeffs_rules(3).
+     This was achieved by replacing all occurrences of float__last by:
+          340282000000000000000000000000000000000.
+<S>  New H8:  y1 <= 340282000000000000000000000000000000000
+<S>  New H10:  y2 <= 340282000000000000000000000000000000000
+<S>  New H12:  y3 <= 340282000000000000000000000000000000000
+<S>  New H14:  numeric__times(- 2, y2) <= 
+          340282000000000000000000000000000000000
+<S>  New H18:  true
+<S>  New H24:  true
+<S>  New H28:  numeric__plus(numeric__times(- 2, y2), y3) <= 
+          340282000000000000000000000000000000000
+<S>  New H36:  numeric__plus(y1, numeric__plus(numeric__times(- 2, y2), y3)) <= 
+          340282000000000000000000000000000000000
+<S>  New H42:  numeric__times(1 / 2, numeric__plus(y1, numeric__plus(
+          numeric__times(- 2, y2), y3))) <= 
+          340282000000000000000000000000000000000
+<S>  New C2:  numeric__minus(y3, y1) <= 340282000000000000000000000000000000000
+-S-  Applied substitution rule coeffs_rules(4).
+     This was achieved by replacing all occurrences of float__base__first by:
+          - 340282000000000000000000000000000000000.
+<S>  New H19:  true
+-S-  Applied substitution rule coeffs_rules(5).
+     This was achieved by replacing all occurrences of float__base__last by:
+          340282000000000000000000000000000000000.
+<S>  New H20:  true
+-S-  Applied substitution rule coeffs_rules(7).
+     This was achieved by replacing all occurrences of iy__first by:
+          0.
+<S>  New H1:  y1 >= 0
+<S>  New H3:  y2 >= 0
+<S>  New H5:  y3 >= 0
+-S-  Applied substitution rule coeffs_rules(8).
+     This was achieved by replacing all occurrences of iy__last by:
+          1.
+<S>  New H2:  y1 <= 1
+<S>  New H4:  y2 <= 1
+<S>  New H6:  y3 <= 1
+---  Eliminated hypothesis H15 (true-hypothesis).
+---  Eliminated hypothesis H16 (true-hypothesis).
+---  Eliminated hypothesis H17 (true-hypothesis).
+---  Eliminated hypothesis H18 (true-hypothesis).
+---  Eliminated hypothesis H21 (true-hypothesis).
+---  Eliminated hypothesis H22 (true-hypothesis).
+---  Eliminated hypothesis H23 (true-hypothesis).
+---  Eliminated hypothesis H24 (true-hypothesis).
+---  Eliminated hypothesis H25 (true-hypothesis).
+---  Eliminated hypothesis H26 (true-hypothesis).
+---  Eliminated hypothesis H29 (true-hypothesis).
+---  Eliminated hypothesis H30 (true-hypothesis).
+---  Eliminated hypothesis H31 (true-hypothesis).
+---  Eliminated hypothesis H32 (true-hypothesis).
+---  Eliminated hypothesis H33 (true-hypothesis).
+---  Eliminated hypothesis H34 (true-hypothesis).
+---  Eliminated hypothesis H37 (true-hypothesis).
+---  Eliminated hypothesis H38 (true-hypothesis).
+---  Eliminated hypothesis H39 (true-hypothesis).
+---  Eliminated hypothesis H40 (true-hypothesis).
+---  Eliminated hypothesis H43 (true-hypothesis).
+---  Eliminated hypothesis H44 (true-hypothesis).
+---  Eliminated hypothesis H45 (true-hypothesis).
+---  Eliminated hypothesis H46 (true-hypothesis).
+---  Eliminated hypothesis H47 (true-hypothesis).
+---  Eliminated hypothesis H48 (true-hypothesis).
+---  Eliminated hypothesis H19 (true-hypothesis).
+---  Eliminated hypothesis H20 (true-hypothesis).
+---  Eliminated hypothesis H7 (redundant, given H1).
+---  Eliminated hypothesis H8 (redundant, given H2).
+---  Eliminated hypothesis H9 (redundant, given H3).
+---  Eliminated hypothesis H10 (redundant, given H4).
+---  Eliminated hypothesis H11 (redundant, given H5).
+---  Eliminated hypothesis H12 (redundant, given H6).
+     +++  New H49:  float__size >= 0
+     +++  New H50:  iy__size >= 0
+     +++  New H51:  ipad__size >= 0
+     +++  New H52:  icoeff1__size >= 0
+
+
+@@@@@@@@@@  VC: procedure_coeffs_7.  @@@@@@@@@@
+%%%  Simplified H13 on reading formula in, to give:
+     %%%  H13:  numeric__times(- 2, y2) >= float__first
+%%%  Simplified H14 on reading formula in, to give:
+     %%%  H14:  numeric__times(- 2, y2) <= float__last
+---  Hypothesis H15 has been replaced by "true".  (It is already present, as H9)
+          .
+---  Hypothesis H16 has been replaced by "true".  (It is already present, as 
+          H10).
+%%%  Simplified H17 on reading formula in, to give:
+     %%%  H17:  - 2 >= float__first
+%%%  Simplified H18 on reading formula in, to give:
+     %%%  H18:  - 2 <= float__last
+%%%  Simplified H19 on reading formula in, to give:
+     %%%  H19:  - 2 >= float__base__first
+%%%  Simplified H20 on reading formula in, to give:
+     %%%  H20:  - 2 <= float__base__last
+---  Hypothesis H21 has been replaced by "true".  (It is already present, as H7)
+          .
+---  Hypothesis H22 has been replaced by "true".  (It is already present, as H8)
+          .
+---  Hypothesis H25 has been replaced by "true".  (It is already present, as 
+          H13).
+---  Hypothesis H26 has been replaced by "true".  (It is already present, as 
+          H14).
+%%%  Simplified H27 on reading formula in, to give:
+     %%%  H27:  numeric__plus(numeric__times(- 2, y2), y3) >= float__first
+%%%  Simplified H28 on reading formula in, to give:
+     %%%  H28:  numeric__plus(numeric__times(- 2, y2), y3) <= float__last
+---  Hypothesis H29 has been replaced by "true".  (It is already present, as 
+          H11).
+---  Hypothesis H30 has been replaced by "true".  (It is already present, as 
+          H12).
+---  Hypothesis H31 has been replaced by "true".  (It is already present, as 
+          H13).
+---  Hypothesis H32 has been replaced by "true".  (It is already present, as 
+          H14).
+---  Hypothesis H33 has been replaced by "true".  (It is already present, as 
+          H27).
+---  Hypothesis H34 has been replaced by "true".  (It is already present, as 
+          H28).
+%%%  Simplified H35 on reading formula in, to give:
+     %%%  H35:  numeric__plus(y1, numeric__plus(numeric__times(- 2, y2), y3)) 
+          >= float__first
+%%%  Simplified H36 on reading formula in, to give:
+     %%%  H36:  numeric__plus(y1, numeric__plus(numeric__times(- 2, y2), y3)) 
+          <= float__last
+---  Hypothesis H37 has been replaced by "true".  (It is already present, as 
+          H27).
+---  Hypothesis H38 has been replaced by "true".  (It is already present, as 
+          H28).
+---  Hypothesis H39 has been replaced by "true".  (It is already present, as 
+          H35).
+---  Hypothesis H40 has been replaced by "true".  (It is already present, as 
+          H36).
+%%%  Simplified H41 on reading formula in, to give:
+     %%%  H41:  numeric__times(1 / 2, numeric__plus(y1, numeric__plus(
+          numeric__times(- 2, y2), y3))) >= float__first
+%%%  Simplified H42 on reading formula in, to give:
+     %%%  H42:  numeric__times(1 / 2, numeric__plus(y1, numeric__plus(
+          numeric__times(- 2, y2), y3))) <= float__last
+---  Hypothesis H43 has been replaced by "true".  (It is already present, as 
+          H35).
+---  Hypothesis H44 has been replaced by "true".  (It is already present, as 
+          H36).
+---  Hypothesis H45 has been replaced by "true".  (It is already present, as 
+          H41).
+---  Hypothesis H46 has been replaced by "true".  (It is already present, as 
+          H42).
+---  Hypothesis H47 has been replaced by "true".  (It is already present, as 
+          H41).
+---  Hypothesis H48 has been replaced by "true".  (It is already present, as 
+          H42).
+---  Hypothesis H51 has been replaced by "true".  (It is already present, as H7)
+          .
+---  Hypothesis H52 has been replaced by "true".  (It is already present, as H8)
+          .
+---  Hypothesis H53 has been replaced by "true".  (It is already present, as 
+          H11).
+---  Hypothesis H54 has been replaced by "true".  (It is already present, as 
+          H12).
+---  Hypothesis H55 has been replaced by "true".  (It is already present, as 
+          H23).
+---  Hypothesis H56 has been replaced by "true".  (It is already present, as 
+          H24).
+---  Hypothesis H57 has been replaced by "true".  (It is already present, as 
+          H49).
+---  Hypothesis H58 has been replaced by "true".  (It is already present, as 
+          H50).
+***  Proved C3:  numeric__minus(y3, y1) >= float__first
+     using hypothesis H49.
+***  Proved C4:  numeric__minus(y3, y1) <= float__last
+     using hypothesis H50.
+-S-  Applied substitution rule coeffs_rules(2).
+     This was achieved by replacing all occurrences of float__first by:
+          - 340282000000000000000000000000000000000.
+<S>  New H7:  y1 >= - 340282000000000000000000000000000000000
+<S>  New H9:  y2 >= - 340282000000000000000000000000000000000
+<S>  New H11:  y3 >= - 340282000000000000000000000000000000000
+<S>  New H13:  numeric__times(- 2, y2) >= - 
+          340282000000000000000000000000000000000
+<S>  New H17:  true
+<S>  New H23:  true
+<S>  New H27:  numeric__plus(numeric__times(- 2, y2), y3) >= - 
+          340282000000000000000000000000000000000
+<S>  New H35:  numeric__plus(y1, numeric__plus(numeric__times(- 2, y2), y3)) >= 
+          - 340282000000000000000000000000000000000
+<S>  New H41:  numeric__times(1 / 2, numeric__plus(y1, numeric__plus(
+          numeric__times(- 2, y2), y3))) >= - 
+          340282000000000000000000000000000000000
+<S>  New H49:  numeric__minus(y3, y1) >= - 
+          340282000000000000000000000000000000000
+<S>  New C1:  numeric__times(1 / 2, numeric__minus(y3, y1)) >= - 
+          340282000000000000000000000000000000000
+-S-  Applied substitution rule coeffs_rules(3).
+     This was achieved by replacing all occurrences of float__last by:
+          340282000000000000000000000000000000000.
+<S>  New H8:  y1 <= 340282000000000000000000000000000000000
+<S>  New H10:  y2 <= 340282000000000000000000000000000000000
+<S>  New H12:  y3 <= 340282000000000000000000000000000000000
+<S>  New H14:  numeric__times(- 2, y2) <= 
+          340282000000000000000000000000000000000
+<S>  New H18:  true
+<S>  New H24:  true
+<S>  New H28:  numeric__plus(numeric__times(- 2, y2), y3) <= 
+          340282000000000000000000000000000000000
+<S>  New H36:  numeric__plus(y1, numeric__plus(numeric__times(- 2, y2), y3)) <= 
+          340282000000000000000000000000000000000
+<S>  New H42:  numeric__times(1 / 2, numeric__plus(y1, numeric__plus(
+          numeric__times(- 2, y2), y3))) <= 
+          340282000000000000000000000000000000000
+<S>  New H50:  numeric__minus(y3, y1) <= 340282000000000000000000000000000000000
+<S>  New C2:  numeric__times(1 / 2, numeric__minus(y3, y1)) <= 
+          340282000000000000000000000000000000000
+-S-  Applied substitution rule coeffs_rules(4).
+     This was achieved by replacing all occurrences of float__base__first by:
+          - 340282000000000000000000000000000000000.
+<S>  New H19:  true
+-S-  Applied substitution rule coeffs_rules(5).
+     This was achieved by replacing all occurrences of float__base__last by:
+          340282000000000000000000000000000000000.
+<S>  New H20:  true
+-S-  Applied substitution rule coeffs_rules(7).
+     This was achieved by replacing all occurrences of iy__first by:
+          0.
+<S>  New H1:  y1 >= 0
+<S>  New H3:  y2 >= 0
+<S>  New H5:  y3 >= 0
+-S-  Applied substitution rule coeffs_rules(8).
+     This was achieved by replacing all occurrences of iy__last by:
+          1.
+<S>  New H2:  y1 <= 1
+<S>  New H4:  y2 <= 1
+<S>  New H6:  y3 <= 1
+---  Eliminated hypothesis H15 (true-hypothesis).
+---  Eliminated hypothesis H16 (true-hypothesis).
+---  Eliminated hypothesis H17 (true-hypothesis).
+---  Eliminated hypothesis H18 (true-hypothesis).
+---  Eliminated hypothesis H21 (true-hypothesis).
+---  Eliminated hypothesis H22 (true-hypothesis).
+---  Eliminated hypothesis H23 (true-hypothesis).
+---  Eliminated hypothesis H24 (true-hypothesis).
+---  Eliminated hypothesis H25 (true-hypothesis).
+---  Eliminated hypothesis H26 (true-hypothesis).
+---  Eliminated hypothesis H29 (true-hypothesis).
+---  Eliminated hypothesis H30 (true-hypothesis).
+---  Eliminated hypothesis H31 (true-hypothesis).
+---  Eliminated hypothesis H32 (true-hypothesis).
+---  Eliminated hypothesis H33 (true-hypothesis).
+---  Eliminated hypothesis H34 (true-hypothesis).
+---  Eliminated hypothesis H37 (true-hypothesis).
+---  Eliminated hypothesis H38 (true-hypothesis).
+---  Eliminated hypothesis H39 (true-hypothesis).
+---  Eliminated hypothesis H40 (true-hypothesis).
+---  Eliminated hypothesis H43 (true-hypothesis).
+---  Eliminated hypothesis H44 (true-hypothesis).
+---  Eliminated hypothesis H45 (true-hypothesis).
+---  Eliminated hypothesis H46 (true-hypothesis).
+---  Eliminated hypothesis H47 (true-hypothesis).
+---  Eliminated hypothesis H48 (true-hypothesis).
+---  Eliminated hypothesis H51 (true-hypothesis).
+---  Eliminated hypothesis H52 (true-hypothesis).
+---  Eliminated hypothesis H53 (true-hypothesis).
+---  Eliminated hypothesis H54 (true-hypothesis).
+---  Eliminated hypothesis H55 (true-hypothesis).
+---  Eliminated hypothesis H56 (true-hypothesis).
+---  Eliminated hypothesis H57 (true-hypothesis).
+---  Eliminated hypothesis H58 (true-hypothesis).
+---  Eliminated hypothesis H19 (true-hypothesis).
+---  Eliminated hypothesis H20 (true-hypothesis).
+---  Eliminated hypothesis H7 (redundant, given H1).
+---  Eliminated hypothesis H8 (redundant, given H2).
+---  Eliminated hypothesis H9 (redundant, given H3).
+---  Eliminated hypothesis H10 (redundant, given H4).
+---  Eliminated hypothesis H11 (redundant, given H5).
+---  Eliminated hypothesis H12 (redundant, given H6).
+     +++  New H59:  float__size >= 0
+     +++  New H60:  iy__size >= 0
+     +++  New H61:  ipad__size >= 0
+     +++  New H62:  icoeff1__size >= 0
+
+
+@@@@@@@@@@  VC: procedure_coeffs_8.  @@@@@@@@@@
+%%%  Simplified H13 on reading formula in, to give:
+     %%%  H13:  numeric__times(- 2, y2) >= float__first
+%%%  Simplified H14 on reading formula in, to give:
+     %%%  H14:  numeric__times(- 2, y2) <= float__last
+---  Hypothesis H15 has been replaced by "true".  (It is already present, as H9)
+          .
+---  Hypothesis H16 has been replaced by "true".  (It is already present, as 
+          H10).
+%%%  Simplified H17 on reading formula in, to give:
+     %%%  H17:  - 2 >= float__first
+%%%  Simplified H18 on reading formula in, to give:
+     %%%  H18:  - 2 <= float__last
+%%%  Simplified H19 on reading formula in, to give:
+     %%%  H19:  - 2 >= float__base__first
+%%%  Simplified H20 on reading formula in, to give:
+     %%%  H20:  - 2 <= float__base__last
+---  Hypothesis H21 has been replaced by "true".  (It is already present, as H7)
+          .
+---  Hypothesis H22 has been replaced by "true".  (It is already present, as H8)
+          .
+---  Hypothesis H25 has been replaced by "true".  (It is already present, as 
+          H13).
+---  Hypothesis H26 has been replaced by "true".  (It is already present, as 
+          H14).
+%%%  Simplified H27 on reading formula in, to give:
+     %%%  H27:  numeric__plus(numeric__times(- 2, y2), y3) >= float__first
+%%%  Simplified H28 on reading formula in, to give:
+     %%%  H28:  numeric__plus(numeric__times(- 2, y2), y3) <= float__last
+---  Hypothesis H29 has been replaced by "true".  (It is already present, as 
+          H11).
+---  Hypothesis H30 has been replaced by "true".  (It is already present, as 
+          H12).
+---  Hypothesis H31 has been replaced by "true".  (It is already present, as 
+          H13).
+---  Hypothesis H32 has been replaced by "true".  (It is already present, as 
+          H14).
+---  Hypothesis H33 has been replaced by "true".  (It is already present, as 
+          H27).
+---  Hypothesis H34 has been replaced by "true".  (It is already present, as 
+          H28).
+%%%  Simplified H35 on reading formula in, to give:
+     %%%  H35:  numeric__plus(y1, numeric__plus(numeric__times(- 2, y2), y3)) 
+          >= float__first
+%%%  Simplified H36 on reading formula in, to give:
+     %%%  H36:  numeric__plus(y1, numeric__plus(numeric__times(- 2, y2), y3)) 
+          <= float__last
+---  Hypothesis H37 has been replaced by "true".  (It is already present, as 
+          H27).
+---  Hypothesis H38 has been replaced by "true".  (It is already present, as 
+          H28).
+---  Hypothesis H39 has been replaced by "true".  (It is already present, as 
+          H35).
+---  Hypothesis H40 has been replaced by "true".  (It is already present, as 
+          H36).
+%%%  Simplified H41 on reading formula in, to give:
+     %%%  H41:  numeric__times(1 / 2, numeric__plus(y1, numeric__plus(
+          numeric__times(- 2, y2), y3))) >= float__first
+%%%  Simplified H42 on reading formula in, to give:
+     %%%  H42:  numeric__times(1 / 2, numeric__plus(y1, numeric__plus(
+          numeric__times(- 2, y2), y3))) <= float__last
+---  Hypothesis H43 has been replaced by "true".  (It is already present, as 
+          H35).
+---  Hypothesis H44 has been replaced by "true".  (It is already present, as 
+          H36).
+---  Hypothesis H45 has been replaced by "true".  (It is already present, as 
+          H41).
+---  Hypothesis H46 has been replaced by "true".  (It is already present, as 
+          H42).
+---  Hypothesis H47 has been replaced by "true".  (It is already present, as 
+          H41).
+---  Hypothesis H48 has been replaced by "true".  (It is already present, as 
+          H42).
+---  Hypothesis H51 has been replaced by "true".  (It is already present, as H7)
+          .
+---  Hypothesis H52 has been replaced by "true".  (It is already present, as H8)
+          .
+---  Hypothesis H53 has been replaced by "true".  (It is already present, as 
+          H11).
+---  Hypothesis H54 has been replaced by "true".  (It is already present, as 
+          H12).
+---  Hypothesis H55 has been replaced by "true".  (It is already present, as 
+          H23).
+---  Hypothesis H56 has been replaced by "true".  (It is already present, as 
+          H24).
+---  Hypothesis H57 has been replaced by "true".  (It is already present, as 
+          H49).
+---  Hypothesis H58 has been replaced by "true".  (It is already present, as 
+          H50).
+---  Hypothesis H61 has been replaced by "true".  (It is already present, as 
+          H49).
+---  Hypothesis H62 has been replaced by "true".  (It is already present, as 
+          H50).
+---  Hypothesis H63 has been replaced by "true".  (It is already present, as 
+          H59).
+---  Hypothesis H64 has been replaced by "true".  (It is already present, as 
+          H60).
+***  Proved C1:  numeric__times(1 / 2, numeric__minus(y3, y1)) >= float__first
+     using hypothesis H59.
+***  Proved C2:  numeric__times(1 / 2, numeric__minus(y3, y1)) <= float__last
+     using hypothesis H60.
+***  PROVED VC.
+
+
+@@@@@@@@@@  VC: procedure_coeffs_9.  @@@@@@@@@@
+%%%  Simplified H13 on reading formula in, to give:
+     %%%  H13:  numeric__times(- 2, y2) >= float__first
+%%%  Simplified H14 on reading formula in, to give:
+     %%%  H14:  numeric__times(- 2, y2) <= float__last
+---  Hypothesis H15 has been replaced by "true".  (It is already present, as H9)
+          .
+---  Hypothesis H16 has been replaced by "true".  (It is already present, as 
+          H10).
+%%%  Simplified H17 on reading formula in, to give:
+     %%%  H17:  - 2 >= float__first
+%%%  Simplified H18 on reading formula in, to give:
+     %%%  H18:  - 2 <= float__last
+%%%  Simplified H19 on reading formula in, to give:
+     %%%  H19:  - 2 >= float__base__first
+%%%  Simplified H20 on reading formula in, to give:
+     %%%  H20:  - 2 <= float__base__last
+---  Hypothesis H21 has been replaced by "true".  (It is already present, as H7)
+          .
+---  Hypothesis H22 has been replaced by "true".  (It is already present, as H8)
+          .
+---  Hypothesis H25 has been replaced by "true".  (It is already present, as 
+          H13).
+---  Hypothesis H26 has been replaced by "true".  (It is already present, as 
+          H14).
+%%%  Simplified H27 on reading formula in, to give:
+     %%%  H27:  numeric__plus(numeric__times(- 2, y2), y3) >= float__first
+%%%  Simplified H28 on reading formula in, to give:
+     %%%  H28:  numeric__plus(numeric__times(- 2, y2), y3) <= float__last
+---  Hypothesis H29 has been replaced by "true".  (It is already present, as 
+          H11).
+---  Hypothesis H30 has been replaced by "true".  (It is already present, as 
+          H12).
+---  Hypothesis H31 has been replaced by "true".  (It is already present, as 
+          H13).
+---  Hypothesis H32 has been replaced by "true".  (It is already present, as 
+          H14).
+---  Hypothesis H33 has been replaced by "true".  (It is already present, as 
+          H27).
+---  Hypothesis H34 has been replaced by "true".  (It is already present, as 
+          H28).
+%%%  Simplified H35 on reading formula in, to give:
+     %%%  H35:  numeric__plus(y1, numeric__plus(numeric__times(- 2, y2), y3)) 
+          >= float__first
+%%%  Simplified H36 on reading formula in, to give:
+     %%%  H36:  numeric__plus(y1, numeric__plus(numeric__times(- 2, y2), y3)) 
+          <= float__last
+---  Hypothesis H37 has been replaced by "true".  (It is already present, as 
+          H27).
+---  Hypothesis H38 has been replaced by "true".  (It is already present, as 
+          H28).
+---  Hypothesis H39 has been replaced by "true".  (It is already present, as 
+          H35).
+---  Hypothesis H40 has been replaced by "true".  (It is already present, as 
+          H36).
+%%%  Simplified H41 on reading formula in, to give:
+     %%%  H41:  numeric__times(1 / 2, numeric__plus(y1, numeric__plus(
+          numeric__times(- 2, y2), y3))) >= float__first
+%%%  Simplified H42 on reading formula in, to give:
+     %%%  H42:  numeric__times(1 / 2, numeric__plus(y1, numeric__plus(
+          numeric__times(- 2, y2), y3))) <= float__last
+---  Hypothesis H43 has been replaced by "true".  (It is already present, as 
+          H35).
+---  Hypothesis H44 has been replaced by "true".  (It is already present, as 
+          H36).
+---  Hypothesis H45 has been replaced by "true".  (It is already present, as 
+          H41).
+---  Hypothesis H46 has been replaced by "true".  (It is already present, as 
+          H42).
+---  Hypothesis H47 has been replaced by "true".  (It is already present, as 
+          H41).
+---  Hypothesis H48 has been replaced by "true".  (It is already present, as 
+          H42).
+---  Hypothesis H51 has been replaced by "true".  (It is already present, as H7)
+          .
+---  Hypothesis H52 has been replaced by "true".  (It is already present, as H8)
+          .
+---  Hypothesis H53 has been replaced by "true".  (It is already present, as 
+          H11).
+---  Hypothesis H54 has been replaced by "true".  (It is already present, as 
+          H12).
+---  Hypothesis H55 has been replaced by "true".  (It is already present, as 
+          H23).
+---  Hypothesis H56 has been replaced by "true".  (It is already present, as 
+          H24).
+---  Hypothesis H57 has been replaced by "true".  (It is already present, as 
+          H49).
+---  Hypothesis H58 has been replaced by "true".  (It is already present, as 
+          H50).
+---  Hypothesis H61 has been replaced by "true".  (It is already present, as 
+          H49).
+---  Hypothesis H62 has been replaced by "true".  (It is already present, as 
+          H50).
+---  Hypothesis H63 has been replaced by "true".  (It is already present, as 
+          H59).
+---  Hypothesis H64 has been replaced by "true".  (It is already present, as 
+          H60).
+---  Hypothesis H65 has been replaced by "true".  (It is already present, as 
+          H59).
+---  Hypothesis H66 has been replaced by "true".  (It is already present, as 
+          H60).
+***  Proved C1:  y2 >= float__first
+     using hypothesis H9.
+***  Proved C2:  y2 <= float__last
+     using hypothesis H10.
+***  PROVED VC.
+
+
+@@@@@@@@@@  VC: procedure_coeffs_10.  @@@@@@@@@@
+%%%  Simplified H13 on reading formula in, to give:
+     %%%  H13:  numeric__times(- 2, y2) >= float__first
+%%%  Simplified H14 on reading formula in, to give:
+     %%%  H14:  numeric__times(- 2, y2) <= float__last
+---  Hypothesis H15 has been replaced by "true".  (It is already present, as H9)
+          .
+---  Hypothesis H16 has been replaced by "true".  (It is already present, as 
+          H10).
+%%%  Simplified H17 on reading formula in, to give:
+     %%%  H17:  - 2 >= float__first
+%%%  Simplified H18 on reading formula in, to give:
+     %%%  H18:  - 2 <= float__last
+%%%  Simplified H19 on reading formula in, to give:
+     %%%  H19:  - 2 >= float__base__first
+%%%  Simplified H20 on reading formula in, to give:
+     %%%  H20:  - 2 <= float__base__last
+---  Hypothesis H21 has been replaced by "true".  (It is already present, as H7)
+          .
+---  Hypothesis H22 has been replaced by "true".  (It is already present, as H8)
+          .
+---  Hypothesis H25 has been replaced by "true".  (It is already present, as 
+          H13).
+---  Hypothesis H26 has been replaced by "true".  (It is already present, as 
+          H14).
+%%%  Simplified H27 on reading formula in, to give:
+     %%%  H27:  numeric__plus(numeric__times(- 2, y2), y3) >= float__first
+%%%  Simplified H28 on reading formula in, to give:
+     %%%  H28:  numeric__plus(numeric__times(- 2, y2), y3) <= float__last
+---  Hypothesis H29 has been replaced by "true".  (It is already present, as 
+          H11).
+---  Hypothesis H30 has been replaced by "true".  (It is already present, as 
+          H12).
+---  Hypothesis H31 has been replaced by "true".  (It is already present, as 
+          H13).
+---  Hypothesis H32 has been replaced by "true".  (It is already present, as 
+          H14).
+---  Hypothesis H33 has been replaced by "true".  (It is already present, as 
+          H27).
+---  Hypothesis H34 has been replaced by "true".  (It is already present, as 
+          H28).
+%%%  Simplified H35 on reading formula in, to give:
+     %%%  H35:  numeric__plus(y1, numeric__plus(numeric__times(- 2, y2), y3)) 
+          >= float__first
+%%%  Simplified H36 on reading formula in, to give:
+     %%%  H36:  numeric__plus(y1, numeric__plus(numeric__times(- 2, y2), y3)) 
+          <= float__last
+---  Hypothesis H37 has been replaced by "true".  (It is already present, as 
+          H27).
+---  Hypothesis H38 has been replaced by "true".  (It is already present, as 
+          H28).
+---  Hypothesis H39 has been replaced by "true".  (It is already present, as 
+          H35).
+---  Hypothesis H40 has been replaced by "true".  (It is already present, as 
+          H36).
+%%%  Simplified H41 on reading formula in, to give:
+     %%%  H41:  numeric__times(1 / 2, numeric__plus(y1, numeric__plus(
+          numeric__times(- 2, y2), y3))) >= float__first
+%%%  Simplified H42 on reading formula in, to give:
+     %%%  H42:  numeric__times(1 / 2, numeric__plus(y1, numeric__plus(
+          numeric__times(- 2, y2), y3))) <= float__last
+---  Hypothesis H43 has been replaced by "true".  (It is already present, as 
+          H35).
+---  Hypothesis H44 has been replaced by "true".  (It is already present, as 
+          H36).
+---  Hypothesis H45 has been replaced by "true".  (It is already present, as 
+          H41).
+---  Hypothesis H46 has been replaced by "true".  (It is already present, as 
+          H42).
+---  Hypothesis H47 has been replaced by "true".  (It is already present, as 
+          H41).
+---  Hypothesis H48 has been replaced by "true".  (It is already present, as 
+          H42).
+---  Hypothesis H51 has been replaced by "true".  (It is already present, as H7)
+          .
+---  Hypothesis H52 has been replaced by "true".  (It is already present, as H8)
+          .
+---  Hypothesis H53 has been replaced by "true".  (It is already present, as 
+          H11).
+---  Hypothesis H54 has been replaced by "true".  (It is already present, as 
+          H12).
+---  Hypothesis H55 has been replaced by "true".  (It is already present, as 
+          H23).
+---  Hypothesis H56 has been replaced by "true".  (It is already present, as 
+          H24).
+---  Hypothesis H57 has been replaced by "true".  (It is already present, as 
+          H49).
+---  Hypothesis H58 has been replaced by "true".  (It is already present, as 
+          H50).
+---  Hypothesis H61 has been replaced by "true".  (It is already present, as 
+          H49).
+---  Hypothesis H62 has been replaced by "true".  (It is already present, as 
+          H50).
+---  Hypothesis H63 has been replaced by "true".  (It is already present, as 
+          H59).
+---  Hypothesis H64 has been replaced by "true".  (It is already present, as 
+          H60).
+---  Hypothesis H65 has been replaced by "true".  (It is already present, as 
+          H59).
+---  Hypothesis H66 has been replaced by "true".  (It is already present, as 
+          H60).
+---  Hypothesis H67 has been replaced by "true".  (It is already present, as H9)
+          .
+---  Hypothesis H68 has been replaced by "true".  (It is already present, as 
+          H10).
+%%%  Simplified C1 on reading formula in, to give:
+     %%%  C1:  numeric__times(1 / 2, numeric__plus(y1, numeric__plus(
+          numeric__times(- 2, y2), y3))) - numeric__times(1 / 2, numeric__minus(
+          y3, y1)) + y2 - y1 >= ipad__first
+%%%  Simplified C2 on reading formula in, to give:
+     %%%  C2:  numeric__times(1 / 2, numeric__plus(y1, numeric__plus(
+          numeric__times(- 2, y2), y3))) - numeric__times(1 / 2, numeric__minus(
+          y3, y1)) + y2 - y1 <= ipad__last
+%%%  Simplified C3 on reading formula in, to give:
+     %%%  C3:  true
+%%%  Simplified C4 on reading formula in, to give:
+     %%%  C4:  numeric__times(1 / 2, numeric__plus(y1, numeric__plus(
+          numeric__times(- 2, y2), y3))) + numeric__times(1 / 2, numeric__minus(
+          y3, y1)) + y2 - y3 >= ipad__first
+%%%  Simplified C5 on reading formula in, to give:
+     %%%  C5:  numeric__times(1 / 2, numeric__plus(y1, numeric__plus(
+          numeric__times(- 2, y2), y3))) + numeric__times(1 / 2, numeric__minus(
+          y3, y1)) + y2 - y3 <= ipad__last
+%%%  Simplified C6 on reading formula in, to give:
+     %%%  C6:  numeric__times(1 / 2, numeric__plus(y1, numeric__plus(
+          numeric__times(- 2, y2), y3))) >= icoeff1__first
+%%%  Simplified C7 on reading formula in, to give:
+     %%%  C7:  numeric__times(1 / 2, numeric__plus(y1, numeric__plus(
+          numeric__times(- 2, y2), y3))) <= icoeff1__last
+***  Proved C3:  true
+-S-  Applied substitution rule coeffs_rules(12).
+     This was achieved by replacing all occurrences of ipad__first by:
+          - (1 / 1000000).
+<S>  New C1:  numeric__times(1 / 2, numeric__plus(y1, numeric__plus(
+          numeric__times(- 2, y2), y3))) - numeric__times(1 / 2, numeric__minus(
+          y3, y1)) + y2 - y1 >= - (1 / 1000000)
+<S>  New C4:  numeric__times(1 / 2, numeric__plus(y1, numeric__plus(
+          numeric__times(- 2, y2), y3))) + numeric__times(1 / 2, numeric__minus(
+          y3, y1)) + y2 - y3 >= - (1 / 1000000)
+-S-  Applied substitution rule coeffs_rules(13).
+     This was achieved by replacing all occurrences of ipad__last by:
+          1 / 1000000.
+<S>  New C2:  numeric__times(1 / 2, numeric__plus(y1, numeric__plus(
+          numeric__times(- 2, y2), y3))) - numeric__times(1 / 2, numeric__minus(
+          y3, y1)) + y2 - y1 <= 1 / 1000000
+<S>  New C5:  numeric__times(1 / 2, numeric__plus(y1, numeric__plus(
+          numeric__times(- 2, y2), y3))) + numeric__times(1 / 2, numeric__minus(
+          y3, y1)) + y2 - y3 <= 1 / 1000000
+-S-  Applied substitution rule coeffs_rules(17).
+     This was achieved by replacing all occurrences of icoeff1__first by:
+          - (11 / 10).
+<S>  New C6:  numeric__times(1 / 2, numeric__plus(y1, numeric__plus(
+          numeric__times(- 2, y2), y3))) >= - (11 / 10)
+<S>  New C8:  numeric__times(1 / 2, numeric__minus(y3, y1)) >= - (11 / 10)
+<S>  New C10:  y2 >= - (11 / 10)
+-S-  Applied substitution rule coeffs_rules(18).
+     This was achieved by replacing all occurrences of icoeff1__last by:
+          11 / 10.
+<S>  New C7:  numeric__times(1 / 2, numeric__plus(y1, numeric__plus(
+          numeric__times(- 2, y2), y3))) <= 11 / 10
+<S>  New C9:  numeric__times(1 / 2, numeric__minus(y3, y1)) <= 11 / 10
+<S>  New C11:  y2 <= 11 / 10
+-S-  Applied substitution rule coeffs_rules(2).
+     This was achieved by replacing all occurrences of float__first by:
+          - 340282000000000000000000000000000000000.
+<S>  New H7:  y1 >= - 340282000000000000000000000000000000000
+<S>  New H9:  y2 >= - 340282000000000000000000000000000000000
+<S>  New H11:  y3 >= - 340282000000000000000000000000000000000
+<S>  New H13:  numeric__times(- 2, y2) >= - 
+          340282000000000000000000000000000000000
+<S>  New H17:  true
+<S>  New H23:  true
+<S>  New H27:  numeric__plus(numeric__times(- 2, y2), y3) >= - 
+          340282000000000000000000000000000000000
+<S>  New H35:  numeric__plus(y1, numeric__plus(numeric__times(- 2, y2), y3)) >= 
+          - 340282000000000000000000000000000000000
+<S>  New H41:  numeric__times(1 / 2, numeric__plus(y1, numeric__plus(
+          numeric__times(- 2, y2), y3))) >= - 
+          340282000000000000000000000000000000000
+<S>  New H49:  numeric__minus(y3, y1) >= - 
+          340282000000000000000000000000000000000
+<S>  New H59:  numeric__times(1 / 2, numeric__minus(y3, y1)) >= - 
+          340282000000000000000000000000000000000
+-S-  Applied substitution rule coeffs_rules(3).
+     This was achieved by replacing all occurrences of float__last by:
+          340282000000000000000000000000000000000.
+<S>  New H8:  y1 <= 340282000000000000000000000000000000000
+<S>  New H10:  y2 <= 340282000000000000000000000000000000000
+<S>  New H12:  y3 <= 340282000000000000000000000000000000000
+<S>  New H14:  numeric__times(- 2, y2) <= 
+          340282000000000000000000000000000000000
+<S>  New H18:  true
+<S>  New H24:  true
+<S>  New H28:  numeric__plus(numeric__times(- 2, y2), y3) <= 
+          340282000000000000000000000000000000000
+<S>  New H36:  numeric__plus(y1, numeric__plus(numeric__times(- 2, y2), y3)) <= 
+          340282000000000000000000000000000000000
+<S>  New H42:  numeric__times(1 / 2, numeric__plus(y1, numeric__plus(
+          numeric__times(- 2, y2), y3))) <= 
+          340282000000000000000000000000000000000
+<S>  New H50:  numeric__minus(y3, y1) <= 340282000000000000000000000000000000000
+<S>  New H60:  numeric__times(1 / 2, numeric__minus(y3, y1)) <= 
+          340282000000000000000000000000000000000
+-S-  Applied substitution rule coeffs_rules(4).
+     This was achieved by replacing all occurrences of float__base__first by:
+          - 340282000000000000000000000000000000000.
+<S>  New H19:  true
+-S-  Applied substitution rule coeffs_rules(5).
+     This was achieved by replacing all occurrences of float__base__last by:
+          340282000000000000000000000000000000000.
+<S>  New H20:  true
+-S-  Applied substitution rule coeffs_rules(7).
+     This was achieved by replacing all occurrences of iy__first by:
+          0.
+<S>  New H1:  y1 >= 0
+<S>  New H3:  y2 >= 0
+<S>  New H5:  y3 >= 0
+-S-  Applied substitution rule coeffs_rules(8).
+     This was achieved by replacing all occurrences of iy__last by:
+          1.
+<S>  New H2:  y1 <= 1
+<S>  New H4:  y2 <= 1
+<S>  New H6:  y3 <= 1
+---  Eliminated hypothesis H15 (true-hypothesis).
+---  Eliminated hypothesis H16 (true-hypothesis).
+---  Eliminated hypothesis H21 (true-hypothesis).
+---  Eliminated hypothesis H22 (true-hypothesis).
+---  Eliminated hypothesis H25 (true-hypothesis).
+---  Eliminated hypothesis H26 (true-hypothesis).
+---  Eliminated hypothesis H29 (true-hypothesis).
+---  Eliminated hypothesis H30 (true-hypothesis).
+---  Eliminated hypothesis H31 (true-hypothesis).
+---  Eliminated hypothesis H32 (true-hypothesis).
+---  Eliminated hypothesis H33 (true-hypothesis).
+---  Eliminated hypothesis H34 (true-hypothesis).
+---  Eliminated hypothesis H37 (true-hypothesis).
+---  Eliminated hypothesis H38 (true-hypothesis).
+---  Eliminated hypothesis H39 (true-hypothesis).
+---  Eliminated hypothesis H40 (true-hypothesis).
+---  Eliminated hypothesis H43 (true-hypothesis).
+---  Eliminated hypothesis H44 (true-hypothesis).
+---  Eliminated hypothesis H45 (true-hypothesis).
+---  Eliminated hypothesis H46 (true-hypothesis).
+---  Eliminated hypothesis H47 (true-hypothesis).
+---  Eliminated hypothesis H48 (true-hypothesis).
+---  Eliminated hypothesis H51 (true-hypothesis).
+---  Eliminated hypothesis H52 (true-hypothesis).
+---  Eliminated hypothesis H53 (true-hypothesis).
+---  Eliminated hypothesis H54 (true-hypothesis).
+---  Eliminated hypothesis H55 (true-hypothesis).
+---  Eliminated hypothesis H56 (true-hypothesis).
+---  Eliminated hypothesis H57 (true-hypothesis).
+---  Eliminated hypothesis H58 (true-hypothesis).
+---  Eliminated hypothesis H61 (true-hypothesis).
+---  Eliminated hypothesis H62 (true-hypothesis).
+---  Eliminated hypothesis H63 (true-hypothesis).
+---  Eliminated hypothesis H64 (true-hypothesis).
+---  Eliminated hypothesis H65 (true-hypothesis).
+---  Eliminated hypothesis H66 (true-hypothesis).
+---  Eliminated hypothesis H67 (true-hypothesis).
+---  Eliminated hypothesis H68 (true-hypothesis).
+---  Eliminated hypothesis H17 (true-hypothesis).
+---  Eliminated hypothesis H23 (true-hypothesis).
+---  Eliminated hypothesis H18 (true-hypothesis).
+---  Eliminated hypothesis H24 (true-hypothesis).
+---  Eliminated hypothesis H19 (true-hypothesis).
+---  Eliminated hypothesis H20 (true-hypothesis).
+---  Eliminated hypothesis H7 (redundant, given H1).
+---  Eliminated hypothesis H8 (redundant, given H2).
+---  Eliminated hypothesis H9 (redundant, given H3).
+---  Eliminated hypothesis H10 (redundant, given H4).
+---  Eliminated hypothesis H11 (redundant, given H5).
+---  Eliminated hypothesis H12 (redundant, given H6).
+***  Proved C10:  y2 >= - (11 / 10)
+     using hypothesis H3.
+***  Proved C11:  y2 <= 11 / 10
+     using hypothesis H4.
+     +++  New H69:  float__size >= 0
+     +++  New H70:  iy__size >= 0
+     +++  New H71:  ipad__size >= 0
+     +++  New H72:  icoeff1__size >= 0
+
