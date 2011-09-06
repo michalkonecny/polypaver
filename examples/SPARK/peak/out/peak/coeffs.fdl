@@ -1,0 +1,43 @@
+           {*******************************************************}
+                               {FDL Declarations}
+                              {Examiner GPL 2011}
+             {Copyright (C) 2011 Altran Praxis Limited, Bath, U.K.}
+           {*******************************************************}
+
+
+                        {DATE : 06-SEP-2011 18:04:24.77}
+
+                           {procedure peak.coeffs}
+
+
+title procedure coeffs;
+
+  function round__(real) : integer;
+  const icoeff1__base__first : real = pending; 
+  const icoeff1__base__last : real = pending; 
+  const ipad__base__first : real = pending; 
+  const ipad__base__last : real = pending; 
+  const iy__base__first : real = pending; 
+  const iy__base__last : real = pending; 
+  const float__base__first : real = pending; 
+  const float__base__last : real = pending; 
+  const icoeff1__first : real = pending; 
+  const icoeff1__last : real = pending; 
+  const icoeff1__size : integer = pending; 
+  const ipad__first : real = pending; 
+  const ipad__last : real = pending; 
+  const ipad__size : integer = pending; 
+  const iy__first : real = pending; 
+  const iy__last : real = pending; 
+  const iy__size : integer = pending; 
+  const float__first : real = pending; 
+  const float__last : real = pending; 
+  const float__size : integer = pending; 
+  var y1 : real;
+  var y2 : real;
+  var y3 : real;
+  function numeric__plus(real, real) : real;
+  function numeric__minus(real, real) : real;
+  function numeric__times(real, real) : real;
+
+end;

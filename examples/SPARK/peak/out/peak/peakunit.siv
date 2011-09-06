@@ -1,0 +1,217 @@
+*****************************************************************************
+                       Semantic Analysis of SPARK Text
+                              Examiner GPL 2011
+             Copyright (C) 2011 Altran Praxis Limited, Bath, U.K.
+*****************************************************************************
+
+
+CREATED 06-SEP-2011, 18:04:24  SIMPLIFIED 06-SEP-2011, 18:04:28
+
+SPARK Simplifier GPL 2011
+Copyright (C) 2011 Altran Praxis Limited, Bath, U.K.
+
+procedure peak.peakUnit
+
+
+
+
+For path(s) from start to run-time check associated with statement of line 43:
+
+procedure_peakunit_1.
+*** true .          /* all conclusions proved */
+
+
+For path(s) from start to run-time check associated with statement of line 43:
+
+procedure_peakunit_2.
+*** true .          /* all conclusions proved */
+
+
+For path(s) from start to precondition check associated with statement of line 
+          44:
+
+procedure_peakunit_3.
+*** true .          /* all conclusions proved */
+
+
+For path(s) from start to run-time check associated with statement of line 44:
+
+procedure_peakunit_4.
+*** true .          /* all conclusions proved */
+
+
+For path(s) from start to run-time check associated with statement of line 45:
+
+procedure_peakunit_5.
+H1:    y1 >= 0 .
+H2:    y1 <= 1 .
+H3:    y2 >= 0 .
+H4:    y2 <= 1 .
+H5:    y3 >= 0 .
+H6:    y3 <= 1 .
+H7:    m1__1 = y1 and y1 >= y3 or m1__1 = y3 and y3 >= y1 .
+H8:    m1__1 >= - 340282000000000000000000000000000000000 .
+H9:    m1__1 <= 340282000000000000000000000000000000000 .
+H10:   a__2 - b__2 + y2 - y1 >= - (1 / 1000000) .
+H11:   a__2 - b__2 + y2 - y1 <= 1 / 1000000 .
+H12:   a__2 + b__2 + y2 - y3 >= - (1 / 1000000) .
+H13:   a__2 + b__2 + y2 - y3 <= 1 / 1000000 .
+H14:   a__2 >= - (11 / 10) .
+H15:   a__2 <= 11 / 10 .
+H16:   b__2 >= - (11 / 10) .
+H17:   b__2 <= 11 / 10 .
+H18:   y2 >= - (11 / 10) .
+H19:   y2 <= 11 / 10 .
+H20:   a__2 >= - 340282000000000000000000000000000000000 .
+H21:   a__2 <= 340282000000000000000000000000000000000 .
+H22:   b__2 >= - 340282000000000000000000000000000000000 .
+H23:   b__2 <= 340282000000000000000000000000000000000 .
+H24:   universal_real__size >= 0 .
+H25:   universal_real__first <= universal_real__last .
+H26:   universal_real__base__first <= universal_real__base__last .
+H27:   universal_real__base__first <= universal_real__first .
+H28:   universal_real__base__last >= universal_real__last .
+H29:   float__size >= 0 .
+H30:   iy__size >= 0 .
+H31:   ipad__size >= 0 .
+H32:   icoeff1__size >= 0 .
+H33:   icoeff2__size >= 0 .
+       ->
+C1:    - (1 / 5) >= universal_real__base__first .
+C2:    - (1 / 5) <= universal_real__base__last .
+
+
+For path(s) from start to precondition check associated with statement of line 
+          46:
+
+procedure_peakunit_6.
+*** true .          /* all conclusions proved */
+
+
+For path(s) from start to run-time check associated with statement of line 46:
+
+procedure_peakunit_7.
+*** true .          /* all conclusions proved */
+
+
+For path(s) from start to run-time check associated with statement of line 47:
+
+procedure_peakunit_8.
+*** true .          /* all conclusions proved */
+
+
+For path(s) from start to run-time check associated with statement of line 47:
+
+procedure_peakunit_9.
+*** true .          /* all conclusions proved */
+
+
+For path(s) from start to run-time check associated with statement of line 49:
+
+procedure_peakunit_10.
+*** true .          /* all conclusions proved */
+
+
+For path(s) from start to finish:
+
+procedure_peakunit_11.
+H1:    y1 >= 0 .
+H2:    y1 <= 1 .
+H3:    y2 >= 0 .
+H4:    y2 <= 1 .
+H5:    y3 >= 0 .
+H6:    y3 <= 1 .
+H7:    m1__1 = y1 and y1 >= y3 or m1__1 = y3 and y3 >= y1 .
+H8:    m1__1 >= - 340282000000000000000000000000000000000 .
+H9:    m1__1 <= 340282000000000000000000000000000000000 .
+H10:   a__2 - b__2 + y2 - y1 >= - (1 / 1000000) .
+H11:   a__2 - b__2 + y2 - y1 <= 1 / 1000000 .
+H12:   a__2 + b__2 + y2 - y3 >= - (1 / 1000000) .
+H13:   a__2 + b__2 + y2 - y3 <= 1 / 1000000 .
+H14:   a__2 >= - (11 / 10) .
+H15:   a__2 <= 11 / 10 .
+H16:   b__2 >= - (11 / 10) .
+H17:   b__2 <= 11 / 10 .
+H18:   y2 >= - (11 / 10) .
+H19:   y2 <= 11 / 10 .
+H20:   b__2 >= - 340282000000000000000000000000000000000 .
+H21:   b__2 <= 340282000000000000000000000000000000000 .
+H22:   - (2 * a__2) >= - 340282000000000000000000000000000000000 .
+H23:   - (2 * a__2) <= 340282000000000000000000000000000000000 .
+H24:   - (1 / 5) >= universal_real__base__first .
+H25:   - (1 / 5) <= universal_real__base__last .
+H26:   a__2 < - (1 / 5) .
+H27:   2 * a__2 <= b__2 .
+H28:   b__2 <= - (2 * a__2) .
+H29:   a__2 < - (1 / 10) .
+H30:   a__2 >= - (6 / 5) .
+H31:   a__2 <= 6 / 5 .
+H32:   b__2 >= - (6 / 5) .
+H33:   b__2 <= 6 / 5 .
+H34:   y2 >= - (6 / 5) .
+H35:   y2 <= 6 / 5 .
+H36:   m2__3 >= y2 - 7 / 10 .
+H37:   m2__3 <= 10 .
+H38:   m2__3 >= - 340282000000000000000000000000000000000 .
+H39:   r__4 = m1__1 and m1__1 >= m2__3 or r__4 = m2__3 and m2__3 >= m1__1 .
+H40:   r__4 >= - 340282000000000000000000000000000000000 .
+H41:   r__4 <= 340282000000000000000000000000000000000 .
+H42:   universal_real__size >= 0 .
+H43:   universal_real__first <= universal_real__last .
+H44:   universal_real__base__first <= universal_real__base__last .
+H45:   universal_real__base__first <= universal_real__first .
+H46:   universal_real__base__last >= universal_real__last .
+H47:   float__size >= 0 .
+H48:   iy__size >= 0 .
+H49:   ipad__size >= 0 .
+H50:   icoeff1__size >= 0 .
+H51:   icoeff2__size >= 0 .
+       ->
+C1:    r__4 >= y1 - 1 .
+C2:    r__4 >= y2 - 1 .
+C3:    r__4 >= y3 - 1 .
+
+
+procedure_peakunit_12.
+H1:    y1 >= 0 .
+H2:    y1 <= 1 .
+H3:    y2 >= 0 .
+H4:    y2 <= 1 .
+H5:    y3 >= 0 .
+H6:    y3 <= 1 .
+H7:    m1__1 = y1 and y1 >= y3 or m1__1 = y3 and y3 >= y1 .
+H8:    m1__1 >= - 340282000000000000000000000000000000000 .
+H9:    m1__1 <= 340282000000000000000000000000000000000 .
+H10:   a__2 - b__2 + y2 - y1 >= - (1 / 1000000) .
+H11:   a__2 - b__2 + y2 - y1 <= 1 / 1000000 .
+H12:   a__2 + b__2 + y2 - y3 >= - (1 / 1000000) .
+H13:   a__2 + b__2 + y2 - y3 <= 1 / 1000000 .
+H14:   a__2 >= - (11 / 10) .
+H15:   a__2 <= 11 / 10 .
+H16:   b__2 >= - (11 / 10) .
+H17:   b__2 <= 11 / 10 .
+H18:   y2 >= - (11 / 10) .
+H19:   y2 <= 11 / 10 .
+H20:   b__2 >= - 340282000000000000000000000000000000000 .
+H21:   b__2 <= 340282000000000000000000000000000000000 .
+H22:   - (2 * a__2) >= - 340282000000000000000000000000000000000 .
+H23:   - (2 * a__2) <= 340282000000000000000000000000000000000 .
+H24:   - (1 / 5) >= universal_real__base__first .
+H25:   - (1 / 5) <= universal_real__base__last .
+H26:   - (1 / 5) <= a__2 or (b__2 < 2 * a__2 or - (2 * a__2) < b__2) .
+H27:   universal_real__size >= 0 .
+H28:   universal_real__first <= universal_real__last .
+H29:   universal_real__base__first <= universal_real__base__last .
+H30:   universal_real__base__first <= universal_real__first .
+H31:   universal_real__base__last >= universal_real__last .
+H32:   float__size >= 0 .
+H33:   iy__size >= 0 .
+H34:   ipad__size >= 0 .
+H35:   icoeff1__size >= 0 .
+H36:   icoeff2__size >= 0 .
+       ->
+C1:    m1__1 >= y1 - 1 .
+C2:    m1__1 >= y2 - 1 .
+C3:    m1__1 >= y3 - 1 .
+
+

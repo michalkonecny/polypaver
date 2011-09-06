@@ -1,0 +1,63 @@
+           {*******************************************************}
+                               {FDL Declarations}
+                              {Examiner GPL 2011}
+             {Copyright (C) 2011 Altran Praxis Limited, Bath, U.K.}
+           {*******************************************************}
+
+
+                        {DATE : 06-SEP-2011 18:04:24.80}
+
+                          {procedure peak.peakUnit}
+
+
+title procedure peakunit;
+
+  function round__(real) : integer;
+  type universal_real = real;
+  const icoeff2__base__first : real = pending; 
+  const icoeff2__base__last : real = pending; 
+  const icoeff1__base__first : real = pending; 
+  const icoeff1__base__last : real = pending; 
+  const ipad__base__first : real = pending; 
+  const ipad__base__last : real = pending; 
+  const iy__base__first : real = pending; 
+  const iy__base__last : real = pending; 
+  const float__base__first : real = pending; 
+  const float__base__last : real = pending; 
+  const universal_real__base__first : real = pending; 
+  const universal_real__base__last : real = pending; 
+  const icoeff2__first : real = pending; 
+  const icoeff2__last : real = pending; 
+  const icoeff2__size : integer = pending; 
+  const icoeff1__first : real = pending; 
+  const icoeff1__last : real = pending; 
+  const icoeff1__size : integer = pending; 
+  const ipad__first : real = pending; 
+  const ipad__last : real = pending; 
+  const ipad__size : integer = pending; 
+  const iy__first : real = pending; 
+  const iy__last : real = pending; 
+  const iy__size : integer = pending; 
+  const float__first : real = pending; 
+  const float__last : real = pending; 
+  const float__size : integer = pending; 
+  const universal_real__first : real = pending; 
+  const universal_real__last : real = pending; 
+  const universal_real__size : integer = pending; 
+  var y1 : real;
+  var y2 : real;
+  var y3 : real;
+  var r : real;
+  var a : real;
+  var b : real;
+  var c : real;
+  var m1 : real;
+  var m2 : real;
+  var r__4 : real;
+  var m2__3 : real;
+  var c__2 : real;
+  var b__2 : real;
+  var a__2 : real;
+  var m1__1 : real;
+
+end;

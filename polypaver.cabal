@@ -32,6 +32,39 @@ Extra-Source-Files:
     CHANGES
     examples/mini.hs
     examples/bench.hs
+    examples/SPARK/peak/gnat.cfg
+    examples/SPARK/peak/src/exact.ads
+    examples/SPARK/peak/src/peak.adb
+    examples/SPARK/peak/src/peak.ads
+    examples/SPARK/peak/src/numeric.ads
+    examples/SPARK/peak/spark.sw
+    examples/SPARK/peak/out/peak.sli
+    examples/SPARK/peak/out/exact.sli
+    examples/SPARK/peak/out/peak.lst
+    examples/SPARK/peak/out/exact.lst
+    examples/SPARK/peak/out/spark.rep
+    examples/SPARK/peak/out/numeric.lst
+    examples/SPARK/peak/out/peak/max.fdl
+    examples/SPARK/peak/out/peak/peakunit.slg
+    examples/SPARK/peak/out/peak/peakunit.rls
+    examples/SPARK/peak/out/peak/peakunit.vcg
+    examples/SPARK/peak/out/peak/coeffs.rls
+    examples/SPARK/peak/out/peak/peakunit.siv
+    examples/SPARK/peak/out/peak/peakq.slg
+    examples/SPARK/peak/out/peak/coeffs.slg
+    examples/SPARK/peak/out/peak/peakq.vcg
+    examples/SPARK/peak/out/peak/peakq.rls
+    examples/SPARK/peak/out/peak/coeffs.fdl
+    examples/SPARK/peak/out/peak/coeffs.vcg
+    examples/SPARK/peak/out/peak/peakq.fdl
+    examples/SPARK/peak/out/peak/peakunit.fdl
+    examples/SPARK/peak/out/peak/max.vcg
+    examples/SPARK/peak/out/peak/coeffs.siv
+    examples/SPARK/peak/out/peak/max.rls
+    examples/SPARK/peak/out/peak/max.siv
+    examples/SPARK/peak/out/peak/max.slg
+    examples/SPARK/peak/out/peak/peakq.siv
+    examples/SPARK/peak/peak.smf
 
 Library
   hs-source-dirs: src
