@@ -113,7 +113,6 @@ loop
                     show ((fromInteger (currtime-inittime)) / 1000000000000) ++
                     " seconds." ++
                   "\nComputed boxes : " ++ show computedboxes ++ 
-                  reportQLengthS ++
                   "\nGreatest queue size : " ++ show maxQLength ++  
                   "\nGreatest depth : " ++ show maxDepthReached ++ "\n\n"
                 stopProver 
@@ -223,7 +222,7 @@ loop
                         mstateTV inittime
                         (max (depth+1) maxDepthReached) 
                         (boxes Q.>< (Q.fromList $ map prepareBox newBoxes2)) 
-                        newQLength maxQLength currtime 
+                        newQLength newMaxQLength currtime 
                         (computedboxes+1) newproblemvol truevol 
                         Nothing Nothing
                 D ->
@@ -231,11 +230,11 @@ loop
                         mstateTV inittime
                         (max (depth+1) maxDepthReached) 
                         ((Q.fromList $ map prepareBox newBoxes2) Q.>< boxes) 
-                        newQLength maxQLength currtime 
+                        newQLength newMaxQLength currtime 
                         (computedboxes+1) newproblemvol truevol 
                         Nothing Nothing
             where
-            newMaxQlength = max newQLength maxQLength
+            newMaxQLength = max newQLength maxQLength
             newQLength = qlength - 1 + newBoxes2length
             newBoxes2length = length newBoxes2
             newBoxes2
