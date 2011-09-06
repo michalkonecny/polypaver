@@ -20,7 +20,7 @@ report maximum queue size in the end
 
 when hitting the depth bound, report it more explicitly
 
-add executable "polypaver" that takes siv and a VC name and tries to solve it
+[DONE] add executable "polypaver" that takes siv and a VC name and tries to solve it
   (later it will also be able to take a tptp file)
 
 write some documentation on googlecode
