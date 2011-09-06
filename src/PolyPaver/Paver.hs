@@ -15,6 +15,7 @@
 module PolyPaver.Paver
 (
     defaultMain,
+    defaultParsingMain,
     Problem(..),
     module PolyPaver.Form
 )
@@ -44,7 +45,8 @@ data Problem = Problem
     deriving (Show,Read)
 
 data Paver = Paver 
-    {degree :: Int
+    {problemId :: [String]
+    ,degree :: Int
     ,startDegree :: Int
     ,maxSize :: Int
     ,minDepth :: Int
@@ -64,34 +66,51 @@ data Paver = Paver
     deriving (Show,Data,Typeable)
 
 paver = Paver 
-    {degree = 0 &= help "maximum polynomial degree (default = 0)"
-    ,startDegree = 0 &= help "first polynomial degree to try on each box (default = 0)"
+    {problemId = [] &= args &= typ "PROBLEM_ID" 
+    ,degree = 0 &= help "maximum polynomial degree (default = 0)" &= groupname "Proving effort"
+    ,startDegree = -1 &= help "first polynomial degree to try on each box (default = degree)"
     ,maxSize = 100 &= name "z" &= help "maximum polynomial term size (default = 100)"
     ,order = B &= help "sub-problem processing order, b for breadth-first (default) or d for depth-first"
     ,minDepth = 0 &= help "minimum bisection depth (default = 0)"
-    ,maxDepth = 10 &= name "b" &= help "maximum bisection depth (default = 10)"
+    ,maxDepth = 1000 &= name "b" &= help "maximum bisection depth (default = 1000)"
     ,effort = 10 &= help "approximation effort parameter (default = 10)" 
-    ,time = 3600 &= help "timeout in seconds (default = 3600)"
-    ,boxSkewing = False &= name "k" &= help "allow parallelepiped boxes, by default only coaxial rectangles"
+    ,time = 7*24*3600 &= help "timeout in seconds (default = 7*24*3600 ie 1 week)"    
+    ,boxSkewing = False &= name "k" &= help "allow parallelepiped boxes, by default only coaxial rectangles" &= groupname "Experimental"
     ,splitGuessing = False &= name "g" &= help "try guessing the best direction of splitting, by default tend towards square boxes"
 --    ,fptype = B32near &= help "type of binary floating point number and rounding mode, b32 or b32near (default) for 32-bit and b64 or b64near for 64-bit"
-    ,epsrelbits = 23 &= name "r" &= help "n to compute machine epsilon using 2^-n (default = 24)"
+    ,epsrelbits = 23 &= name "r" &= help "n to compute machine epsilon using 2^-n (default = 24)" &= groupname "Floating point rounding interpretation in conjectures"
     ,epsabsbits = 126 &= name "a" &= help "n to compute denormalised epsilon using 2^-n (default = 126)"
-    ,quiet = False &= help "suppress all output except the final result (default off)"
+    ,quiet = False &= help "suppress all output except the final result (default off)" &= groupname "Verbosity"
     ,verbose = False &= help "output extra details while paving (default off)"
-    ,plotWidth = 0 &= name "w" &= help "plot width for 2D problems, 0 mean no plotting (default)"
+    ,plotWidth = 0 &= name "w" &= help "plot width for 2D problems, 0 mean no plotting (default)" &= groupname "Plotting"
     ,plotHieght = 0 &= name "h" &= help "plot height for 2D problems, 0 mean no plotting (default)"
-    } &=
-    help "Decides theorems using polynomial interval arithmetic" &=
-    summary "PolyPaver 0.1 (c) 2011 Jan Duracz, Michal Konecny"
+    } 
+    &= help (unlines 
+                ["Tries to decide conjectures using polynomial interval arithmetic.",
+                 "For the polypaver executable [PROBLEM_ID] is <file.siv> <vc name>.",
+                 "For problems defined in Haskell [PROBLEM_ID] should be blank."]) 
+    &= summary "PolyPaver 0.1 (c) 2011 Jan Duracz, Michal Konecny"
+    &= name "polypaver"
+
 
 defaultMain problem = 
     do
     args <- cmdArgs paver
+    runPaver problem args
+
+defaultParsingMain problemFactory =
+    do
+    args <- cmdArgs paver
+    let problemIdOpt = problemId args
+    problem <- problemFactory problemIdOpt
+    runPaver problem args
+    
+runPaver problem args =
+    do
     initMachineDouble -- round upwards
     hSetBuffering stdout LineBuffering -- print progress in real time, not in batches
     let maxdeg = degree args
-        startdeg = startDegree args
+        startdeg = case startDegree args of s | s == -1 -> maxdeg; s -> s
         improvementRatioThreshold = 1.2
         maxsize = maxSize args 
         maxtime = toInteger $ time args

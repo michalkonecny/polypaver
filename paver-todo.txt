@@ -20,7 +20,8 @@ increase the default depth bound to 1000 to make it ineffective
 
 when hitting the depth bound, report it more explicitly
 
-add an executable that takes siv and a VC name and tries to solve it, publish Linux i386 32bit version
+add executable "polypaver" that takes siv and a VC name and tries to solve it
+  (later it will also be able to take a tptp file)
 
 write some documentation on googlecode
    installation guide
