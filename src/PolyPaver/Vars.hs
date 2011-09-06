@@ -286,7 +286,7 @@ getBox form =
         errorMessage =
             unlines $ map reportBadVar $ filter (not . isGood) varRanges
         reportBadVar (v, _) =
-            "*** failed to derive a bound for variable " ++ show v ++ " in formula " ++ show form 
+            "*** failed to derive a bound for variable " ++ show v ++ " in formula " ++ showForm form 
     varSet = getFormFreeVars form
     initBoxMap = Map.fromAscList $ zip (Set.toAscList varSet) (repeat (Nothing, Nothing))
     boxMap = findRepeat initBoxMap $ tail $ (iterate $ scanHypotheses form) initBoxMap

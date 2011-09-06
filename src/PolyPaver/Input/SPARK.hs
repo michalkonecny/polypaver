@@ -1,6 +1,6 @@
 {-|
     Module      :  Main
-    Description :  translator of SPARK VCs to PolyPaver problems 
+    Description :  parser of SPARK vcg and siv files 
     Copyright   :  (c) Michal Konecny, Jan Duracz
     License     :  BSD3
 
@@ -8,17 +8,21 @@
     Stability   :  experimental
     Portability :  portable
 
-    Translator of SPARK VCs to PolyPaver problems.
+    Parser of SPARK vcg and siv files.
 -}
-module Main where
+module PolyPaver.Input.SPARK 
+(
+    parseSiv
+)
+where
 
 import PolyPaver.GenerateMain
 import PolyPaver.Form
 import PolyPaver.Vars
+import PolyPaver.PPBox
 
 import Numeric.ER.Misc
 
-import System.Environment (getArgs)
 import Data.Char (ord)
 import Data.List (intercalate)
 
@@ -29,57 +33,59 @@ import Text.Parsec.Expr
 --import Text.Parsec.Prim
 import Text.Parsec.Language
 
-main = do
-  inputPathS : outputFolder : _ <- getArgs
-  fileS <- readFile inputPathS
-  let vcs = parseSiv inputPathS fileS
-  let vcBoxes = map (addBox inputPathS) $ filter (notVerum . snd) vcs
-  mapM_ (writePolyPaverMain outputFolder) $ vcBoxes
+--main = do
+--  inputPathS : outputFolder : _ <- getArgs
+--  fileS <- readFile inputPathS
+--  let vcs = parseSiv inputPathS fileS
+--  let vcBoxes = map (addBox inputPathS) $ filter (notVerum . snd) vcs
+--  mapM_ (writePolyPaverMain outputFolder) $ vcBoxes
   
-addBox inputPathS (name, form) =
-    (name, removeDisjointHypotheses formN, box)
+parseSiv ::
+    String {-^ description of the source (eg file name) for error reporting -} ->
+    String {-^ the contents of the SPARK vcg or siv file -} -> 
+    String {-^ VC name -} -> 
+    (Form, [(Int, (Rational, Rational))])
+    {-^ the VC and the bounding box for its variables -}
+parseSiv sourceDescription s vcName =
+    case parse (sivVC vcName) "siv" s of
+        Right t -> addBox (vcName, t)
+        Left err -> error $ "parse error in " ++ sourceDescription ++ ":" ++ show err 
+        
+addBox (name, form) =
+    (formN, box)
     where
     box =
         case getBox formN of
             Left err -> 
-                error $ "addBox: problem with VC " ++ name ++ ":\n" ++ err
+                error $ "PolyPaver.Input.SPARK: addBox: problem with VC " ++ name ++ ":\n" ++ err
             Right box -> box
-    formN = normaliseVars form
+    formN = removeDisjointHypotheses $ normaliseVars form
   
-parseSiv filePath s =
-    case parse siv "siv" s of
-        Right t -> t
-        Left err -> error $ "parse error in file " ++ filePath ++ ":" ++ show err 
-        
-siv :: Parser [(String, Form)]
-siv =
-    many $
-        do
-        untilStartOfVC
-        vcWhole
-        where
-        untilStartOfVC =
-            (try startOfVC) <|> (manyTill anyToken $ try $ do { newline; startOfVC })
-        startOfVC =
-            (m_symbol "procedure_")
-            <|> 
-            (m_symbol "function_")
+sivVC :: String -> Parser Form
+sivVC vcName =
+    do
+    untilStartOfVC
+    vcWhole
+    where
+    untilStartOfVC =
+        (try startOfVC) <|> (manyTill anyToken $ try $ do { newline; startOfVC })
+    startOfVC =
+        (m_symbol $ "procedure_" ++ vcName)
+        <|> 
+        (m_symbol $ "function_" ++ vcName)
 
 vcHead =
     do
-    vcName <- m_identifier
---    unsafePrint ("vcHead: got identifier = " ++ vcName) $ return ()
+--    vcName <- m_identifier
     m_dot
---    unsafePrint ("vcHead: vcName = " ++ vcName) $ return ()
-    return vcName
 
-vcWhole :: Parser (String, Form) 
+vcWhole :: Parser Form 
 vcWhole = 
     do
-    vcName <- vcHead
+    vcHead
     t <- vcBody <|> vcEmptyBody
 --    unsafePrint ("vcWhole: done vcName = " ++ vcName ++ "; form = " ++ showForm t) $ return ()
-    return (vcName, t)
+    return t
 
 vcBody :: Parser Form
 vcBody = 
