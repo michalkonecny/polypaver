@@ -5,7 +5,7 @@
            *******************************************************
 
 
-                        DATE : 06-SEP-2011 23:02:24.87
+                        DATE : 06-SEP-2011 23:49:00.28
 
 Options:
     noindex_file
@@ -101,12 +101,16 @@ Listing Filename:  /home/jan/FPbyContract/paver/examples/SPARK/sqrt/out/sqrt.lst
    Unit type:  main program
    Unit has been analysed, any errors are listed below.
 
-1 error(s) or warning(s)
+2 error(s) or warning(s)
 
 Line
+  14     while r /= s loop
+                 ^1
+--- (  1)  Warning           :308: Use of equality operator with floating point type.
+
   19  end sqrt;
 
---- (  1)  Warning           :405: VCs for statements including real numbers are 
+--- (  2)  Warning           :405: VCs for statements including real numbers are 
            approximate.
 
 

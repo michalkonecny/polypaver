@@ -5,7 +5,7 @@
            *******************************************************
 
 
-                        DATE : 06-SEP-2011 23:02:24.87
+                        DATE : 06-SEP-2011 23:49:00.28
 
 Line
    1  with numeric;
@@ -15,22 +15,26 @@ Line
    5  --# derives r from x;
    6  --# pre  1.0 <= x and x <= 2.0;
    7  --# post r in float and
-   8  --#      r <= (1.0+9.0*numeric.epsrel)*exact.sqrt(x);
+   8  --#      r <= (1.0+4.0*numeric.epsrel)*exact.sqrt(x);
    9  is
   10     s : float;
   11  begin
   12     s := x;
-  13     r := numeric.times(0.5,numeric.plus(x,1.0));
-  14     while abs(numeric.minus(r,s)) > numeric.epsabs loop
-  15        s := r;
-  16        --# assert 0.5 <= s and s <= 3.0;
+  13     r := numeric.plus(numeric.times(0.5,x),0.5);
+  14     while r /= s loop
+                 ^1
+--- (  1)  Warning           :308: Use of equality operator with floating point 
+           type.
+
+  15        --# assert r in -0.25*x**2+x .. 0.25*x**2+1.0 ;
+  16        s := r;
   17        r := numeric.times(0.5,numeric.plus(s,numeric.divide(x,s)));
   18     end loop;
   19  end sqrt;
 
 +++        Flow analysis of subprogram sqrt performed: no 
            errors found.
---- (  1)  Warning           :405: VCs for statements including real numbers are 
+--- (  2)  Warning           :405: VCs for statements including real numbers are 
            approximate.
 
 
