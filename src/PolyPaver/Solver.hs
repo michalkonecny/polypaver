@@ -97,7 +97,7 @@ loop
         maxDepthReached 
         queue qlength maxQLength prevtime 
         computedboxes problemvol truevol 
-        maybeCurrdeg maybePrevMeasure
+        maybeCurrdeg maybePrevMeasure 
         =
         do
         if (qlength > 0) then reportBox else return ()
@@ -361,8 +361,12 @@ loop
                 _ ->
                     do
                     putStrLn $
-                        "Proved fraction : " ++ show (newtruevol / problemvol)
+                        "Proved fraction : " ++ show provedFraction
 --                    putStrLn $ formDebug
+            where
+            provedFraction
+                | problemvol `RA.equalReals` 0 == Just True = 1
+                | otherwise = (newtruevol / problemvol)
         reportSplit
             =
             do
