@@ -5,7 +5,7 @@
            *******************************************************
 
 
-                        DATE : 06-SEP-2011 23:02:24.73
+                        DATE : 06-SEP-2011 23:49:00.18
 
 Line
    1  with exact;
@@ -28,11 +28,7 @@ Line
   18    function divide (x,y : float) return float;
   19    --# pre divide(x,y) in float;
   20  
-  21    function sqrt_init (x : float) return float;
-  22    --# pre  x in 0.5..2.0;
-  23    --# return r => r in (1.0-0.5**6)/exact.sqrt(x)..(1.0+0.5**6)/exact.sqrt(x);
-  24  
-  25  end numeric;
+  21  end numeric;
 
 
 --End of file--------------------------------------------------

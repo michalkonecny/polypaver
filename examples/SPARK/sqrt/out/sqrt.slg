@@ -5,7 +5,7 @@
 *****************************************************************************
 
 
-CREATED 06-SEP-2011, 23:02:24  SIMPLIFIED 06-SEP-2011, 23:02:38
+CREATED 06-SEP-2011, 23:49:00  SIMPLIFIED 06-SEP-2011, 23:49:18
 
 SPARK Simplifier GPL 2011
 Copyright (C) 2011 Altran Praxis Limited, Bath, U.K.
@@ -28,28 +28,26 @@ procedure sqrt
 @@@@@@@@@@  VC: procedure_sqrt_2.  @@@@@@@@@@
 ---  Hypothesis H5 has been replaced by "true".  (It is already present, as H3).
 ---  Hypothesis H6 has been replaced by "true".  (It is already present, as H4).
-***  Proved C4:  1 <= float__last
-     using hypotheses H1 & H4.
-***  Proved C5:  x >= float__first
+***  Proved C3:  x >= float__first
      using hypothesis H3.
-***  Proved C6:  x <= float__last
+***  Proved C4:  x <= float__last
      using hypothesis H4.
 -S-  Applied substitution rule sqrt_rules(2).
      This was achieved by replacing all occurrences of float__first by:
           - 340282000000000000000000000000000000000.
 <S>  New H3:  x >= - 340282000000000000000000000000000000000
-<S>  New C1:  numeric__plus(x, 1) >= - 340282000000000000000000000000000000000
-<S>  New C3:  true
-<S>  New C7:  true
+<S>  New C1:  numeric__times(1 / 2, x) >= - 
+          340282000000000000000000000000000000000
+<S>  New C5:  true
 -S-  Applied substitution rule sqrt_rules(3).
      This was achieved by replacing all occurrences of float__last by:
           340282000000000000000000000000000000000.
 <S>  New H4:  x <= 340282000000000000000000000000000000000
-<S>  New C2:  numeric__plus(x, 1) <= 340282000000000000000000000000000000000
-<S>  New C8:  true
-***  Proved C3:  true
-***  Proved C7:  true
-***  Proved C8:  true
+<S>  New C2:  numeric__times(1 / 2, x) <= 
+          340282000000000000000000000000000000000
+<S>  New C6:  true
+***  Proved C5:  true
+***  Proved C6:  true
 ---  Eliminated hypothesis H5 (true-hypothesis).
 ---  Eliminated hypothesis H6 (true-hypothesis).
 ---  Eliminated hypothesis H3 (redundant, given H1).
@@ -60,35 +58,38 @@ procedure sqrt
 @@@@@@@@@@  VC: procedure_sqrt_3.  @@@@@@@@@@
 ---  Hypothesis H5 has been replaced by "true".  (It is already present, as H3).
 ---  Hypothesis H6 has been replaced by "true".  (It is already present, as H4).
----  Hypothesis H11 has been replaced by "true".  (It is already present, as H3)
+---  Hypothesis H9 has been replaced by "true".  (It is already present, as H3).
+---  Hypothesis H10 has been replaced by "true".  (It is already present, as H4)
           .
----  Hypothesis H12 has been replaced by "true".  (It is already present, as H4)
+---  Hypothesis H13 has been replaced by "true".  (It is already present, as H7)
           .
----  Hypothesis H15 has been replaced by "true".  (It is already present, as H7)
+---  Hypothesis H14 has been replaced by "true".  (It is already present, as H8)
           .
----  Hypothesis H16 has been replaced by "true".  (It is already present, as H8)
-          .
-***  Proved C3:  numeric__plus(x, 1) >= float__first
+***  Proved C3:  1 / 2 >= float__first
+     using hypothesis H11.
+***  Proved C4:  1 / 2 <= float__last
+     using hypothesis H12.
+***  Proved C5:  numeric__times(1 / 2, x) >= float__first
      using hypothesis H7.
-***  Proved C4:  numeric__plus(x, 1) <= float__last
+***  Proved C6:  numeric__times(1 / 2, x) <= float__last
      using hypothesis H8.
 -S-  Applied substitution rule sqrt_rules(2).
      This was achieved by replacing all occurrences of float__first by:
           - 340282000000000000000000000000000000000.
 <S>  New H3:  x >= - 340282000000000000000000000000000000000
-<S>  New H7:  numeric__plus(x, 1) >= - 340282000000000000000000000000000000000
-<S>  New H9:  true
-<S>  New H13:  true
-<S>  New C1:  numeric__times(1 / 2, numeric__plus(x, 1)) >= - 
+<S>  New H7:  numeric__times(1 / 2, x) >= - 
+          340282000000000000000000000000000000000
+<S>  New H11:  true
+<S>  New C1:  numeric__plus(numeric__times(1 / 2, x), 1 / 2) >= - 
           340282000000000000000000000000000000000
 -S-  Applied substitution rule sqrt_rules(3).
      This was achieved by replacing all occurrences of float__last by:
           340282000000000000000000000000000000000.
 <S>  New H4:  x <= 340282000000000000000000000000000000000
-<S>  New H8:  numeric__plus(x, 1) <= 340282000000000000000000000000000000000
-<S>  New H10:  true
-<S>  New H14:  true
-<S>  New C2:  numeric__times(1 / 2, numeric__plus(x, 1)) <= 
+<S>  New H8:  numeric__times(1 / 2, x) <= 
+          340282000000000000000000000000000000000
+<S>  New H12:  true
+<S>  New C2:  numeric__plus(numeric__times(1 / 2, x), 1 / 2) <= 
           340282000000000000000000000000000000000
 ---  Eliminated hypothesis H5 (true-hypothesis).
 ---  Eliminated hypothesis H6 (true-hypothesis).
@@ -98,662 +99,80 @@ procedure sqrt
 ---  Eliminated hypothesis H12 (true-hypothesis).
 ---  Eliminated hypothesis H13 (true-hypothesis).
 ---  Eliminated hypothesis H14 (true-hypothesis).
----  Eliminated hypothesis H15 (true-hypothesis).
----  Eliminated hypothesis H16 (true-hypothesis).
 ---  Eliminated hypothesis H3 (redundant, given H1).
 ---  Eliminated hypothesis H4 (redundant, given H2).
-     +++  New H17:  float__size >= 0
+     +++  New H15:  float__size >= 0
 
 
 @@@@@@@@@@  VC: procedure_sqrt_4.  @@@@@@@@@@
 ---  Hypothesis H5 has been replaced by "true".  (It is already present, as H3).
 ---  Hypothesis H6 has been replaced by "true".  (It is already present, as H4).
----  Hypothesis H11 has been replaced by "true".  (It is already present, as H3)
+---  Hypothesis H9 has been replaced by "true".  (It is already present, as H3).
+---  Hypothesis H10 has been replaced by "true".  (It is already present, as H4)
           .
----  Hypothesis H12 has been replaced by "true".  (It is already present, as H4)
+---  Hypothesis H13 has been replaced by "true".  (It is already present, as H7)
           .
----  Hypothesis H15 has been replaced by "true".  (It is already present, as H7)
+---  Hypothesis H14 has been replaced by "true".  (It is already present, as H8)
           .
----  Hypothesis H16 has been replaced by "true".  (It is already present, as H8)
-          .
+---  Hypothesis H17 has been replaced by "true".  (It is already present, as 
+          H11).
+---  Hypothesis H18 has been replaced by "true".  (It is already present, as 
+          H12).
 ---  Hypothesis H19 has been replaced by "true".  (It is already present, as H7)
           .
 ---  Hypothesis H20 has been replaced by "true".  (It is already present, as H8)
           .
 ---  Hypothesis H21 has been replaced by "true".  (It is already present, as 
-          H17).
+          H15).
 ---  Hypothesis H22 has been replaced by "true".  (It is already present, as 
-          H18).
-***  Proved C1:  numeric__times(1 / 2, numeric__plus(x, 1)) >= float__first
-     using hypothesis H17.
-***  Proved C2:  numeric__times(1 / 2, numeric__plus(x, 1)) <= float__last
-     using hypothesis H18.
+          H16).
+***  Proved C1:  numeric__plus(numeric__times(1 / 2, x), 1 / 2) >= float__first
+     using hypothesis H15.
+***  Proved C2:  numeric__plus(numeric__times(1 / 2, x), 1 / 2) <= float__last
+     using hypothesis H16.
 ***  PROVED VC.
 
 
 @@@@@@@@@@  VC: procedure_sqrt_5.  @@@@@@@@@@
 ---  Hypothesis H5 has been replaced by "true".  (It is already present, as H3).
 ---  Hypothesis H6 has been replaced by "true".  (It is already present, as H4).
----  Hypothesis H11 has been replaced by "true".  (It is already present, as H3)
+---  Hypothesis H9 has been replaced by "true".  (It is already present, as H3).
+---  Hypothesis H10 has been replaced by "true".  (It is already present, as H4)
           .
----  Hypothesis H12 has been replaced by "true".  (It is already present, as H4)
+---  Hypothesis H13 has been replaced by "true".  (It is already present, as H7)
           .
----  Hypothesis H15 has been replaced by "true".  (It is already present, as H7)
+---  Hypothesis H14 has been replaced by "true".  (It is already present, as H8)
           .
----  Hypothesis H16 has been replaced by "true".  (It is already present, as H8)
-          .
+---  Hypothesis H17 has been replaced by "true".  (It is already present, as 
+          H11).
+---  Hypothesis H18 has been replaced by "true".  (It is already present, as 
+          H12).
 ---  Hypothesis H19 has been replaced by "true".  (It is already present, as H7)
           .
 ---  Hypothesis H20 has been replaced by "true".  (It is already present, as H8)
           .
 ---  Hypothesis H21 has been replaced by "true".  (It is already present, as 
-          H17).
+          H15).
 ---  Hypothesis H22 has been replaced by "true".  (It is already present, as 
-          H18).
+          H16).
 ---  Hypothesis H23 has been replaced by "true".  (It is already present, as 
-          H17).
+          H15).
 ---  Hypothesis H24 has been replaced by "true".  (It is already present, as 
-          H18).
+          H16).
 ---  Hypothesis H25 has been replaced by "true".  (It is already present, as 
-          H17).
+          H15).
 ---  Hypothesis H26 has been replaced by "true".  (It is already present, as 
-          H18).
+          H16).
 ---  Hypothesis H27 has been replaced by "true".  (It is already present, as H3)
           .
 ---  Hypothesis H28 has been replaced by "true".  (It is already present, as H4)
           .
-***  Proved C3:  x >= float__first
-     using hypothesis H3.
-***  Proved C4:  x <= float__last
-     using hypothesis H4.
-***  Proved C5:  numeric__times(1 / 2, numeric__plus(x, 1)) >= float__first
-     using hypothesis H17.
-***  Proved C6:  numeric__times(1 / 2, numeric__plus(x, 1)) <= float__last
-     using hypothesis H18.
--S-  Applied substitution rule sqrt_rules(2).
-     This was achieved by replacing all occurrences of float__first by:
-          - 340282000000000000000000000000000000000.
-<S>  New H3:  x >= - 340282000000000000000000000000000000000
-<S>  New H7:  numeric__plus(x, 1) >= - 340282000000000000000000000000000000000
-<S>  New H9:  true
-<S>  New H13:  true
-<S>  New H17:  numeric__times(1 / 2, numeric__plus(x, 1)) >= - 
-          340282000000000000000000000000000000000
-<S>  New C1:  numeric__minus(numeric__times(1 / 2, numeric__plus(x, 1)), x) >= 
-          - 340282000000000000000000000000000000000
--S-  Applied substitution rule sqrt_rules(3).
-     This was achieved by replacing all occurrences of float__last by:
-          340282000000000000000000000000000000000.
-<S>  New H4:  x <= 340282000000000000000000000000000000000
-<S>  New H8:  numeric__plus(x, 1) <= 340282000000000000000000000000000000000
-<S>  New H10:  true
-<S>  New H14:  true
-<S>  New H18:  numeric__times(1 / 2, numeric__plus(x, 1)) <= 
-          340282000000000000000000000000000000000
-<S>  New C2:  numeric__minus(numeric__times(1 / 2, numeric__plus(x, 1)), x) <= 
-          340282000000000000000000000000000000000
----  Eliminated hypothesis H5 (true-hypothesis).
----  Eliminated hypothesis H6 (true-hypothesis).
----  Eliminated hypothesis H9 (true-hypothesis).
----  Eliminated hypothesis H10 (true-hypothesis).
----  Eliminated hypothesis H11 (true-hypothesis).
----  Eliminated hypothesis H12 (true-hypothesis).
----  Eliminated hypothesis H13 (true-hypothesis).
----  Eliminated hypothesis H14 (true-hypothesis).
----  Eliminated hypothesis H15 (true-hypothesis).
----  Eliminated hypothesis H16 (true-hypothesis).
----  Eliminated hypothesis H19 (true-hypothesis).
----  Eliminated hypothesis H20 (true-hypothesis).
----  Eliminated hypothesis H21 (true-hypothesis).
----  Eliminated hypothesis H22 (true-hypothesis).
----  Eliminated hypothesis H23 (true-hypothesis).
----  Eliminated hypothesis H24 (true-hypothesis).
----  Eliminated hypothesis H25 (true-hypothesis).
----  Eliminated hypothesis H26 (true-hypothesis).
----  Eliminated hypothesis H27 (true-hypothesis).
----  Eliminated hypothesis H28 (true-hypothesis).
----  Eliminated hypothesis H3 (redundant, given H1).
----  Eliminated hypothesis H4 (redundant, given H2).
-     +++  New H29:  float__size >= 0
-
-
-@@@@@@@@@@  VC: procedure_sqrt_6.  @@@@@@@@@@
----  Hypothesis H11 has been replaced by "true".  (It is already present, as H7)
-          .
----  Hypothesis H12 has been replaced by "true".  (It is already present, as H8)
-          .
----  Hypothesis H13 has been replaced by "true".  (It is already present, as H3)
-          .
----  Hypothesis H14 has been replaced by "true".  (It is already present, as H4)
-          .
----  Hypothesis H15 has been replaced by "true".  (It is already present, as H7)
-          .
----  Hypothesis H16 has been replaced by "true".  (It is already present, as H8)
-          .
----  Hypothesis H19 has been replaced by "true".  (It is already present, as H9)
-          .
----  Hypothesis H20 has been replaced by "true".  (It is already present, as 
-          H10).
----  Hypothesis H23 has been replaced by "true".  (It is already present, as H9)
-          .
----  Hypothesis H24 has been replaced by "true".  (It is already present, as 
-          H10).
----  Hypothesis H25 has been replaced by "true".  (It is already present, as 
-          H21).
----  Hypothesis H26 has been replaced by "true".  (It is already present, as 
-          H22).
----  Hypothesis H29 has been replaced by "true".  (It is already present, as 
-          H21).
----  Hypothesis H30 has been replaced by "true".  (It is already present, as 
-          H22).
----  Hypothesis H31 has been replaced by "true".  (It is already present, as 
-          H27).
----  Hypothesis H32 has been replaced by "true".  (It is already present, as 
-          H28).
----  Hypothesis H33 has been replaced by "true".  (It is already present, as 
-          H27).
----  Hypothesis H34 has been replaced by "true".  (It is already present, as 
-          H28).
----  Hypothesis H35 has been replaced by "true".  (It is already present, as 
-          H27).
----  Hypothesis H36 has been replaced by "true".  (It is already present, as 
-          H28).
----  Hypothesis H37 has been replaced by "true".  (It is already present, as H7)
-          .
----  Hypothesis H38 has been replaced by "true".  (It is already present, as H8)
-          .
-***  Proved C3:  s >= float__first
-     using hypothesis H7.
-***  Proved C4:  s <= float__last
-     using hypothesis H8.
-***  Proved C5:  numeric__times(1 / 2, numeric__plus(s, numeric__divide(x, s))) 
-          >= float__first
-     using hypothesis H27.
-***  Proved C6:  numeric__times(1 / 2, numeric__plus(s, numeric__divide(x, s))) 
-          <= float__last
-     using hypothesis H28.
--S-  Applied substitution rule sqrt_rules(2).
-     This was achieved by replacing all occurrences of float__first by:
-          - 340282000000000000000000000000000000000.
-<S>  New H3:  x >= - 340282000000000000000000000000000000000
-<S>  New H7:  s >= - 340282000000000000000000000000000000000
-<S>  New H9:  numeric__divide(x, s) >= - 340282000000000000000000000000000000000
-<S>  New H17:  true
-<S>  New H21:  numeric__plus(s, numeric__divide(x, s)) >= - 
-          340282000000000000000000000000000000000
-<S>  New H27:  numeric__times(1 / 2, numeric__plus(s, numeric__divide(x, s))) 
-          >= - 340282000000000000000000000000000000000
-<S>  New C1:  numeric__minus(numeric__times(1 / 2, numeric__plus(s, 
-          numeric__divide(x, s))), s) >= - 
-          340282000000000000000000000000000000000
--S-  Applied substitution rule sqrt_rules(3).
-     This was achieved by replacing all occurrences of float__last by:
-          340282000000000000000000000000000000000.
-<S>  New H4:  x <= 340282000000000000000000000000000000000
-<S>  New H8:  s <= 340282000000000000000000000000000000000
-<S>  New H10:  numeric__divide(x, s) <= 340282000000000000000000000000000000000
-<S>  New H18:  true
-<S>  New H22:  numeric__plus(s, numeric__divide(x, s)) <= 
-          340282000000000000000000000000000000000
-<S>  New H28:  numeric__times(1 / 2, numeric__plus(s, numeric__divide(x, s))) 
-          <= 340282000000000000000000000000000000000
-<S>  New C2:  numeric__minus(numeric__times(1 / 2, numeric__plus(s, 
-          numeric__divide(x, s))), s) <= 340282000000000000000000000000000000000
----  Eliminated hypothesis H11 (true-hypothesis).
----  Eliminated hypothesis H12 (true-hypothesis).
----  Eliminated hypothesis H13 (true-hypothesis).
----  Eliminated hypothesis H14 (true-hypothesis).
----  Eliminated hypothesis H15 (true-hypothesis).
----  Eliminated hypothesis H16 (true-hypothesis).
----  Eliminated hypothesis H17 (true-hypothesis).
----  Eliminated hypothesis H18 (true-hypothesis).
----  Eliminated hypothesis H19 (true-hypothesis).
----  Eliminated hypothesis H20 (true-hypothesis).
----  Eliminated hypothesis H23 (true-hypothesis).
----  Eliminated hypothesis H24 (true-hypothesis).
----  Eliminated hypothesis H25 (true-hypothesis).
----  Eliminated hypothesis H26 (true-hypothesis).
----  Eliminated hypothesis H29 (true-hypothesis).
----  Eliminated hypothesis H30 (true-hypothesis).
----  Eliminated hypothesis H31 (true-hypothesis).
----  Eliminated hypothesis H32 (true-hypothesis).
----  Eliminated hypothesis H33 (true-hypothesis).
----  Eliminated hypothesis H34 (true-hypothesis).
----  Eliminated hypothesis H35 (true-hypothesis).
----  Eliminated hypothesis H36 (true-hypothesis).
----  Eliminated hypothesis H37 (true-hypothesis).
----  Eliminated hypothesis H38 (true-hypothesis).
----  Eliminated hypothesis H3 (redundant, given H5).
----  Eliminated hypothesis H4 (redundant, given H6).
----  Eliminated hypothesis H8 (redundant, given H2).
-     +++  New H39:  float__size >= 0
-
-
-@@@@@@@@@@  VC: procedure_sqrt_7.  @@@@@@@@@@
----  Hypothesis H5 has been replaced by "true".  (It is already present, as H3).
----  Hypothesis H6 has been replaced by "true".  (It is already present, as H4).
----  Hypothesis H11 has been replaced by "true".  (It is already present, as H3)
-          .
----  Hypothesis H12 has been replaced by "true".  (It is already present, as H4)
-          .
----  Hypothesis H15 has been replaced by "true".  (It is already present, as H7)
-          .
----  Hypothesis H16 has been replaced by "true".  (It is already present, as H8)
-          .
----  Hypothesis H19 has been replaced by "true".  (It is already present, as H7)
-          .
----  Hypothesis H20 has been replaced by "true".  (It is already present, as H8)
-          .
----  Hypothesis H21 has been replaced by "true".  (It is already present, as 
-          H17).
----  Hypothesis H22 has been replaced by "true".  (It is already present, as 
-          H18).
----  Hypothesis H23 has been replaced by "true".  (It is already present, as 
-          H17).
----  Hypothesis H24 has been replaced by "true".  (It is already present, as 
-          H18).
----  Hypothesis H25 has been replaced by "true".  (It is already present, as 
-          H17).
----  Hypothesis H26 has been replaced by "true".  (It is already present, as 
-          H18).
----  Hypothesis H27 has been replaced by "true".  (It is already present, as H3)
-          .
----  Hypothesis H28 has been replaced by "true".  (It is already present, as H4)
-          .
----  Hypothesis H31 has been replaced by "true".  (It is already present, as H3)
-          .
----  Hypothesis H32 has been replaced by "true".  (It is already present, as H4)
-          .
----  Hypothesis H33 has been replaced by "true".  (It is already present, as 
-          H17).
----  Hypothesis H34 has been replaced by "true".  (It is already present, as 
-          H18).
----  Hypothesis H35 has been replaced by "true".  (It is already present, as 
-          H29).
----  Hypothesis H36 has been replaced by "true".  (It is already present, as 
-          H30).
--S-  Applied substitution rule sqrt_rules(4).
-     This was achieved by replacing all occurrences of float__base__first by:
-          - 340282000000000000000000000000000000000.
-<S>  New C1:  abs(numeric__minus(numeric__times(1 / 2, numeric__plus(x, 1)), x))
-           >= - 340282000000000000000000000000000000000
--S-  Applied substitution rule sqrt_rules(5).
-     This was achieved by replacing all occurrences of float__base__last by:
-          340282000000000000000000000000000000000.
-<S>  New C2:  abs(numeric__minus(numeric__times(1 / 2, numeric__plus(x, 1)), x))
-           <= 340282000000000000000000000000000000000
--S-  Applied substitution rule sqrt_rules(2).
-     This was achieved by replacing all occurrences of float__first by:
-          - 340282000000000000000000000000000000000.
-<S>  New H3:  x >= - 340282000000000000000000000000000000000
-<S>  New H7:  numeric__plus(x, 1) >= - 340282000000000000000000000000000000000
-<S>  New H9:  true
-<S>  New H13:  true
-<S>  New H17:  numeric__times(1 / 2, numeric__plus(x, 1)) >= - 
-          340282000000000000000000000000000000000
-<S>  New H29:  numeric__minus(numeric__times(1 / 2, numeric__plus(x, 1)), x) >= 
-          - 340282000000000000000000000000000000000
--S-  Applied substitution rule sqrt_rules(3).
-     This was achieved by replacing all occurrences of float__last by:
-          340282000000000000000000000000000000000.
-<S>  New H4:  x <= 340282000000000000000000000000000000000
-<S>  New H8:  numeric__plus(x, 1) <= 340282000000000000000000000000000000000
-<S>  New H10:  true
-<S>  New H14:  true
-<S>  New H18:  numeric__times(1 / 2, numeric__plus(x, 1)) <= 
-          340282000000000000000000000000000000000
-<S>  New H30:  numeric__minus(numeric__times(1 / 2, numeric__plus(x, 1)), x) <= 
-          340282000000000000000000000000000000000
----  Eliminated hypothesis H5 (true-hypothesis).
----  Eliminated hypothesis H6 (true-hypothesis).
----  Eliminated hypothesis H11 (true-hypothesis).
----  Eliminated hypothesis H12 (true-hypothesis).
----  Eliminated hypothesis H15 (true-hypothesis).
----  Eliminated hypothesis H16 (true-hypothesis).
----  Eliminated hypothesis H19 (true-hypothesis).
----  Eliminated hypothesis H20 (true-hypothesis).
----  Eliminated hypothesis H21 (true-hypothesis).
----  Eliminated hypothesis H22 (true-hypothesis).
----  Eliminated hypothesis H23 (true-hypothesis).
----  Eliminated hypothesis H24 (true-hypothesis).
----  Eliminated hypothesis H25 (true-hypothesis).
----  Eliminated hypothesis H26 (true-hypothesis).
----  Eliminated hypothesis H27 (true-hypothesis).
----  Eliminated hypothesis H28 (true-hypothesis).
----  Eliminated hypothesis H31 (true-hypothesis).
----  Eliminated hypothesis H32 (true-hypothesis).
----  Eliminated hypothesis H33 (true-hypothesis).
----  Eliminated hypothesis H34 (true-hypothesis).
----  Eliminated hypothesis H35 (true-hypothesis).
----  Eliminated hypothesis H36 (true-hypothesis).
----  Eliminated hypothesis H9 (true-hypothesis).
----  Eliminated hypothesis H13 (true-hypothesis).
----  Eliminated hypothesis H10 (true-hypothesis).
----  Eliminated hypothesis H14 (true-hypothesis).
----  Eliminated hypothesis H3 (redundant, given H1).
----  Eliminated hypothesis H4 (redundant, given H2).
-***  Proved C1:  abs(numeric__minus(numeric__times(1 / 2, numeric__plus(x, 1)), 
-          x)) >= - 340282000000000000000000000000000000000
-***  Proved C2:  abs(numeric__minus(numeric__times(1 / 2, numeric__plus(x, 1)), 
-          x)) <= 340282000000000000000000000000000000000
-     using hypotheses H29 & H30.
-***  PROVED VC.
-
-
-@@@@@@@@@@  VC: procedure_sqrt_8.  @@@@@@@@@@
----  Hypothesis H11 has been replaced by "true".  (It is already present, as H7)
-          .
----  Hypothesis H12 has been replaced by "true".  (It is already present, as H8)
-          .
----  Hypothesis H13 has been replaced by "true".  (It is already present, as H3)
-          .
----  Hypothesis H14 has been replaced by "true".  (It is already present, as H4)
-          .
----  Hypothesis H15 has been replaced by "true".  (It is already present, as H7)
-          .
----  Hypothesis H16 has been replaced by "true".  (It is already present, as H8)
-          .
----  Hypothesis H19 has been replaced by "true".  (It is already present, as H9)
-          .
----  Hypothesis H20 has been replaced by "true".  (It is already present, as 
-          H10).
----  Hypothesis H23 has been replaced by "true".  (It is already present, as H9)
-          .
----  Hypothesis H24 has been replaced by "true".  (It is already present, as 
-          H10).
----  Hypothesis H25 has been replaced by "true".  (It is already present, as 
-          H21).
----  Hypothesis H26 has been replaced by "true".  (It is already present, as 
-          H22).
----  Hypothesis H29 has been replaced by "true".  (It is already present, as 
-          H21).
----  Hypothesis H30 has been replaced by "true".  (It is already present, as 
-          H22).
----  Hypothesis H31 has been replaced by "true".  (It is already present, as 
-          H27).
----  Hypothesis H32 has been replaced by "true".  (It is already present, as 
-          H28).
----  Hypothesis H33 has been replaced by "true".  (It is already present, as 
-          H27).
----  Hypothesis H34 has been replaced by "true".  (It is already present, as 
-          H28).
----  Hypothesis H35 has been replaced by "true".  (It is already present, as 
-          H27).
----  Hypothesis H36 has been replaced by "true".  (It is already present, as 
-          H28).
----  Hypothesis H37 has been replaced by "true".  (It is already present, as H7)
-          .
----  Hypothesis H38 has been replaced by "true".  (It is already present, as H8)
-          .
----  Hypothesis H41 has been replaced by "true".  (It is already present, as H7)
-          .
----  Hypothesis H42 has been replaced by "true".  (It is already present, as H8)
-          .
----  Hypothesis H43 has been replaced by "true".  (It is already present, as 
-          H27).
----  Hypothesis H44 has been replaced by "true".  (It is already present, as 
-          H28).
----  Hypothesis H45 has been replaced by "true".  (It is already present, as 
-          H39).
----  Hypothesis H46 has been replaced by "true".  (It is already present, as 
-          H40).
--S-  Applied substitution rule sqrt_rules(4).
-     This was achieved by replacing all occurrences of float__base__first by:
-          - 340282000000000000000000000000000000000.
-<S>  New C1:  abs(numeric__minus(numeric__times(1 / 2, numeric__plus(s, 
-          numeric__divide(x, s))), s)) >= - 
-          340282000000000000000000000000000000000
--S-  Applied substitution rule sqrt_rules(5).
-     This was achieved by replacing all occurrences of float__base__last by:
-          340282000000000000000000000000000000000.
-<S>  New C2:  abs(numeric__minus(numeric__times(1 / 2, numeric__plus(s, 
-          numeric__divide(x, s))), s)) <= 
-          340282000000000000000000000000000000000
--S-  Applied substitution rule sqrt_rules(2).
-     This was achieved by replacing all occurrences of float__first by:
-          - 340282000000000000000000000000000000000.
-<S>  New H3:  x >= - 340282000000000000000000000000000000000
-<S>  New H7:  s >= - 340282000000000000000000000000000000000
-<S>  New H9:  numeric__divide(x, s) >= - 340282000000000000000000000000000000000
-<S>  New H17:  true
-<S>  New H21:  numeric__plus(s, numeric__divide(x, s)) >= - 
-          340282000000000000000000000000000000000
-<S>  New H27:  numeric__times(1 / 2, numeric__plus(s, numeric__divide(x, s))) 
-          >= - 340282000000000000000000000000000000000
-<S>  New H39:  numeric__minus(numeric__times(1 / 2, numeric__plus(s, 
-          numeric__divide(x, s))), s) >= - 
-          340282000000000000000000000000000000000
--S-  Applied substitution rule sqrt_rules(3).
-     This was achieved by replacing all occurrences of float__last by:
-          340282000000000000000000000000000000000.
-<S>  New H4:  x <= 340282000000000000000000000000000000000
-<S>  New H8:  s <= 340282000000000000000000000000000000000
-<S>  New H10:  numeric__divide(x, s) <= 340282000000000000000000000000000000000
-<S>  New H18:  true
-<S>  New H22:  numeric__plus(s, numeric__divide(x, s)) <= 
-          340282000000000000000000000000000000000
-<S>  New H28:  numeric__times(1 / 2, numeric__plus(s, numeric__divide(x, s))) 
-          <= 340282000000000000000000000000000000000
-<S>  New H40:  numeric__minus(numeric__times(1 / 2, numeric__plus(s, 
-          numeric__divide(x, s))), s) <= 340282000000000000000000000000000000000
----  Eliminated hypothesis H11 (true-hypothesis).
----  Eliminated hypothesis H12 (true-hypothesis).
----  Eliminated hypothesis H13 (true-hypothesis).
----  Eliminated hypothesis H14 (true-hypothesis).
----  Eliminated hypothesis H15 (true-hypothesis).
----  Eliminated hypothesis H16 (true-hypothesis).
----  Eliminated hypothesis H19 (true-hypothesis).
----  Eliminated hypothesis H20 (true-hypothesis).
----  Eliminated hypothesis H23 (true-hypothesis).
----  Eliminated hypothesis H24 (true-hypothesis).
----  Eliminated hypothesis H25 (true-hypothesis).
----  Eliminated hypothesis H26 (true-hypothesis).
----  Eliminated hypothesis H29 (true-hypothesis).
----  Eliminated hypothesis H30 (true-hypothesis).
----  Eliminated hypothesis H31 (true-hypothesis).
----  Eliminated hypothesis H32 (true-hypothesis).
----  Eliminated hypothesis H33 (true-hypothesis).
----  Eliminated hypothesis H34 (true-hypothesis).
----  Eliminated hypothesis H35 (true-hypothesis).
----  Eliminated hypothesis H36 (true-hypothesis).
----  Eliminated hypothesis H37 (true-hypothesis).
----  Eliminated hypothesis H38 (true-hypothesis).
----  Eliminated hypothesis H41 (true-hypothesis).
----  Eliminated hypothesis H42 (true-hypothesis).
----  Eliminated hypothesis H43 (true-hypothesis).
----  Eliminated hypothesis H44 (true-hypothesis).
----  Eliminated hypothesis H45 (true-hypothesis).
----  Eliminated hypothesis H46 (true-hypothesis).
----  Eliminated hypothesis H17 (true-hypothesis).
----  Eliminated hypothesis H18 (true-hypothesis).
----  Eliminated hypothesis H3 (redundant, given H5).
----  Eliminated hypothesis H4 (redundant, given H6).
----  Eliminated hypothesis H8 (redundant, given H2).
-***  Proved C1:  abs(numeric__minus(numeric__times(1 / 2, numeric__plus(s, 
-          numeric__divide(x, s))), s)) >= - 
-          340282000000000000000000000000000000000
-***  Proved C2:  abs(numeric__minus(numeric__times(1 / 2, numeric__plus(s, 
-          numeric__divide(x, s))), s)) <= 
-          340282000000000000000000000000000000000
-     using hypotheses H39 & H40.
-***  PROVED VC.
-
-
-@@@@@@@@@@  VC: procedure_sqrt_9.  @@@@@@@@@@
----  Hypothesis H5 has been replaced by "true".  (It is already present, as H3).
----  Hypothesis H6 has been replaced by "true".  (It is already present, as H4).
----  Hypothesis H11 has been replaced by "true".  (It is already present, as H3)
-          .
----  Hypothesis H12 has been replaced by "true".  (It is already present, as H4)
-          .
----  Hypothesis H15 has been replaced by "true".  (It is already present, as H7)
-          .
----  Hypothesis H16 has been replaced by "true".  (It is already present, as H8)
-          .
----  Hypothesis H19 has been replaced by "true".  (It is already present, as H7)
-          .
----  Hypothesis H20 has been replaced by "true".  (It is already present, as H8)
-          .
----  Hypothesis H21 has been replaced by "true".  (It is already present, as 
-          H17).
----  Hypothesis H22 has been replaced by "true".  (It is already present, as 
-          H18).
----  Hypothesis H23 has been replaced by "true".  (It is already present, as 
-          H17).
----  Hypothesis H24 has been replaced by "true".  (It is already present, as 
-          H18).
----  Hypothesis H25 has been replaced by "true".  (It is already present, as 
-          H17).
----  Hypothesis H26 has been replaced by "true".  (It is already present, as 
-          H18).
----  Hypothesis H27 has been replaced by "true".  (It is already present, as H3)
-          .
----  Hypothesis H28 has been replaced by "true".  (It is already present, as H4)
-          .
----  Hypothesis H31 has been replaced by "true".  (It is already present, as H3)
-          .
----  Hypothesis H32 has been replaced by "true".  (It is already present, as H4)
-          .
----  Hypothesis H33 has been replaced by "true".  (It is already present, as 
-          H17).
----  Hypothesis H34 has been replaced by "true".  (It is already present, as 
-          H18).
----  Hypothesis H35 has been replaced by "true".  (It is already present, as 
-          H29).
----  Hypothesis H36 has been replaced by "true".  (It is already present, as 
-          H30).
----  Hypothesis H42 has been replaced by "true".  (It is already present, as 
-          H17).
----  Hypothesis H43 has been replaced by "true".  (It is already present, as 
-          H18).
-***  Proved C1:  numeric__times(1 / 2, numeric__plus(x, 1)) >= float__first
-     using hypothesis H17.
-***  Proved C2:  numeric__times(1 / 2, numeric__plus(x, 1)) <= float__last
-     using hypothesis H18.
-***  PROVED VC.
-
-
-@@@@@@@@@@  VC: procedure_sqrt_10.  @@@@@@@@@@
----  Hypothesis H11 has been replaced by "true".  (It is already present, as H7)
-          .
----  Hypothesis H12 has been replaced by "true".  (It is already present, as H8)
-          .
----  Hypothesis H13 has been replaced by "true".  (It is already present, as H3)
-          .
----  Hypothesis H14 has been replaced by "true".  (It is already present, as H4)
-          .
----  Hypothesis H15 has been replaced by "true".  (It is already present, as H7)
-          .
----  Hypothesis H16 has been replaced by "true".  (It is already present, as H8)
-          .
----  Hypothesis H19 has been replaced by "true".  (It is already present, as H9)
-          .
----  Hypothesis H20 has been replaced by "true".  (It is already present, as 
-          H10).
----  Hypothesis H23 has been replaced by "true".  (It is already present, as H9)
-          .
----  Hypothesis H24 has been replaced by "true".  (It is already present, as 
-          H10).
----  Hypothesis H25 has been replaced by "true".  (It is already present, as 
-          H21).
----  Hypothesis H26 has been replaced by "true".  (It is already present, as 
-          H22).
----  Hypothesis H29 has been replaced by "true".  (It is already present, as 
-          H21).
----  Hypothesis H30 has been replaced by "true".  (It is already present, as 
-          H22).
----  Hypothesis H31 has been replaced by "true".  (It is already present, as 
-          H27).
----  Hypothesis H32 has been replaced by "true".  (It is already present, as 
-          H28).
----  Hypothesis H33 has been replaced by "true".  (It is already present, as 
-          H27).
----  Hypothesis H34 has been replaced by "true".  (It is already present, as 
-          H28).
----  Hypothesis H35 has been replaced by "true".  (It is already present, as 
-          H27).
----  Hypothesis H36 has been replaced by "true".  (It is already present, as 
-          H28).
----  Hypothesis H37 has been replaced by "true".  (It is already present, as H7)
-          .
----  Hypothesis H38 has been replaced by "true".  (It is already present, as H8)
-          .
----  Hypothesis H41 has been replaced by "true".  (It is already present, as H7)
-          .
----  Hypothesis H42 has been replaced by "true".  (It is already present, as H8)
-          .
----  Hypothesis H43 has been replaced by "true".  (It is already present, as 
-          H27).
----  Hypothesis H44 has been replaced by "true".  (It is already present, as 
-          H28).
----  Hypothesis H45 has been replaced by "true".  (It is already present, as 
-          H39).
----  Hypothesis H46 has been replaced by "true".  (It is already present, as 
-          H40).
----  Hypothesis H52 has been replaced by "true".  (It is already present, as 
-          H27).
----  Hypothesis H53 has been replaced by "true".  (It is already present, as 
-          H28).
-***  Proved C1:  numeric__times(1 / 2, numeric__plus(s, numeric__divide(x, s))) 
-          >= float__first
-     using hypothesis H27.
-***  Proved C2:  numeric__times(1 / 2, numeric__plus(s, numeric__divide(x, s))) 
-          <= float__last
-     using hypothesis H28.
-***  PROVED VC.
-
-
-@@@@@@@@@@  VC: procedure_sqrt_11.  @@@@@@@@@@
----  Hypothesis H5 has been replaced by "true".  (It is already present, as H3).
----  Hypothesis H6 has been replaced by "true".  (It is already present, as H4).
----  Hypothesis H11 has been replaced by "true".  (It is already present, as H3)
-          .
----  Hypothesis H12 has been replaced by "true".  (It is already present, as H4)
-          .
----  Hypothesis H15 has been replaced by "true".  (It is already present, as H7)
-          .
----  Hypothesis H16 has been replaced by "true".  (It is already present, as H8)
-          .
----  Hypothesis H19 has been replaced by "true".  (It is already present, as H7)
-          .
----  Hypothesis H20 has been replaced by "true".  (It is already present, as H8)
-          .
----  Hypothesis H21 has been replaced by "true".  (It is already present, as 
-          H17).
----  Hypothesis H22 has been replaced by "true".  (It is already present, as 
-          H18).
----  Hypothesis H23 has been replaced by "true".  (It is already present, as 
-          H17).
----  Hypothesis H24 has been replaced by "true".  (It is already present, as 
-          H18).
----  Hypothesis H25 has been replaced by "true".  (It is already present, as 
-          H17).
----  Hypothesis H26 has been replaced by "true".  (It is already present, as 
-          H18).
----  Hypothesis H27 has been replaced by "true".  (It is already present, as H3)
-          .
----  Hypothesis H28 has been replaced by "true".  (It is already present, as H4)
-          .
----  Hypothesis H31 has been replaced by "true".  (It is already present, as H3)
-          .
----  Hypothesis H32 has been replaced by "true".  (It is already present, as H4)
-          .
----  Hypothesis H33 has been replaced by "true".  (It is already present, as 
-          H17).
----  Hypothesis H34 has been replaced by "true".  (It is already present, as 
-          H18).
----  Hypothesis H35 has been replaced by "true".  (It is already present, as 
-          H29).
----  Hypothesis H36 has been replaced by "true".  (It is already present, as 
-          H30).
----  Hypothesis H42 has been replaced by "true".  (It is already present, as 
-          H17).
----  Hypothesis H43 has been replaced by "true".  (It is already present, as 
-          H18).
----  Hypothesis H44 has been replaced by "true".  (It is already present, as 
-          H17).
----  Hypothesis H45 has been replaced by "true".  (It is already present, as 
-          H18).
+%%%  Simplified C1 on reading formula in, to give:
+     %%%  C1:  numeric__plus(numeric__times(1 / 2, x), 1 / 2) >= - (1 / 4 * (x 
+          * x)) + x
+%%%  Simplified C2 on reading formula in, to give:
+     %%%  C2:  numeric__plus(numeric__times(1 / 2, x), 1 / 2) <= 1 / 4 * (x * x)
+           + 1
 ***  Proved C3:  x >= float__first
      using hypothesis H3.
 ***  Proved C4:  x <= float__last
@@ -766,42 +185,28 @@ procedure sqrt
      This was achieved by replacing all occurrences of float__first by:
           - 340282000000000000000000000000000000000.
 <S>  New H3:  x >= - 340282000000000000000000000000000000000
-<S>  New H7:  numeric__plus(x, 1) >= - 340282000000000000000000000000000000000
-<S>  New H9:  true
-<S>  New H13:  true
-<S>  New H17:  numeric__times(1 / 2, numeric__plus(x, 1)) >= - 
+<S>  New H7:  numeric__times(1 / 2, x) >= - 
           340282000000000000000000000000000000000
-<S>  New H29:  numeric__minus(numeric__times(1 / 2, numeric__plus(x, 1)), x) >= 
-          - 340282000000000000000000000000000000000
-<S>  New H39:  numeric__epsabs >= - 340282000000000000000000000000000000000
+<S>  New H11:  true
+<S>  New H15:  numeric__plus(numeric__times(1 / 2, x), 1 / 2) >= - 
+          340282000000000000000000000000000000000
 -S-  Applied substitution rule sqrt_rules(3).
      This was achieved by replacing all occurrences of float__last by:
           340282000000000000000000000000000000000.
 <S>  New H4:  x <= 340282000000000000000000000000000000000
-<S>  New H8:  numeric__plus(x, 1) <= 340282000000000000000000000000000000000
-<S>  New H10:  true
-<S>  New H14:  true
-<S>  New H18:  numeric__times(1 / 2, numeric__plus(x, 1)) <= 
+<S>  New H8:  numeric__times(1 / 2, x) <= 
           340282000000000000000000000000000000000
-<S>  New H30:  numeric__minus(numeric__times(1 / 2, numeric__plus(x, 1)), x) <= 
+<S>  New H12:  true
+<S>  New H16:  numeric__plus(numeric__times(1 / 2, x), 1 / 2) <= 
           340282000000000000000000000000000000000
-<S>  New H40:  numeric__epsabs <= 340282000000000000000000000000000000000
--S-  Applied substitution rule sqrt_rules(4).
-     This was achieved by replacing all occurrences of float__base__first by:
-          - 340282000000000000000000000000000000000.
-<S>  New H37:  abs(numeric__minus(numeric__times(1 / 2, numeric__plus(x, 1)), x)
-          ) >= - 340282000000000000000000000000000000000
--S-  Applied substitution rule sqrt_rules(5).
-     This was achieved by replacing all occurrences of float__base__last by:
-          340282000000000000000000000000000000000.
-<S>  New H38:  abs(numeric__minus(numeric__times(1 / 2, numeric__plus(x, 1)), x)
-          ) <= 340282000000000000000000000000000000000
 ---  Eliminated hypothesis H5 (true-hypothesis).
 ---  Eliminated hypothesis H6 (true-hypothesis).
----  Eliminated hypothesis H11 (true-hypothesis).
----  Eliminated hypothesis H12 (true-hypothesis).
----  Eliminated hypothesis H15 (true-hypothesis).
----  Eliminated hypothesis H16 (true-hypothesis).
+---  Eliminated hypothesis H9 (true-hypothesis).
+---  Eliminated hypothesis H10 (true-hypothesis).
+---  Eliminated hypothesis H13 (true-hypothesis).
+---  Eliminated hypothesis H14 (true-hypothesis).
+---  Eliminated hypothesis H17 (true-hypothesis).
+---  Eliminated hypothesis H18 (true-hypothesis).
 ---  Eliminated hypothesis H19 (true-hypothesis).
 ---  Eliminated hypothesis H20 (true-hypothesis).
 ---  Eliminated hypothesis H21 (true-hypothesis).
@@ -812,92 +217,75 @@ procedure sqrt
 ---  Eliminated hypothesis H26 (true-hypothesis).
 ---  Eliminated hypothesis H27 (true-hypothesis).
 ---  Eliminated hypothesis H28 (true-hypothesis).
----  Eliminated hypothesis H31 (true-hypothesis).
----  Eliminated hypothesis H32 (true-hypothesis).
----  Eliminated hypothesis H33 (true-hypothesis).
----  Eliminated hypothesis H34 (true-hypothesis).
----  Eliminated hypothesis H35 (true-hypothesis).
----  Eliminated hypothesis H36 (true-hypothesis).
----  Eliminated hypothesis H42 (true-hypothesis).
----  Eliminated hypothesis H43 (true-hypothesis).
----  Eliminated hypothesis H44 (true-hypothesis).
----  Eliminated hypothesis H45 (true-hypothesis).
----  Eliminated hypothesis H9 (true-hypothesis).
----  Eliminated hypothesis H13 (true-hypothesis).
----  Eliminated hypothesis H10 (true-hypothesis).
----  Eliminated hypothesis H14 (true-hypothesis).
+---  Eliminated hypothesis H11 (true-hypothesis).
+---  Eliminated hypothesis H12 (true-hypothesis).
 ---  Eliminated hypothesis H3 (redundant, given H1).
 ---  Eliminated hypothesis H4 (redundant, given H2).
----  Eliminated hypothesis H37 (redundant, given H39 & H41).
----  Eliminated hypothesis H40 (redundant, given H38 & H41).
-     +++  New H46:  float__size >= 0
+     +++  New H30:  float__size >= 0
 
 
-@@@@@@@@@@  VC: procedure_sqrt_12.  @@@@@@@@@@
+@@@@@@@@@@  VC: procedure_sqrt_6.  @@@@@@@@@@
+%%%  Simplified H1 on reading formula in, to give:
+     %%%  H1:  r >= - (1 / 4 * (x * x)) + x
+%%%  Simplified H2 on reading formula in, to give:
+     %%%  H2:  r <= 1 / 4 * (x * x) + 1
+---  Hypothesis H9 has been replaced by "true".  (It is already present, as H7).
+---  Hypothesis H10 has been replaced by "true".  (It is already present, as H8)
+          .
 ---  Hypothesis H11 has been replaced by "true".  (It is already present, as H7)
           .
 ---  Hypothesis H12 has been replaced by "true".  (It is already present, as H8)
-          .
----  Hypothesis H13 has been replaced by "true".  (It is already present, as H3)
-          .
----  Hypothesis H14 has been replaced by "true".  (It is already present, as H4)
           .
 ---  Hypothesis H15 has been replaced by "true".  (It is already present, as H7)
           .
 ---  Hypothesis H16 has been replaced by "true".  (It is already present, as H8)
           .
----  Hypothesis H19 has been replaced by "true".  (It is already present, as H9)
+---  Hypothesis H17 has been replaced by "true".  (It is already present, as H3)
           .
----  Hypothesis H20 has been replaced by "true".  (It is already present, as 
-          H10).
----  Hypothesis H23 has been replaced by "true".  (It is already present, as H9)
+---  Hypothesis H18 has been replaced by "true".  (It is already present, as H4)
           .
+---  Hypothesis H19 has been replaced by "true".  (It is already present, as H7)
+          .
+---  Hypothesis H20 has been replaced by "true".  (It is already present, as H8)
+          .
+---  Hypothesis H23 has been replaced by "true".  (It is already present, as 
+          H13).
 ---  Hypothesis H24 has been replaced by "true".  (It is already present, as 
-          H10).
----  Hypothesis H25 has been replaced by "true".  (It is already present, as 
-          H21).
----  Hypothesis H26 has been replaced by "true".  (It is already present, as 
-          H22).
+          H14).
+---  Hypothesis H27 has been replaced by "true".  (It is already present, as 
+          H13).
+---  Hypothesis H28 has been replaced by "true".  (It is already present, as 
+          H14).
 ---  Hypothesis H29 has been replaced by "true".  (It is already present, as 
-          H21).
+          H25).
 ---  Hypothesis H30 has been replaced by "true".  (It is already present, as 
-          H22).
----  Hypothesis H31 has been replaced by "true".  (It is already present, as 
-          H27).
----  Hypothesis H32 has been replaced by "true".  (It is already present, as 
-          H28).
+          H26).
 ---  Hypothesis H33 has been replaced by "true".  (It is already present, as 
-          H27).
+          H25).
 ---  Hypothesis H34 has been replaced by "true".  (It is already present, as 
-          H28).
+          H26).
 ---  Hypothesis H35 has been replaced by "true".  (It is already present, as 
-          H27).
+          H31).
 ---  Hypothesis H36 has been replaced by "true".  (It is already present, as 
-          H28).
----  Hypothesis H37 has been replaced by "true".  (It is already present, as H7)
-          .
----  Hypothesis H38 has been replaced by "true".  (It is already present, as H8)
-          .
+          H32).
+---  Hypothesis H37 has been replaced by "true".  (It is already present, as 
+          H31).
+---  Hypothesis H38 has been replaced by "true".  (It is already present, as 
+          H32).
+---  Hypothesis H39 has been replaced by "true".  (It is already present, as 
+          H31).
+---  Hypothesis H40 has been replaced by "true".  (It is already present, as 
+          H32).
 ---  Hypothesis H41 has been replaced by "true".  (It is already present, as H7)
           .
 ---  Hypothesis H42 has been replaced by "true".  (It is already present, as H8)
           .
----  Hypothesis H43 has been replaced by "true".  (It is already present, as 
-          H27).
----  Hypothesis H44 has been replaced by "true".  (It is already present, as 
-          H28).
----  Hypothesis H45 has been replaced by "true".  (It is already present, as 
-          H39).
----  Hypothesis H46 has been replaced by "true".  (It is already present, as 
-          H40).
----  Hypothesis H52 has been replaced by "true".  (It is already present, as 
-          H27).
----  Hypothesis H53 has been replaced by "true".  (It is already present, as 
-          H28).
----  Hypothesis H54 has been replaced by "true".  (It is already present, as 
-          H27).
----  Hypothesis H55 has been replaced by "true".  (It is already present, as 
-          H28).
+%%%  Simplified C1 on reading formula in, to give:
+     %%%  C1:  numeric__times(1 / 2, numeric__plus(r, numeric__divide(x, r))) 
+          >= - (1 / 4 * (x * x)) + x
+%%%  Simplified C2 on reading formula in, to give:
+     %%%  C2:  numeric__times(1 / 2, numeric__plus(r, numeric__divide(x, r))) 
+          <= 1 / 4 * (x * x) + 1
 ***  Proved C3:  x >= float__first
      using hypothesis H3.
 ***  Proved C4:  x <= float__last
@@ -910,378 +298,394 @@ procedure sqrt
      This was achieved by replacing all occurrences of float__first by:
           - 340282000000000000000000000000000000000.
 <S>  New H3:  x >= - 340282000000000000000000000000000000000
-<S>  New H7:  s >= - 340282000000000000000000000000000000000
-<S>  New H9:  numeric__divide(x, s) >= - 340282000000000000000000000000000000000
-<S>  New H17:  true
-<S>  New H21:  numeric__plus(s, numeric__divide(x, s)) >= - 
+<S>  New H7:  r >= - 340282000000000000000000000000000000000
+<S>  New H13:  numeric__divide(x, r) >= - 
           340282000000000000000000000000000000000
-<S>  New H27:  numeric__times(1 / 2, numeric__plus(s, numeric__divide(x, s))) 
+<S>  New H21:  true
+<S>  New H25:  numeric__plus(r, numeric__divide(x, r)) >= - 
+          340282000000000000000000000000000000000
+<S>  New H31:  numeric__times(1 / 2, numeric__plus(r, numeric__divide(x, r))) 
           >= - 340282000000000000000000000000000000000
-<S>  New H39:  numeric__minus(numeric__times(1 / 2, numeric__plus(s, 
-          numeric__divide(x, s))), s) >= - 
-          340282000000000000000000000000000000000
-<S>  New H49:  numeric__epsabs >= - 340282000000000000000000000000000000000
 -S-  Applied substitution rule sqrt_rules(3).
      This was achieved by replacing all occurrences of float__last by:
           340282000000000000000000000000000000000.
 <S>  New H4:  x <= 340282000000000000000000000000000000000
-<S>  New H8:  s <= 340282000000000000000000000000000000000
-<S>  New H10:  numeric__divide(x, s) <= 340282000000000000000000000000000000000
-<S>  New H18:  true
-<S>  New H22:  numeric__plus(s, numeric__divide(x, s)) <= 
+<S>  New H8:  r <= 340282000000000000000000000000000000000
+<S>  New H14:  numeric__divide(x, r) <= 340282000000000000000000000000000000000
+<S>  New H22:  true
+<S>  New H26:  numeric__plus(r, numeric__divide(x, r)) <= 
           340282000000000000000000000000000000000
-<S>  New H28:  numeric__times(1 / 2, numeric__plus(s, numeric__divide(x, s))) 
+<S>  New H32:  numeric__times(1 / 2, numeric__plus(r, numeric__divide(x, r))) 
           <= 340282000000000000000000000000000000000
-<S>  New H40:  numeric__minus(numeric__times(1 / 2, numeric__plus(s, 
-          numeric__divide(x, s))), s) <= 340282000000000000000000000000000000000
-<S>  New H50:  numeric__epsabs <= 340282000000000000000000000000000000000
--S-  Applied substitution rule sqrt_rules(4).
-     This was achieved by replacing all occurrences of float__base__first by:
-          - 340282000000000000000000000000000000000.
-<S>  New H47:  abs(numeric__minus(numeric__times(1 / 2, numeric__plus(s, 
-          numeric__divide(x, s))), s)) >= - 
-          340282000000000000000000000000000000000
--S-  Applied substitution rule sqrt_rules(5).
-     This was achieved by replacing all occurrences of float__base__last by:
-          340282000000000000000000000000000000000.
-<S>  New H48:  abs(numeric__minus(numeric__times(1 / 2, numeric__plus(s, 
-          numeric__divide(x, s))), s)) <= 
-          340282000000000000000000000000000000000
+---  Eliminated hypothesis H9 (true-hypothesis).
+---  Eliminated hypothesis H10 (true-hypothesis).
 ---  Eliminated hypothesis H11 (true-hypothesis).
 ---  Eliminated hypothesis H12 (true-hypothesis).
----  Eliminated hypothesis H13 (true-hypothesis).
----  Eliminated hypothesis H14 (true-hypothesis).
 ---  Eliminated hypothesis H15 (true-hypothesis).
 ---  Eliminated hypothesis H16 (true-hypothesis).
+---  Eliminated hypothesis H17 (true-hypothesis).
+---  Eliminated hypothesis H18 (true-hypothesis).
 ---  Eliminated hypothesis H19 (true-hypothesis).
 ---  Eliminated hypothesis H20 (true-hypothesis).
 ---  Eliminated hypothesis H23 (true-hypothesis).
 ---  Eliminated hypothesis H24 (true-hypothesis).
----  Eliminated hypothesis H25 (true-hypothesis).
----  Eliminated hypothesis H26 (true-hypothesis).
+---  Eliminated hypothesis H27 (true-hypothesis).
+---  Eliminated hypothesis H28 (true-hypothesis).
 ---  Eliminated hypothesis H29 (true-hypothesis).
 ---  Eliminated hypothesis H30 (true-hypothesis).
----  Eliminated hypothesis H31 (true-hypothesis).
----  Eliminated hypothesis H32 (true-hypothesis).
 ---  Eliminated hypothesis H33 (true-hypothesis).
 ---  Eliminated hypothesis H34 (true-hypothesis).
 ---  Eliminated hypothesis H35 (true-hypothesis).
 ---  Eliminated hypothesis H36 (true-hypothesis).
 ---  Eliminated hypothesis H37 (true-hypothesis).
 ---  Eliminated hypothesis H38 (true-hypothesis).
+---  Eliminated hypothesis H39 (true-hypothesis).
+---  Eliminated hypothesis H40 (true-hypothesis).
 ---  Eliminated hypothesis H41 (true-hypothesis).
 ---  Eliminated hypothesis H42 (true-hypothesis).
----  Eliminated hypothesis H43 (true-hypothesis).
----  Eliminated hypothesis H44 (true-hypothesis).
----  Eliminated hypothesis H45 (true-hypothesis).
----  Eliminated hypothesis H46 (true-hypothesis).
----  Eliminated hypothesis H52 (true-hypothesis).
----  Eliminated hypothesis H53 (true-hypothesis).
----  Eliminated hypothesis H54 (true-hypothesis).
----  Eliminated hypothesis H55 (true-hypothesis).
----  Eliminated hypothesis H17 (true-hypothesis).
----  Eliminated hypothesis H18 (true-hypothesis).
+---  Eliminated hypothesis H21 (true-hypothesis).
+---  Eliminated hypothesis H22 (true-hypothesis).
 ---  Eliminated hypothesis H3 (redundant, given H5).
 ---  Eliminated hypothesis H4 (redundant, given H6).
----  Eliminated hypothesis H8 (redundant, given H2).
----  Eliminated hypothesis H47 (redundant, given H49 & H51).
----  Eliminated hypothesis H50 (redundant, given H48 & H51).
-     +++  New H56:  float__size >= 0
+     +++  New H44:  float__size >= 0
 
 
-@@@@@@@@@@  VC: procedure_sqrt_13.  @@@@@@@@@@
-***  Proved C3:  s >= float__first
+@@@@@@@@@@  VC: procedure_sqrt_7.  @@@@@@@@@@
+%%%  Simplified H1 on reading formula in, to give:
+     %%%  H1:  r >= - (1 / 4 * (x * x)) + x
+%%%  Simplified H2 on reading formula in, to give:
+     %%%  H2:  r <= 1 / 4 * (x * x) + 1
+***  Proved C1:  r >= float__first
      using hypothesis H7.
-***  Proved C4:  s <= float__last
+***  Proved C2:  r <= float__last
+     using hypothesis H8.
+***  PROVED VC.
+
+
+@@@@@@@@@@  VC: procedure_sqrt_8.  @@@@@@@@@@
+%%%  Simplified H1 on reading formula in, to give:
+     %%%  H1:  r >= - (1 / 4 * (x * x)) + x
+%%%  Simplified H2 on reading formula in, to give:
+     %%%  H2:  r <= 1 / 4 * (x * x) + 1
+---  Hypothesis H9 has been replaced by "true".  (It is already present, as H7).
+---  Hypothesis H10 has been replaced by "true".  (It is already present, as H8)
+          .
+---  Hypothesis H11 has been replaced by "true".  (It is already present, as H7)
+          .
+---  Hypothesis H12 has been replaced by "true".  (It is already present, as H8)
+          .
+***  Proved C3:  r >= float__first
+     using hypothesis H7.
+***  Proved C4:  r <= float__last
      using hypothesis H8.
 ***  Proved C5:  x >= float__first
      using hypothesis H3.
 ***  Proved C6:  x <= float__last
      using hypothesis H4.
-***  Proved C7:  s >= float__first
+***  Proved C7:  r >= float__first
      using hypothesis H7.
-***  Proved C8:  s <= float__last
+***  Proved C8:  r <= float__last
      using hypothesis H8.
-***  Proved C10:  1 / 2 <= float__last
-     using hypotheses H1 & H8.
 -S-  Applied substitution rule sqrt_rules(2).
      This was achieved by replacing all occurrences of float__first by:
           - 340282000000000000000000000000000000000.
 <S>  New H3:  x >= - 340282000000000000000000000000000000000
-<S>  New H7:  s >= - 340282000000000000000000000000000000000
-<S>  New C1:  numeric__divide(x, s) >= - 340282000000000000000000000000000000000
+<S>  New H7:  r >= - 340282000000000000000000000000000000000
+<S>  New C1:  numeric__divide(x, r) >= - 340282000000000000000000000000000000000
 <S>  New C9:  true
 -S-  Applied substitution rule sqrt_rules(3).
      This was achieved by replacing all occurrences of float__last by:
           340282000000000000000000000000000000000.
 <S>  New H4:  x <= 340282000000000000000000000000000000000
-<S>  New H8:  s <= 340282000000000000000000000000000000000
-<S>  New C2:  numeric__divide(x, s) <= 340282000000000000000000000000000000000
+<S>  New H8:  r <= 340282000000000000000000000000000000000
+<S>  New C2:  numeric__divide(x, r) <= 340282000000000000000000000000000000000
+<S>  New C10:  true
 ***  Proved C9:  true
----  Eliminated hypothesis H3 (redundant, given H5).
----  Eliminated hypothesis H4 (redundant, given H6).
----  Eliminated hypothesis H8 (redundant, given H2).
-     +++  New H9:  float__size >= 0
-
-
-@@@@@@@@@@  VC: procedure_sqrt_14.  @@@@@@@@@@
----  Hypothesis H11 has been replaced by "true".  (It is already present, as H7)
-          .
----  Hypothesis H12 has been replaced by "true".  (It is already present, as H8)
-          .
----  Hypothesis H13 has been replaced by "true".  (It is already present, as H3)
-          .
----  Hypothesis H14 has been replaced by "true".  (It is already present, as H4)
-          .
----  Hypothesis H15 has been replaced by "true".  (It is already present, as H7)
-          .
----  Hypothesis H16 has been replaced by "true".  (It is already present, as H8)
-          .
----  Hypothesis H19 has been replaced by "true".  (It is already present, as H9)
-          .
----  Hypothesis H20 has been replaced by "true".  (It is already present, as 
-          H10).
-***  Proved C3:  numeric__divide(x, s) >= float__first
-     using hypothesis H9.
-***  Proved C4:  numeric__divide(x, s) <= float__last
-     using hypothesis H10.
--S-  Applied substitution rule sqrt_rules(2).
-     This was achieved by replacing all occurrences of float__first by:
-          - 340282000000000000000000000000000000000.
-<S>  New H3:  x >= - 340282000000000000000000000000000000000
-<S>  New H7:  s >= - 340282000000000000000000000000000000000
-<S>  New H9:  numeric__divide(x, s) >= - 340282000000000000000000000000000000000
-<S>  New H17:  true
-<S>  New C1:  numeric__plus(s, numeric__divide(x, s)) >= - 
-          340282000000000000000000000000000000000
--S-  Applied substitution rule sqrt_rules(3).
-     This was achieved by replacing all occurrences of float__last by:
-          340282000000000000000000000000000000000.
-<S>  New H4:  x <= 340282000000000000000000000000000000000
-<S>  New H8:  s <= 340282000000000000000000000000000000000
-<S>  New H10:  numeric__divide(x, s) <= 340282000000000000000000000000000000000
-<S>  New H18:  true
-<S>  New C2:  numeric__plus(s, numeric__divide(x, s)) <= 
-          340282000000000000000000000000000000000
+***  Proved C10:  true
+---  Eliminated hypothesis H9 (true-hypothesis).
+---  Eliminated hypothesis H10 (true-hypothesis).
 ---  Eliminated hypothesis H11 (true-hypothesis).
 ---  Eliminated hypothesis H12 (true-hypothesis).
----  Eliminated hypothesis H13 (true-hypothesis).
----  Eliminated hypothesis H14 (true-hypothesis).
----  Eliminated hypothesis H15 (true-hypothesis).
----  Eliminated hypothesis H16 (true-hypothesis).
----  Eliminated hypothesis H17 (true-hypothesis).
----  Eliminated hypothesis H18 (true-hypothesis).
----  Eliminated hypothesis H19 (true-hypothesis).
----  Eliminated hypothesis H20 (true-hypothesis).
 ---  Eliminated hypothesis H3 (redundant, given H5).
 ---  Eliminated hypothesis H4 (redundant, given H6).
----  Eliminated hypothesis H8 (redundant, given H2).
-     +++  New H21:  float__size >= 0
+     +++  New H13:  float__size >= 0
 
 
-@@@@@@@@@@  VC: procedure_sqrt_15.  @@@@@@@@@@
+@@@@@@@@@@  VC: procedure_sqrt_9.  @@@@@@@@@@
+%%%  Simplified H1 on reading formula in, to give:
+     %%%  H1:  r >= - (1 / 4 * (x * x)) + x
+%%%  Simplified H2 on reading formula in, to give:
+     %%%  H2:  r <= 1 / 4 * (x * x) + 1
+---  Hypothesis H9 has been replaced by "true".  (It is already present, as H7).
+---  Hypothesis H10 has been replaced by "true".  (It is already present, as H8)
+          .
 ---  Hypothesis H11 has been replaced by "true".  (It is already present, as H7)
           .
 ---  Hypothesis H12 has been replaced by "true".  (It is already present, as H8)
           .
----  Hypothesis H13 has been replaced by "true".  (It is already present, as H3)
-          .
----  Hypothesis H14 has been replaced by "true".  (It is already present, as H4)
-          .
 ---  Hypothesis H15 has been replaced by "true".  (It is already present, as H7)
           .
 ---  Hypothesis H16 has been replaced by "true".  (It is already present, as H8)
           .
----  Hypothesis H19 has been replaced by "true".  (It is already present, as H9)
+---  Hypothesis H17 has been replaced by "true".  (It is already present, as H3)
           .
----  Hypothesis H20 has been replaced by "true".  (It is already present, as 
-          H10).
----  Hypothesis H23 has been replaced by "true".  (It is already present, as H9)
-          .
----  Hypothesis H24 has been replaced by "true".  (It is already present, as 
-          H10).
----  Hypothesis H25 has been replaced by "true".  (It is already present, as 
-          H21).
----  Hypothesis H26 has been replaced by "true".  (It is already present, as 
-          H22).
-***  Proved C3:  numeric__plus(s, numeric__divide(x, s)) >= float__first
-     using hypothesis H21.
-***  Proved C4:  numeric__plus(s, numeric__divide(x, s)) <= float__last
-     using hypothesis H22.
--S-  Applied substitution rule sqrt_rules(2).
-     This was achieved by replacing all occurrences of float__first by:
-          - 340282000000000000000000000000000000000.
-<S>  New H3:  x >= - 340282000000000000000000000000000000000
-<S>  New H7:  s >= - 340282000000000000000000000000000000000
-<S>  New H9:  numeric__divide(x, s) >= - 340282000000000000000000000000000000000
-<S>  New H17:  true
-<S>  New H21:  numeric__plus(s, numeric__divide(x, s)) >= - 
-          340282000000000000000000000000000000000
-<S>  New C1:  numeric__times(1 / 2, numeric__plus(s, numeric__divide(x, s))) >= 
-          - 340282000000000000000000000000000000000
--S-  Applied substitution rule sqrt_rules(3).
-     This was achieved by replacing all occurrences of float__last by:
-          340282000000000000000000000000000000000.
-<S>  New H4:  x <= 340282000000000000000000000000000000000
-<S>  New H8:  s <= 340282000000000000000000000000000000000
-<S>  New H10:  numeric__divide(x, s) <= 340282000000000000000000000000000000000
-<S>  New H18:  true
-<S>  New H22:  numeric__plus(s, numeric__divide(x, s)) <= 
-          340282000000000000000000000000000000000
-<S>  New C2:  numeric__times(1 / 2, numeric__plus(s, numeric__divide(x, s))) <= 
-          340282000000000000000000000000000000000
----  Eliminated hypothesis H11 (true-hypothesis).
----  Eliminated hypothesis H12 (true-hypothesis).
----  Eliminated hypothesis H13 (true-hypothesis).
----  Eliminated hypothesis H14 (true-hypothesis).
----  Eliminated hypothesis H15 (true-hypothesis).
----  Eliminated hypothesis H16 (true-hypothesis).
----  Eliminated hypothesis H17 (true-hypothesis).
----  Eliminated hypothesis H18 (true-hypothesis).
----  Eliminated hypothesis H19 (true-hypothesis).
----  Eliminated hypothesis H20 (true-hypothesis).
----  Eliminated hypothesis H23 (true-hypothesis).
----  Eliminated hypothesis H24 (true-hypothesis).
----  Eliminated hypothesis H25 (true-hypothesis).
----  Eliminated hypothesis H26 (true-hypothesis).
----  Eliminated hypothesis H3 (redundant, given H5).
----  Eliminated hypothesis H4 (redundant, given H6).
----  Eliminated hypothesis H8 (redundant, given H2).
-     +++  New H27:  float__size >= 0
-
-
-@@@@@@@@@@  VC: procedure_sqrt_16.  @@@@@@@@@@
----  Hypothesis H11 has been replaced by "true".  (It is already present, as H7)
-          .
----  Hypothesis H12 has been replaced by "true".  (It is already present, as H8)
-          .
----  Hypothesis H13 has been replaced by "true".  (It is already present, as H3)
-          .
----  Hypothesis H14 has been replaced by "true".  (It is already present, as H4)
-          .
----  Hypothesis H15 has been replaced by "true".  (It is already present, as H7)
-          .
----  Hypothesis H16 has been replaced by "true".  (It is already present, as H8)
-          .
----  Hypothesis H19 has been replaced by "true".  (It is already present, as H9)
-          .
----  Hypothesis H20 has been replaced by "true".  (It is already present, as 
-          H10).
----  Hypothesis H23 has been replaced by "true".  (It is already present, as H9)
-          .
----  Hypothesis H24 has been replaced by "true".  (It is already present, as 
-          H10).
----  Hypothesis H25 has been replaced by "true".  (It is already present, as 
-          H21).
----  Hypothesis H26 has been replaced by "true".  (It is already present, as 
-          H22).
----  Hypothesis H29 has been replaced by "true".  (It is already present, as 
-          H21).
----  Hypothesis H30 has been replaced by "true".  (It is already present, as 
-          H22).
----  Hypothesis H31 has been replaced by "true".  (It is already present, as 
-          H27).
----  Hypothesis H32 has been replaced by "true".  (It is already present, as 
-          H28).
-***  Proved C1:  numeric__times(1 / 2, numeric__plus(s, numeric__divide(x, s))) 
-          >= float__first
-     using hypothesis H27.
-***  Proved C2:  numeric__times(1 / 2, numeric__plus(s, numeric__divide(x, s))) 
-          <= float__last
-     using hypothesis H28.
-***  PROVED VC.
-
-
-@@@@@@@@@@  VC: procedure_sqrt_17.  @@@@@@@@@@
----  Hypothesis H5 has been replaced by "true".  (It is already present, as H3).
----  Hypothesis H6 has been replaced by "true".  (It is already present, as H4).
----  Hypothesis H11 has been replaced by "true".  (It is already present, as H3)
-          .
----  Hypothesis H12 has been replaced by "true".  (It is already present, as H4)
-          .
----  Hypothesis H15 has been replaced by "true".  (It is already present, as H7)
-          .
----  Hypothesis H16 has been replaced by "true".  (It is already present, as H8)
+---  Hypothesis H18 has been replaced by "true".  (It is already present, as H4)
           .
 ---  Hypothesis H19 has been replaced by "true".  (It is already present, as H7)
           .
 ---  Hypothesis H20 has been replaced by "true".  (It is already present, as H8)
           .
----  Hypothesis H21 has been replaced by "true".  (It is already present, as 
-          H17).
----  Hypothesis H22 has been replaced by "true".  (It is already present, as 
-          H18).
 ---  Hypothesis H23 has been replaced by "true".  (It is already present, as 
-          H17).
+          H13).
 ---  Hypothesis H24 has been replaced by "true".  (It is already present, as 
-          H18).
----  Hypothesis H25 has been replaced by "true".  (It is already present, as 
-          H17).
----  Hypothesis H26 has been replaced by "true".  (It is already present, as 
-          H18).
----  Hypothesis H27 has been replaced by "true".  (It is already present, as H3)
-          .
----  Hypothesis H28 has been replaced by "true".  (It is already present, as H4)
-          .
----  Hypothesis H31 has been replaced by "true".  (It is already present, as H3)
-          .
----  Hypothesis H32 has been replaced by "true".  (It is already present, as H4)
-          .
----  Hypothesis H33 has been replaced by "true".  (It is already present, as 
-          H17).
----  Hypothesis H34 has been replaced by "true".  (It is already present, as 
-          H18).
----  Hypothesis H35 has been replaced by "true".  (It is already present, as 
-          H29).
----  Hypothesis H36 has been replaced by "true".  (It is already present, as 
-          H30).
-***  Proved C1:  numeric__times(1 / 2, numeric__plus(x, 1)) >= float__first
-     using hypothesis H17.
-***  Proved C2:  numeric__times(1 / 2, numeric__plus(x, 1)) <= float__last
-     using hypothesis H18.
->>>  Restructured hypothesis H41 into:
-     >>>  H41:  abs(numeric__minus(numeric__times(1 / 2, numeric__plus(x, 1)), 
-          x)) <= numeric__epsabs
+          H14).
+***  Proved C3:  numeric__divide(x, r) >= float__first
+     using hypothesis H13.
+***  Proved C4:  numeric__divide(x, r) <= float__last
+     using hypothesis H14.
 -S-  Applied substitution rule sqrt_rules(2).
      This was achieved by replacing all occurrences of float__first by:
           - 340282000000000000000000000000000000000.
 <S>  New H3:  x >= - 340282000000000000000000000000000000000
-<S>  New H7:  numeric__plus(x, 1) >= - 340282000000000000000000000000000000000
-<S>  New H9:  true
-<S>  New H13:  true
-<S>  New H17:  numeric__times(1 / 2, numeric__plus(x, 1)) >= - 
+<S>  New H7:  r >= - 340282000000000000000000000000000000000
+<S>  New H13:  numeric__divide(x, r) >= - 
           340282000000000000000000000000000000000
-<S>  New H29:  numeric__minus(numeric__times(1 / 2, numeric__plus(x, 1)), x) >= 
-          - 340282000000000000000000000000000000000
-<S>  New H39:  numeric__epsabs >= - 340282000000000000000000000000000000000
+<S>  New H21:  true
+<S>  New C1:  numeric__plus(r, numeric__divide(x, r)) >= - 
+          340282000000000000000000000000000000000
 -S-  Applied substitution rule sqrt_rules(3).
      This was achieved by replacing all occurrences of float__last by:
           340282000000000000000000000000000000000.
 <S>  New H4:  x <= 340282000000000000000000000000000000000
-<S>  New H8:  numeric__plus(x, 1) <= 340282000000000000000000000000000000000
-<S>  New H10:  true
-<S>  New H14:  true
-<S>  New H18:  numeric__times(1 / 2, numeric__plus(x, 1)) <= 
+<S>  New H8:  r <= 340282000000000000000000000000000000000
+<S>  New H14:  numeric__divide(x, r) <= 340282000000000000000000000000000000000
+<S>  New H22:  true
+<S>  New C2:  numeric__plus(r, numeric__divide(x, r)) <= 
           340282000000000000000000000000000000000
-<S>  New H30:  numeric__minus(numeric__times(1 / 2, numeric__plus(x, 1)), x) <= 
-          340282000000000000000000000000000000000
-<S>  New H40:  numeric__epsabs <= 340282000000000000000000000000000000000
--S-  Applied substitution rule sqrt_rules(4).
-     This was achieved by replacing all occurrences of float__base__first by:
-          - 340282000000000000000000000000000000000.
-<S>  New H37:  abs(numeric__minus(numeric__times(1 / 2, numeric__plus(x, 1)), x)
-          ) >= - 340282000000000000000000000000000000000
--S-  Applied substitution rule sqrt_rules(5).
-     This was achieved by replacing all occurrences of float__base__last by:
-          340282000000000000000000000000000000000.
-<S>  New H38:  abs(numeric__minus(numeric__times(1 / 2, numeric__plus(x, 1)), x)
-          ) <= 340282000000000000000000000000000000000
----  Eliminated hypothesis H5 (true-hypothesis).
----  Eliminated hypothesis H6 (true-hypothesis).
+---  Eliminated hypothesis H9 (true-hypothesis).
+---  Eliminated hypothesis H10 (true-hypothesis).
 ---  Eliminated hypothesis H11 (true-hypothesis).
 ---  Eliminated hypothesis H12 (true-hypothesis).
 ---  Eliminated hypothesis H15 (true-hypothesis).
 ---  Eliminated hypothesis H16 (true-hypothesis).
+---  Eliminated hypothesis H17 (true-hypothesis).
+---  Eliminated hypothesis H18 (true-hypothesis).
+---  Eliminated hypothesis H19 (true-hypothesis).
+---  Eliminated hypothesis H20 (true-hypothesis).
+---  Eliminated hypothesis H21 (true-hypothesis).
+---  Eliminated hypothesis H22 (true-hypothesis).
+---  Eliminated hypothesis H23 (true-hypothesis).
+---  Eliminated hypothesis H24 (true-hypothesis).
+---  Eliminated hypothesis H3 (redundant, given H5).
+---  Eliminated hypothesis H4 (redundant, given H6).
+     +++  New H25:  float__size >= 0
+
+
+@@@@@@@@@@  VC: procedure_sqrt_10.  @@@@@@@@@@
+%%%  Simplified H1 on reading formula in, to give:
+     %%%  H1:  r >= - (1 / 4 * (x * x)) + x
+%%%  Simplified H2 on reading formula in, to give:
+     %%%  H2:  r <= 1 / 4 * (x * x) + 1
+---  Hypothesis H9 has been replaced by "true".  (It is already present, as H7).
+---  Hypothesis H10 has been replaced by "true".  (It is already present, as H8)
+          .
+---  Hypothesis H11 has been replaced by "true".  (It is already present, as H7)
+          .
+---  Hypothesis H12 has been replaced by "true".  (It is already present, as H8)
+          .
+---  Hypothesis H15 has been replaced by "true".  (It is already present, as H7)
+          .
+---  Hypothesis H16 has been replaced by "true".  (It is already present, as H8)
+          .
+---  Hypothesis H17 has been replaced by "true".  (It is already present, as H3)
+          .
+---  Hypothesis H18 has been replaced by "true".  (It is already present, as H4)
+          .
+---  Hypothesis H19 has been replaced by "true".  (It is already present, as H7)
+          .
+---  Hypothesis H20 has been replaced by "true".  (It is already present, as H8)
+          .
+---  Hypothesis H23 has been replaced by "true".  (It is already present, as 
+          H13).
+---  Hypothesis H24 has been replaced by "true".  (It is already present, as 
+          H14).
+---  Hypothesis H27 has been replaced by "true".  (It is already present, as 
+          H13).
+---  Hypothesis H28 has been replaced by "true".  (It is already present, as 
+          H14).
+---  Hypothesis H29 has been replaced by "true".  (It is already present, as 
+          H25).
+---  Hypothesis H30 has been replaced by "true".  (It is already present, as 
+          H26).
+***  Proved C3:  numeric__plus(r, numeric__divide(x, r)) >= float__first
+     using hypothesis H25.
+***  Proved C4:  numeric__plus(r, numeric__divide(x, r)) <= float__last
+     using hypothesis H26.
+-S-  Applied substitution rule sqrt_rules(2).
+     This was achieved by replacing all occurrences of float__first by:
+          - 340282000000000000000000000000000000000.
+<S>  New H3:  x >= - 340282000000000000000000000000000000000
+<S>  New H7:  r >= - 340282000000000000000000000000000000000
+<S>  New H13:  numeric__divide(x, r) >= - 
+          340282000000000000000000000000000000000
+<S>  New H21:  true
+<S>  New H25:  numeric__plus(r, numeric__divide(x, r)) >= - 
+          340282000000000000000000000000000000000
+<S>  New C1:  numeric__times(1 / 2, numeric__plus(r, numeric__divide(x, r))) >= 
+          - 340282000000000000000000000000000000000
+-S-  Applied substitution rule sqrt_rules(3).
+     This was achieved by replacing all occurrences of float__last by:
+          340282000000000000000000000000000000000.
+<S>  New H4:  x <= 340282000000000000000000000000000000000
+<S>  New H8:  r <= 340282000000000000000000000000000000000
+<S>  New H14:  numeric__divide(x, r) <= 340282000000000000000000000000000000000
+<S>  New H22:  true
+<S>  New H26:  numeric__plus(r, numeric__divide(x, r)) <= 
+          340282000000000000000000000000000000000
+<S>  New C2:  numeric__times(1 / 2, numeric__plus(r, numeric__divide(x, r))) <= 
+          340282000000000000000000000000000000000
+---  Eliminated hypothesis H9 (true-hypothesis).
+---  Eliminated hypothesis H10 (true-hypothesis).
+---  Eliminated hypothesis H11 (true-hypothesis).
+---  Eliminated hypothesis H12 (true-hypothesis).
+---  Eliminated hypothesis H15 (true-hypothesis).
+---  Eliminated hypothesis H16 (true-hypothesis).
+---  Eliminated hypothesis H17 (true-hypothesis).
+---  Eliminated hypothesis H18 (true-hypothesis).
+---  Eliminated hypothesis H19 (true-hypothesis).
+---  Eliminated hypothesis H20 (true-hypothesis).
+---  Eliminated hypothesis H21 (true-hypothesis).
+---  Eliminated hypothesis H22 (true-hypothesis).
+---  Eliminated hypothesis H23 (true-hypothesis).
+---  Eliminated hypothesis H24 (true-hypothesis).
+---  Eliminated hypothesis H27 (true-hypothesis).
+---  Eliminated hypothesis H28 (true-hypothesis).
+---  Eliminated hypothesis H29 (true-hypothesis).
+---  Eliminated hypothesis H30 (true-hypothesis).
+---  Eliminated hypothesis H3 (redundant, given H5).
+---  Eliminated hypothesis H4 (redundant, given H6).
+     +++  New H31:  float__size >= 0
+
+
+@@@@@@@@@@  VC: procedure_sqrt_11.  @@@@@@@@@@
+%%%  Simplified H1 on reading formula in, to give:
+     %%%  H1:  r >= - (1 / 4 * (x * x)) + x
+%%%  Simplified H2 on reading formula in, to give:
+     %%%  H2:  r <= 1 / 4 * (x * x) + 1
+---  Hypothesis H9 has been replaced by "true".  (It is already present, as H7).
+---  Hypothesis H10 has been replaced by "true".  (It is already present, as H8)
+          .
+---  Hypothesis H11 has been replaced by "true".  (It is already present, as H7)
+          .
+---  Hypothesis H12 has been replaced by "true".  (It is already present, as H8)
+          .
+---  Hypothesis H15 has been replaced by "true".  (It is already present, as H7)
+          .
+---  Hypothesis H16 has been replaced by "true".  (It is already present, as H8)
+          .
+---  Hypothesis H17 has been replaced by "true".  (It is already present, as H3)
+          .
+---  Hypothesis H18 has been replaced by "true".  (It is already present, as H4)
+          .
+---  Hypothesis H19 has been replaced by "true".  (It is already present, as H7)
+          .
+---  Hypothesis H20 has been replaced by "true".  (It is already present, as H8)
+          .
+---  Hypothesis H23 has been replaced by "true".  (It is already present, as 
+          H13).
+---  Hypothesis H24 has been replaced by "true".  (It is already present, as 
+          H14).
+---  Hypothesis H27 has been replaced by "true".  (It is already present, as 
+          H13).
+---  Hypothesis H28 has been replaced by "true".  (It is already present, as 
+          H14).
+---  Hypothesis H29 has been replaced by "true".  (It is already present, as 
+          H25).
+---  Hypothesis H30 has been replaced by "true".  (It is already present, as 
+          H26).
+---  Hypothesis H33 has been replaced by "true".  (It is already present, as 
+          H25).
+---  Hypothesis H34 has been replaced by "true".  (It is already present, as 
+          H26).
+---  Hypothesis H35 has been replaced by "true".  (It is already present, as 
+          H31).
+---  Hypothesis H36 has been replaced by "true".  (It is already present, as 
+          H32).
+***  Proved C1:  numeric__times(1 / 2, numeric__plus(r, numeric__divide(x, r))) 
+          >= float__first
+     using hypothesis H31.
+***  Proved C2:  numeric__times(1 / 2, numeric__plus(r, numeric__divide(x, r))) 
+          <= float__last
+     using hypothesis H32.
+***  PROVED VC.
+
+
+@@@@@@@@@@  VC: procedure_sqrt_12.  @@@@@@@@@@
+---  Hypothesis H5 has been replaced by "true".  (It is already present, as H3).
+---  Hypothesis H6 has been replaced by "true".  (It is already present, as H4).
+---  Hypothesis H9 has been replaced by "true".  (It is already present, as H3).
+---  Hypothesis H10 has been replaced by "true".  (It is already present, as H4)
+          .
+---  Hypothesis H13 has been replaced by "true".  (It is already present, as H7)
+          .
+---  Hypothesis H14 has been replaced by "true".  (It is already present, as H8)
+          .
+---  Hypothesis H17 has been replaced by "true".  (It is already present, as 
+          H11).
+---  Hypothesis H18 has been replaced by "true".  (It is already present, as 
+          H12).
+---  Hypothesis H19 has been replaced by "true".  (It is already present, as H7)
+          .
+---  Hypothesis H20 has been replaced by "true".  (It is already present, as H8)
+          .
+---  Hypothesis H21 has been replaced by "true".  (It is already present, as 
+          H15).
+---  Hypothesis H22 has been replaced by "true".  (It is already present, as 
+          H16).
+---  Hypothesis H23 has been replaced by "true".  (It is already present, as 
+          H15).
+---  Hypothesis H24 has been replaced by "true".  (It is already present, as 
+          H16).
+---  Hypothesis H25 has been replaced by "true".  (It is already present, as 
+          H15).
+---  Hypothesis H26 has been replaced by "true".  (It is already present, as 
+          H16).
+---  Hypothesis H27 has been replaced by "true".  (It is already present, as H3)
+          .
+---  Hypothesis H28 has been replaced by "true".  (It is already present, as H4)
+          .
+***  Proved C1:  numeric__plus(numeric__times(1 / 2, x), 1 / 2) >= float__first
+     using hypothesis H15.
+***  Proved C2:  numeric__plus(numeric__times(1 / 2, x), 1 / 2) <= float__last
+     using hypothesis H16.
+>>>  Restructured hypothesis H29 into:
+     >>>  H29:  numeric__plus(numeric__times(1 / 2, x), 1 / 2) = x
+-S-  Applied substitution rule sqrt_rules(2).
+     This was achieved by replacing all occurrences of float__first by:
+          - 340282000000000000000000000000000000000.
+<S>  New H3:  x >= - 340282000000000000000000000000000000000
+<S>  New H7:  numeric__times(1 / 2, x) >= - 
+          340282000000000000000000000000000000000
+<S>  New H11:  true
+<S>  New H15:  numeric__plus(numeric__times(1 / 2, x), 1 / 2) >= - 
+          340282000000000000000000000000000000000
+-S-  Applied substitution rule sqrt_rules(3).
+     This was achieved by replacing all occurrences of float__last by:
+          340282000000000000000000000000000000000.
+<S>  New H4:  x <= 340282000000000000000000000000000000000
+<S>  New H8:  numeric__times(1 / 2, x) <= 
+          340282000000000000000000000000000000000
+<S>  New H12:  true
+<S>  New H16:  numeric__plus(numeric__times(1 / 2, x), 1 / 2) <= 
+          340282000000000000000000000000000000000
+---  Eliminated hypothesis H5 (true-hypothesis).
+---  Eliminated hypothesis H6 (true-hypothesis).
+---  Eliminated hypothesis H9 (true-hypothesis).
+---  Eliminated hypothesis H10 (true-hypothesis).
+---  Eliminated hypothesis H13 (true-hypothesis).
+---  Eliminated hypothesis H14 (true-hypothesis).
+---  Eliminated hypothesis H17 (true-hypothesis).
+---  Eliminated hypothesis H18 (true-hypothesis).
 ---  Eliminated hypothesis H19 (true-hypothesis).
 ---  Eliminated hypothesis H20 (true-hypothesis).
 ---  Eliminated hypothesis H21 (true-hypothesis).
@@ -1292,160 +696,132 @@ procedure sqrt
 ---  Eliminated hypothesis H26 (true-hypothesis).
 ---  Eliminated hypothesis H27 (true-hypothesis).
 ---  Eliminated hypothesis H28 (true-hypothesis).
----  Eliminated hypothesis H31 (true-hypothesis).
----  Eliminated hypothesis H32 (true-hypothesis).
----  Eliminated hypothesis H33 (true-hypothesis).
----  Eliminated hypothesis H34 (true-hypothesis).
----  Eliminated hypothesis H35 (true-hypothesis).
----  Eliminated hypothesis H36 (true-hypothesis).
----  Eliminated hypothesis H9 (true-hypothesis).
----  Eliminated hypothesis H13 (true-hypothesis).
----  Eliminated hypothesis H10 (true-hypothesis).
----  Eliminated hypothesis H14 (true-hypothesis).
+---  Eliminated hypothesis H11 (true-hypothesis).
+---  Eliminated hypothesis H12 (true-hypothesis).
 ---  Eliminated hypothesis H3 (redundant, given H1).
 ---  Eliminated hypothesis H4 (redundant, given H2).
-     +++  New H42:  float__size >= 0
+---  Eliminated hypothesis H15 (redundant, given H1 & H29).
+---  Eliminated hypothesis H16 (redundant, given H2 & H29).
+     +++  New H30:  float__size >= 0
 
 
-@@@@@@@@@@  VC: procedure_sqrt_18.  @@@@@@@@@@
+@@@@@@@@@@  VC: procedure_sqrt_13.  @@@@@@@@@@
+%%%  Simplified H1 on reading formula in, to give:
+     %%%  H1:  r >= - (1 / 4 * (x * x)) + x
+%%%  Simplified H2 on reading formula in, to give:
+     %%%  H2:  r <= 1 / 4 * (x * x) + 1
+---  Hypothesis H9 has been replaced by "true".  (It is already present, as H7).
+---  Hypothesis H10 has been replaced by "true".  (It is already present, as H8)
+          .
 ---  Hypothesis H11 has been replaced by "true".  (It is already present, as H7)
           .
 ---  Hypothesis H12 has been replaced by "true".  (It is already present, as H8)
-          .
----  Hypothesis H13 has been replaced by "true".  (It is already present, as H3)
-          .
----  Hypothesis H14 has been replaced by "true".  (It is already present, as H4)
           .
 ---  Hypothesis H15 has been replaced by "true".  (It is already present, as H7)
           .
 ---  Hypothesis H16 has been replaced by "true".  (It is already present, as H8)
           .
----  Hypothesis H19 has been replaced by "true".  (It is already present, as H9)
+---  Hypothesis H17 has been replaced by "true".  (It is already present, as H3)
           .
----  Hypothesis H20 has been replaced by "true".  (It is already present, as 
-          H10).
----  Hypothesis H23 has been replaced by "true".  (It is already present, as H9)
+---  Hypothesis H18 has been replaced by "true".  (It is already present, as H4)
           .
+---  Hypothesis H19 has been replaced by "true".  (It is already present, as H7)
+          .
+---  Hypothesis H20 has been replaced by "true".  (It is already present, as H8)
+          .
+---  Hypothesis H23 has been replaced by "true".  (It is already present, as 
+          H13).
 ---  Hypothesis H24 has been replaced by "true".  (It is already present, as 
-          H10).
----  Hypothesis H25 has been replaced by "true".  (It is already present, as 
-          H21).
----  Hypothesis H26 has been replaced by "true".  (It is already present, as 
-          H22).
+          H14).
+---  Hypothesis H27 has been replaced by "true".  (It is already present, as 
+          H13).
+---  Hypothesis H28 has been replaced by "true".  (It is already present, as 
+          H14).
 ---  Hypothesis H29 has been replaced by "true".  (It is already present, as 
-          H21).
+          H25).
 ---  Hypothesis H30 has been replaced by "true".  (It is already present, as 
-          H22).
----  Hypothesis H31 has been replaced by "true".  (It is already present, as 
-          H27).
----  Hypothesis H32 has been replaced by "true".  (It is already present, as 
-          H28).
+          H26).
 ---  Hypothesis H33 has been replaced by "true".  (It is already present, as 
-          H27).
+          H25).
 ---  Hypothesis H34 has been replaced by "true".  (It is already present, as 
-          H28).
+          H26).
 ---  Hypothesis H35 has been replaced by "true".  (It is already present, as 
-          H27).
+          H31).
 ---  Hypothesis H36 has been replaced by "true".  (It is already present, as 
-          H28).
----  Hypothesis H37 has been replaced by "true".  (It is already present, as H7)
-          .
----  Hypothesis H38 has been replaced by "true".  (It is already present, as H8)
-          .
+          H32).
+---  Hypothesis H37 has been replaced by "true".  (It is already present, as 
+          H31).
+---  Hypothesis H38 has been replaced by "true".  (It is already present, as 
+          H32).
+---  Hypothesis H39 has been replaced by "true".  (It is already present, as 
+          H31).
+---  Hypothesis H40 has been replaced by "true".  (It is already present, as 
+          H32).
 ---  Hypothesis H41 has been replaced by "true".  (It is already present, as H7)
           .
 ---  Hypothesis H42 has been replaced by "true".  (It is already present, as H8)
           .
----  Hypothesis H43 has been replaced by "true".  (It is already present, as 
-          H27).
----  Hypothesis H44 has been replaced by "true".  (It is already present, as 
-          H28).
----  Hypothesis H45 has been replaced by "true".  (It is already present, as 
-          H39).
----  Hypothesis H46 has been replaced by "true".  (It is already present, as 
-          H40).
-***  Proved C1:  numeric__times(1 / 2, numeric__plus(s, numeric__divide(x, s))) 
+***  Proved C1:  numeric__times(1 / 2, numeric__plus(r, numeric__divide(x, r))) 
           >= float__first
-     using hypothesis H27.
-***  Proved C2:  numeric__times(1 / 2, numeric__plus(s, numeric__divide(x, s))) 
+     using hypothesis H31.
+***  Proved C2:  numeric__times(1 / 2, numeric__plus(r, numeric__divide(x, r))) 
           <= float__last
-     using hypothesis H28.
->>>  Restructured hypothesis H51 into:
-     >>>  H51:  abs(numeric__minus(numeric__times(1 / 2, numeric__plus(s, 
-          numeric__divide(x, s))), s)) <= numeric__epsabs
+     using hypothesis H32.
+>>>  Restructured hypothesis H43 into:
+     >>>  H43:  numeric__times(1 / 2, numeric__plus(r, numeric__divide(x, r))) 
+          = r
 -S-  Applied substitution rule sqrt_rules(2).
      This was achieved by replacing all occurrences of float__first by:
           - 340282000000000000000000000000000000000.
 <S>  New H3:  x >= - 340282000000000000000000000000000000000
-<S>  New H7:  s >= - 340282000000000000000000000000000000000
-<S>  New H9:  numeric__divide(x, s) >= - 340282000000000000000000000000000000000
-<S>  New H17:  true
-<S>  New H21:  numeric__plus(s, numeric__divide(x, s)) >= - 
+<S>  New H7:  r >= - 340282000000000000000000000000000000000
+<S>  New H13:  numeric__divide(x, r) >= - 
           340282000000000000000000000000000000000
-<S>  New H27:  numeric__times(1 / 2, numeric__plus(s, numeric__divide(x, s))) 
+<S>  New H21:  true
+<S>  New H25:  numeric__plus(r, numeric__divide(x, r)) >= - 
+          340282000000000000000000000000000000000
+<S>  New H31:  numeric__times(1 / 2, numeric__plus(r, numeric__divide(x, r))) 
           >= - 340282000000000000000000000000000000000
-<S>  New H39:  numeric__minus(numeric__times(1 / 2, numeric__plus(s, 
-          numeric__divide(x, s))), s) >= - 
-          340282000000000000000000000000000000000
-<S>  New H49:  numeric__epsabs >= - 340282000000000000000000000000000000000
 -S-  Applied substitution rule sqrt_rules(3).
      This was achieved by replacing all occurrences of float__last by:
           340282000000000000000000000000000000000.
 <S>  New H4:  x <= 340282000000000000000000000000000000000
-<S>  New H8:  s <= 340282000000000000000000000000000000000
-<S>  New H10:  numeric__divide(x, s) <= 340282000000000000000000000000000000000
-<S>  New H18:  true
-<S>  New H22:  numeric__plus(s, numeric__divide(x, s)) <= 
+<S>  New H8:  r <= 340282000000000000000000000000000000000
+<S>  New H14:  numeric__divide(x, r) <= 340282000000000000000000000000000000000
+<S>  New H22:  true
+<S>  New H26:  numeric__plus(r, numeric__divide(x, r)) <= 
           340282000000000000000000000000000000000
-<S>  New H28:  numeric__times(1 / 2, numeric__plus(s, numeric__divide(x, s))) 
+<S>  New H32:  numeric__times(1 / 2, numeric__plus(r, numeric__divide(x, r))) 
           <= 340282000000000000000000000000000000000
-<S>  New H40:  numeric__minus(numeric__times(1 / 2, numeric__plus(s, 
-          numeric__divide(x, s))), s) <= 340282000000000000000000000000000000000
-<S>  New H50:  numeric__epsabs <= 340282000000000000000000000000000000000
--S-  Applied substitution rule sqrt_rules(4).
-     This was achieved by replacing all occurrences of float__base__first by:
-          - 340282000000000000000000000000000000000.
-<S>  New H47:  abs(numeric__minus(numeric__times(1 / 2, numeric__plus(s, 
-          numeric__divide(x, s))), s)) >= - 
-          340282000000000000000000000000000000000
--S-  Applied substitution rule sqrt_rules(5).
-     This was achieved by replacing all occurrences of float__base__last by:
-          340282000000000000000000000000000000000.
-<S>  New H48:  abs(numeric__minus(numeric__times(1 / 2, numeric__plus(s, 
-          numeric__divide(x, s))), s)) <= 
-          340282000000000000000000000000000000000
+---  Eliminated hypothesis H9 (true-hypothesis).
+---  Eliminated hypothesis H10 (true-hypothesis).
 ---  Eliminated hypothesis H11 (true-hypothesis).
 ---  Eliminated hypothesis H12 (true-hypothesis).
----  Eliminated hypothesis H13 (true-hypothesis).
----  Eliminated hypothesis H14 (true-hypothesis).
 ---  Eliminated hypothesis H15 (true-hypothesis).
 ---  Eliminated hypothesis H16 (true-hypothesis).
+---  Eliminated hypothesis H17 (true-hypothesis).
+---  Eliminated hypothesis H18 (true-hypothesis).
 ---  Eliminated hypothesis H19 (true-hypothesis).
 ---  Eliminated hypothesis H20 (true-hypothesis).
 ---  Eliminated hypothesis H23 (true-hypothesis).
 ---  Eliminated hypothesis H24 (true-hypothesis).
----  Eliminated hypothesis H25 (true-hypothesis).
----  Eliminated hypothesis H26 (true-hypothesis).
+---  Eliminated hypothesis H27 (true-hypothesis).
+---  Eliminated hypothesis H28 (true-hypothesis).
 ---  Eliminated hypothesis H29 (true-hypothesis).
 ---  Eliminated hypothesis H30 (true-hypothesis).
----  Eliminated hypothesis H31 (true-hypothesis).
----  Eliminated hypothesis H32 (true-hypothesis).
 ---  Eliminated hypothesis H33 (true-hypothesis).
 ---  Eliminated hypothesis H34 (true-hypothesis).
 ---  Eliminated hypothesis H35 (true-hypothesis).
 ---  Eliminated hypothesis H36 (true-hypothesis).
 ---  Eliminated hypothesis H37 (true-hypothesis).
 ---  Eliminated hypothesis H38 (true-hypothesis).
+---  Eliminated hypothesis H39 (true-hypothesis).
+---  Eliminated hypothesis H40 (true-hypothesis).
 ---  Eliminated hypothesis H41 (true-hypothesis).
 ---  Eliminated hypothesis H42 (true-hypothesis).
----  Eliminated hypothesis H43 (true-hypothesis).
----  Eliminated hypothesis H44 (true-hypothesis).
----  Eliminated hypothesis H45 (true-hypothesis).
----  Eliminated hypothesis H46 (true-hypothesis).
----  Eliminated hypothesis H17 (true-hypothesis).
----  Eliminated hypothesis H18 (true-hypothesis).
+---  Eliminated hypothesis H21 (true-hypothesis).
+---  Eliminated hypothesis H22 (true-hypothesis).
 ---  Eliminated hypothesis H3 (redundant, given H5).
 ---  Eliminated hypothesis H4 (redundant, given H6).
----  Eliminated hypothesis H8 (redundant, given H2).
-     +++  New H52:  float__size >= 0
+     +++  New H44:  float__size >= 0
 
