@@ -167,7 +167,7 @@ inequality =
     return $ opF left right 
     where
     op =
-        choice $ map o [("<", Le), ("<=", Leq), (">", Ge), (">=", Geq), ("=", Eq)]
+        choice $ map o [("<", Le), ("<=", Leq), (">", Ge), (">=", Geq), ("=", Eq), ("<>", Neq)]
     o (opS, opF) =
         try $
         do
@@ -223,7 +223,7 @@ tokenDef = emptyDef{ commentStart = "/*"
                , identLetter = alphaNum <|> (oneOf "_")
                , opStart = oneOf "><=-+*/"
                , opLetter = oneOf "=>"
-               , reservedOpNames = [">", "<", ">=", "<=", "=", "-", "+", "*", "/", "->"]
+               , reservedOpNames = [">", "<", ">=", "<=", "=", "<>", "-", "+", "*", "/", "->"]
                , reservedNames = ["and", "or", "implies"]
                }
 
