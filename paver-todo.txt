@@ -26,15 +26,15 @@
 [DONE] add executable "polypaver" that takes siv and a VC name and tries to solve it
   (later it will also be able to take a tptp file)
 
-write some documentation on googlecode
-   installation guide
-   simple tutorial on an example
-
-switch -g to take an int parameter - a limit on the box edge ratio, 0 = no limit, 1 = dummy splitting
+[DONE] switch -g to take an int parameter - a limit on the box edge ratio, 0 = no limit, 1 = dummy splitting
 
 *** release 0.1
 
 publish the cabal package tar.gz on googlecode
+
+write some documentation on googlecode
+   installation guide
+   simple tutorial on an example
 
 add a tptp parser
 
