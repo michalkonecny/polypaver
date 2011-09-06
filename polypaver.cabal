@@ -65,6 +65,25 @@ Extra-Source-Files:
     examples/SPARK/peak/out/peak/max.slg
     examples/SPARK/peak/out/peak/peakq.siv
     examples/SPARK/peak/peak.smf
+    examples/SPARK/sqrt/gnat.cfg
+    examples/SPARK/sqrt/src/exact.ads
+    examples/SPARK/sqrt/src/num.adb
+    examples/SPARK/sqrt/src/sqrt.adb
+    examples/SPARK/sqrt/src/numeric.ads
+    examples/SPARK/sqrt/src/num.ads
+    examples/SPARK/sqrt/spark.sw
+    examples/SPARK/sqrt/out/sqrt.siv
+    examples/SPARK/sqrt/out/exact.sli
+    examples/SPARK/sqrt/out/exact.lst
+    examples/SPARK/sqrt/out/sqrt.slg
+    examples/SPARK/sqrt/out/sqrt.lst
+    examples/SPARK/sqrt/out/sqrt.vcg
+    examples/SPARK/sqrt/out/sqrt.sli
+    examples/SPARK/sqrt/out/sqrt.rls
+    examples/SPARK/sqrt/out/spark.rep
+    examples/SPARK/sqrt/out/numeric.lst
+    examples/SPARK/sqrt/out/sqrt.fdl
+    examples/SPARK/sqrt/sqrt.smf
 
 Library
   hs-source-dirs: src
