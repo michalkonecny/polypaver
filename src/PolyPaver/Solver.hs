@@ -109,7 +109,7 @@ loop
                 currtime <- getCPUTime
                 putStr $
                   "\nSearch complete." ++ 
-                  "\nTheorem proved true in " ++
+                  "\nConjecture proved true in " ++
                     show ((fromInteger (currtime-inittime)) / 1000000000000) ++
                     " seconds." ++
                   "\nComputed boxes : " ++ show computedboxes ++ 
@@ -149,10 +149,10 @@ loop
                 plotBox red
                 putStr $
                   "\nSearch aborted." ++ 
-                  "\nTheorem proved false in " ++ 
+                  "\nConjecture proved false in " ++ 
                   show ((fromInteger (currtime-inittime)) / 1000000000000) ++
                   " second" ++ (if maxtime == 1 then "." else "s.") ++ 
-                  "\nTheorem proved false for " ++
+                  "\nConjecture proved false for " ++
                   ppShow ppb ++
                   "\nComputed  boxes : " ++ show computedboxes ++ 
                   reportQLengthS ++
