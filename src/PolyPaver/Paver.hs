@@ -70,7 +70,7 @@ paver = Paver
     ,degree = 0 &= help "maximum polynomial degree (default = 0)" &= groupname "Proving effort"
     ,startDegree = -1 &= help "first polynomial degree to try on each box (default = degree)"
     ,maxSize = 100 &= name "z" &= help "maximum polynomial term size (default = 100)"
-    ,order = B &= help "sub-problem processing order, b for breadth-first (default) or d for depth-first"
+    ,order = D &= help "sub-problem processing order, b for breadth-first or d for depth-first (default)"
     ,minDepth = 0 &= help "minimum bisection depth (default = 0)"
     ,maxDepth = 1000 &= name "b" &= help "maximum bisection depth (default = 1000)"
     ,effort = 10 &= help "approximation effort parameter (default = 10)" 
