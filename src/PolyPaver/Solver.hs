@@ -265,7 +265,7 @@ loop
         (splitSuccess, maybeHP, splitVar, (boxL,boxR))
             = L.split thinvarids maybeVar ppb boxSkewing splitGuessing value
         (_, _, splitVarNoHP, (boxLNoHP,boxRNoHP))
-            = L.split thinvarids maybeVar ppb False False value
+            = L.split thinvarids maybeVar ppb False Nothing value
         undecidedMaybeSimplerForm
             =
             case maybeHP of
@@ -302,8 +302,8 @@ loop
 
         maybeVar =
             case splitGuessing of
-                False -> Nothing
-                True -> Just $ advanceVar thinvarids prevSplitVar
+                Nothing -> Nothing
+                _ -> Just $ advanceVar thinvarids prevSplitVar
             where
             advanceVar forbiddenVars var
                 | allVarsForbidden = var
