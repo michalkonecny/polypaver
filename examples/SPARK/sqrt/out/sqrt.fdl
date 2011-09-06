@@ -1,0 +1,31 @@
+           {*******************************************************}
+                               {FDL Declarations}
+                              {Examiner GPL 2011}
+             {Copyright (C) 2011 Altran Praxis Limited, Bath, U.K.}
+           {*******************************************************}
+
+
+                        {DATE : 06-SEP-2011 23:02:24.82}
+
+                               {procedure sqrt}
+
+
+title procedure sqrt;
+
+  function round__(real) : integer;
+  const float__base__first : real = pending; 
+  const float__base__last : real = pending; 
+  const float__first : real = pending; 
+  const float__last : real = pending; 
+  const float__size : integer = pending; 
+  var x : real;
+  var s : real;
+  function exact__sqrt(real) : real;
+  function numeric__epsabs : real;
+  function numeric__epsrel : real;
+  function numeric__plus(real, real) : real;
+  function numeric__minus(real, real) : real;
+  function numeric__times(real, real) : real;
+  function numeric__divide(real, real) : real;
+
+end;

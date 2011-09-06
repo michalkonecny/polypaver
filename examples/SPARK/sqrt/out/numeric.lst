@@ -1,0 +1,38 @@
+           *******************************************************
+                            Listing of SPARK Text
+                              Examiner GPL 2011
+             Copyright (C) 2011 Altran Praxis Limited, Bath, U.K.
+           *******************************************************
+
+
+                        DATE : 06-SEP-2011 23:02:24.73
+
+Line
+   1  with exact;
+   2  --# inherit exact;
+   3  package numeric is
+   4  
+   5    function epsabs return float;
+   6  
+   7    function epsrel return float;
+   8  
+   9    function plus (x,y : float) return float;
+  10    --# pre plus(x,y) in float;
+  11  
+  12    function minus (x,y : float) return float;
+  13    --# pre minus(x,y) in float;
+  14  
+  15    function times (x,y : float) return float;
+  16    --# pre times(x,y) in float;
+  17  
+  18    function divide (x,y : float) return float;
+  19    --# pre divide(x,y) in float;
+  20  
+  21    function sqrt_init (x : float) return float;
+  22    --# pre  x in 0.5..2.0;
+  23    --# return r => r in (1.0-0.5**6)/exact.sqrt(x)..(1.0+0.5**6)/exact.sqrt(x);
+  24  
+  25  end numeric;
+
+
+--End of file--------------------------------------------------
