@@ -152,7 +152,7 @@ loop
                   "\nTheorem proved false in " ++ 
                   show ((fromInteger (currtime-inittime)) / 1000000000000) ++
                   " second" ++ (if maxtime == 1 then "." else "s.") ++ 
-                  case "\nTheorem proved false for " ++
+                  "\nTheorem proved false for " ++
                   ppShow ppb ++
                   "\nComputed  boxes : " ++ show computedboxes ++ 
                   reportQLengthS ++
