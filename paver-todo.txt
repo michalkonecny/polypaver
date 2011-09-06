@@ -32,7 +32,7 @@ add spark verification examples to the bundle
    [DONE] rr (name it peak)
    [JD TODO] sqrt 
 
-*** release 0.1
+*** tag release 0.1
 
 publish the cabal package tar.gz on googlecode
 
