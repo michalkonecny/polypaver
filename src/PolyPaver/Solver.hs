@@ -353,8 +353,8 @@ loop
                         ++ ", new queue size is " ++ show (qlength + 1)
                     where
                     reportDepth 
-                        | skewed = " domain of skewed variable _" ++ showVar splitVar varNames ++ "_"
-                        | otherwise = " domain of variable " ++ showVar splitVar varNames 
+                        | skewed = " domain of skewed variable _" ++ showVar varNames splitVar ++ "_"
+                        | otherwise = " domain of variable " ++ showVar varNames splitVar 
             return ()
 
         -- plotting

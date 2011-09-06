@@ -31,7 +31,7 @@ import qualified Data.Set as Set
 import qualified Data.Map as Map
 import qualified Data.IntMap as IMap
 
-showVar var varNames =
+showVar varNames var =
     case IMap.lookup var varNames of
         Nothing -> "x" ++ show var
         Just name -> name
@@ -265,7 +265,24 @@ removeDisjointHypotheses form
         | otherwise = And (rmConj h1) (rmConj h2)
     rmConj f = f 
     disjoint h 
-        = Set.null $ Set.intersection conclusionVars (getFormFreeVars h)
+        = Set.null $ Set.intersection conclusionTransVars (getFormFreeVars h)
+    conclusionTransVars
+        =
+        findFix $ iterate (addRelatedVarsHyps form) conclusionVars
+        where
+        findFix (a1: a2 : rest)
+            | a1 == a2 = a1
+            | otherwise = findFix (a2 : rest)
+        addRelatedVarsHyps (Implies h c) vars
+            = addRelatedVarsHyps c $ addRelatedVarsConj h vars
+        addRelatedVarsHyps _ vars = vars
+        addRelatedVarsConj (And h1 h2) vars
+            = addRelatedVarsConj h2 $ addRelatedVarsConj h1 vars
+        addRelatedVarsConj f vars 
+            | Set.null $ Set.intersection fVars vars = vars -- disjoint, do not merge fVars
+            | otherwise = Set.union vars fVars -- not disjoint, fVars are all related to vars by this hypothesis
+            where
+            fVars = getFormFreeVars f
     conclusionVars
         = getFormFreeVars conclusion
     conclusion
@@ -286,8 +303,9 @@ getBox form =
         errorMessage =
             unlines $ map reportBadVar $ filter (not . isGood) varRanges
         reportBadVar (v, _) =
-            "*** failed to derive a bound for variable " ++ show v ++ " in formula " ++ showForm form 
+            "*** failed to derive a bound for variable " ++ showVar varNames v ++ " in formula " ++ showForm form 
     varSet = getFormFreeVars form
+    varNames = getFormVarNames form
     initBoxMap = Map.fromAscList $ zip (Set.toAscList varSet) (repeat (Nothing, Nothing))
     boxMap = findRepeat initBoxMap $ tail $ (iterate $ scanHypotheses form) initBoxMap
     scanHypotheses (Implies h c) =
