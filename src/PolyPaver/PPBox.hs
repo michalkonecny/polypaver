@@ -163,6 +163,7 @@ determinant :: (B.ERRealBase b) => [[IRA b]] -> IRA b
 determinant matrix 
     =
     case matrix of
+        [] -> 0
         [[a]] -> a
         [[a,b],[c,d]] -> a * d - c * b
         firstCol : rest ->
