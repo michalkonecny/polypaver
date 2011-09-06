@@ -16,7 +16,7 @@ report queue size only when using depth-first
 
 report maximum queue size in the end
 
-increase the default depth bound to 1000 to make it ineffective
+[DONE] increase the default depth bound to 1000 to make it ineffective
 
 when hitting the depth bound, report it more explicitly
 
