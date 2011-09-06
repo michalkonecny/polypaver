@@ -176,11 +176,14 @@ decodeFn "exact__sqrt" [arg1] = Sqrt arg1
 decodeFn "exact__exp" [arg1] = Exp arg1
 decodeFn "exact__sin" [arg1] = Sin arg1
 decodeFn "exact__cos" [arg1] = Cos arg1
+decodeFn "abs" [arg1] = Abs arg1
 decodeFn fn args =
     error $ 
         "cannot decode function call " ++ fn ++ 
         "(" ++ (intercalate "," $ map show args) ++ ")"
 
+var "numeric__epsabs" = EpsAbs
+var "numeric__epsrel" = EpsRel
 var name =
     Var n name
     where
