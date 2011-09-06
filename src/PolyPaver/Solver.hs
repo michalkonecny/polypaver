@@ -39,7 +39,6 @@ import Data.List
 import Data.Maybe
 import qualified Data.Map as Map
 
-import System.Environment (getArgs, getProgName)
 import System.Console.CmdArgs
 import Control.Concurrent (threadDelay)
 import System.CPUTime
@@ -63,9 +62,6 @@ loop
     initppb@(_, initbox, varNames)
     =
     do
-    args <- getArgs
-    progName <- getProgName
-    putStrLn $ "command line: " ++ progName ++ " " ++ (intercalate " " args)
     putStrLn $ "proving: " ++ showForm originalForm
     -- possibly initialise plotting:
     mstateTV <- case plotSize of

@@ -17,17 +17,31 @@ module Main where
 import PolyPaver.Paver
 import PolyPaver.Input.SPARK
 
+import Data.List
+
 main 
     = defaultParsingMain lookupSiv
     
-lookupSiv [inputPath, vcName]
-    =
+lookupSiv [inputPath]
+    | hasSivExtension inputPath =
     do
     fileContents <- readFile inputPath
-    let (vc, box) = parseSiv inputPath fileContents vcName
-    return $ Problem box vc
+    let vcs = parseSivAll inputPath fileContents
+    return $ map mkProb vcs
+    where
+    mkProb (name, vc, box) = (name, Problem box vc)
+    
+lookupSiv [inputPath, vcName]
+    | hasSivExtension inputPath =
+    do
+    fileContents <- readFile inputPath
+    let (_, vc, box) = parseSivVC inputPath fileContents vcName
+    return $ [(vcName, Problem box vc)]
     
     
 lookupSiv _ = argsError 
 
 argsError = error "polypaver: expecting arguments: <file.siv> <vc name>"
+
+hasSivExtension path = ".siv" `isSuffixOf` path
+hasTptpExtension path = ".tptp" `isSuffixOf` path

@@ -12,7 +12,8 @@
 -}
 module PolyPaver.Input.SPARK 
 (
-    parseSiv
+    parseSivVC,
+    parseSivAll
 )
 where
 
@@ -40,19 +41,29 @@ import Text.Parsec.Language
 --  let vcBoxes = map (addBox inputPathS) $ filter (notVerum . snd) vcs
 --  mapM_ (writePolyPaverMain outputFolder) $ vcBoxes
   
-parseSiv ::
+parseSivVC ::
     String {-^ description of the source (eg file name) for error reporting -} ->
     String {-^ the contents of the SPARK vcg or siv file -} -> 
     String {-^ VC name -} -> 
-    (Form, [(Int, (Rational, Rational))])
+    (String, Form, [(Int, (Rational, Rational))])
     {-^ the VC and the bounding box for its variables -}
-parseSiv sourceDescription s vcName =
+parseSivVC sourceDescription s vcName =
     case parse (sivVC vcName) "siv" s of
         Right t -> addBox (vcName, t)
         Left err -> error $ "parse error in " ++ sourceDescription ++ ":" ++ show err 
+  
+parseSivAll ::
+    String {-^ description of the source (eg file name) for error reporting -} ->
+    String {-^ the contents of the SPARK vcg or siv file -} -> 
+    [(String, Form, [(Int, (Rational, Rational))])]
+    {-^ the VC and the bounding box for its variables -}
+parseSivAll sourceDescription s =
+    case parse sivAll "siv" s of
+        Right t -> map addBox t
+        Left err -> error $ "parse error in " ++ sourceDescription ++ ":" ++ show err 
         
 addBox (name, form) =
-    (formN, box)
+    (name, formN, box)
     where
     box =
         case getBox formN of
@@ -61,10 +72,27 @@ addBox (name, form) =
             Right box -> box
     formN = removeDisjointHypotheses $ normaliseVars form
   
+sivAll :: Parser [(String, Form)]
+sivAll =
+    many $
+    do
+    untilStartOfVC
+    vcName <- vcHead
+    form <- vcWhole
+    return (vcName, form)
+    where
+    untilStartOfVC =
+        (try startOfVC) <|> (manyTill anyToken $ try $ do { newline; startOfVC })
+    startOfVC =
+        (m_symbol $ "procedure_")
+        <|> 
+        (m_symbol $ "function_")
+  
 sivVC :: String -> Parser Form
 sivVC vcName =
     do
     untilStartOfVC
+    m_dot
     vcWhole
     where
     untilStartOfVC =
@@ -76,13 +104,13 @@ sivVC vcName =
 
 vcHead =
     do
---    vcName <- m_identifier
+    vcName <- m_identifier
     m_dot
+    return vcName
 
 vcWhole :: Parser Form 
 vcWhole = 
     do
-    vcHead
     t <- vcBody <|> vcEmptyBody
 --    unsafePrint ("vcWhole: done vcName = " ++ vcName ++ "; form = " ++ showForm t) $ return ()
     return t

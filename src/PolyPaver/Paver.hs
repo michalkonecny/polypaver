@@ -33,8 +33,10 @@ import qualified Numeric.ER.Real.Approx as RA
 
 import qualified Data.Map as Map
 import qualified Data.IntMap as IMap
+import Data.List (intercalate)
 
 import qualified Data.Sequence as Q
+import System.Environment (getArgs, getProgName)
 import System.Console.CmdArgs
 import System.CPUTime
 import System.IO
@@ -94,15 +96,34 @@ paver = Paver
 
 defaultMain problem = 
     do
+    reportCmdLine
     args <- cmdArgs paver
     runPaver problem args
 
 defaultParsingMain problemFactory =
     do
+    reportCmdLine
     args <- cmdArgs paver
     let problemIdOpt = problemId args
-    problem <- problemFactory problemIdOpt
-    runPaver problem args
+    problems <- problemFactory problemIdOpt
+    mapM (runProblem args) problems
+    where
+    runProblem args (name, problem)
+        =
+        do
+        putStrLn banner
+        putStrLn $ "*** applying PolyPaver on conjecture " ++ name
+        putStrLn banner
+        runPaver problem args
+    banner = replicate 100 '*'
+
+reportCmdLine
+    =
+    do
+    rawargs <- getArgs
+    progName <- getProgName
+    putStrLn $ "command line: " ++ progName ++ " " ++ (intercalate " " rawargs)
+    
     
 runPaver problem args =
     do
