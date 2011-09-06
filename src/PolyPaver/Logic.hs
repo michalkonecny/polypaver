@@ -48,7 +48,7 @@ class TruthValue tv where
         Maybe Int -> -- preferred variable to split
         PPBox BM -> -- box to split
         Bool -> -- True to allow skewing 
-        Bool -> -- True to allow split direction guessing 
+        Maybe Int -> -- maybe allow split direction guessing but limit box width ratio to n 
         tv -> -- undecided truth value that may be used to help guide splitting and/or skewing 
         (Bool, -- whether split succeeded in providing two proper sub-boxes 
          Maybe ((BoxHyperPlane BM, BoxHyperPlane BM), Form, IRA BM), -- whether box skewing has been used
@@ -256,24 +256,33 @@ makeSplit splitGuessing varsNotToSplit maybeVar ppb@(skewed, box, varNames) mayb
     where
     -- perform split (potentially after skewing):
     success = Prelude.not $ (ppb `ppEqual` ppbL) Prelude.|| (ppb `ppEqual` ppbR)
-    var
-        | splitGuessing =
-            case maybeSkewVar of
-                Just var
-                    | 20 * varWidth < largestWidth -> widestVar
-                    | otherwise -> var
-                    where
-                    varWidth =
-    --                    unsafePrint ("makeSplit: split direction from HP") $ 
-                        case Map.lookup var widths of Just w -> w
-                _ -> 
-                    case maybeVar of
-                        Just var -> var
-                        _ -> widestVar
-        | otherwise =
-                    case maybeVar of
-                        Just var -> var
-                        _ -> widestVar
+    var =
+        case splitGuessing of
+            Just ratioLimit ->
+                case maybeSkewVar of
+                    Just var
+                        | (fromIntegral ratioLimit) * varWidth < largestWidth -> 
+                            widestVar
+                        | otherwise -> 
+--                            unsafePrint 
+--                            (
+--                                "makeSplit: split direction from HP"
+--                                ++ "\n ratioLimit = " ++ show ratioLimit
+--                                ++ "\n varWidth = " ++ show varWidth
+--                                ++ "\n largestWidth = " ++ show largestWidth
+--                            ) $ 
+                            var
+                        where
+                        varWidth =
+                            case Map.lookup var widths of Just w -> w
+                    _ -> 
+                        case maybeVar of
+                            Just var -> var
+                            _ -> widestVar
+            _ ->
+                case maybeVar of
+                    Just var -> var
+                    _ -> widestVar
                 
     (largestWidth, widestVar) = foldl findWidestVar (0, err) $ Map.toList widths
     err = 

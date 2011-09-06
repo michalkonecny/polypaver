@@ -59,7 +59,7 @@ data Paver = Paver
     ,epsrelbits :: Int
     ,epsabsbits :: Int
     ,boxSkewing :: Bool
-    ,splitGuessing :: Bool
+    ,splitGuessing :: Int
     ,plotWidth :: Int
     ,plotHieght :: Int
     }
@@ -76,8 +76,7 @@ paver = Paver
     ,effort = 10 &= help "approximation effort parameter (default = 10)" 
     ,time = 7*24*3600 &= help "timeout in seconds (default = 7*24*3600 ie 1 week)"    
     ,boxSkewing = False &= name "k" &= help "allow parallelepiped boxes, by default only coaxial rectangles" &= groupname "Experimental"
-    ,splitGuessing = False &= name "g" &= help "try guessing the best direction of splitting, by default tend towards square boxes"
---    ,fptype = B32near &= help "type of binary floating point number and rounding mode, b32 or b32near (default) for 32-bit and b64 or b64near for 64-bit"
+    ,splitGuessing = -1 &= name "g" &= opt (20 :: Int) &= help "try guessing the best direction but do not allow a box in which a pair of edge lengths exceeds this ratio (default 20)"
     ,epsrelbits = 23 &= name "r" &= help "n to compute machine epsilon using 2^-n (default = 24)" &= groupname "Floating point rounding interpretation in conjectures"
     ,epsabsbits = 126 &= name "a" &= help "n to compute denormalised epsilon using 2^-n (default = 126)"
     ,quiet = False &= help "suppress all output except the final result (default off)" &= groupname "Verbosity"
@@ -127,7 +126,7 @@ runPaver problem args =
 --        fpt = fptype args
         epsrelbitsOpt = epsrelbits args 
         epsabsbitsOpt = epsabsbits args 
-        splitGuessingOpt = splitGuessing args
+        splitGuessingOpt = case splitGuessing args of -1 -> Nothing; n -> Just n
         boxSkewingOpt = boxSkewing args
         plotSizesOpt = (plotWidth args, plotHieght args)
         plotStepDelayMs = 0
