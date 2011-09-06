@@ -1,0 +1,321 @@
+*****************************************************************************
+                       Semantic Analysis of SPARK Text
+                              Examiner GPL 2011
+             Copyright (C) 2011 Altran Praxis Limited, Bath, U.K.
+*****************************************************************************
+
+
+CREATED 06-SEP-2011, 23:02:24  SIMPLIFIED 06-SEP-2011, 23:02:38
+
+SPARK Simplifier GPL 2011
+Copyright (C) 2011 Altran Praxis Limited, Bath, U.K.
+
+procedure sqrt
+
+
+
+
+For path(s) from start to run-time check associated with statement of line 12:
+
+procedure_sqrt_1.
+*** true .          /* all conclusions proved */
+
+
+For path(s) from start to precondition check associated with statement of line 
+          13:
+
+procedure_sqrt_2.
+H1:    1 <= x .
+H2:    x <= 2 .
+H3:    float__size >= 0 .
+       ->
+C1:    numeric__plus(x, 1) >= - 340282000000000000000000000000000000000 .
+C2:    numeric__plus(x, 1) <= 340282000000000000000000000000000000000 .
+
+
+For path(s) from start to precondition check associated with statement of line 
+          13:
+
+procedure_sqrt_3.
+H1:    1 <= x .
+H2:    x <= 2 .
+H3:    numeric__plus(x, 1) >= - 340282000000000000000000000000000000000 .
+H4:    numeric__plus(x, 1) <= 340282000000000000000000000000000000000 .
+H5:    float__size >= 0 .
+       ->
+C1:    numeric__times(1 / 2, numeric__plus(x, 1)) >= - 
+          340282000000000000000000000000000000000 .
+C2:    numeric__times(1 / 2, numeric__plus(x, 1)) <= 
+          340282000000000000000000000000000000000 .
+
+
+For path(s) from start to run-time check associated with statement of line 13:
+
+procedure_sqrt_4.
+*** true .          /* all conclusions proved */
+
+
+For path(s) from start to precondition check associated with statement of line 
+          14:
+
+procedure_sqrt_5.
+H1:    1 <= x .
+H2:    x <= 2 .
+H3:    numeric__plus(x, 1) >= - 340282000000000000000000000000000000000 .
+H4:    numeric__plus(x, 1) <= 340282000000000000000000000000000000000 .
+H5:    numeric__times(1 / 2, numeric__plus(x, 1)) >= - 
+          340282000000000000000000000000000000000 .
+H6:    numeric__times(1 / 2, numeric__plus(x, 1)) <= 
+          340282000000000000000000000000000000000 .
+H7:    float__size >= 0 .
+       ->
+C1:    numeric__minus(numeric__times(1 / 2, numeric__plus(x, 1)), x) >= - 
+          340282000000000000000000000000000000000 .
+C2:    numeric__minus(numeric__times(1 / 2, numeric__plus(x, 1)), x) <= 
+          340282000000000000000000000000000000000 .
+
+
+For path(s) from assertion of line 16 to precondition check associated with 
+          statement of line 14:
+
+procedure_sqrt_6.
+H1:    1 / 2 <= s .
+H2:    s <= 3 .
+H3:    1 <= x .
+H4:    x <= 2 .
+H5:    s >= - 340282000000000000000000000000000000000 .
+H6:    numeric__divide(x, s) >= - 340282000000000000000000000000000000000 .
+H7:    numeric__divide(x, s) <= 340282000000000000000000000000000000000 .
+H8:    numeric__plus(s, numeric__divide(x, s)) >= - 
+          340282000000000000000000000000000000000 .
+H9:    numeric__plus(s, numeric__divide(x, s)) <= 
+          340282000000000000000000000000000000000 .
+H10:   numeric__times(1 / 2, numeric__plus(s, numeric__divide(x, s))) >= - 
+          340282000000000000000000000000000000000 .
+H11:   numeric__times(1 / 2, numeric__plus(s, numeric__divide(x, s))) <= 
+          340282000000000000000000000000000000000 .
+H12:   float__size >= 0 .
+       ->
+C1:    numeric__minus(numeric__times(1 / 2, numeric__plus(s, numeric__divide(x, 
+          s))), s) >= - 340282000000000000000000000000000000000 .
+C2:    numeric__minus(numeric__times(1 / 2, numeric__plus(s, numeric__divide(x, 
+          s))), s) <= 340282000000000000000000000000000000000 .
+
+
+For path(s) from start to run-time check associated with statement of line 14:
+
+procedure_sqrt_7.
+*** true .          /* all conclusions proved */
+
+
+For path(s) from assertion of line 16 to run-time check associated with 
+          statement of line 14:
+
+procedure_sqrt_8.
+*** true .          /* all conclusions proved */
+
+
+For path(s) from start to run-time check associated with statement of line 15:
+
+procedure_sqrt_9.
+*** true .          /* all conclusions proved */
+
+
+For path(s) from assertion of line 16 to run-time check associated with 
+          statement of line 15:
+
+procedure_sqrt_10.
+*** true .          /* all conclusions proved */
+
+
+For path(s) from start to assertion of line 16:
+
+procedure_sqrt_11.
+H1:    1 <= x .
+H2:    x <= 2 .
+H3:    numeric__plus(x, 1) >= - 340282000000000000000000000000000000000 .
+H4:    numeric__plus(x, 1) <= 340282000000000000000000000000000000000 .
+H5:    numeric__times(1 / 2, numeric__plus(x, 1)) >= - 
+          340282000000000000000000000000000000000 .
+H6:    numeric__times(1 / 2, numeric__plus(x, 1)) <= 
+          340282000000000000000000000000000000000 .
+H7:    numeric__minus(numeric__times(1 / 2, numeric__plus(x, 1)), x) >= - 
+          340282000000000000000000000000000000000 .
+H8:    numeric__minus(numeric__times(1 / 2, numeric__plus(x, 1)), x) <= 
+          340282000000000000000000000000000000000 .
+H9:    abs(numeric__minus(numeric__times(1 / 2, numeric__plus(x, 1)), x)) <= 
+          340282000000000000000000000000000000000 .
+H10:   numeric__epsabs >= - 340282000000000000000000000000000000000 .
+H11:   abs(numeric__minus(numeric__times(1 / 2, numeric__plus(x, 1)), x)) > 
+          numeric__epsabs .
+H12:   float__size >= 0 .
+       ->
+C1:    1 / 2 <= numeric__times(1 / 2, numeric__plus(x, 1)) .
+C2:    numeric__times(1 / 2, numeric__plus(x, 1)) <= 3 .
+
+
+For path(s) from assertion of line 16 to assertion of line 16:
+
+procedure_sqrt_12.
+H1:    1 / 2 <= s .
+H2:    s <= 3 .
+H3:    1 <= x .
+H4:    x <= 2 .
+H5:    s >= - 340282000000000000000000000000000000000 .
+H6:    numeric__divide(x, s) >= - 340282000000000000000000000000000000000 .
+H7:    numeric__divide(x, s) <= 340282000000000000000000000000000000000 .
+H8:    numeric__plus(s, numeric__divide(x, s)) >= - 
+          340282000000000000000000000000000000000 .
+H9:    numeric__plus(s, numeric__divide(x, s)) <= 
+          340282000000000000000000000000000000000 .
+H10:   numeric__times(1 / 2, numeric__plus(s, numeric__divide(x, s))) >= - 
+          340282000000000000000000000000000000000 .
+H11:   numeric__times(1 / 2, numeric__plus(s, numeric__divide(x, s))) <= 
+          340282000000000000000000000000000000000 .
+H12:   numeric__minus(numeric__times(1 / 2, numeric__plus(s, numeric__divide(x, 
+          s))), s) >= - 340282000000000000000000000000000000000 .
+H13:   numeric__minus(numeric__times(1 / 2, numeric__plus(s, numeric__divide(x, 
+          s))), s) <= 340282000000000000000000000000000000000 .
+H14:   abs(numeric__minus(numeric__times(1 / 2, numeric__plus(s, 
+          numeric__divide(x, s))), s)) <= 
+          340282000000000000000000000000000000000 .
+H15:   numeric__epsabs >= - 340282000000000000000000000000000000000 .
+H16:   abs(numeric__minus(numeric__times(1 / 2, numeric__plus(s, 
+          numeric__divide(x, s))), s)) > numeric__epsabs .
+H17:   float__size >= 0 .
+       ->
+C1:    1 / 2 <= numeric__times(1 / 2, numeric__plus(s, numeric__divide(x, s))) .
+C2:    numeric__times(1 / 2, numeric__plus(s, numeric__divide(x, s))) <= 3 .
+
+
+For path(s) from assertion of line 16 to precondition check associated with 
+          statement of line 17:
+
+procedure_sqrt_13.
+H1:    1 / 2 <= s .
+H2:    s <= 3 .
+H3:    1 <= x .
+H4:    x <= 2 .
+H5:    s >= - 340282000000000000000000000000000000000 .
+H6:    float__size >= 0 .
+       ->
+C1:    numeric__divide(x, s) >= - 340282000000000000000000000000000000000 .
+C2:    numeric__divide(x, s) <= 340282000000000000000000000000000000000 .
+
+
+For path(s) from assertion of line 16 to precondition check associated with 
+          statement of line 17:
+
+procedure_sqrt_14.
+H1:    1 / 2 <= s .
+H2:    s <= 3 .
+H3:    1 <= x .
+H4:    x <= 2 .
+H5:    s >= - 340282000000000000000000000000000000000 .
+H6:    numeric__divide(x, s) >= - 340282000000000000000000000000000000000 .
+H7:    numeric__divide(x, s) <= 340282000000000000000000000000000000000 .
+H8:    float__size >= 0 .
+       ->
+C1:    numeric__plus(s, numeric__divide(x, s)) >= - 
+          340282000000000000000000000000000000000 .
+C2:    numeric__plus(s, numeric__divide(x, s)) <= 
+          340282000000000000000000000000000000000 .
+
+
+For path(s) from assertion of line 16 to precondition check associated with 
+          statement of line 17:
+
+procedure_sqrt_15.
+H1:    1 / 2 <= s .
+H2:    s <= 3 .
+H3:    1 <= x .
+H4:    x <= 2 .
+H5:    s >= - 340282000000000000000000000000000000000 .
+H6:    numeric__divide(x, s) >= - 340282000000000000000000000000000000000 .
+H7:    numeric__divide(x, s) <= 340282000000000000000000000000000000000 .
+H8:    numeric__plus(s, numeric__divide(x, s)) >= - 
+          340282000000000000000000000000000000000 .
+H9:    numeric__plus(s, numeric__divide(x, s)) <= 
+          340282000000000000000000000000000000000 .
+H10:   float__size >= 0 .
+       ->
+C1:    numeric__times(1 / 2, numeric__plus(s, numeric__divide(x, s))) >= - 
+          340282000000000000000000000000000000000 .
+C2:    numeric__times(1 / 2, numeric__plus(s, numeric__divide(x, s))) <= 
+          340282000000000000000000000000000000000 .
+
+
+For path(s) from assertion of line 16 to run-time check associated with 
+          statement of line 17:
+
+procedure_sqrt_16.
+*** true .          /* all conclusions proved */
+
+
+For path(s) from start to finish:
+
+procedure_sqrt_17.
+H1:    1 <= x .
+H2:    x <= 2 .
+H3:    numeric__plus(x, 1) >= - 340282000000000000000000000000000000000 .
+H4:    numeric__plus(x, 1) <= 340282000000000000000000000000000000000 .
+H5:    numeric__times(1 / 2, numeric__plus(x, 1)) >= - 
+          340282000000000000000000000000000000000 .
+H6:    numeric__times(1 / 2, numeric__plus(x, 1)) <= 
+          340282000000000000000000000000000000000 .
+H7:    numeric__minus(numeric__times(1 / 2, numeric__plus(x, 1)), x) >= - 
+          340282000000000000000000000000000000000 .
+H8:    numeric__minus(numeric__times(1 / 2, numeric__plus(x, 1)), x) <= 
+          340282000000000000000000000000000000000 .
+H9:    abs(numeric__minus(numeric__times(1 / 2, numeric__plus(x, 1)), x)) >= - 
+          340282000000000000000000000000000000000 .
+H10:   abs(numeric__minus(numeric__times(1 / 2, numeric__plus(x, 1)), x)) <= 
+          340282000000000000000000000000000000000 .
+H11:   numeric__epsabs >= - 340282000000000000000000000000000000000 .
+H12:   numeric__epsabs <= 340282000000000000000000000000000000000 .
+H13:   abs(numeric__minus(numeric__times(1 / 2, numeric__plus(x, 1)), x)) <= 
+          numeric__epsabs .
+H14:   float__size >= 0 .
+       ->
+C1:    numeric__times(1 / 2, numeric__plus(x, 1)) <= (1 + 9 * numeric__epsrel) 
+          * exact__sqrt(x) .
+
+
+For path(s) from assertion of line 16 to finish:
+
+procedure_sqrt_18.
+H1:    1 / 2 <= s .
+H2:    s <= 3 .
+H3:    1 <= x .
+H4:    x <= 2 .
+H5:    s >= - 340282000000000000000000000000000000000 .
+H6:    numeric__divide(x, s) >= - 340282000000000000000000000000000000000 .
+H7:    numeric__divide(x, s) <= 340282000000000000000000000000000000000 .
+H8:    numeric__plus(s, numeric__divide(x, s)) >= - 
+          340282000000000000000000000000000000000 .
+H9:    numeric__plus(s, numeric__divide(x, s)) <= 
+          340282000000000000000000000000000000000 .
+H10:   numeric__times(1 / 2, numeric__plus(s, numeric__divide(x, s))) >= - 
+          340282000000000000000000000000000000000 .
+H11:   numeric__times(1 / 2, numeric__plus(s, numeric__divide(x, s))) <= 
+          340282000000000000000000000000000000000 .
+H12:   numeric__minus(numeric__times(1 / 2, numeric__plus(s, numeric__divide(x, 
+          s))), s) >= - 340282000000000000000000000000000000000 .
+H13:   numeric__minus(numeric__times(1 / 2, numeric__plus(s, numeric__divide(x, 
+          s))), s) <= 340282000000000000000000000000000000000 .
+H14:   abs(numeric__minus(numeric__times(1 / 2, numeric__plus(s, 
+          numeric__divide(x, s))), s)) >= - 
+          340282000000000000000000000000000000000 .
+H15:   abs(numeric__minus(numeric__times(1 / 2, numeric__plus(s, 
+          numeric__divide(x, s))), s)) <= 
+          340282000000000000000000000000000000000 .
+H16:   numeric__epsabs >= - 340282000000000000000000000000000000000 .
+H17:   numeric__epsabs <= 340282000000000000000000000000000000000 .
+H18:   abs(numeric__minus(numeric__times(1 / 2, numeric__plus(s, 
+          numeric__divide(x, s))), s)) <= numeric__epsabs .
+H19:   float__size >= 0 .
+       ->
+C1:    numeric__times(1 / 2, numeric__plus(s, numeric__divide(x, s))) <= (1 + 9 
+          * numeric__epsrel) * exact__sqrt(x) .
+
+

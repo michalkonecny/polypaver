@@ -1,0 +1,1 @@
+-vcg -conf=gnat.cfg -output_directory=out 
