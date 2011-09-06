@@ -12,13 +12,16 @@
 
 [DONE] use depth-first search by default
 
-report queue size only when using depth-first
+[DONE] report queue size only when using depth-first
+  better solution : factor out all string literals into reporting cases
 
-report maximum queue size in the end
+[DONE] report maximum queue size in the end
 
 [DONE] increase the default depth bound to 1000 to make it ineffective
+  should be -1/0 really, at least when using fixed-precision endpoints
 
-when hitting the depth bound, report it more explicitly
+[DONE] when hitting the depth bound, report it more explicitly
+  could be improved, reporting should be more structured
 
 [DONE] add executable "polypaver" that takes siv and a VC name and tries to solve it
   (later it will also be able to take a tptp file)

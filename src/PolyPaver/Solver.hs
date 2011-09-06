@@ -83,6 +83,7 @@ loop
 
         (Q.singleton (0,[],origstartdeg,originalForm,0,initppb)) -- initial queue with one box only
         1 -- queue length
+        1 -- greatest computed queue size
         inittime -- prevtime
 
         0 -- number of computed boxes
@@ -94,7 +95,7 @@ loop
     loopAux 
         mstateTV inittime
         maxDepthReached 
-        queue qlength prevtime 
+        queue qlength maxQLength prevtime 
         computedboxes problemvol truevol 
         maybeCurrdeg maybePrevMeasure
         =
@@ -107,10 +108,14 @@ loop
                 do
                 currtime <- getCPUTime
                 putStr $
-                  "\nSearch complete.\nTheorem proved true in " ++
-                  show ((fromInteger (currtime-inittime)) / 1000000000000) ++
-                  " seconds.\nComputed : " ++ show computedboxes ++ 
-                  " boxes.\nReaching max depth : " ++ show maxDepthReached ++ "\n\n"
+                  "\nSearch complete." ++ 
+                  "\nTheorem proved true in " ++
+                    show ((fromInteger (currtime-inittime)) / 1000000000000) ++
+                    " seconds." ++
+                  "\nComputed boxes : " ++ show computedboxes ++ 
+                  reportQLengthS ++
+                  "\nGreatest queue size : " ++ show maxQLength ++  
+                  "\nGreatest depth : " ++ show maxDepthReached ++ "\n\n"
                 stopProver 
             | depth < mindepth = 
                 do
@@ -120,10 +125,14 @@ loop
             | prevtime-inittime > maxtime*1000000000000 = 
                 do
                 putStr $
-                  "\nTimeout.\nSearch aborted after " ++
-                  show maxtime ++
-                  " seconds.\nComputed : " ++ show computedboxes ++ 
-                  " boxes.\nReaching max depth : " ++ show maxDepthReached ++ "\n\n"
+                  "\nSearch aborted." ++ 
+                  "\nTimed out after " ++ show maxtime ++ 
+                  " second" ++ (if maxtime == 1 then "." else "s.") ++ 
+                  "\nComputed boxes : " ++ show computedboxes ++ 
+                  reportQLengthS ++
+                  "\nGreatest queue size : " ++ show maxQLength ++  
+                  "\nGreatest depth : " ++ show maxDepthReached ++ 
+                  "\n\n"
                 stopProver 
             | decided && decision = -- formula true on this box
                 do
@@ -132,7 +141,7 @@ loop
                 loopAux
                     mstateTV inittime
                     maxDepthReached 
-                    boxes (qlength-1) currtime
+                    boxes (qlength-1) maxQLength currtime
                     (computedboxes+1) problemvol newtruevol 
                     Nothing Nothing
             | decided = -- formula false on this box
@@ -145,8 +154,10 @@ loop
                   "\nSeconds elapsed : " ++
                   show ((fromInteger (currtime-inittime)) / 1000000000000) ++
                   "\nComputed  boxes : " ++ show computedboxes ++ 
-                  "\nMax depth : " ++ show maxDepthReached ++  
+                  reportQLengthS ++
+                  "\nGreatest queue size : " ++ show maxQLength ++  
                   "\nDepth : " ++ show depth ++
+                  "\nGreatest depth : " ++ show maxDepthReached ++  
                   "\nFormula : " ++ showForm form ++
                   "\nFormula details: \n" ++ formDebug ++
                   "\n\n" 
@@ -158,24 +169,41 @@ loop
                 loopAux
                     mstateTV inittime
                     maxDepthReached 
-                    queue qlength currtime 
+                    queue qlength maxQLength currtime 
                     computedboxes problemvol truevol
                     (Just $ currdeg + 1)
                     (Just undecidedMeasure)
-            | depth >= maxdepth || 
-              not splitSuccess ||
+            | depth >= maxdepth = 
+                do
+                currtime <- getCPUTime
+                putStr $ 
+                  "\nSearch aborted." ++ 
+                  "\nReached maximum depth " ++ show maxdepth ++ 
+--                  "\nUndecided for : " ++
+--                  ppShow ppb ++
+                  " after " ++
+                  show ((fromInteger (currtime-inittime)) / 1000000000000) ++
+                  " seconds." ++ 
+                  "\nComputed boxes : " ++ show computedboxes ++
+                  reportQLengthS ++
+                  "\nGreatest queue size : " ++ show maxQLength ++  
+                  "\n\n"
+                stopProver
+            | not splitSuccess ||
               length thinvarids == dim = -- cannot split any further
                 do
                 currtime <- getCPUTime
                 putStr $ 
-                  "\nCannot split box, search aborted.\nUndecided for : " ++
-                  ppShow ppb ++
-                  "\nSeconds elapsed : " ++
+                  "\nSearch aborted." ++ 
+                  "\nCould not split undecided box : " ++ ppShow ppb ++ 
+                  " after " ++
                   show ((fromInteger (currtime-inittime)) / 1000000000000) ++
+                  " seconds." ++
                   "\nComputed boxes : " ++ show computedboxes ++ 
-    --           "\nQueue length : " ++ show qlength ++
-                  "\nMaxdepth : " ++ show maxDepthReached ++  
+                  reportQLengthS ++
+                  "\nGreatest queue size : " ++ show maxQLength ++  
                   "\nDepth : " ++ show depth ++ 
+                  "\nGreatest depth : " ++ show maxDepthReached ++  
                   "\n\n"
                 stopProver 
             | otherwise = -- formula undecided on this box, will split it
@@ -195,7 +223,7 @@ loop
                         mstateTV inittime
                         (max (depth+1) maxDepthReached) 
                         (boxes Q.>< (Q.fromList $ map prepareBox newBoxes2)) 
-                        newQLength currtime 
+                        newQLength maxQLength currtime 
                         (computedboxes+1) newproblemvol truevol 
                         Nothing Nothing
                 D ->
@@ -203,10 +231,11 @@ loop
                         mstateTV inittime
                         (max (depth+1) maxDepthReached) 
                         ((Q.fromList $ map prepareBox newBoxes2) Q.>< boxes) 
-                        newQLength currtime 
+                        newQLength maxQLength currtime 
                         (computedboxes+1) newproblemvol truevol 
                         Nothing Nothing
             where
+            newMaxQlength = max newQLength maxQLength
             newQLength = qlength - 1 + newBoxes2length
             newBoxes2length = length newBoxes2
             newBoxes2
@@ -307,6 +336,11 @@ loop
                                 _ ->
                                     putStrLn $ " evaluation result = " ++ show maybeDecision
                 
+        reportQLengthS
+            = 
+            case order of
+                D -> "\nQueue size : " ++ show qlength
+                _ -> ""
         reportInitSplit
             =
             do
@@ -328,7 +362,6 @@ loop
                     putStrLn $
                         "Proved fraction : " ++ show (newtruevol / problemvol)
 --                    putStrLn $ formDebug
-        
         reportSplit
             =
             do
