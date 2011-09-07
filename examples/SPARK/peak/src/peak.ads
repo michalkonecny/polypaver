@@ -40,6 +40,6 @@ package peak is
   procedure peakUnit (y1,y2,y3 : in Float; r : out Float);
   --# derives r from y1,y2,y3;
   --# pre y1 in Iy and y2 in Iy and y3 in Iy;
-  --# post r >= y1 - 0.7 and r >= y2 - 0.7 and r >= y3 - 0.7;
+  --# post r >= y1 - 0.2 and r >= y2 - 0.2 and r >= y3 - 0.2;
 
 end peak;
