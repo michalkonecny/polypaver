@@ -32,7 +32,7 @@
    [DONE] rr (name it peak)
    [DONE] sqrt 
 
-[MK] improve deriving variable bounds - use PIA instead of hard-coding inferior interval arithmetic
+[DONE] improve deriving variable bounds - use PIA instead of hard-coding inferior interval arithmetic
 
 *** tag release 0.1
 

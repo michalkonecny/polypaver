@@ -18,6 +18,7 @@ module PolyPaver.PPBox
     BoxHyperPlane,
     ppShow,
     showAffine,
+    ppBoxFromIntervals,
     ppVolume,
     ppCentre,
     ppCorners,
@@ -98,6 +99,24 @@ showAffine (c, coeffs)
     where
     showVarCoeff (var, cf)
         = "x" ++ show var ++ "*" ++ show cf
+
+ppBoxFromIntervals ::
+    (B.ERRealBase b) =>
+    IMap.IntMap String ->
+    [(Int, (Rational, Rational))] ->
+    PPBox b
+ppBoxFromIntervals varNames intervals = 
+    (False, IMap.fromList $ map readInterval $ intervals, varNames) 
+    where
+    readInterval (i,(l,r)) =
+        (i, (const,  Map.insert i slope zeroCoeffs))
+        where
+        slope = (rRA - lRA) / 2
+        const = (rRA + lRA) / 2 
+        lRA = fromRational l
+        rRA = fromRational r
+    vars = map fst intervals
+    zeroCoeffs = Map.fromList $ zip vars $ repeat 0
 
 ppCentre box =
     fst $ unzip $ snd $ unzip $ IMap.toAscList box

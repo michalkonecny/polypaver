@@ -139,7 +139,7 @@ runPaver problem args =
         maxdepth = maxDepth args 
         conj = conjecture problem
         varNames = getFormVarNames conj
-        initbox = readBox varNames $ box problem
+        initbox = ppBoxFromIntervals varNames $ box problem
         ordr = order args 
         quietOpt = quiet args
         verboseOpt = verbose args
@@ -174,17 +174,4 @@ runPaver problem args =
         conj -- to be decided, defined in IntegralTest
 --        intvarids -- variable IDs of integer variables, defined in IntegralTest
         initbox
-
-readBox varNames intervals = 
-    (False, IMap.fromList $ map readInterval $ intervals, varNames) 
-    where
-    readInterval (i,(l,r)) =
-        (i, (const,  Map.insert i slope zeroCoeffs))
-        where
-        slope = (rRA - lRA) / 2
-        const = (rRA + lRA) / 2 
-        lRA = fromRational l
-        rRA = fromRational r
-    vars = map fst intervals
-    zeroCoeffs = Map.fromList $ zip vars $ repeat 0
     

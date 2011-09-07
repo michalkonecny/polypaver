@@ -14,6 +14,7 @@ module PolyPaver.Vars
 (
     showVar,
     getFormVarNames,
+    getTermVarNames,
     getFormFreeVars,
     getTermFreeVars,
     renameVarsForm,
