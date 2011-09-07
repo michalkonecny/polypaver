@@ -28,9 +28,11 @@
 
 [DONE] switch -g to take an int parameter - a limit on the box edge ratio, 0 = no limit, 1 = dummy splitting
 
-add spark verification examples to the bundle
+[DONE] add spark verification examples to the bundle
    [DONE] rr (name it peak)
-   [JD TODO] sqrt 
+   [DONE] sqrt 
+
+[MK] improve deriving variable bounds - use PIA instead of hard-coding inferior interval arithmetic
 
 *** tag release 0.1
 
