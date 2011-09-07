@@ -38,7 +38,6 @@ import Numeric.ER.Misc
 import Data.List
 import Data.Maybe
 import qualified Data.Map as Map
-import qualified Data.Set as Set
 
 import System.Console.CmdArgs
 import Control.Concurrent (threadDelay)
@@ -78,7 +77,8 @@ loop
     loopAux
         mstateTV inittime
         maxDepthReached
-        (Q.singleton firstQueueItem) -- initial queue with one box only
+
+        (Q.singleton (0,[],origstartdeg,originalForm,0,initppb)) -- initial queue with one box only
         1 -- queue length
         1 -- greatest computed queue size
         inittime -- prevtime
@@ -90,14 +90,6 @@ loop
         Nothing Nothing
     where
     dim = DBox.size initbox
-    originalVars = getFormFreeVars originalForm
-    firstQueueItem
-        = (0, -- the depth of this box
-           [], -- ancestor boxes that were skewed
-           origstartdeg, -- first polynomial degree bound to try evaluating with
-           (originalForm, originalVars), -- conjecture to be decided and its free variables
-           0, -- the variable that was used in previous split (arbitrary for the first box)
-           initppb) -- the box itself
     loopAux 
         mstateTV inittime
         maxDepthReached 
@@ -126,7 +118,7 @@ loop
                 do
                 reportInitSplit
                 currtime <- getCPUTime
-                bisectAndRecur (form, vars) currtime [boxLNoHP, boxRNoHP] True splitVarNoHP
+                bisectAndRecur form currtime [boxLNoHP, boxRNoHP] True splitVarNoHP
             | prevtime-inittime > maxtime*1000000000000 = 
                 do
                 putStr $
@@ -197,7 +189,7 @@ loop
                   "\n\n"
                 stopProver
             | not splitSuccess ||
-              null  splittableVars = -- cannot split any further
+              length thinvarids == dim = -- cannot split any further
                 do
                 currtime <- getCPUTime
                 putStr $ 
@@ -217,12 +209,12 @@ loop
                 do
                 currtime <- getCPUTime
                 reportSplit
-                bisectAndRecur undecidedMaybeSimplerFormVars currtime [boxL, boxR] False splitVar
+                bisectAndRecur undecidedMaybeSimplerForm currtime [boxL, boxR] False splitVar
 
-        (depth, skewAncestors, startdeg, (form, vars), prevSplitVar, ppb@(skewed, box, _)) = Q.index queue 0
+        (depth, skewAncestors, startdeg, form, prevSplitVar, ppb@(skewed, box, _)) = Q.index queue 0
         boxes = Q.drop 1 queue
 
-        bisectAndRecur (form, vars) currtime newBoxes isSimpleSplit splitVar =
+        bisectAndRecur form currtime newBoxes isSimpleSplit splitVar =
             case order of 
                 B -> 
                     loopAux
@@ -253,7 +245,7 @@ loop
                     couldIntersect ancestor
                         = ppIntersect ancestor ppb /= Just False
             prepareBox ppb =
-                (depth+1, newSkewAncestors, newstartdeg, (form, vars), splitVar, ppb)
+                (depth+1, newSkewAncestors, newstartdeg, form, splitVar, ppb)
             newSkewAncestors
                 | isSimpleSplit = skewAncestors
                 | otherwise
@@ -270,14 +262,14 @@ loop
                         (Nothing, 2) -> problemvol -- no skewing or dropping of boxes - a clean split
                         _ -> problemvol - (ppVolume ppb) + (sum $ map ppVolume newBoxes2)
         (splitSuccess, maybeHP, splitVar, (boxL,boxR))
-            = L.split splittableVars maybeVar ppb boxSkewing splitGuessing value
+            = L.split thinvarids maybeVar ppb boxSkewing splitGuessing value
         (_, _, splitVarNoHP, (boxLNoHP,boxRNoHP))
-            = L.split splittableVars maybeVar ppb False Nothing value
-        undecidedMaybeSimplerFormVars
+            = L.split thinvarids maybeVar ppb False Nothing value
+        undecidedMaybeSimplerForm
             =
             case maybeHP of
-                Nothing -> undecidedSimplerFormVars 
-                _ -> (originalForm, originalVars)
+                Nothing -> undecidedSimplerForm
+                _ -> originalForm
                     -- when skewing, the new boxes are not sub-boxes of box and thus we cannot
                     -- rely on the simplification of form performed while evaluating it over box
 
@@ -300,33 +292,28 @@ loop
             (origstartdeg + currdeg) `div` 2
         currdeg =  
             case maybeCurrdeg of Just currdeg -> currdeg; _ -> startdeg
-        (L.TVMUndecided undecidedSimplerFormVars undecidedMeasure _) = value
+        (L.TVMUndecided undecidedSimplerForm undecidedMeasure _) = value
         undecidedMeasureImproved = 
             case maybePrevMeasure of
                 Nothing -> True
                 Just prevUndecidedMeasure ->
                     prevUndecidedMeasure / undecidedMeasure > improvementRatioThreshold
 
-        maybeVar = Nothing -- disable round robin, always split widest var unless -g kicks in
---        maybeVar =
---            case splitGuessing of
---                Nothing -> Nothing
---                _ -> Just $ advanceVar splittableVars prevSplitVar
---            where
---            advanceVar allowedVars var
---                | noAllowedVars = var
---                | newVar `elem` allowedVars = advanceVar allowedVars newVar
---                | otherwise = newVar
---                where
---                noAllowedVars = null allowedVars
---                newVar = (var + 1) `mod` dim
-                
-
-        splittableVars = 
-            map fst $ filter thickAndRelevant $ DBox.toAscList box
+        maybeVar =
+            case splitGuessing of
+                Nothing -> Nothing
+                _ -> Just $ advanceVar thinvarids prevSplitVar
             where
-            thickAndRelevant (v,(_,coeffs)) =
-                 (not $ ppCoeffsZero coeffs) && (Set.member v vars)  
+            advanceVar forbiddenVars var
+                | allVarsForbidden = var
+                | newVar `elem` forbiddenVars = advanceVar forbiddenVars newVar
+                | otherwise = newVar
+                where
+                allVarsForbidden = length forbiddenVars == dim
+                newVar = (var + 1) `mod` dim
+
+        thinvarids = DBox.keys thincbox
+        thincbox = DBox.filter (ppCoeffsZero Nothing . snd) box -- thin subbox of contracted box
 
         -- reporting
         reportBox
@@ -369,14 +356,18 @@ loop
                 ReportNONE -> return ()
                 _ ->
                     do
-                    putStrLn $
-                        "Proved fraction : " ++ show provedFraction
+                    reportFraction
 --                    putStrLn $ formDebug
+
+        reportFraction
+            =
+            putStrLn $
+                "Proved fraction : " ++ show provedFraction
             where
             provedFraction
                 | problemvol `RA.equalReals` 0 == Just True = 1
                 | otherwise = (newtruevol / problemvol)
-
+                
         reportSplit
             =
             do
@@ -398,14 +389,14 @@ loop
                     do
                     putStrLn $ 
                         "splitting at depth " ++ show depth
-                        ++ reportVar
-                        ++ ", splittable vars = " ++ (intercalate "," $ map (showVar varNames) splittableVars)
-                    putStrLn $
-                        "new queue size is " ++ show (qlength + 1)
+                        ++ reportVar 
+                        ++ ", new queue size is " ++ show (qlength + 1)
+                    reportFraction
                     where
                     reportVar
                         | skewed = " domain of skewed variable _" ++ showVar varNames splitVar ++ "_"
-                        | otherwise = " domain of variable " ++ showVar varNames splitVar 
+                        | otherwise = " domain of variable " ++ showVar varNames splitVar
+                         
             return ()
 
         -- plotting

@@ -5,7 +5,7 @@
            *******************************************************
 
 
-                        DATE : 07-SEP-2011 14:44:58.28
+                        DATE : 07-SEP-2011 16:35:46.86
 
 Line
    1  
@@ -70,7 +70,7 @@ Line
   42    begin
   43      max(y1,y3,m1);
   44      coeffs(y1,y2,y3,a,b,c);
-  45      if a < -0.2 and 2.0*a <= b and b <= -2.0*a then -- poly has peak within [-1,1]
+  45      if a < -0.1 and 2.0*a <= b and b <= -2.0*a then -- poly has peak within [-1,1]
   46        peakQ(a,b,c,0.0,m2);
   47        max(m1,m2,r);
   48      else

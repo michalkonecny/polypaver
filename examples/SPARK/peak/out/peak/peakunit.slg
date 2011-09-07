@@ -5,7 +5,7 @@
 *****************************************************************************
 
 
-CREATED 07-SEP-2011, 14:44:58  SIMPLIFIED 07-SEP-2011, 14:44:59
+CREATED 07-SEP-2011, 16:35:46  SIMPLIFIED 07-SEP-2011, 16:35:47
 
 SPARK Simplifier GPL 2011
 Copyright (C) 2011 Altran Praxis Limited, Bath, U.K.
@@ -418,6 +418,8 @@ procedure peak.peakUnit
      using hypothesis H46.
 ***  Proved C9:  true
 ***  Proved C10:  true
+***  Proved C11:  a__2 < - (1 / 10)
+     using hypothesis H69.
 -S-  Applied substitution rule peakunit_rules(8).
      This was achieved by replacing all occurrences of float__last by:
           340282000000000000000000000000000000000.
@@ -560,8 +562,6 @@ procedure peak.peakUnit
 <S>  New H43:  y2 >= - (11 / 10)
 <S>  New H44:  y2 <= 11 / 10
 <S>  New C16:  y2 >= - (6 / 5)
-***  Proved C11:  a__2 < - (1 / 10)
-     using hypothesis H69.
 ***  Proved C12:  a__2 >= - (6 / 5)
      using hypothesis H39.
 ***  Proved C14:  b__2 >= - (6 / 5)
@@ -660,6 +660,8 @@ procedure peak.peakUnit
      %%%  H86:  true
 %%%  Simplified H87 on reading formula in, to give:
      %%%  H87:  true
+---  Hypothesis H88 has been replaced by "true".  (It is already present, as 
+          H69).
 %%%  Simplified H95 on reading formula in, to give:
      %%%  H95:  m2__3 >= c__2 - 1 / 10
 ***  Proved C1:  m2__3 >= float__first
@@ -758,6 +760,8 @@ procedure peak.peakUnit
      %%%  H86:  true
 %%%  Simplified H87 on reading formula in, to give:
      %%%  H87:  true
+---  Hypothesis H88 has been replaced by "true".  (It is already present, as 
+          H69).
 %%%  Simplified H95 on reading formula in, to give:
      %%%  H95:  m2__3 >= c__2 - 1 / 10
 ---  Hypothesis H99 has been replaced by "true".  (It is already present, as 
@@ -872,6 +876,8 @@ procedure peak.peakUnit
      %%%  H86:  true
 %%%  Simplified H87 on reading formula in, to give:
      %%%  H87:  true
+---  Hypothesis H88 has been replaced by "true".  (It is already present, as 
+          H69).
 %%%  Simplified H95 on reading formula in, to give:
      %%%  H95:  m2__3 >= c__2 - 1 / 10
 ---  Hypothesis H99 has been replaced by "true".  (It is already present, as 
@@ -1062,6 +1068,8 @@ procedure peak.peakUnit
      %%%  H86:  true
 %%%  Simplified H87 on reading formula in, to give:
      %%%  H87:  true
+---  Hypothesis H88 has been replaced by "true".  (It is already present, as 
+          H69).
 %%%  Simplified H95 on reading formula in, to give:
      %%%  H95:  m2__3 >= c__2 - 1 / 10
 ---  Hypothesis H99 has been replaced by "true".  (It is already present, as 
@@ -1214,6 +1222,7 @@ procedure peak.peakUnit
 ---  Eliminated hypothesis H85 (true-hypothesis).
 ---  Eliminated hypothesis H86 (true-hypothesis).
 ---  Eliminated hypothesis H87 (true-hypothesis).
+---  Eliminated hypothesis H88 (true-hypothesis).
 ---  Eliminated hypothesis H99 (true-hypothesis).
 ---  Eliminated hypothesis H100 (true-hypothesis).
 ---  Eliminated hypothesis H101 (true-hypothesis).
@@ -1335,7 +1344,7 @@ procedure peak.peakUnit
 ---  Hypothesis H73 has been replaced by "true".  (It is already present, as 
           H19).
 >>>  Restructured hypothesis H69 into:
-     >>>  H69:  - (1 / 5) <= a__2 or (b__2 < 2 * a__2 or - (2 * a__2) < b__2)
+     >>>  H69:  - (1 / 10) <= a__2 or (b__2 < 2 * a__2 or - (2 * a__2) < b__2)
 -S-  Applied substitution rule peakunit_rules(7).
      This was achieved by replacing all occurrences of float__first by:
           - 340282000000000000000000000000000000000.

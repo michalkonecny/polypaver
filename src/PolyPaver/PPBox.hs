@@ -215,15 +215,21 @@ ppAffineEqual (c1, coeffs1) (c2, coeffs2)
             
 ppCoeffsZero :: 
     (B.ERRealBase b) => 
-    Coeffs b -> Bool
-ppCoeffsZero coeffs 
+    Maybe [Int] ->
+    Coeffs b ->
+    Bool
+ppCoeffsZero maybeRelevantVars coeffs 
     = 
-    and $ map isZero $ Map.elems coeffs
+    and $ map isZeroOrIrrelevant $ Map.toList coeffs
     where
-    isZero coeff = 
-        case RA.equalReals coeff 0 of 
-            Just True -> True
-            _ -> False
+    isZeroOrIrrelevant (v, coeff) =
+        irrelevant v 
+        ||
+        (RA.equalReals coeff 0 == Just True)
+    irrelevant v =
+        case maybeRelevantVars of
+            Nothing -> False
+            Just relevantVars -> not $ v `elem` relevantVars 
 
 ppIntersect ::
     (B.ERRealBase b) => 
