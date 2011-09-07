@@ -5,7 +5,7 @@
 *****************************************************************************
 
 
-CREATED 06-SEP-2011, 18:04:24  SIMPLIFIED 06-SEP-2011, 18:04:28
+CREATED 07-SEP-2011, 14:35:07  SIMPLIFIED 07-SEP-2011, 14:35:09
 
 SPARK Simplifier GPL 2011
 Copyright (C) 2011 Altran Praxis Limited, Bath, U.K.
@@ -661,7 +661,7 @@ procedure peak.peakUnit
 %%%  Simplified H87 on reading formula in, to give:
      %%%  H87:  true
 %%%  Simplified H95 on reading formula in, to give:
-     %%%  H95:  m2__3 >= c__2 - 7 / 10
+     %%%  H95:  m2__3 >= c__2 - 1 / 10
 ***  Proved C1:  m2__3 >= float__first
      using hypothesis H97.
 ***  Proved C2:  m2__3 <= float__last
@@ -759,7 +759,7 @@ procedure peak.peakUnit
 %%%  Simplified H87 on reading formula in, to give:
      %%%  H87:  true
 %%%  Simplified H95 on reading formula in, to give:
-     %%%  H95:  m2__3 >= c__2 - 7 / 10
+     %%%  H95:  m2__3 >= c__2 - 1 / 10
 ---  Hypothesis H99 has been replaced by "true".  (It is already present, as 
           H97).
 ---  Hypothesis H100 has been replaced by "true".  (It is already present, as 
@@ -873,7 +873,7 @@ procedure peak.peakUnit
 %%%  Simplified H87 on reading formula in, to give:
      %%%  H87:  true
 %%%  Simplified H95 on reading formula in, to give:
-     %%%  H95:  m2__3 >= c__2 - 7 / 10
+     %%%  H95:  m2__3 >= c__2 - 1 / 10
 ---  Hypothesis H99 has been replaced by "true".  (It is already present, as 
           H97).
 ---  Hypothesis H100 has been replaced by "true".  (It is already present, as 
@@ -1063,7 +1063,7 @@ procedure peak.peakUnit
 %%%  Simplified H87 on reading formula in, to give:
      %%%  H87:  true
 %%%  Simplified H95 on reading formula in, to give:
-     %%%  H95:  m2__3 >= c__2 - 7 / 10
+     %%%  H95:  m2__3 >= c__2 - 1 / 10
 ---  Hypothesis H99 has been replaced by "true".  (It is already present, as 
           H97).
 ---  Hypothesis H100 has been replaced by "true".  (It is already present, as 
@@ -1244,7 +1244,7 @@ procedure peak.peakUnit
 -S-  Eliminated hypothesis H36.
      This was achieved by replacing all occurrences of c__2 by:
           y2.
-<S>  New H95:  m2__3 >= y2 - 7 / 10
+<S>  New H95:  m2__3 >= y2 - 1 / 10
 <S>  New H34:  a__2 - b__2 + y2 - y1 >= - (1 / 1000000)
 <S>  New H37:  a__2 + b__2 + y2 - y3 >= - (1 / 1000000)
 <S>  New H35:  a__2 - b__2 + y2 - y1 <= 1 / 1000000

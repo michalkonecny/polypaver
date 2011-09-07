@@ -35,11 +35,11 @@ package peak is
   --# pre  x in -1.0 .. 1.0 and 
   --#      a < -0.1 and 
   --#      a in Icoeff2 and b in Icoeff2 and c in Icoeff2 ;
-  --# post r >= a*x**2+b*x+c-0.7 and r <= 10.0;
+  --# post r >= a*x**2+b*x+c-0.1 and r <= 10.0;
 
   procedure peakUnit (y1,y2,y3 : in Float; r : out Float);
   --# derives r from y1,y2,y3;
   --# pre y1 in Iy and y2 in Iy and y3 in Iy;
-  --# post r >= y1 - 1.0 and r >= y2 - 1.0 and r >= y3 - 1.0;
+  --# post r >= y1 - 0.7 and r >= y2 - 0.7 and r >= y3 - 0.7;
 
 end peak;
