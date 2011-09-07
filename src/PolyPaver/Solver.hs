@@ -63,6 +63,7 @@ loop
     =
     do
     putStrLn $ "proving: " ++ showForm originalForm
+    putStrLn $ "over box: " ++ ppShow initppb
     -- possibly initialise plotting:
     mstateTV <- case plotSize of
         (w,h) 
