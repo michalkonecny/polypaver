@@ -27,22 +27,12 @@ data Form
   | Ni Term Term
   deriving (Eq,Show,Read,Data,Typeable)
 
-showForm :: Form -> String
-showForm form
-    = case form of
-          Verum -> "T"
-          Falsum -> "F"
-          Not f -> "¬(" ++ showForm f ++ ")" 
-          Or f1 f2 -> "(" ++ showForm f1 ++ ") ∨ (" ++ showForm f2 ++ ")"
-          And f1 f2 -> "(" ++ showForm f1 ++ ") ∧ (" ++ showForm f2 ++ ")"
-          Implies f1 f2 -> "(" ++ showForm f1 ++ ") ⇒ (" ++ showForm f2 ++ ")"
-          Le t1 t2 -> showTerm t1 ++ " < " ++ showTerm t2
-          Leq t1 t2 -> showTerm t1 ++ " ≤ " ++ showTerm t2
-          Ge t1 t2 -> showTerm t1 ++ " > " ++ showTerm t2
-          Geq t1 t2 -> showTerm t1 ++ " ≥ " ++ showTerm t2
-          Eq t1 t2 -> showTerm t1 ++ " = " ++ showTerm t2
-          Neq t1 t2 -> showTerm t1 ++ " ≠ " ++ showTerm t2
-          Ni t1 t2 -> showTerm t1 ++ " ⊆ " ++ showTerm t2
+isAtomicForm :: Form -> Bool
+isAtomicForm (Not f) = False
+isAtomicForm (Or _ _) = False
+isAtomicForm (And _ _) = False
+isAtomicForm (Implies _ _) = False
+isAtomicForm _ = True
 
 getConclusion :: Form -> Form
 getConclusion (Implies f1 f2) = getConclusion f2
@@ -70,7 +60,7 @@ data Term
   | Minus Term Term
   | Neg Term
   | Abs Term
---  | Min Term Term
+  | Min Term Term
   | Max Term Term
   | Times Term Term
   | Square Term
@@ -94,40 +84,6 @@ data Term
   | FExp Term
   deriving (Eq,Show,Read,Data,Typeable) 
 
-showTerm :: Term -> String
-showTerm term
-    = case term of
-          EpsAbs -> "εabs"
-          EpsRel -> "εrel"
-          Pi -> "π"
-          Lit r -> show r 
-          Var n s -> s
-          Plus t1 t2 -> "(" ++ showTerm t1 ++ ") + (" ++ showTerm t2 ++ ")"
-          Minus t1 t2 -> "(" ++ showTerm t1 ++ ")- (" ++ showTerm t2 ++ ")"
-          Neg t -> "-(" ++ showTerm t ++ ")"
-          Abs t -> "|" ++ showTerm t ++ "|"
-        --  Min t1 t2
-          Max t1 t2 -> "max(" ++ showTerm t1 ++ "," ++ showTerm t2 ++ ")"
-          Times t1 t2 -> "(" ++ showTerm t1 ++ ") * (" ++ showTerm t2 ++ ")"
-          Square t -> "(" ++ showTerm t ++ ")^2"
-          Recip t -> "1/(" ++ showTerm t ++ ")"
-          Over t1 t2 -> "(" ++ showTerm t1 ++ ") / (" ++ showTerm t2 ++ ")"
-          Sqrt t -> "sqrt(" ++ showTerm t ++ ")"
-          Exp t -> "exp(" ++ showTerm t ++ ")"
-          Sin t -> "sin(" ++ showTerm t ++ ")"
-          Cos t -> "cos(" ++ showTerm t ++ ")"
-          Atan t -> "atan(" ++ showTerm t ++ ")"
-          Hull t1 t2 -> "(" ++ showTerm t1 ++ ")..(" ++ showTerm t2 ++ ")"
-          EpsiAbs -> "εabsI"
-          EpsiRel -> "εrelI"
-          Round t -> "rnd(" ++ showTerm t ++ ")"
-          FPlus t1 t2 -> "(" ++ showTerm t1 ++ ") ⊕ (" ++ showTerm t2 ++ ")"
-          FMinus t1 t2 -> "(" ++ showTerm t1 ++ ") ⊖ (" ++ showTerm t2 ++ ")"
-          FTimes t1 t2 -> "(" ++ showTerm t1 ++ ") ⊛ (" ++ showTerm t2 ++ ")"
-          FOver t1 t2 -> "(" ++ showTerm t1 ++ ") ⊘ (" ++ showTerm t2 ++ ")"
-          FSquare t -> "fsquare(" ++ showTerm t ++ ")"
-          FSqrt t -> "fsqrt(" ++ showTerm t ++ ")"
-          FExp t -> "fexp(" ++ showTerm t ++ ")"
 
 instance Num Term
   where
@@ -156,4 +112,92 @@ instance Floating Term
 (/:) = FOver
 
 plusMinus a = Hull (-a) a
+
+showForm :: Form -> String
+showTerm :: Term -> String
+(showForm, showTerm) =
+    (sf (Just 0), st (Just 0)) 
+    where
+    sf Nothing form = sf2 Nothing form
+    sf maybeIndentLevel form
+        | length oneLineForm <= 15 = oneLineForm
+        | otherwise = sf2 maybeIndentLevel form
+        where
+        oneLineForm = sf2 Nothing form
+    sf2 maybeIndentLevel form
+        = 
+        case form of
+            Verum -> "T"
+            Falsum -> "F"
+            Not f -> "¬" ++ (indentedBrackets f)
+            Or f1 f2 ->
+                indentedBrackets f1 
+                ++ indent ++ " ∨ " ++ indent ++
+                indentedBrackets f2 
+            And f1 f2 ->
+                indentedBrackets f1 
+                ++ indent ++ " ∧ " ++ indent ++
+                indentedBrackets f2 
+            Implies f1 f2 ->
+                indentedBrackets f1 
+                ++ indent ++ " ⇒ " ++ indent ++
+                indentedBrackets f2 
+            Le t1 t2 -> st maybeIndentLevel t1 ++ " < " ++ st maybeIndentLevel t2
+            Leq t1 t2 -> st maybeIndentLevel t1 ++ " ≤ " ++ st maybeIndentLevel t2
+            Ge t1 t2 -> st maybeIndentLevel t1 ++ " > " ++ st maybeIndentLevel t2
+            Geq t1 t2 -> st maybeIndentLevel t1 ++ " ≥ " ++ st maybeIndentLevel t2
+            Eq t1 t2 -> st maybeIndentLevel t1 ++ " = " ++ st maybeIndentLevel t2
+            Neq t1 t2 -> st maybeIndentLevel t1 ++ " ≠ " ++ st maybeIndentLevel t2
+            Ni t1 t2 -> st maybeIndentLevel t1 ++ " ⊆ " ++ st maybeIndentLevel t2
+        where
+        sfNext = sf maybeNextIndentLevel
+        stNext = st maybeNextIndentLevel
+        indent = 
+            case maybeIndentLevel of 
+                Just indentLevel -> "\n" ++ replicate indentLevel ' '
+                _ -> ""
+        indentNext = 
+            case maybeNextIndentLevel of
+                Just indentLevel -> "\n" ++ replicate indentLevel ' '
+                _ -> ""
+        indentedBrackets form
+            | isAtomicForm form = " " ++ between ++ " "
+            | otherwise = "(" ++ indentNext ++ between ++ indent ++ ")"
+            where
+            between = sfNext form
+        maybeNextIndentLevel = fmap (+ 2) maybeIndentLevel
+    st indentLevel term
+        = 
+        case term of
+            EpsAbs -> "εabs"
+            EpsRel -> "εrel"
+            Pi -> "π"
+            Lit r -> show r 
+            Var n s -> s
+            Plus t1 t2 -> "(" ++ st indentLevel t1 ++ ") + (" ++ st indentLevel t2 ++ ")"
+            Minus t1 t2 -> "(" ++ st indentLevel t1 ++ ")- (" ++ st indentLevel t2 ++ ")"
+            Neg t -> "-(" ++ st indentLevel t ++ ")"
+            Abs t -> "|" ++ st indentLevel t ++ "|"
+            Min t1 t2 -> "min(" ++ st indentLevel t1 ++ "," ++ st indentLevel t2 ++ ")"
+            Max t1 t2 -> "max(" ++ st indentLevel t1 ++ "," ++ st indentLevel t2 ++ ")"
+            Times t1 t2 -> "(" ++ st indentLevel t1 ++ ") * (" ++ st indentLevel t2 ++ ")"
+            Square t -> "(" ++ st indentLevel t ++ ")^2"
+            Recip t -> "1/(" ++ st indentLevel t ++ ")"
+            Over t1 t2 -> "(" ++ st indentLevel t1 ++ ") / (" ++ st indentLevel t2 ++ ")"
+            Sqrt t -> "sqrt(" ++ st indentLevel t ++ ")"
+            Exp t -> "exp(" ++ st indentLevel t ++ ")"
+            Sin t -> "sin(" ++ st indentLevel t ++ ")"
+            Cos t -> "cos(" ++ st indentLevel t ++ ")"
+            Atan t -> "atan(" ++ st indentLevel t ++ ")"
+            Hull t1 t2 -> "(" ++ st indentLevel t1 ++ ")..(" ++ st indentLevel t2 ++ ")"
+            EpsiAbs -> "εabsI"
+            EpsiRel -> "εrelI"
+            Round t -> "rnd(" ++ st indentLevel t ++ ")"
+            FPlus t1 t2 -> "(" ++ st indentLevel t1 ++ ") ⊕ (" ++ st indentLevel t2 ++ ")"
+            FMinus t1 t2 -> "(" ++ st indentLevel t1 ++ ") ⊖ (" ++ st indentLevel t2 ++ ")"
+            FTimes t1 t2 -> "(" ++ st indentLevel t1 ++ ") ⊛ (" ++ st indentLevel t2 ++ ")"
+            FOver t1 t2 -> "(" ++ st indentLevel t1 ++ ") ⊘ (" ++ st indentLevel t2 ++ ")"
+            FSquare t -> "fsquare(" ++ st indentLevel t ++ ")"
+            FSqrt t -> "fsqrt(" ++ st indentLevel t ++ ")"
+            FExp t -> "fexp(" ++ st indentLevel t ++ ")"
 
