@@ -5,7 +5,7 @@
 *****************************************************************************
 
 
-CREATED 07-SEP-2011, 16:35:46  SIMPLIFIED 07-SEP-2011, 16:35:47
+CREATED 07-SEP-2011, 17:22:08  SIMPLIFIED 07-SEP-2011, 17:22:09
 
 SPARK Simplifier GPL 2011
 Copyright (C) 2011 Altran Praxis Limited, Bath, U.K.
@@ -77,8 +77,8 @@ H31:   ipad__size >= 0 .
 H32:   icoeff1__size >= 0 .
 H33:   icoeff2__size >= 0 .
        ->
-C1:    - (1 / 10) >= universal_real__base__first .
-C2:    - (1 / 10) <= universal_real__base__last .
+C1:    - (1 / 20) >= universal_real__base__first .
+C2:    - (1 / 20) <= universal_real__base__last .
 
 
 For path(s) from start to precondition check associated with statement of line 
@@ -138,9 +138,9 @@ H20:   b__2 >= - 340282000000000000000000000000000000000 .
 H21:   b__2 <= 340282000000000000000000000000000000000 .
 H22:   - (2 * a__2) >= - 340282000000000000000000000000000000000 .
 H23:   - (2 * a__2) <= 340282000000000000000000000000000000000 .
-H24:   - (1 / 10) >= universal_real__base__first .
-H25:   - (1 / 10) <= universal_real__base__last .
-H26:   a__2 < - (1 / 10) .
+H24:   - (1 / 20) >= universal_real__base__first .
+H25:   - (1 / 20) <= universal_real__base__last .
+H26:   a__2 < - (1 / 20) .
 H27:   2 * a__2 <= b__2 .
 H28:   b__2 <= - (2 * a__2) .
 H29:   a__2 >= - (6 / 5) .
@@ -149,7 +149,7 @@ H31:   b__2 >= - (6 / 5) .
 H32:   b__2 <= 6 / 5 .
 H33:   y2 >= - (6 / 5) .
 H34:   y2 <= 6 / 5 .
-H35:   m2__3 >= y2 - 1 / 10 .
+H35:   m2__3 >= y2 - 1 / 20 .
 H36:   m2__3 <= 10 .
 H37:   m2__3 >= - 340282000000000000000000000000000000000 .
 H38:   r__4 = m1__1 and m1__1 >= m2__3 or r__4 = m2__3 and m2__3 >= m1__1 .
@@ -195,9 +195,9 @@ H20:   b__2 >= - 340282000000000000000000000000000000000 .
 H21:   b__2 <= 340282000000000000000000000000000000000 .
 H22:   - (2 * a__2) >= - 340282000000000000000000000000000000000 .
 H23:   - (2 * a__2) <= 340282000000000000000000000000000000000 .
-H24:   - (1 / 10) >= universal_real__base__first .
-H25:   - (1 / 10) <= universal_real__base__last .
-H26:   - (1 / 10) <= a__2 or (b__2 < 2 * a__2 or - (2 * a__2) < b__2) .
+H24:   - (1 / 20) >= universal_real__base__first .
+H25:   - (1 / 20) <= universal_real__base__last .
+H26:   - (1 / 20) <= a__2 or (b__2 < 2 * a__2 or - (2 * a__2) < b__2) .
 H27:   universal_real__size >= 0 .
 H28:   universal_real__first <= universal_real__last .
 H29:   universal_real__base__first <= universal_real__base__last .

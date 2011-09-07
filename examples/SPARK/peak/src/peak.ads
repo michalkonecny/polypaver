@@ -11,7 +11,7 @@ package peak is
 
   subtype Iy is Float range y_min .. y_max ;
 
-  pad : constant := 0.000001 ;
+  pad : constant := 0.000001;
 
   subtype Ipad is Float range -pad .. pad ;
 
@@ -33,9 +33,9 @@ package peak is
   procedure peakQ (a,b,c,x : in Float; r : out Float);
   --# derives r from a,b,c,x;
   --# pre  x in -1.0 .. 1.0 and 
-  --#      a < -0.1 and 
+  --#      a < -0.05 and 
   --#      a in Icoeff2 and b in Icoeff2 and c in Icoeff2 ;
-  --# post r >= a*x**2+b*x+c-0.1 and r <= 10.0;
+  --# post r >= a*x**2+b*x+c-0.05 and r <= 10.0;
 
   procedure peakUnit (y1,y2,y3 : in Float; r : out Float);
   --# derives r from y1,y2,y3;

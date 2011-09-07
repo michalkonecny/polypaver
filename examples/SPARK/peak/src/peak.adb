@@ -42,7 +42,7 @@ package body peak is
   begin
     max(y1,y3,m1);
     coeffs(y1,y2,y3,a,b,c);
-    if a < -0.1 and 2.0*a <= b and b <= -2.0*a then -- poly has peak within [-1,1]
+    if a < -0.05 and 2.0*a <= b and b <= -2.0*a then -- poly has peak within [-1,1]
       peakQ(a,b,c,0.0,m2);
       max(m1,m2,r);
     else
