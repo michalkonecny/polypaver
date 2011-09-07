@@ -20,6 +20,7 @@ where
 import PolyPaver.GenerateMain
 import PolyPaver.Form
 import PolyPaver.Vars
+import PolyPaver.DeriveBounds
 import PolyPaver.PPBox
 
 import Numeric.ER.Misc

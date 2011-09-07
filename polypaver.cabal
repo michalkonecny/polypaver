@@ -108,13 +108,15 @@ Library
     PolyPaver.GenerateMain
 
   Other-modules:
+    PolyPaver.Paver
+    PolyPaver.Solver
+    PolyPaver.Eval
+    PolyPaver.Logic
+    PolyPaver.Form
+    PolyPaver.Vars
     PolyPaver.PPBox
     PolyPaver.Plot
-    PolyPaver.Form
-    PolyPaver.Logic
-    PolyPaver.Eval
-    PolyPaver.Solver
-    PolyPaver.Paver
+    PolyPaver.DeriveBounds
     PolyPaver.Input.SPARK
     Numeric.ER.ShowHTML
     Numeric.ER.BasicTypes.PlusMinus
