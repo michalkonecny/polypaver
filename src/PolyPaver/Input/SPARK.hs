@@ -197,7 +197,7 @@ fncall =
     return $ decodeFn fname args
 
 -- the following definition is incomplete, add cases as needed:
-decodeFn "numeric__divide" [arg1, arg2] = FTimes arg1 arg2
+decodeFn "numeric__divide" [arg1, arg2] = FOver arg1 arg2
 decodeFn "numeric__times" [arg1, arg2] = FTimes arg1 arg2
 decodeFn "numeric__plus" [arg1, arg2] = FPlus arg1 arg2
 decodeFn "numeric__minus" [arg1, arg2] = FMinus arg1 arg2
