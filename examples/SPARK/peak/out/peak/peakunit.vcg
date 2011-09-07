@@ -5,7 +5,7 @@
            *******************************************************
 
 
-                        DATE : 07-SEP-2011 16:35:46.85
+                        DATE : 07-SEP-2011 17:22:08.32
 
                           procedure peak.peakUnit
 
@@ -236,8 +236,8 @@ C3:    2 * a__2 >= float__base__first .
 C4:    2 * a__2 <= float__base__last .
 C5:    2 * a__2 >= float__base__first .
 C6:    2 * a__2 <= float__base__last .
-C7:     -(1/10) >= universal_real__base__first .
-C8:     -(1/10) <= universal_real__base__last .
+C7:     -(1/20) >= universal_real__base__first .
+C8:     -(1/20) <= universal_real__base__last .
  
 
 For path(s) from start to precondition check associated with statement of line 46:
@@ -310,9 +310,9 @@ H63:   2 * a__2 >= float__base__first .
 H64:   2 * a__2 <= float__base__last .
 H65:   2 * a__2 >= float__base__first .
 H66:   2 * a__2 <= float__base__last .
-H67:    -(1/10) >= universal_real__base__first .
-H68:    -(1/10) <= universal_real__base__last .
-H69:   a__2 <  -(1/10) .
+H67:    -(1/20) >= universal_real__base__first .
+H68:    -(1/20) <= universal_real__base__last .
+H69:   a__2 <  -(1/20) .
 H70:   2 * a__2 <= b__2 .
 H71:   b__2 <=  -(2 * a__2) .
 H72:   a__2 >= float__first .
@@ -332,7 +332,7 @@ C7:    a__2 >= float__first .
 C8:    a__2 <= float__last .
 C9:    0 >=  -1 .
 C10:   0 <= 1 .
-C11:   a__2 <  -(1/10) .
+C11:   a__2 <  -(1/20) .
 C12:   a__2 >= icoeff2__first .
 C13:   a__2 <= icoeff2__last .
 C14:   b__2 >= icoeff2__first .
@@ -411,9 +411,9 @@ H63:   2 * a__2 >= float__base__first .
 H64:   2 * a__2 <= float__base__last .
 H65:   2 * a__2 >= float__base__first .
 H66:   2 * a__2 <= float__base__last .
-H67:    -(1/10) >= universal_real__base__first .
-H68:    -(1/10) <= universal_real__base__last .
-H69:   a__2 <  -(1/10) .
+H67:    -(1/20) >= universal_real__base__first .
+H68:    -(1/20) <= universal_real__base__last .
+H69:   a__2 <  -(1/20) .
 H70:   2 * a__2 <= b__2 .
 H71:   b__2 <=  -(2 * a__2) .
 H72:   a__2 >= float__first .
@@ -432,14 +432,14 @@ H84:   a__2 >= float__first .
 H85:   a__2 <= float__last .
 H86:   0 >=  -1 .
 H87:   0 <= 1 .
-H88:   a__2 <  -(1/10) .
+H88:   a__2 <  -(1/20) .
 H89:   a__2 >= icoeff2__first .
 H90:   a__2 <= icoeff2__last .
 H91:   b__2 >= icoeff2__first .
 H92:   b__2 <= icoeff2__last .
 H93:   c__2 >= icoeff2__first .
 H94:   c__2 <= icoeff2__last .
-H95:   m2__3 >= a__2 * 0 ** 2 + b__2 * 0 + c__2 - (1/10) .
+H95:   m2__3 >= a__2 * 0 ** 2 + b__2 * 0 + c__2 - (1/20) .
 H96:   m2__3 <= 10 .
 H97:   m2__3 >= float__first .
 H98:   m2__3 <= float__last .
@@ -518,9 +518,9 @@ H63:   2 * a__2 >= float__base__first .
 H64:   2 * a__2 <= float__base__last .
 H65:   2 * a__2 >= float__base__first .
 H66:   2 * a__2 <= float__base__last .
-H67:    -(1/10) >= universal_real__base__first .
-H68:    -(1/10) <= universal_real__base__last .
-H69:   a__2 <  -(1/10) .
+H67:    -(1/20) >= universal_real__base__first .
+H68:    -(1/20) <= universal_real__base__last .
+H69:   a__2 <  -(1/20) .
 H70:   2 * a__2 <= b__2 .
 H71:   b__2 <=  -(2 * a__2) .
 H72:   a__2 >= float__first .
@@ -539,14 +539,14 @@ H84:   a__2 >= float__first .
 H85:   a__2 <= float__last .
 H86:   0 >=  -1 .
 H87:   0 <= 1 .
-H88:   a__2 <  -(1/10) .
+H88:   a__2 <  -(1/20) .
 H89:   a__2 >= icoeff2__first .
 H90:   a__2 <= icoeff2__last .
 H91:   b__2 >= icoeff2__first .
 H92:   b__2 <= icoeff2__last .
 H93:   c__2 >= icoeff2__first .
 H94:   c__2 <= icoeff2__last .
-H95:   m2__3 >= a__2 * 0 ** 2 + b__2 * 0 + c__2 - (1/10) .
+H95:   m2__3 >= a__2 * 0 ** 2 + b__2 * 0 + c__2 - (1/20) .
 H96:   m2__3 <= 10 .
 H97:   m2__3 >= float__first .
 H98:   m2__3 <= float__last .
@@ -633,9 +633,9 @@ H63:   2 * a__2 >= float__base__first .
 H64:   2 * a__2 <= float__base__last .
 H65:   2 * a__2 >= float__base__first .
 H66:   2 * a__2 <= float__base__last .
-H67:    -(1/10) >= universal_real__base__first .
-H68:    -(1/10) <= universal_real__base__last .
-H69:   a__2 <  -(1/10) .
+H67:    -(1/20) >= universal_real__base__first .
+H68:    -(1/20) <= universal_real__base__last .
+H69:   a__2 <  -(1/20) .
 H70:   2 * a__2 <= b__2 .
 H71:   b__2 <=  -(2 * a__2) .
 H72:   a__2 >= float__first .
@@ -654,14 +654,14 @@ H84:   a__2 >= float__first .
 H85:   a__2 <= float__last .
 H86:   0 >=  -1 .
 H87:   0 <= 1 .
-H88:   a__2 <  -(1/10) .
+H88:   a__2 <  -(1/20) .
 H89:   a__2 >= icoeff2__first .
 H90:   a__2 <= icoeff2__last .
 H91:   b__2 >= icoeff2__first .
 H92:   b__2 <= icoeff2__last .
 H93:   c__2 >= icoeff2__first .
 H94:   c__2 <= icoeff2__last .
-H95:   m2__3 >= a__2 * 0 ** 2 + b__2 * 0 + c__2 - (1/10) .
+H95:   m2__3 >= a__2 * 0 ** 2 + b__2 * 0 + c__2 - (1/20) .
 H96:   m2__3 <= 10 .
 H97:   m2__3 >= float__first .
 H98:   m2__3 <= float__last .
@@ -754,9 +754,9 @@ H63:   2 * a__2 >= float__base__first .
 H64:   2 * a__2 <= float__base__last .
 H65:   2 * a__2 >= float__base__first .
 H66:   2 * a__2 <= float__base__last .
-H67:    -(1/10) >= universal_real__base__first .
-H68:    -(1/10) <= universal_real__base__last .
-H69:   not ((a__2 <  -(1/10)) and ((2 * a__2 <= b__2) and (b__2 <=  -(2 * 
+H67:    -(1/20) >= universal_real__base__first .
+H68:    -(1/20) <= universal_real__base__last .
+H69:   not ((a__2 <  -(1/20)) and ((2 * a__2 <= b__2) and (b__2 <=  -(2 * 
            a__2)))) .
 H70:   m1__1 >= float__first .
 H71:   m1__1 <= float__last .
@@ -835,9 +835,9 @@ H63:   2 * a__2 >= float__base__first .
 H64:   2 * a__2 <= float__base__last .
 H65:   2 * a__2 >= float__base__first .
 H66:   2 * a__2 <= float__base__last .
-H67:    -(1/10) >= universal_real__base__first .
-H68:    -(1/10) <= universal_real__base__last .
-H69:   a__2 <  -(1/10) .
+H67:    -(1/20) >= universal_real__base__first .
+H68:    -(1/20) <= universal_real__base__last .
+H69:   a__2 <  -(1/20) .
 H70:   2 * a__2 <= b__2 .
 H71:   b__2 <=  -(2 * a__2) .
 H72:   a__2 >= float__first .
@@ -856,14 +856,14 @@ H84:   a__2 >= float__first .
 H85:   a__2 <= float__last .
 H86:   0 >=  -1 .
 H87:   0 <= 1 .
-H88:   a__2 <  -(1/10) .
+H88:   a__2 <  -(1/20) .
 H89:   a__2 >= icoeff2__first .
 H90:   a__2 <= icoeff2__last .
 H91:   b__2 >= icoeff2__first .
 H92:   b__2 <= icoeff2__last .
 H93:   c__2 >= icoeff2__first .
 H94:   c__2 <= icoeff2__last .
-H95:   m2__3 >= a__2 * 0 ** 2 + b__2 * 0 + c__2 - (1/10) .
+H95:   m2__3 >= a__2 * 0 ** 2 + b__2 * 0 + c__2 - (1/20) .
 H96:   m2__3 <= 10 .
 H97:   m2__3 >= float__first .
 H98:   m2__3 <= float__last .
@@ -957,9 +957,9 @@ H63:   2 * a__2 >= float__base__first .
 H64:   2 * a__2 <= float__base__last .
 H65:   2 * a__2 >= float__base__first .
 H66:   2 * a__2 <= float__base__last .
-H67:    -(1/10) >= universal_real__base__first .
-H68:    -(1/10) <= universal_real__base__last .
-H69:   not ((a__2 <  -(1/10)) and ((2 * a__2 <= b__2) and (b__2 <=  -(2 * 
+H67:    -(1/20) >= universal_real__base__first .
+H68:    -(1/20) <= universal_real__base__last .
+H69:   not ((a__2 <  -(1/20)) and ((2 * a__2 <= b__2) and (b__2 <=  -(2 * 
            a__2)))) .
 H70:   m1__1 >= float__first .
 H71:   m1__1 <= float__last .
