@@ -66,6 +66,7 @@ loop
     -- possibly initialise plotting:
     mstateTV <- case plotSize of
         (0,0) -> return Nothing
+        _ | dim /= 2 -> return Nothing
         (w,h) -> 
             do
             stateTV <- Plot.initPlot initbox w h
@@ -88,6 +89,7 @@ loop
 
         Nothing Nothing
     where
+    dim = DBox.size initbox
     loopAux 
         mstateTV inittime
         maxDepthReached 
@@ -210,7 +212,6 @@ loop
                 bisectAndRecur undecidedMaybeSimplerForm currtime [boxL, boxR] False splitVar
 
         (depth, skewAncestors, startdeg, form, prevSplitVar, ppb@(skewed, box, _)) = Q.index queue 0
-        dim = DBox.size box
         boxes = Q.drop 1 queue
 
         bisectAndRecur form currtime newBoxes isSimpleSplit splitVar =
