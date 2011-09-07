@@ -34,6 +34,9 @@
 
 [DONE] improve deriving variable bounds - use PIA instead of hard-coding inferior interval arithmetic
 
+revisit peak example - previously used buggy siv parser that invalidated all results
+it is likely that we need to urgently update the AMAI paper
+
 *** tag release 0.1
 
 publish the cabal package tar.gz on googlecode
