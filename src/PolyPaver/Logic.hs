@@ -21,6 +21,7 @@ module PolyPaver.Logic
 where
 
 import PolyPaver.PPBox
+import PolyPaver.Vars
 import PolyPaver.Form
 
 import Numeric.ER.Misc
@@ -30,6 +31,7 @@ import Numeric.ER.Real.DefaultRepr
 import Numeric.ER.RnToRm.DefaultRepr
 
 import qualified Data.List as List
+import qualified Data.Set as Set
 import qualified Data.Map as Map
 import qualified Data.IntMap as IMap
 
@@ -59,7 +61,7 @@ data TVM
     = TVMDecided Bool 
     | TVMUndecided 
         { 
-            tvmSimplifiedFormula :: Form
+            tvmSimplifiedFormula :: (Form, Set.Set Int) -- and its free vars
         ,   tvmDistanceFromTruth :: Double
         ,   tvmDecisionHyperPlanes :: [(Double, ((BoxHyperPlane BM, BoxHyperPlane BM), Form, IRA BM))] 
             -- the first one is the best one, keeping its measure, formula and vagueness 
@@ -67,7 +69,7 @@ data TVM
     
 instance Show TVM where
     show (TVMDecided result) = "TVMDecided " ++ show result
-    show (TVMUndecided form dist hps)
+    show (TVMUndecided (form,_) dist hps)
         =
         "TVMUndecided"
         ++ "\n form = " ++ showForm form 
@@ -88,28 +90,28 @@ instance Show TVM where
 
 instance TruthValue TVM where
     not (TVMDecided x) = TVMDecided (Prelude.not x)
-    not (TVMUndecided form dist hps) = TVMUndecided (Not form) dist hps
+    not (TVMUndecided (form, vars) dist hps) = TVMUndecided (Not form, vars) dist hps
     -- and:
     (TVMDecided False) && _ = TVMDecided False
     (TVMDecided True) && tv = tv
     _ && (TVMDecided False) = TVMDecided False
     tv && (TVMDecided True) = tv
-    (TVMUndecided form1 dist1 hps1) && (TVMUndecided form2 dist2 hps2) 
-        = TVMUndecided (And form1 form2) (max dist1 dist2) (combineHPs hps1 hps2)
+    (TVMUndecided (form1, vars1) dist1 hps1) && (TVMUndecided (form2, vars2) dist2 hps2) 
+        = TVMUndecided (And form1 form2, Set.union vars1 vars2) (max dist1 dist2) (combineHPs hps1 hps2)
     -- or: 
     (TVMDecided True) || _ = TVMDecided True
     (TVMDecided False) || tv = tv
     _ || (TVMDecided True) = TVMDecided True
     tv || (TVMDecided False) = tv
-    (TVMUndecided form1 dist1 hps1) || (TVMUndecided form2 dist2 hps2)
-        = TVMUndecided (Or form1 form2) (max dist1 dist2) (combineHPs hps1 hps2)
+    (TVMUndecided (form1, vars1) dist1 hps1) || (TVMUndecided (form2, vars2) dist2 hps2)
+        = TVMUndecided (Or form1 form2, Set.union vars1 vars2) (max dist1 dist2) (combineHPs hps1 hps2)
     -- implication:
     (TVMDecided False) ~> _ = TVMDecided True
     (TVMDecided True) ~> tv = tv
     _ ~> (TVMDecided True) = TVMDecided True
     tv ~> (TVMDecided False) = PolyPaver.Logic.not tv
-    (TVMUndecided form1 dist1 hps1) ~> (TVMUndecided form2 dist2 hps2)
-        = TVMUndecided (Implies form1 form2) (max dist1 dist2) (combineHPs hps1 hps2)
+    (TVMUndecided (form1, vars1) dist1 hps1) ~> (TVMUndecided (form2, vars2) dist2 hps2)
+        = TVMUndecided (Implies form1 form2, Set.union vars1 vars2) (max dist1 dist2) (combineHPs hps1 hps2)
 
     fromBool _ = TVMDecided
     leq form box a b = 
@@ -117,8 +119,8 @@ instance TruthValue TVM where
             Just result -> TVMDecided result
             Nothing ->
                 case maybeHyperplane of
-                    Just hyperplane -> TVMUndecided form distance [(distance, (hyperplane, form, vagueness))]
-                    _ -> TVMUndecided form distance []
+                    Just hyperplane -> TVMUndecided (form, getFormFreeVars form) distance [(distance, (hyperplane, form, vagueness))]
+                    _ -> TVMUndecided (form, getFormFreeVars form) distance []
         where
         (maybeResult, distance, maybeHyperplane, vagueness) = analyseLeq box a b
     includes form box a b -- b `Ni` a
@@ -137,7 +139,7 @@ instance TruthValue TVM where
             (Just True, Just True, _, _) -> TVMDecided True
             (_, _, Just True, _) -> TVMDecided False
             (_, _, _, Just True) -> TVMDecided False
-            _ -> TVMUndecided form distance hyperplanes 
+            _ -> TVMUndecided (form, getFormFreeVars form) distance hyperplanes 
 --        case a `RA.includes` b of
 --            Just res -> TVMDecided res
 --            _ -> TVMUndecided form 1 []
@@ -162,11 +164,11 @@ instance TruthValue TVM where
             = analyseLeq box boR aoL -- testing for falsity due to b < a
         ((aoL,aoR),(aiL,aiR)) = RA.oiBounds a
         ((boL,boR),_) = RA.oiBounds b 
-    bot form = TVMUndecided form (1/0) [] -- infinite badness...
+    bot form = TVMUndecided (form, Set.empty) (1/0) [] -- infinite badness...
     decide _ (TVMDecided result) = Just result
     decide _ (TVMUndecided _ _ _) = Nothing
     
-    split varsNotToSplit maybeVar prebox boxSkewing splitGuessing tv 
+    split splittableVars maybeVar prebox boxSkewing splitGuessing tv 
         = 
         (success, maybeHP, splitVar, boxes)
         where
@@ -174,7 +176,7 @@ instance TruthValue TVM where
         (box, maybeHP, maybeSkewVar)
             = tryToSkew boxSkewing prebox tv
         (success, boxes, splitVar)    
-            = makeSplit splitGuessing varsNotToSplit maybeVar box maybeSkewVar
+            = makeSplit splitGuessing splittableVars maybeVar box maybeSkewVar
             
 combineHPs hps1 hps2
     = List.sortBy (\(m1, _) (m2, _) -> compare m1 m2) $ hps1 ++ hps2 
@@ -251,7 +253,7 @@ tryToSkew boxSkewing prebox tv
         where
         err = error $ "PolyPaver.Logic: tryToSkew: internal error, tv = " ++ show tv
 
-makeSplit splitGuessing varsNotToSplit maybeVar ppb@(skewed, box, varNames) maybeSkewVar
+makeSplit splitGuessing splittableVars maybeVar ppb@(skewed, box, varNames) maybeSkewVar
     = (success, (ppbL, ppbR), var)
     where
     -- perform split (potentially after skewing):
@@ -285,17 +287,18 @@ makeSplit splitGuessing varsNotToSplit maybeVar ppb@(skewed, box, varNames) mayb
                     _ -> widestVar
                 
     (largestWidth, widestVar) = foldl findWidestVar (0, err) $ Map.toList widths
-    err = 
-        error $ "PolyPaver.Logic: split: failed to find a split for " ++ ppShow ppb 
-    findWidestVar (prevWidth, prevRes) (var, currWidth)
-        | currWidth `RA.leqReals` prevWidth == Just True = (prevWidth, prevRes)
-        | otherwise = (currWidth, var)
+        where
+        err = 
+            error $ "PolyPaver.Logic: split: failed to find a split for " ++ ppShow ppb 
+        findWidestVar (prevWidth, prevRes) (var, currWidth)
+            | currWidth `RA.leqReals` prevWidth == Just True = (prevWidth, prevRes)
+            | otherwise = (currWidth, var)
     widths 
         = 
         foldl (Map.unionWith (+)) Map.empty $
             map (Map.map abs) $ map snd $ IMap.elems splittablesubbox
     splittablesubbox =
-        foldr IMap.delete box varsNotToSplit
+        IMap.filterWithKey (\v _ -> v `elem` splittableVars) box
     ppbL = (skewed, IMap.map substL box, varNames)
     ppbR = (skewed, IMap.map substR box, varNames)
     substL (c, coeffs) =
