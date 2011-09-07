@@ -85,7 +85,14 @@ evalForm maxdeg maxsize ix ppb fptype form =
 
 evalTerm ::
     (L.TruthValue tv) =>
-    tv -> Int -> Int -> EffortIndex -> PPBox BM -> (Int,Int) -> Term -> FAPUOI BM
+    tv {-^ sample truth value to aid type checking -} -> 
+    Int {-^ polynomial degree limit -} -> 
+    Int {-^ polynomial term size limit -} -> 
+    EffortIndex {-^ effort index for regulating model error -} -> 
+    PPBox BM {-^ domains of variables -} -> 
+    (Int,Int) {-^ precision of emulated FP operations -} -> 
+    Term {-^ term to evaluate -} -> 
+    FAPUOI BM
 evalTerm sampleTV maxdeg maxsize ix ppb@(skewed, box, _) fptype@(epsrelbits,epsabsbits) term =
     evTerm term
     where
@@ -142,10 +149,10 @@ evalTerm sampleTV maxdeg maxsize ix ppb@(skewed, box, _) fptype@(epsrelbits,epsa
 --                  argEncl    -- so do nothing
 --                _ -> -- otherwise
 --                  RAEL.sqrt ix $ argEncl^2 -- do smooth approx of abs           
---          Min left right ->
---              min (evTerm left) (evTerm right)
---          Max left right ->
---              max (evTerm left) (evTerm right)
+          Min left right ->
+              min (evTerm left) (evTerm right)
+          Max left right ->
+              max (evTerm left) (evTerm right)
           Times left right ->
               evTerm left * evTerm right
           Square arg ->
