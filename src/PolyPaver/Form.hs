@@ -3,6 +3,8 @@
 module PolyPaver.Form where
 
 import Data.Data
+import Data.Ratio
+import Data.List (intercalate)
 
 infixr 2 --->
 infixl 3 \/
@@ -84,6 +86,14 @@ data Term
   | FExp Term
   deriving (Eq,Show,Read,Data,Typeable) 
 
+isAtomicTerm :: Term -> Bool
+isAtomicTerm EpsAbs = True
+isAtomicTerm EpsRel = True
+isAtomicTerm (Neg t) = isAtomicTerm t
+isAtomicTerm Pi = True
+isAtomicTerm (Lit _) = True
+isAtomicTerm (Var _ _) = True
+isAtomicTerm _ = False
 
 instance Num Term
   where
@@ -120,35 +130,32 @@ showTerm :: Term -> String
     where
     sf Nothing form = sf2 Nothing form
     sf maybeIndentLevel form
-        | length oneLineForm <= 15 = oneLineForm
+        | length oneLineForm <= 60 = oneLineForm
         | otherwise = sf2 maybeIndentLevel form
         where
         oneLineForm = sf2 Nothing form
+    st Nothing form = st2 Nothing form
+    st maybeIndentLevel term
+        | length oneLineTerm<= 60 = oneLineTerm
+        | otherwise = st2 maybeIndentLevel term
+        where
+        oneLineTerm = st2 Nothing term
     sf2 maybeIndentLevel form
         = 
         case form of
             Verum -> "T"
             Falsum -> "F"
-            Not f -> "¬" ++ (indentedBrackets f)
-            Or f1 f2 ->
-                indentedBrackets f1 
-                ++ indent ++ " ∨ " ++ indent ++
-                indentedBrackets f2 
-            And f1 f2 ->
-                indentedBrackets f1 
-                ++ indent ++ " ∧ " ++ indent ++
-                indentedBrackets f2 
-            Implies f1 f2 ->
-                indentedBrackets f1 
-                ++ indent ++ " ⇒ " ++ indent ++
-                indentedBrackets f2 
-            Le t1 t2 -> st maybeIndentLevel t1 ++ " < " ++ st maybeIndentLevel t2
-            Leq t1 t2 -> st maybeIndentLevel t1 ++ " ≤ " ++ st maybeIndentLevel t2
-            Ge t1 t2 -> st maybeIndentLevel t1 ++ " > " ++ st maybeIndentLevel t2
-            Geq t1 t2 -> st maybeIndentLevel t1 ++ " ≥ " ++ st maybeIndentLevel t2
-            Eq t1 t2 -> st maybeIndentLevel t1 ++ " = " ++ st maybeIndentLevel t2
-            Neq t1 t2 -> st maybeIndentLevel t1 ++ " ≠ " ++ st maybeIndentLevel t2
-            Ni t1 t2 -> st maybeIndentLevel t1 ++ " ⊆ " ++ st maybeIndentLevel t2
+            Not f -> "¬" ++ (indentedBracketsF f)
+            Or f1 f2 -> showOpF "∨" f1 f2
+            And f1 f2 -> showOpF "∧" f1 f2
+            Implies f1 f2 -> showOpF "⇒" f1 f2
+            Le t1 t2 -> showOpT "<" t1 t2
+            Leq t1 t2 -> showOpT "≤" t1 t2
+            Ge t1 t2 -> showOpT ">" t1 t2
+            Geq t1 t2 -> showOpT "≥" t1 t2
+            Eq t1 t2 -> showOpT "=" t1 t2
+            Neq t1 t2 -> showOpT "≠" t1 t2
+            Ni t1 t2 -> showOpT "⊆" t1 t2
         where
         sfNext = sf maybeNextIndentLevel
         stNext = st maybeNextIndentLevel
@@ -160,44 +167,78 @@ showTerm :: Term -> String
             case maybeNextIndentLevel of
                 Just indentLevel -> "\n" ++ replicate indentLevel ' '
                 _ -> ""
-        indentedBrackets form
-            | isAtomicForm form = " " ++ between ++ " "
-            | otherwise = "(" ++ indentNext ++ between ++ indent ++ ")"
-            where
-            between = sfNext form
+        showOpF op f1 f2 =
+            indentedBracketsF f1 
+            ++ indent ++ padIfInline op ++ indent ++
+            indentedBracketsF f2
+        showOpT op t1 t2 =
+            st maybeIndentLevel t1 
+            ++ indent ++ padIfInline op ++ indent ++
+            st maybeIndentLevel t2
+        padIfInline op = case maybeIndentLevel of Nothing -> " " ++ op ++ " "; _ -> op 
+        indentedBracketsF form
+            | isAtomicForm form = sf maybeIndentLevel form
+            | otherwise = "(" ++ indentNext ++ sfNext form ++ indent ++ ")"
         maybeNextIndentLevel = fmap (+ 2) maybeIndentLevel
-    st indentLevel term
+    st2 maybeIndentLevel term
         = 
         case term of
             EpsAbs -> "εabs"
             EpsRel -> "εrel"
             Pi -> "π"
-            Lit r -> show r 
+            Lit r -> 
+                if floor r == ceiling r 
+                    then show (floor r) 
+                    else show (numerator r) ++ "/" ++ show (denominator r)
             Var n s -> s
-            Plus t1 t2 -> "(" ++ st indentLevel t1 ++ ") + (" ++ st indentLevel t2 ++ ")"
-            Minus t1 t2 -> "(" ++ st indentLevel t1 ++ ")- (" ++ st indentLevel t2 ++ ")"
-            Neg t -> "-(" ++ st indentLevel t ++ ")"
-            Abs t -> "|" ++ st indentLevel t ++ "|"
-            Min t1 t2 -> "min(" ++ st indentLevel t1 ++ "," ++ st indentLevel t2 ++ ")"
-            Max t1 t2 -> "max(" ++ st indentLevel t1 ++ "," ++ st indentLevel t2 ++ ")"
-            Times t1 t2 -> "(" ++ st indentLevel t1 ++ ") * (" ++ st indentLevel t2 ++ ")"
-            Square t -> "(" ++ st indentLevel t ++ ")^2"
-            Recip t -> "1/(" ++ st indentLevel t ++ ")"
-            Over t1 t2 -> "(" ++ st indentLevel t1 ++ ") / (" ++ st indentLevel t2 ++ ")"
-            Sqrt t -> "sqrt(" ++ st indentLevel t ++ ")"
-            Exp t -> "exp(" ++ st indentLevel t ++ ")"
-            Sin t -> "sin(" ++ st indentLevel t ++ ")"
-            Cos t -> "cos(" ++ st indentLevel t ++ ")"
-            Atan t -> "atan(" ++ st indentLevel t ++ ")"
-            Hull t1 t2 -> "(" ++ st indentLevel t1 ++ ")..(" ++ st indentLevel t2 ++ ")"
+            Plus t1 t2 -> showOpT "+" t1 t2
+            Minus t1 t2 -> showOpT "-" t1 t2
+            Neg t -> showFnT "-" [t]
+            Abs t -> indentedOpenCloseT "|" "|" False t
+            Min t1 t2 -> showFnT "min" [t1, t2]
+            Max t1 t2 -> showFnT "max" [t1, t2]
+            Times t1 t2 -> showOpT "*" t1 t2
+            Square t -> indentedOpenCloseT "(" ")^2" False t
+            Recip t -> st2 maybeIndentLevel $ Over (Lit 1) t
+            Over t1 t2 -> showOpT "/" t1 t2
+            Sqrt t -> showFnT "sqrt" [t]
+            Exp t -> showFnT "exp" [t]
+            Sin t -> showFnT "sin" [t]
+            Cos t -> showFnT "cos" [t]
+            Atan t -> showFnT "atan" [t]
+            Hull t1 t2 -> showOpT ".." t1 t2
             EpsiAbs -> "εabsI"
             EpsiRel -> "εrelI"
-            Round t -> "rnd(" ++ st indentLevel t ++ ")"
-            FPlus t1 t2 -> "(" ++ st indentLevel t1 ++ ") ⊕ (" ++ st indentLevel t2 ++ ")"
-            FMinus t1 t2 -> "(" ++ st indentLevel t1 ++ ") ⊖ (" ++ st indentLevel t2 ++ ")"
-            FTimes t1 t2 -> "(" ++ st indentLevel t1 ++ ") ⊛ (" ++ st indentLevel t2 ++ ")"
-            FOver t1 t2 -> "(" ++ st indentLevel t1 ++ ") ⊘ (" ++ st indentLevel t2 ++ ")"
-            FSquare t -> "fsquare(" ++ st indentLevel t ++ ")"
-            FSqrt t -> "fsqrt(" ++ st indentLevel t ++ ")"
-            FExp t -> "fexp(" ++ st indentLevel t ++ ")"
+            Round t -> showFnT "rnd" [t]
+            FPlus t1 t2 -> showOpT "⊕" t1 t2
+            FMinus t1 t2 -> showOpT "⊖" t1 t2
+            FTimes t1 t2 -> showOpT "⊛" t1 t2
+            FOver t1 t2 -> showOpT "⊘" t1 t2
+            FSquare t -> showFnT "fsquare" [t]
+            FSqrt t -> showFnT "fsqrt" [t]
+            FExp t -> showFnT "fexp" [t]
+        where
+        stNext = st maybeNextIndentLevel
+        indent = 
+            case maybeIndentLevel of 
+                Just indentLevel -> "\n" ++ replicate indentLevel ' '
+                _ -> ""
+        indentNext = 
+            case maybeNextIndentLevel of
+                Just indentLevel -> "\n" ++ replicate indentLevel ' '
+                _ -> ""
+        showOpT op t1 t2 =
+            indentedBracketsT t1 
+            ++ indent ++ padIfInline op ++ indent ++
+            indentedBracketsT t2
+        showFnT fn ts =
+            fn ++ "("
+            ++ (intercalate (indent ++ ", ") $ map (\t -> indentNext ++ stNext t) ts)
+            ++ indent ++ ")"
+        padIfInline op = case maybeIndentLevel of Nothing -> " " ++ op ++ " "; _ -> op 
+        indentedBracketsT = indentedOpenCloseT "(" ")" True
+        indentedOpenCloseT open close optional term
+            | optional && isAtomicTerm term = st maybeIndentLevel term
+            | otherwise = open ++ indentNext ++ stNext term ++ indent ++ close
+        maybeNextIndentLevel = fmap (+ 2) maybeIndentLevel
 
