@@ -5,7 +5,7 @@
 *****************************************************************************
 
 
-CREATED 06-SEP-2011, 18:04:24  SIMPLIFIED 06-SEP-2011, 18:04:29
+CREATED 07-SEP-2011, 14:35:07  SIMPLIFIED 07-SEP-2011, 14:35:08
 
 SPARK Simplifier GPL 2011
 Copyright (C) 2011 Altran Praxis Limited, Bath, U.K.
@@ -694,7 +694,7 @@ procedure peak.peakQ
           H51).
 %%%  Simplified C1 on reading formula in, to give:
      %%%  C1:  numeric__minus(c, numeric__divide(numeric__times(b, b), 
-          numeric__times(4, a))) >= a * (x * x) + b * x + c - 7 / 10
+          numeric__times(4, a))) >= a * (x * x) + b * x + c - 1 / 10
 %%%  Simplified C2 on reading formula in, to give:
      %%%  C2:  numeric__minus(c, numeric__divide(numeric__times(b, b), 
           numeric__times(4, a))) <= 10
