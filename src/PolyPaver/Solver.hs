@@ -65,12 +65,12 @@ loop
     putStrLn $ "proving: " ++ showForm originalForm
     -- possibly initialise plotting:
     mstateTV <- case plotSize of
-        (0,0) -> return Nothing
-        _ | dim /= 2 -> return Nothing
-        (w,h) -> 
-            do
-            stateTV <- Plot.initPlot initbox w h
-            return $ Just stateTV
+        (w,h) 
+            | dim /= 2 || w <= 0 || h <= 0 -> return Nothing
+            | otherwise ->
+                do
+                stateTV <- Plot.initPlot initbox w h
+                return $ Just stateTV
     -- take the clock reading:
     inittime <- getCPUTime
     -- start looping:
