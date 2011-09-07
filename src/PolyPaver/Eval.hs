@@ -133,7 +133,7 @@ evalTerm sampleTV maxdeg maxsize ix ppb@(skewed, box, _) fptype@(epsrelbits,epsa
                               UFA.affine [c] (Map.singleton varid $ (\(Just cf) -> [cf]) $ Map.lookup varid coeffs)
                   where
                   (c, coeffs) = case IMap.lookup varid box of Just v -> v
-                  isConst = ppCoeffsZero coeffs
+                  isConst = ppCoeffsZero Nothing  coeffs
                   nonZero cf = cf `RA.equalReals` 0 /= Just True
           Plus left right ->
               evTerm left + evTerm right
