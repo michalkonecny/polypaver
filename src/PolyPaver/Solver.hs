@@ -390,9 +390,13 @@ loop
                     putStrLn $ 
                         "splitting at depth " ++ show depth
                         ++ reportVar 
-                        ++ ", new queue size is " ++ show (qlength + 1)
+                        ++ reportQSize 
                     reportFraction
                     where
+                    reportQSize =
+                        case order of
+                            D -> ", new queue size is " ++ show (qlength + 1)
+                            B -> ""
                     reportVar
                         | skewed = " domain of skewed variable _" ++ showVar varNames splitVar ++ "_"
                         | otherwise = " domain of variable " ++ showVar varNames splitVar
