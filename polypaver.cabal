@@ -188,3 +188,23 @@ Executable polypaver
         time >= 1.1 && < 2, 
         convertible >= 1.0 && < 2,
         parsec >= 3.1.1 && < 3.2
+
+Executable polypaver-proval
+  hs-source-dirs: src,examples
+  ghc-options:     -O2
+  main-is: proval.hs
+  Build-Depends:
+        base >= 4 && < 5,
+        containers >= 0.3.0.0 && < 0.4,
+        gtk >= 0.12.0 && < 0.13,
+        cairo >= 0.12.0 && < 0.13,
+        stm >= 2 && < 3,
+        cmdargs >= 0.7 && < 0.8,
+        filepath >= 1.1 && < 2,
+        regex-compat >= 0.93.1 && < 0.94,
+        html >= 1.0.1.2 && < 2, 
+        binary >= 0.5 && < 1, 
+        syb >= 0.1 && < 1,
+        time >= 1.1 && < 2, 
+        convertible >= 1.0 && < 2,
+        parsec >= 3.1.1 && < 3.2

@@ -16,7 +16,7 @@ import PolyPaver
 main = 
     defaultMain Problem 
         {box = proval_cosine_box
-        ,theorem = proval_cosine_2}
+        ,conjecture = proval_cosine_2}
 --    defaultMain Problem 
 --        {box = proval_sqrt_box
 --        ,ivars = []
