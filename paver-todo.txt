@@ -34,24 +34,26 @@
 
 [DONE] improve deriving variable bounds - use PIA instead of hard-coding inferior interval arithmetic
 
-revisit peak example - previously used buggy siv parser that invalidated all results
-it is likely that we need to urgently update the AMAI paper
+[DONE] revisit peak example - previously used buggy siv parser that invalidated all results
 
-*** tag release 0.1
+*** [DONE] release 0.1 = revision 1439
 
-publish the cabal package tar.gz on googlecode
+[DONE] publish the cabal package tar.gz on googlecode
 
 write some documentation on googlecode
-   installation guide
-   simple tutorial on an example
-
-add support for integrals
+   [DONE] installation guide
+   simple Haskell module tutorial
+   simple SPARK verification tutorial 
 
 add a tptp parser
 
 executable that reads a tptp file and starts proving it
 
 adapt to new AERN
+
+add support for integrals
+
+add support for quantifiers
 
 adapt to ghc 7.2.1
 
