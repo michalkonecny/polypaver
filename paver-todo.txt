@@ -36,7 +36,7 @@
 
 [DONE] revisit peak example - previously used buggy siv parser that invalidated all results
 
-*** [DONE] release 0.1 = revision 1439
+*** [DONE] release 0.1 = revision 1441
 
 [DONE] publish the cabal package tar.gz on googlecode
 
