@@ -61,7 +61,7 @@ myCanvas stateTV draw initboxInfo w h =
     windowSetDefaultSize window w h
     onExpose da (myExposeHandler stateTV da draw initboxInfo)
     timeoutAdd (widgetQueueDraw da >> return True) 500 >> return ()
-    idleAdd (yield >> return True) priorityDefaultIdle >> return ()
+    -- idleAdd (yield >> return True) priorityDefaultIdle >> return () -- this throttles the CPU
     onDestroy window mainQuit
     widgetShowAll window
     mainGUI
