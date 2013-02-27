@@ -271,25 +271,27 @@ evalTerm sampleTV maxdeg maxsize pwdepth ix ppbOrig fptype@(epsrelbits,epsabsbit
         where
         primitiveFunctionLo = 
 --            unsafePrintReturn "primitiveFunctionLo = " $
-            UFA.composeWithThin
-                primitiveFunction $
-                Map.fromList [(ivarId, boundIntoUnit loBoundEnclosure)] 
-                -- FIXME: should check that the above is thin
+            composeBoundEnclosure loBoundEnclosure
         primitiveFunctionHi = 
---            unsafePrintReturn "primitiveFunctionHi = " $   
+--            unsafePrintReturn "primitiveFunctionHi = " $
+            composeBoundEnclosure hiBoundEnclosure
+        composeBoundEnclosure boundEnclosure =
             UFA.composeWithThin
                 primitiveFunction $
-                Map.fromList [(ivarId, boundIntoUnit hiBoundEnclosure)] 
-                -- FIXME: should check that the above is thin
+                Map.fromList [(ivarId, boundIntoUnit boundEnclosure)] 
+                -- FIXME: If non-thin, should compose with each of the thin enclosure boundaries, 
+                --        and then reconstruct the OI enclosure, assuming the primitive fn is isotone.
         primitiveFunction =
 --                   unsafePrintReturn "primitive function = " $
-                  UFA.integrate
-                      ix
-                      integrandEnclosure
-                      ivarId
---                      (DBox.noinfo) -- to intersect with integration variable domain
-                      0
-                      0
+            (UFA.const [slopeRA]) * primitiveFunctionUFA
+            where
+            primitiveFunctionUFA =
+                UFA.integrate
+                    ix
+                    integrandEnclosure
+                    ivarId
+                    0 -- an integration start point
+                    0 -- value of primitive function at the above start point
         ix = 0 -- 1 -- 5
         integrandEnclosure =
 --                   unsafePrintReturn "integrand = " $ FA.setMaxDegree 0 $
@@ -319,7 +321,7 @@ evalTerm sampleTV maxdeg maxsize pwdepth ix ppbOrig fptype@(epsrelbits,epsabsbit
                       FA.setMaxDegree maxdeg $ 
                       FA.setMaxSize maxsize $
                       UFA.const [1/slopeRA]
-            (constRA, slopeRA) = constSlopeFromRA integrationVarDomBounds
+        (constRA, slopeRA) = constSlopeFromRA integrationVarDomBounds
         [integrationVarDom] = 
 --                   unsafePrintReturn "integration domain = " $
                   FA.getRangeApprox $  -- TRANSLATE BACK??!!
