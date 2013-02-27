@@ -74,6 +74,7 @@ data Term
   | Cos Term
   | Atan Term
   | Hull Term Term
+  | Integral Term Term Int String Term -- eg: Integral lower upper ivarId ivarName integrand
   | EpsiAbs
   | EpsiRel
   | Round Term
@@ -207,6 +208,8 @@ showTerm :: Term -> String
             Cos t -> showFnT "cos" [t]
             Atan t -> showFnT "atan" [t]
             Hull t1 t2 -> showOpT ".." t1 t2
+            Integral lower upper ivarId ivarName integrand -> 
+                showFnT "∫" [lower, upper, Var ivarId ivarName, integrand]
             EpsiAbs -> "εabsI"
             EpsiRel -> "εrelI"
             Round t -> showFnT "rnd" [t]

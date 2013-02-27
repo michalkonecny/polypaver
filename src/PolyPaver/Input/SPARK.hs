@@ -201,6 +201,11 @@ decodeFn "numeric__divide" [arg1, arg2] = FOver arg1 arg2
 decodeFn "numeric__times" [arg1, arg2] = FTimes arg1 arg2
 decodeFn "numeric__plus" [arg1, arg2] = FPlus arg1 arg2
 decodeFn "numeric__minus" [arg1, arg2] = FMinus arg1 arg2
+decodeFn "num__divide" [arg1, arg2] = FOver arg1 arg2
+decodeFn "num__multiply" [arg1, arg2] = FTimes arg1 arg2
+decodeFn "num__add" [arg1, arg2] = FPlus arg1 arg2
+decodeFn "num__subtract" [arg1, arg2] = FMinus arg1 arg2
+decodeFn "num__exp" [arg1] = FExp arg1
 decodeFn "exact__sqrt" [arg1] = Sqrt arg1
 decodeFn "exact__exp" [arg1] = Exp arg1
 decodeFn "exact__sin" [arg1] = Sin arg1
@@ -213,6 +218,8 @@ decodeFn fn args =
 
 var "numeric__epsabs" = EpsAbs
 var "numeric__epsrel" = EpsRel
+var "num__epsabs" = EpsAbs
+var "num__epsrel" = EpsRel
 var name =
     Var n name
     where
