@@ -19,6 +19,8 @@ module PolyPaver.PPBox
     ppShow,
     showAffine,
     ppBoxFromIntervals,
+    ppBoxFromRAs,
+    constSlopeFromRA,
     ppVolume,
     ppCentre,
     ppCorners,
@@ -44,7 +46,7 @@ import qualified Data.IntMap as IMap
 import Data.List (intercalate, sort)
 
 type PPBox b = 
-    (Bool, -- True if skewed, False if rectilinear
+    (Bool, -- True if skewed, False if axis-parallel
      IMap.IntMap (Affine b), 
         -- affine maps from the skewed variables in [-1,1] 
         --   to individual original coordinates 
@@ -100,23 +102,40 @@ showAffine (c, coeffs)
     showVarCoeff (var, cf)
         = "x" ++ show var ++ "*" ++ show cf
 
+ppBoxFromRAs ::
+    (B.ERRealBase b) =>
+    IMap.IntMap String ->
+    [(Int, (RA b, RA b))] ->
+    PPBox b
+ppBoxFromRAs varNames intervals = 
+    (False, IMap.fromList $ map readInterval $ intervals, varNames) 
+    where
+    readInterval (i,(lRA, rRA)) =
+        (i, (const,  Map.insert i slope zeroCoeffs))
+        where
+        (const, slope) = constSlopeFromRA (lRA, rRA)
+    vars = map fst intervals
+    zeroCoeffs = Map.fromList $ zip vars $ repeat 0
+
+constSlopeFromRA (lRA,rRA) =
+    (const, slope)
+    where
+    slope = (rRA - lRA) / 2
+    const = (rRA + lRA) / 2
+
 ppBoxFromIntervals ::
     (B.ERRealBase b) =>
     IMap.IntMap String ->
     [(Int, (Rational, Rational))] ->
     PPBox b
-ppBoxFromIntervals varNames intervals = 
-    (False, IMap.fromList $ map readInterval $ intervals, varNames) 
+ppBoxFromIntervals varNames intervals =
+    ppBoxFromRAs varNames ras
     where
-    readInterval (i,(l,r)) =
-        (i, (const,  Map.insert i slope zeroCoeffs))
+    ras = map getRA intervals
+    getRA (i, (l,r)) = (i, (lRA, rRA))
         where
-        slope = (rRA - lRA) / 2
-        const = (rRA + lRA) / 2 
         lRA = fromRational l
         rRA = fromRational r
-    vars = map fst intervals
-    zeroCoeffs = Map.fromList $ zip vars $ repeat 0
 
 ppCentre box =
     fst $ unzip $ snd $ unzip $ IMap.toAscList box

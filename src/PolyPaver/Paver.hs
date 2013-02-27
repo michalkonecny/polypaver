@@ -165,6 +165,7 @@ runPaver problem args =
         maxdeg -- maximum bound degree
         improvementRatioThreshold -- when to try raising degree/effort and when to give up and split
         maxsize
+        0 -- pwdepth, currently has no effect; FIXME: either remove or finish 
         mindepth -- minimum bisection depth
         maxdepth -- maximum bisection depth
         0 -- maxdepth

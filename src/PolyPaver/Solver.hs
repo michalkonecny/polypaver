@@ -56,6 +56,7 @@ loop
     order report epsrelbits epsabsbits boxSkewing splitGuessing
     origstartdeg maxdeg improvementRatioThreshold 
     maxsize
+    pwdepth
     mindepth maxdepth maxDepthReached
     ix maxtime prec originalForm 
 --    intvarids 
@@ -280,14 +281,14 @@ loop
         decision = fromJust maybeDecision
         maybeDecision = L.decide dim value
         value =
-            evalForm currdeg maxsize ix ppb (epsrelbits,epsabsbits) form :: L.TVM
+            evalForm currdeg maxsize pwdepth ix ppb (epsrelbits,epsabsbits) form :: L.TVM
 --            case fptype of
 --                 B32 -> evalForm currdeg maxsize ix box (23,-126) form :: L.TVM -- Maybe Bool
 --                 B32near -> evalForm currdeg maxsize ix box (24,-126) form :: L.TVM -- Maybe Bool
 --                 B64 -> evalForm currdeg maxsize ix box (52,-1022) form :: L.TVM -- Maybe Bool
 --                 B64near -> evalForm currdeg maxsize ix box (53,-1022) form :: L.TVM -- Maybe Bool
         L.TVDebugReport formDebug = 
-            evalForm currdeg maxsize ix ppb (epsrelbits,epsabsbits) form :: L.TVDebugReport
+            evalForm currdeg maxsize pwdepth ix ppb (epsrelbits,epsabsbits) form :: L.TVDebugReport
 
         newstartdeg =
             (origstartdeg + currdeg) `div` 2

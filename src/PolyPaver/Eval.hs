@@ -19,6 +19,7 @@ module PolyPaver.Eval
 where
 
 import PolyPaver.Form
+import PolyPaver.Vars
 import PolyPaver.PPBox
 import qualified PolyPaver.Logic as L
 
@@ -29,9 +30,14 @@ import qualified Numeric.ER.RnToRm.Approx as FA
 import qualified Numeric.ER.RnToRm.UnitDom.Approx as UFA
 import qualified Numeric.ER.Real.Approx.Elementary as RAEL
 import Numeric.ER.BasicTypes
+import qualified Numeric.ER.BasicTypes.DomainBox as DBox 
 
+import Numeric.ER.Misc
+
+import qualified Data.Set as Set
 import qualified Data.Map as Map
 import qualified Data.IntMap as IMap
+
 
 {-|
     Evaluate the truth value of a formula over a box.
@@ -39,10 +45,18 @@ import qualified Data.IntMap as IMap
 -}
 evalForm ::
     (L.TruthValue tv) =>
-    Int -> Int -> EffortIndex -> PPBox BM -> (Int,Int) -> Form -> tv
-evalForm maxdeg maxsize ix ppb fptype form =
+    Int {-^ polynomial degree limit -} -> 
+    Int {-^ polynomial term size limit -} -> 
+    Int {-^ max split depth for ranges of integration variables -} -> 
+    EffortIndex {-^ effort index for regulating model error -} -> 
+    PPBox BM {-^ domains of variables -} -> 
+    (Int,Int) {-^ precision of emulated FP operations -} -> 
+    Form {-^ form to evaluate -} -> 
+    tv
+evalForm maxdeg maxsize pwdepth ix ppb fptype form =
     evForm form
     where
+    evTerm = evalTerm (evForm Verum) maxdeg maxsize pwdepth ix ppb fptype
     evForm form =
         case form of
           Verum -> L.fromBool ppb True
@@ -81,22 +95,24 @@ evalForm maxdeg maxsize ix ppb fptype form =
               where
               rightArg = evTerm right
               leftArg = evTerm left
-    evTerm = evalTerm (evForm Verum) maxdeg maxsize ix ppb fptype
 
 evalTerm ::
     (L.TruthValue tv) =>
     tv {-^ sample truth value to aid type checking -} -> 
     Int {-^ polynomial degree limit -} -> 
     Int {-^ polynomial term size limit -} -> 
+    Int {-^ max split depth for ranges of integration variables -} -> 
     EffortIndex {-^ effort index for regulating model error -} -> 
     PPBox BM {-^ domains of variables -} -> 
     (Int,Int) {-^ precision of emulated FP operations -} -> 
     Term {-^ term to evaluate -} -> 
     FAPUOI BM
-evalTerm sampleTV maxdeg maxsize ix ppb@(skewed, box, _) fptype@(epsrelbits,epsabsbits) term =
+evalTerm sampleTV maxdeg maxsize pwdepth ix ppbOrig fptype@(epsrelbits,epsabsbits) term =
     evTerm term
     where
-    evTerm term =
+    evForm = evalForm maxdeg maxsize pwdepth ix ppbOrig fptype
+    evTerm = evTermBox ppbOrig
+    evTermBox ppb@(skewed, box, _) term =
       case term of
           EpsAbs ->
               FA.setMaxDegree maxdeg $
@@ -136,13 +152,13 @@ evalTerm sampleTV maxdeg maxsize ix ppb@(skewed, box, _) fptype@(epsrelbits,epsa
                   isConst = ppCoeffsZero Nothing  coeffs
                   nonZero cf = cf `RA.equalReals` 0 /= Just True
           Plus left right ->
-              evTerm left + evTerm right
+              evTermBox ppb left + evTermBox ppb right
           Minus left right ->
-              evTerm left - evTerm right
+              evTermBox ppb left - evTermBox ppb right
           Neg arg ->
-              - evTerm arg
+              - evTermBox ppb arg
           Abs arg ->
-            RAEL.abs ix $ evTerm arg
+            RAEL.abs ix $ evTermBox ppb arg
 --            let argEncl = evTerm arg in 
 --              case RA.leqReals 0 argEncl of
 --                Just True -> -- argument certainly non-negative
@@ -150,50 +166,52 @@ evalTerm sampleTV maxdeg maxsize ix ppb@(skewed, box, _) fptype@(epsrelbits,epsa
 --                _ -> -- otherwise
 --                  RAEL.sqrt ix $ argEncl^2 -- do smooth approx of abs           
           Min left right ->
-              min (evTerm left) (evTerm right)
+              min (evTermBox ppb left) (evTermBox ppb right)
           Max left right ->
-              max (evTerm left) (evTerm right)
+              max (evTermBox ppb left) (evTermBox ppb right)
           Times left right ->
-              evTerm left * evTerm right
+              evTermBox ppb left * evTermBox ppb right
           Square arg ->
-              evTerm arg
+              evTermBox ppb arg
           Recip arg ->
-              recip $ evTerm arg
+              recip $ evTermBox ppb arg
           Over left right ->
-              evTerm left / evTerm right
+              evTermBox ppb left / evTermBox ppb right
           Sqrt arg ->
               RAEL.sqrt (fromInteger $ toInteger ix) $
-                evTerm arg
+                evTermBox ppb arg
           Exp arg ->
               RAEL.exp 
                     ix $ -- (fromInteger $ 3*(toInteger maxdeg)+10) $ 
-                    evTerm arg                    
+                    evTermBox ppb arg                    
           Sin arg ->
               RAEL.sin 
                     ix $ 
-                    evTerm arg                    
+                    evTermBox ppb arg                    
           Cos arg ->
               RAEL.cos 
                     ix $ 
-                    evTerm arg                    
+                    evTermBox ppb arg                    
           Atan arg ->
               RAEL.atan 
                     ix $ 
-                    evTerm arg                    
+                    evTermBox ppb arg                    
           Hull left right ->
-              evTerm left RA.\/ evTerm right
+              evTermBox ppb left RA.\/ evTermBox ppb right
+          Integral lower upper ivarId ivarName integrand ->
+              evIntegral ppb lower upper ivarId ivarName integrand
           EpsiAbs ->
-              evTerm $
+              evTermBox ppb $
               (-EpsAbs) `Hull` EpsAbs
           EpsiRel ->
-              evTerm $
+              evTermBox ppb $
               (-EpsRel) `Hull` EpsRel
           Round arg 
 --              | epsabsShownIrrelevant -> -- TOOOOOOOO SLOW
 --                  evTerm $
 --                  (1 + EpsiRel) * arg
               | otherwise ->
-                  evTerm $
+                  evTermBox ppb $
                   ((1 + EpsiRel) * arg) + EpsiAbs
               where
               epsabsShownIrrelevant =
@@ -205,25 +223,117 @@ evalTerm sampleTV maxdeg maxsize ix ppb@(skewed, box, _) fptype@(epsrelbits,epsa
               aboveEpsTV = evForm $ Leq EpsAbs arg 
               belowEpsTV = evForm $ Leq arg (Neg EpsAbs) 
           FPlus left right ->
-              evTerm $
+              evTermBox ppb $
               Round (left + right)
           FMinus left right ->
-              evTerm $
+              evTermBox ppb $
               Round (left - right)        
           FTimes left right ->
-              evTerm $
+              evTermBox ppb $
               Round (left * right)
           FSquare arg ->
-              evTerm $
+              evTermBox ppb $
               Round (Square arg)
           FSqrt arg ->
-              evTerm $
+              evTermBox ppb $
               Round $ (1+2*EpsiRel) * (Sqrt arg)
           FOver left right ->
-              evTerm $
+              evTermBox ppb $
               Round (left / right)
           FExp arg ->
-              evTerm $
+              evTermBox ppb $
               Round $ (1+4*EpsiRel) * (Exp arg)
-    evForm = evalForm maxdeg maxsize ix ppb fptype
+
+    evIntegral ppb@(skewed, box, namesMap) lo hi ivarId ivarName integrand =
+--        unsafePrint
+--        (
+--            "evIntegral:"
+--            ++ "\n lo = " ++ showTerm lo
+--            ++ "\n hi = " ++ showTerm hi
+--            ++ "\n ivarName = " ++ ivarName
+--            ++ "\n integrand = " ++ showTerm integrand
+--            ++ "\n integrationVarDom = " ++ show integrationVarDom
+--            ++ "\n getTermFreeVars integrand = " ++ show (getTermFreeVars integrand)
+--            ++ "\n primitiveFunctionHi = " ++ show primitiveFunctionHi
+--            ++ "\n primitiveFunctionLo = " ++ show primitiveFunctionLo
+--        ) 
+--        $
+        case RA.isExact integrationVarDom of
+              False ->
+                  case ivarId `Set.member` (getTermFreeVars integrand) of
+                      True -> -- nonconstant integrand                    
+                          FA.setMaxDegree maxdeg $
+                          primitiveFunctionHi-primitiveFunctionLo
+                      False -> -- constant integrand
+                          evTermBox ppb $ Times integrand (Minus hi lo)
+              True -> -- integrating over measure zero set
+                  0
+        where
+        primitiveFunctionLo = 
+--            unsafePrintReturn "primitiveFunctionLo = " $
+            UFA.composeWithThin
+                primitiveFunction $
+                Map.fromList [(ivarId, boundIntoUnit loBoundEnclosure)] 
+                -- FIXME: should check that the above is thin
+        primitiveFunctionHi = 
+--            unsafePrintReturn "primitiveFunctionHi = " $   
+            UFA.composeWithThin
+                primitiveFunction $
+                Map.fromList [(ivarId, boundIntoUnit hiBoundEnclosure)] 
+                -- FIXME: should check that the above is thin
+        primitiveFunction =
+--                   unsafePrintReturn "primitive function = " $
+                  UFA.integrate
+                      ix
+                      integrandEnclosure
+                      ivarId
+--                      (DBox.noinfo) -- to intersect with integration variable domain
+                      0
+                      0
+        ix = 0 -- 1 -- 5
+        integrandEnclosure =
+--                   unsafePrintReturn "integrand = " $ FA.setMaxDegree 0 $
+                  evTermBox integrationPPB integrand
+        integrationPPB 
+            | skewed = error "Paralellopiped solving not yet supported for the integral operator."
+            | otherwise = (skewed, integrationBox, IMap.insert ivarId ivarName namesMap)
+            where
+            integrationBox =
+                DBox.insert
+                    ivarId
+                    integrationVarDomAffine
+                    box
+        integrationVarDomAffine@(ivarDomAffineConst, ivarDomAffineCoeffs) = affine
+            where
+            [(_, affine)] = IMap.toList ivbox
+            (_, ivbox, _) =
+                ppBoxFromRAs namesMap [(ivarId, integrationVarDomBounds)]
+        boundIntoUnit fn =
+            (fn - constFA) * invslopeFA
+            where
+            constFA =
+                      FA.setMaxDegree maxdeg $ 
+                      FA.setMaxSize maxsize $
+                      UFA.const [constRA]
+            invslopeFA =
+                      FA.setMaxDegree maxdeg $ 
+                      FA.setMaxSize maxsize $
+                      UFA.const [1/slopeRA]
+            (constRA, slopeRA) = constSlopeFromRA integrationVarDomBounds
+        [integrationVarDom] = 
+--                   unsafePrintReturn "integration domain = " $
+                  FA.getRangeApprox $  -- TRANSLATE BACK??!!
+                      loBoundEnclosure
+                      RA.\/ 
+                      hiBoundEnclosure
+        loBoundEnclosure =
+--                   unsafePrintReturn "low bound = " $
+            evTermBox ppb lo
+        hiBoundEnclosure =
+--                   unsafePrintReturn "high bound = " $
+            evTermBox ppb hi
+        integrationVarDomBounds@(integrationVarDomLowBound,integrationVarDomHighBound) = 
+            RA.bounds integrationVarDom
+        integrationConstant = 0
+        
               
