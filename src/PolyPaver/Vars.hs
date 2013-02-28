@@ -88,6 +88,10 @@ getTermVarNames term =
         Atan arg -> getTermVarNames arg
         Hull left right ->
             (getTermVarNames left) `IMap.union` (getTermVarNames right)
+        Integral lower upper ivarId ivarName integrand ->
+            (getTermVarNames lower) `IMap.union` (getTermVarNames upper)
+            `IMap.union`
+            (IMap.delete ivarId $ getTermVarNames integrand)
         Round arg -> getTermVarNames arg
         FPlus left right ->
             (getTermVarNames left) `IMap.union` (getTermVarNames right)
@@ -153,6 +157,10 @@ getTermFreeVars term =
         Atan arg -> getTermFreeVars arg
         Hull left right ->
             (getTermFreeVars left) `Set.union` (getTermFreeVars right)
+        Integral lower upper ivarId ivarName integrand ->
+            (getTermFreeVars lower) `Set.union` (getTermFreeVars upper)
+            `Set.union`
+            (Set.delete ivarId $ getTermFreeVars integrand)
         Round arg -> getTermFreeVars arg
         FPlus left right ->
             (getTermFreeVars left) `Set.union` (getTermFreeVars right)
@@ -225,6 +233,13 @@ renameVarsTerm old2new = rnm
             Atan arg -> Atan $ rnm arg
             Hull left right ->
                 Hull (rnm left) (rnm right)
+            Integral lower upper ivarId ivarName integrand ->
+                Integral (rnm lower) (rnm upper) ivarId ivarName (rnmIV integrand)
+                where
+                rnmIV = renameVarsTerm old2newIV
+                old2newIV id 
+                    | id == ivarId = id
+                    | otherwise = old2newIV id
             Round arg -> Round $ rnm arg
             FPlus left right ->
                 FPlus (rnm left) (rnm right)
