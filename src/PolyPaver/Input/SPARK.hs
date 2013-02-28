@@ -210,6 +210,7 @@ decodeFn "exact__sqrt" [arg1] = Sqrt arg1
 decodeFn "exact__exp" [arg1] = Exp arg1
 decodeFn "exact__sin" [arg1] = Sin arg1
 decodeFn "exact__cos" [arg1] = Cos arg1
+decodeFn "exact__integral" [arg1, arg2, arg3] = Integral arg1 arg2 ivNum ivName arg3
 decodeFn "abs" [arg1] = Abs arg1
 decodeFn fn args =
     error $ 
@@ -220,10 +221,14 @@ var "numeric__epsabs" = EpsAbs
 var "numeric__epsrel" = EpsRel
 var "num__epsabs" = EpsAbs
 var "num__epsrel" = EpsRel
+var "exact__integrationvariable" = Var ivNum ivName
 var name =
     Var n name
     where
     n = sum $ zipWith (*) [1..] $ map ord name
+
+ivNum = -1 
+ivName = "<iv>"
 
 tokenDef = emptyDef{ commentStart = "/*"
                , commentEnd = "*/"
