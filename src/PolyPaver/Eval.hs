@@ -276,11 +276,17 @@ evalTerm sampleTV maxdeg maxsize pwdepth ix ppbOrig fptype@(epsrelbits,epsabsbit
 --            unsafePrintReturn "primitiveFunctionHi = " $
             composeBoundEnclosure hiBoundEnclosure
         composeBoundEnclosure boundEnclosure =
-            UFA.composeWithThin
-                primitiveFunction $
-                Map.fromList [(ivarId, boundIntoUnit boundEnclosure)] 
-                -- FIXME: If non-thin, should compose with each of the thin enclosure boundaries, 
-                --        and then reconstruct the OI enclosure, assuming the primitive fn is isotone.
+            RA.fromOIBounds ((rol,roh), (ril, rih))
+            where
+            ((rol,_  ),(_  ,_  )) = composeThinBound ol 
+            ((_  ,roh),(_  ,_  )) = composeThinBound oh 
+            ((_  ,_  ),(ril,_  )) = composeThinBound il 
+            ((_  ,_  ),(_  ,rih)) = composeThinBound ih 
+            ((ol,oh),(il,ih)) = RA.oiBounds boundEnclosure
+            composeThinBound b =
+                UFA.composeWithThin
+                    primitiveFunction $
+                    Map.fromList [(ivarId, boundIntoUnit b)] 
         primitiveFunction =
 --                   unsafePrintReturn "primitive function = " $
             (UFA.const [slopeRA]) * primitiveFunctionUFA
