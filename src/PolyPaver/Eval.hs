@@ -133,7 +133,7 @@ evalTerm sampleTV maxdeg maxsize pwdepth ix ppbOrig fptype@(epsrelbits,epsabsbit
               FA.setMaxSize maxsize $
               fromRational $
               val :: FAPUOI BM
-          Var varid _ ->
+          Var varid varName ->
               case isConst of
                   True -> -- domain of var thin, so var is a const
                       FA.setMaxDegree maxdeg $ 
@@ -148,7 +148,13 @@ evalTerm sampleTV maxdeg maxsize pwdepth ix ppbOrig fptype@(epsrelbits,epsabsbit
                           False ->
                               UFA.affine [c] (Map.singleton varid $ (\(Just cf) -> [cf]) $ Map.lookup varid coeffs)
                   where
-                  (c, coeffs) = case IMap.lookup varid box of Just v -> v
+                  (c, coeffs) = 
+                    case IMap.lookup varid box of 
+                        Just v -> v
+                        Nothing -> 
+                            error $ 
+                                "variable " ++ show varName ++ "(" ++ show varid 
+                                ++ ") not in box " ++ show box
                   isConst = ppCoeffsZero Nothing  coeffs
                   nonZero cf = cf `RA.equalReals` 0 /= Just True
           Plus left right ->

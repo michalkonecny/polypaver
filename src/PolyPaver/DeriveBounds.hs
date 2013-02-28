@@ -36,12 +36,6 @@ getBox ::
     Either String [(Int, (Rational, Rational))]
 getBox form 
     | allGood = 
---        unsafePrint
---        (
---            "PolyPaver.DeriveBounds: getBox:"
---            ++ "\n 4 scans:"
---            ++ "\n" ++ (unlines $ map show $ take 4 boxSeq)
---        ) $
         Right $ map removeJust $ varRanges
     | otherwise = 
         Left errorMessage
@@ -60,8 +54,17 @@ getBox form
     varNames = getFormVarNames form
     initBox
         = IMap.fromAscList $ zip (Set.toAscList varSet) (repeat (Nothing, Nothing))
-    box = findRepeat initBox $ tail $ boxSeq
-    boxSeq = iterate (scanHypotheses form) initBox
+    box = 
+        findRepeat initBox $ tail $ 
+--            unsafePrint
+--            (
+--                "PolyPaver.DeriveBounds: getBox:"
+--                ++ "\n first <=4 scans:"
+--                ++ "\n" ++ (unlines $ map show $ take 4 boxSeq)
+--            ) $
+            boxSeq
+    boxSeq = 
+        iterate (scanHypotheses form) initBox
     
 scanHypotheses (Implies h c) =
     scanHypotheses c . scanHypothesis h 
@@ -79,6 +82,14 @@ scanHypothesis (Or h1 h2) intervals =
     minM _ _ = Nothing
     maxM (Just a) (Just b) = Just $ max a b
     maxM _ _ = Nothing
+scanHypothesis (Eq t1@(Var v1 _) t2@(Var v2 _)) intervals = 
+    IMap.insert v1 val $
+    IMap.insert v2 val $
+    intervals
+    where
+    Just val1 = IMap.lookup v1 intervals
+    Just val2 = IMap.lookup v2 intervals
+    val = updateUpper val1 $ updateLower val1 $ val2
 scanHypothesis (Eq (Var v _) t) intervals = 
     IMap.insertWith updateUpper v val $
     IMap.insertWith updateLower v val intervals
@@ -89,22 +100,21 @@ scanHypothesis (Eq t (Var v _)) intervals =
     IMap.insertWith updateLower v val intervals
     where
     val = evalT intervals t
-scanHypothesis (Le (Var v _) t) intervals = 
-    IMap.insertWith updateUpper v (evalT intervals t) intervals
-scanHypothesis (Le t (Var v _)) intervals = 
-    IMap.insertWith updateLower v (evalT intervals t) intervals
+scanHypothesis (Leq t1@(Var v1 _) t2@(Var v2 _)) intervals = 
+    IMap.insert v1 (updateUpper val2 val1) $
+    IMap.insert v2 (updateLower val1 val2) $
+    intervals
+    where
+    Just val1 = IMap.lookup v1 intervals
+    Just val2 = IMap.lookup v2 intervals
 scanHypothesis (Leq (Var v _) t) intervals = 
     IMap.insertWith updateUpper v (evalT intervals t) intervals
 scanHypothesis (Leq t (Var v _)) intervals = 
     IMap.insertWith updateLower v (evalT intervals t) intervals
-scanHypothesis (Ge (Var v _) t) intervals = 
-    IMap.insertWith updateLower v (evalT intervals t) intervals
-scanHypothesis (Ge t (Var v _)) intervals = 
-    IMap.insertWith updateUpper v (evalT intervals t) intervals
-scanHypothesis (Geq (Var v _) t) intervals = 
-    IMap.insertWith updateLower v (evalT intervals t) intervals
-scanHypothesis (Geq t (Var v _)) intervals = 
-    IMap.insertWith updateUpper v (evalT intervals t) intervals
+-- reduce Le, Geq, Ge on equivalent Leq (note that we treat strict and non-strict the same way):
+scanHypothesis (Le t1 t2) intervals = scanHypothesis (Leq t1 t2) intervals 
+scanHypothesis (Geq t1 t2) intervals = scanHypothesis (Leq t2 t1) intervals
+scanHypothesis (Ge t1 t2) intervals = scanHypothesis (Leq t2 t1) intervals
 scanHypothesis _ intervals = intervals
     
 evalT ::
@@ -116,6 +126,12 @@ evalT intervals term
     | otherwise = (Nothing, Nothing)
     where
     termVarsBounded =
+--        unsafePrint
+--        ("PolyPaver.DeriveBounds: evalT:"
+--         ++ "\n intervals = " ++ show intervals
+--         ++ "\n term = " ++ show term
+--         ++ "\n (l,r) = " ++ show (l,r)
+--        ) $
         and $ map varBounded $ Set.toList termVars
         where
         varBounded v =
@@ -161,8 +177,8 @@ updateLower (Just l2,_) (Nothing,u) = (Just $ l2, u)
 updateLower (Nothing,_) (Just l1,u) = (Just $ l1, u)
 updateLower (Nothing,_) (Nothing,u) = (Nothing, u)
 
-    
-findRepeat :: (Eq a) => a -> [a] -> a
+
+findRepeat :: (Eq a, Show a) => a -> [a] -> a
 findRepeat prev (next:rest)
     | prev == next = prev
     | otherwise = findRepeat next rest
