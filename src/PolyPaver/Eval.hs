@@ -276,12 +276,13 @@ evalTerm sampleTV maxdeg maxsize pwdepth ix ppbOrig fptype@(epsrelbits,epsabsbit
 --            unsafePrintReturn "primitiveFunctionHi = " $
             composeBoundEnclosure hiBoundEnclosure
         composeBoundEnclosure boundEnclosure =
+            -- the following relies on the assumption that primitiveFunction is isotone 
             RA.fromOIBounds ((rol,roh), (ril, rih))
             where
-            ((rol,_  ),(_  ,_  )) = composeThinBound ol 
-            ((_  ,roh),(_  ,_  )) = composeThinBound oh 
-            ((_  ,_  ),(ril,_  )) = composeThinBound il 
-            ((_  ,_  ),(_  ,rih)) = composeThinBound ih 
+            ((rol,_  ),(_  ,_  )) = RA.oiBounds $ composeThinBound ol 
+            ((_  ,roh),(_  ,_  )) = RA.oiBounds $ composeThinBound oh 
+            ((_  ,_  ),(ril,_  )) = RA.oiBounds $ composeThinBound il
+            ((_  ,_  ),(_  ,rih)) = RA.oiBounds $ composeThinBound ih 
             ((ol,oh),(il,ih)) = RA.oiBounds boundEnclosure
             composeThinBound b =
                 UFA.composeWithThin
