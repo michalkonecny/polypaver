@@ -123,8 +123,8 @@ loop
             | prevtime-inittime > maxtime*1000000000000 = 
                 do
                 putStr $
-                  "\nSearch ABORTED." ++ 
-                  "\nTimed out after " ++ show maxtime ++ 
+                  "\nSearch aborted." ++ 
+                  "\nTIMES OUT after " ++ show maxtime ++ 
                   " second" ++ (if maxtime == 1 then "." else "s.") ++ 
                   "\nComputed boxes : " ++ show computedboxes ++ 
                   reportQLengthS ++
@@ -177,7 +177,7 @@ loop
                 currtime <- getCPUTime
                 putStr $ 
                   "\nSearch aborted." ++ 
-                  "\nReached maximum depth " ++ show maxdepth ++ 
+                  "\nReached MAXIMUM DEPTH " ++ show maxdepth ++ 
 --                  "\nUndecided for : " ++
 --                  ppShow ppb ++
                   " after " ++
@@ -194,7 +194,7 @@ loop
                 currtime <- getCPUTime
                 putStr $ 
                   "\nSearch aborted." ++ 
-                  "\nCould not split undecided box : " ++ ppShow ppb ++ 
+                  "\nFAILED TO SPLIT undecided box : " ++ ppShow ppb ++ 
                   " after " ++
                   show ((fromInteger (currtime-inittime)) / 1000000000000) ++
                   " seconds." ++
@@ -363,10 +363,15 @@ loop
             =
             putStrLn $
                 "Proved fraction : " ++ show provedFraction
+                ++ " (True volume : " ++ show oldornewtruevol
+                ++ " ; Problem volume : " ++ show problemvol ++ ")"
             where
             provedFraction
                 | problemvol `RA.equalReals` 0 == Just True = 1
-                | otherwise = (newtruevol / problemvol)
+                | otherwise = (oldornewtruevol / problemvol)
+            oldornewtruevol
+                | decided && decision = newtruevol
+                | otherwise = truevol
                 
         reportSplit
             =
