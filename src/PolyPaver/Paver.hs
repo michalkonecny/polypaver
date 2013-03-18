@@ -90,7 +90,7 @@ paver = Paver
                 ["Tries to decide conjectures using polynomial interval arithmetic.",
                  "For the polypaver executable [PROBLEM_ID] is <file.siv> <vc name>.",
                  "For problems defined in Haskell [PROBLEM_ID] should be blank."]) 
-    &= summary "PolyPaver 0.1 (c) 2011 Jan Duracz, Michal Konecny"
+    &= summary "PolyPaver 0.2 (c) 2011, 2013 Jan Duracz and Michal Konecny (Aston University)"
     &= name "polypaver"
 
 
