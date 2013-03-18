@@ -1,11 +1,11 @@
 Name:           polypaver
-Version:        0.1
+Version:        0.2
 Cabal-Version:  >= 1.8
 Build-Type:     Simple
 License:        BSD3
 License-File:   LICENCE
 Author:         Jan Duracz and Michal Konecny (Aston University)
-Copyright:      (c) 2011 Jan Duracz, Michal Konecny
+Copyright:      (c) 2011,2013 Jan Duracz, Michal Konecny
 Maintainer:     mikkonecny@gmail.com
 Homepage:       http://code.google.com/p/polypaver/
 Stability:      experimental
