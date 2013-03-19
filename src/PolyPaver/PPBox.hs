@@ -195,7 +195,8 @@ ppVolume :: (B.ERRealBase b) => PPBox b -> IRA b
 ppVolume (_, box, _)
     = abs $ determinant $ 
         Map.elems $ Map.unionsWith (++) $ 
-            map (Map.map (:[]) . snd) $ IMap.elems box
+            map (Map.map ((:[]) . (2 *)) . snd) $ 
+                IMap.elems box
     
 determinant :: (B.ERRealBase b) => [[IRA b]] -> IRA b
 determinant matrix 

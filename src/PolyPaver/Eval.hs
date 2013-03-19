@@ -265,15 +265,19 @@ evalTerm sampleTV maxdeg maxsize pwdepth ix ppbOrig fptype@(epsrelbits,epsabsbit
 --        ) 
 --        $
         case RA.isExact integrationVarDom of
-              False ->
-                  case ivarId `Set.member` (getTermFreeVars integrand) of
-                      True -> -- nonconstant integrand                    
-                          FA.setMaxDegree maxdeg $
-                          primitiveFunctionHi-primitiveFunctionLo
-                      False -> -- constant integrand
-                          evTermBox ppb $ Times integrand (Minus hi lo)
-              True -> -- integrating over measure zero set
-                  0
+            False ->
+                case ivarId `Set.member` (getTermFreeVars integrand) of
+                    True -> -- nonconstant integrand
+                        case 0 `RA.leqReals` integrandEnclosure of
+                            Just True -> 
+                                FA.setMaxDegree maxdeg $
+                                primitiveFunctionHi-primitiveFunctionLo
+                            _ ->
+                                UFA.bottomApprox
+                    False -> -- constant integrand
+                        evTermBox ppb $ Times integrand (Minus hi lo)
+            True -> -- integrating over measure zero set
+                0
         where
         primitiveFunctionLo = 
 --            unsafePrintReturn "primitiveFunctionLo = " $
