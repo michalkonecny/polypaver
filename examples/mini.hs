@@ -22,14 +22,14 @@ main =
 exp_shift =
     Problem box thm 
     where
-    box = [(0, (-1,1))]
+    box = [(0, (-1,1), False)]
     x = Var 0 "x"
     thm = exp(x) |<=| exp(x+0.0001) 
 
 test_skew =
     Problem box thm 
     where
-    box = [(0, (0,4)), (1, (0,4))]
+    box = [(0, (0,4), False), (1, (0,4), False)]
     x = Var 0 "x"
     y = Var 1 "y"
     thm = 
@@ -41,7 +41,7 @@ test_skew =
 sqrt_sin =
     Problem box thm
     where
-    box = [(0, (0.000001,1))]
+    box = [(0, (0.000001,1), False)]
     x = Var 0 "x"
     thm = 
         2 * (sqrt(x+1) - 1) |<=| sin(x)
@@ -49,7 +49,7 @@ sqrt_sin =
 sinsin =
     Problem box thm
     where
-    box = [(0, (0.2,1))]
+    box = [(0, (0.2,1), False)]
     x = Var 0 "x"
     thm = 
         sin(3*x+1) |<=| sin(sin(3*x)+1) 
@@ -57,7 +57,7 @@ sinsin =
 sinsin2 =
     Problem box thm
     where
-    box = [(0, (0.1,0.19))]
+    box = [(0, (0.1,0.19), False)]
     x = Var 0 "x"
     thm = 
         sin(sin(3*x)+1) |<=| sin(3*x+1)

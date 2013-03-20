@@ -251,69 +251,95 @@ tryToSkew boxSkewing prebox tv
         where
         err = error $ "PolyPaver.Logic: tryToSkew: internal error, tv = " ++ show tv
 
-makeSplit splitGuessing varsNotToSplit maybeVar ppb@(skewed, box, varNames) maybeSkewVar
-    = (success, (ppbL, ppbR), var)
+makeSplit splitGuessing varsNotToSplit maybeSplitVar ppb@(skewed, box, varIsInts, varNames) maybeSkewVar
+    = (success, (ppbL, ppbR), splitVar)
     where
     -- perform split (potentially after skewing):
     success = Prelude.not $ (ppb `ppEqual` ppbL) Prelude.|| (ppb `ppEqual` ppbR)
-    var =
+    splitVar =
         case splitGuessing of
             Just ratioLimit ->
                 case maybeSkewVar of
-                    Just var
-                        | (fromIntegral ratioLimit) * varWidth < largestWidth -> 
+                    Just skewVar
+                        | (fromIntegral ratioLimit) * skewVarWidth < largestWidth -> 
                             widestVar
                         | otherwise -> 
 --                            unsafePrint 
 --                            (
 --                                "makeSplit: split direction from HP"
 --                                ++ "\n ratioLimit = " ++ show ratioLimit
---                                ++ "\n varWidth = " ++ show varWidth
+--                                ++ "\n skewVarWidth = " ++ show skewVarWidth
 --                                ++ "\n largestWidth = " ++ show largestWidth
 --                            ) $ 
-                            var
+                            skewVar
                         where
-                        varWidth =
-                            case Map.lookup var widths of Just w -> w
+                        skewVarWidth =
+                            case Map.lookup skewVar widths of Just w -> w
                     _ -> 
-                        case maybeVar of
-                            Just var -> var
+                        case maybeSplitVar of
+                            Just splitVar -> splitVar
                             _ -> widestVar
             _ ->
-                case maybeVar of
-                    Just var -> var
+                case maybeSplitVar of
+                    Just splitVar -> splitVar
                     _ -> widestVar
                 
     (largestWidth, widestVar) = foldl findWidestVar (0, err) $ Map.toList widths
-    err = 
-        error $ "PolyPaver.Logic: split: failed to find a split for " ++ ppShow ppb 
-    findWidestVar (prevWidth, prevRes) (var, currWidth)
-        | currWidth `RA.leqReals` prevWidth == Just True = (prevWidth, prevRes)
-        | otherwise = (currWidth, var)
+        where
+        err = 
+            error $ "PolyPaver.Logic: split: failed to find a split for " ++ ppShow ppb 
+        findWidestVar (prevWidth, prevRes) (var, currWidth)
+            | currWidth `RA.leqReals` prevWidth == Just True = (prevWidth, prevRes)
+            | otherwise = (currWidth, var)
     widths 
         = 
         foldl (Map.unionWith (+)) Map.empty $
             map (Map.map abs) $ map snd $ IMap.elems splittablesubbox
     splittablesubbox =
         foldr IMap.delete box varsNotToSplit
-    ppbL = (skewed, IMap.map substL box, varNames)
-    ppbR = (skewed, IMap.map substR box, varNames)
-    substL (c, coeffs) =
-        (lower $ c - varCoeffHalf, Map.insert var varCoeffHalf coeffs)
+    (ppbL, ppbR)
+        | Prelude.not skewed Prelude.&& splitVarIsIntvar =
+            ((skewed, IMap.insert splitVar intSplitVarAffineL box, varIsInts, varNames),
+             (skewed, IMap.insert splitVar intSplitVarAffineR box, varIsInts, varNames))
+        | otherwise = 
+            ((skewed, IMap.map substL box, varIsInts, varNames),
+             (skewed, IMap.map substR box, varIsInts, varNames))
         where
-        varCoeffHalf
-            =
-            upper $
-            case Map.lookup var coeffs of Just cf -> cf / 2
-    substR (c, coeffs) =
-        (lower $ c + varCoeffHalf, Map.insert var varCoeffHalf coeffs)
-        where
-        varCoeffHalf
-            =
-            upper $
-            case Map.lookup var coeffs of Just cf -> cf / 2
-    lower i = fst $ RA.bounds i
-    upper i = snd $ RA.bounds i
+        splitVarIsIntvar =
+            IMap.lookup splitVar varIsInts == Just True
+        intSplitVarAffineL = updateConstCoeff (lCeilRA, mFloorRA)
+        intSplitVarAffineR = updateConstCoeff (mCeilRA, rFloorRA)
+        updateConstCoeff (l, r) =
+            (const, Map.insert splitVar slope coeffs)
+            where
+            (const, slope) = constSlopeFromRA (l,r)
+            (_, coeffs) = intSplitVarAffine
+        mCeilRA = fromInteger mCeil
+        mFloorRA = fromInteger mFloor
+        (mCeil, mFloor) = shrinkIntervalToIntegerBounds mRA
+        mRA = (lCeilRA + rFloorRA) / 2
+        lCeilRA = fromInteger lCeil
+        rFloorRA = fromInteger rFloor
+        (lCeil, rFloor) = shrinkIntervalToIntegerBounds intSplitVarInterval
+        intSplitVarInterval = affineUnivariateToInterval (splitVar, intSplitVarAffine) 
+        Just intSplitVarAffine = IMap.lookup splitVar box
+        
+        substL (c, coeffs) =
+            (lower $ c - varCoeffHalf, Map.insert splitVar varCoeffHalf coeffs)
+            where
+            varCoeffHalf
+                =
+                upper $
+                case Map.lookup splitVar coeffs of Just cf -> cf / 2
+        substR (c, coeffs) =
+            (lower $ c + varCoeffHalf, Map.insert splitVar varCoeffHalf coeffs)
+            where
+            varCoeffHalf
+                =
+                upper $
+                case Map.lookup splitVar coeffs of Just cf -> cf / 2
+        lower i = fst $ RA.bounds i
+        upper i = snd $ RA.bounds i
 
 data TVDebugReport = TVDebugReport String    
     

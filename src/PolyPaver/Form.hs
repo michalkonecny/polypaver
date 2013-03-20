@@ -9,13 +9,14 @@ import Data.List (intercalate)
 infixr 2 --->
 infixl 3 \/
 infixl 4 /\
-infixl 5 |<|, |<=|, |>|, |>=|, |<-|
+infixl 5 |<|, |<=|, |>|, |>=|, |<-|, |=|, |==|
 infixl 6 +:, -:
 infixl 7 *:, /:
 
 data Form
   = Verum
   | Falsum
+  | Predicate Term -- Boolean-valued term
   | Not Form
   | Or Form Form
   | And Form Form
@@ -43,6 +44,8 @@ getConclusion f = f
 (/\) = And
 (\/) = Or
 (--->) = Implies
+(|=|) = Eq
+(|==|) = Eq
 (|<|) = Le
 (|<=|) = Leq
 (|>|) = Ge
@@ -85,6 +88,7 @@ data Term
   | FSquare Term
   | FSqrt Term
   | FExp Term
+  | IsInt Term
   deriving (Eq,Show,Read,Data,Typeable) 
 
 isAtomicTerm :: Term -> Bool
@@ -146,6 +150,7 @@ showTerm :: Term -> String
         case form of
             Verum -> "T"
             Falsum -> "F"
+            Predicate t -> st maybeIndentLevel t
             Not f -> "¬" ++ (indentedBracketsF f)
             Or f1 f2 -> showOpF "∨" f1 f2
             And f1 f2 -> showOpF "∧" f1 f2
@@ -208,6 +213,7 @@ showTerm :: Term -> String
             Cos t -> showFnT "cos" [t]
             Atan t -> showFnT "atan" [t]
             Hull t1 t2 -> showOpT ".." t1 t2
+            IsInt t -> showFnT "isint" [t]
             Integral lower upper ivarId ivarName integrand -> 
                 showFnT "∫" [lower, upper, Var ivarId ivarName, integrand]
             EpsiAbs -> "εabsI"

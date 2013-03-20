@@ -42,8 +42,13 @@ import System.CPUTime
 import System.IO
 
 data Problem = Problem
-    {box :: [(Int,(Rational,Rational))]
-    ,conjecture :: Form}
+    {
+        box :: 
+            [(Int,
+              (Rational,Rational),
+               Bool)], -- is the variable restricted to integers?
+        conjecture :: Form
+    }
     deriving (Show,Read)
 
 data Paver = Paver 
@@ -129,29 +134,6 @@ runPaver problem args =
     do
     initMachineDouble -- round upwards
     hSetBuffering stdout LineBuffering -- print progress in real time, not in batches
-    let maxdeg = degree args
-        startdeg = case startDegree args of s | s == -1 -> maxdeg; s -> s
-        improvementRatioThreshold = 1.2
-        maxsize = maxSize args 
-        maxtime = toInteger $ time args
-        ix = fromInteger $ toInteger $ effort args
-        mindepth = minDepth args 
-        maxdepth = maxDepth args 
-        conj = conjecture problem
-        varNames = getFormVarNames conj
-        initbox = ppBoxFromIntervals varNames $ box problem
-        ordr = order args 
-        quietOpt = quiet args
-        verboseOpt = verbose args
-        report = if quietOpt then ReportNONE else if verboseOpt then ReportALL else ReportNORMAL
---        fpt = fptype args
-        epsrelbitsOpt = epsrelbits args 
-        epsabsbitsOpt = epsabsbits args 
-        splitGuessingOpt = case splitGuessing args of -1 -> Nothing; n -> Just n
-        boxSkewingOpt = boxSkewing args
-        plotSizesOpt = (plotWidth args, plotHieght args)
-        plotStepDelayMs = 0
-        in do
     loop
         plotSizesOpt
         plotStepDelayMs
@@ -175,4 +157,29 @@ runPaver problem args =
         conj -- to be decided, defined in IntegralTest
 --        intvarids -- variable IDs of integer variables, defined in IntegralTest
         initbox
-    
+    where
+    maxdeg = degree args
+    startdeg = case startDegree args of s | s == -1 -> maxdeg; s -> s
+    improvementRatioThreshold = 1.2
+    maxsize = maxSize args 
+    maxtime = toInteger $ time args
+    ix = fromInteger $ toInteger $ effort args
+    mindepth = minDepth args 
+    maxdepth = maxDepth args 
+    conj = conjecture problem
+    varNames = getFormVarNames conj
+    initbox = ppBoxFromIntervals varIsInts varNames boxBounds 
+    varIsInts = IMap.fromList $ map (\(var,_,ii) -> (var, ii)) boxBoundsIsInts
+    boxBounds = map (\(var,bounds,_) -> (var,bounds)) boxBoundsIsInts
+    boxBoundsIsInts = box problem
+    ordr = order args 
+    quietOpt = quiet args
+    verboseOpt = verbose args
+    report = if quietOpt then ReportNONE else if verboseOpt then ReportALL else ReportNORMAL
+    epsrelbitsOpt = epsrelbits args 
+    epsabsbitsOpt = epsabsbits args 
+    splitGuessingOpt = case splitGuessing args of -1 -> Nothing; n -> Just n
+    boxSkewingOpt = boxSkewing args
+    plotSizesOpt = (plotWidth args, plotHieght args)
+    plotStepDelayMs = 0
+        
