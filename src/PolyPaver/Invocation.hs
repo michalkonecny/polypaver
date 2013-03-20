@@ -1,7 +1,7 @@
 {-# LANGUAGE DeriveDataTypeable #-}
 
 {-|
-    Module      :  PolyPaver.Paver
+    Module      :  PolyPaver.Invocation
     Description :  user interface for solving PolyPaver problems 
     Copyright   :  (c) Jan Duracz, Michal Konecny 
     License     :  BSD3
@@ -12,7 +12,7 @@
 
     User interface for solving PolyPaver problems.
 -}
-module PolyPaver.Paver
+module PolyPaver.Invocation
 (
     defaultMain,
     defaultParsingMain,
@@ -23,7 +23,7 @@ where
 
 import PolyPaver.PPBox
 import PolyPaver.Form
-import PolyPaver.Solver
+import PolyPaver.ProverLoop
 import PolyPaver.Vars
 
 import Numeric.ER.BasicTypes.DomainBox.IntMap

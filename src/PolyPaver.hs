@@ -19,4 +19,4 @@ module PolyPaver
 where
 
 import PolyPaver.Form
-import PolyPaver.Paver
+import PolyPaver.Invocation

@@ -15,7 +15,7 @@
 module Main where
 
 import PolyPaver.Form (splitConclusion)
-import PolyPaver.Paver
+import PolyPaver.Invocation
 import PolyPaver.Input.SPARK
 
 import Data.List
