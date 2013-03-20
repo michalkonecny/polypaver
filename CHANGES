@@ -1,6 +1,7 @@
 0.2: March 2013
   * added support for the integral operator
   * variables can be declared to range over integers only
+  * proving each conclusion of a Spark VC separately
   
 0.1: Sept 2011
   * initial release

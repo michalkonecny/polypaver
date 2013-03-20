@@ -41,6 +41,16 @@ getConclusion :: Form -> Form
 getConclusion (Implies f1 f2) = getConclusion f2
 getConclusion f = f
 
+splitConclusion :: Form -> [Form]
+splitConclusion (Implies f1 f2) =
+    map (Implies f1) $ splitConclusion f2
+splitConclusion f = splitFormula f
+
+splitFormula :: Form -> [Form]
+splitFormula (And f1 f2) =
+    splitFormula f1 ++ splitFormula f2
+splitFormula f = [f] 
+
 (/\) = And
 (\/) = Or
 (--->) = Implies

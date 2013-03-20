@@ -14,6 +14,7 @@
 -}
 module Main where
 
+import PolyPaver.Form (splitConclusion)
 import PolyPaver.Paver
 import PolyPaver.Input.SPARK
 
@@ -27,21 +28,35 @@ lookupSiv [inputPath]
     do
     fileContents <- readFile inputPath
     let vcs = parseSivAll inputPath fileContents
-    return $ map mkProb vcs
-    where
-    mkProb (name, vc, box) = (name, Problem box vc)
-    
+    return $ concat $ map mkProblems vcs
+
 lookupSiv [inputPath, vcName]
     | hasSivExtension inputPath =
     do
     fileContents <- readFile inputPath
-    let (_, vc, box) = parseSivVC inputPath fileContents vcName
-    return $ [(vcName, Problem box vc)]
-    
+    return $ parseTheVC fileContents
+    where
+    parseTheVC fileContents = 
+        mkProblems $ parseSivVC inputPath fileContents vcName
+
+lookupSiv [inputPath, vcName, conclNumberS] =
+    case reads conclNumberS of
+        (conclNumber, _) : _ ->
+            do
+            problems <- lookupSiv [inputPath, vcName]
+            return $ [problems !! (conclNumber - 1)]
+        _ -> argsError
     
 lookupSiv _ = argsError 
 
-argsError = error "polypaver: expecting arguments: <file.siv> <vc name>"
+argsError = error "polypaver: expecting arguments: <file.siv> [<vc name> [<part number>]]"
 
+mkProblems (name, vc, box) =
+    map mkProb $ zip [1..] subvcs
+    where
+    mkProb (conclusionNumber, subvc) = 
+        (name ++ " part " ++ show conclusionNumber, Problem box subvc)
+    subvcs = splitConclusion vc 
+    
 hasSivExtension path = ".siv" `isSuffixOf` path
 hasTptpExtension path = ".tptp" `isSuffixOf` path

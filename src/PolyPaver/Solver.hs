@@ -363,8 +363,8 @@ loop
             =
             putStrLn $
                 "Proved fraction : " ++ show provedFraction
-                ++ " (True volume : " ++ show oldornewtruevol
-                ++ " ; Problem volume : " ++ show problemvol ++ ")"
+                ++ " (Proved volume : " ++ show oldornewtruevol
+                ++ " ; Overall volume : " ++ show problemvol ++ ")"
             where
             provedFraction
                 | problemvol `RA.equalReals` 0 == Just True = 1
