@@ -33,10 +33,10 @@ import qualified Data.IntMap as IMap
 
 getBox :: 
     Form -> 
-    Either String [(Int, (Rational, Rational))]
+    Either String [(Int, (Rational, Rational), Bool)]
 getBox form 
     | allGood = 
-        Right $ map removeJust $ varRanges
+        Right $ map removeJustAddIsInt $ varRanges
     | otherwise = 
         Left errorMessage
     where
@@ -44,7 +44,10 @@ getBox form
     varRanges = IMap.toList box
     isGood (v, (Just _,Just _)) = True
     isGood _ = False
-    removeJust (v, (Just l, Just r)) = (v, (l,r))
+    removeJustAddIsInt (v, (Just l, Just r)) = (v, (l,r), isInt)
+        where
+        isInt = v `Set.member` intVars
+    intVars = detectIntVars form
     errorMessage =
         unlines $ map reportBadVar $ filter (not . isGood) varRanges
         where
@@ -65,6 +68,17 @@ getBox form
             boxSeq
     boxSeq = 
         iterate (scanHypotheses form) initBox
+    
+detectIntVars (Implies h c) =
+    (detectIntVar h) `Set.union` (detectIntVars c)
+detectIntVars _ = Set.empty
+
+detectIntVar (And h1 h2) =
+    (detectIntVar h1) `Set.union` (detectIntVar h2)
+detectIntVar (Or h1 h2) =
+    (detectIntVar h1) `Set.union` (detectIntVar h2)
+detectIntVar (Predicate (IsInt (Var v _))) = Set.singleton v
+detectIntVar _ = Set.empty
     
 scanHypotheses (Implies h c) =
     scanHypotheses c . scanHypothesis h 
@@ -147,9 +161,10 @@ evalT intervals term
         evalTerm (TVMDecided True) 1 100 0 10 box (5,32) term
         where
         box = 
-            ppBoxFromIntervals (getTermVarNames term) $ 
+            ppBoxFromIntervals (IMap.map (const False) termVarNames) termVarNames $ 
                 map removeJust $ filter varInTerm $ IMap.toList intervals
             where
+            termVarNames = getTermVarNames term
             varInTerm (v, _) = Set.member v termVars
             removeJust (v, (Just l, Just r)) = (v, (l, r)) 
                 -- v is bounded thanks to the termVarsBounded guard

@@ -22,6 +22,8 @@ module PolyPaver.PPBox
     ppBoxFromRAs,
     constSlopeFromRA,
     ppVolume,
+    shrinkIntervalToIntegerBounds,
+    affineUnivariateToInterval,
     ppCentre,
     ppCorners,
     ppEqual,
@@ -46,10 +48,11 @@ import qualified Data.IntMap as IMap
 import Data.List (intercalate, sort)
 
 type PPBox b = 
-    (Bool, -- True if skewed, False if axis-parallel
+    (Bool, -- True if skewed, False if axis-aligned
      IMap.IntMap (Affine b), 
         -- affine maps from the skewed variables in [-1,1] 
         --   to individual original coordinates 
+     IMap.IntMap Bool, -- whether the variable is restricted to integers
      IMap.IntMap String -- human-friendly variable names
     )
 type Affine b = (IRA b, Coeffs b)
@@ -57,7 +60,7 @@ type Coeffs b = Map.Map Int (IRA b)
 
 type BoxHyperPlane b = Affine b
 
-ppShow (skewed, box, varNames) 
+ppShow (skewed, box, _, varNames)
     | skewed =
         "PP{ corner0=" ++ show corner0 ++ "; "
         ++ (intercalate ", " $ map showVarCorner vars)
@@ -104,11 +107,12 @@ showAffine (c, coeffs)
 
 ppBoxFromRAs ::
     (B.ERRealBase b) =>
+    IMap.IntMap Bool ->
     IMap.IntMap String ->
     [(Int, (RA b, RA b))] ->
     PPBox b
-ppBoxFromRAs varNames intervals = 
-    (False, IMap.fromList $ map readInterval $ intervals, varNames) 
+ppBoxFromRAs varIsInts varNames intervals = 
+    (False, IMap.fromList $ map readInterval $ intervals, varIsInts, varNames) 
     where
     readInterval (i,(lRA, rRA)) =
         (i, (const,  Map.insert i slope zeroCoeffs))
@@ -125,11 +129,12 @@ constSlopeFromRA (lRA,rRA) =
 
 ppBoxFromIntervals ::
     (B.ERRealBase b) =>
+    IMap.IntMap Bool ->
     IMap.IntMap String ->
     [(Int, (Rational, Rational))] ->
     PPBox b
-ppBoxFromIntervals varNames intervals =
-    ppBoxFromRAs varNames ras
+ppBoxFromIntervals varIsInts varNames intervals =
+    ppBoxFromRAs varIsInts varNames ras
     where
     ras = map getRA intervals
     getRA (i, (l,r)) = (i, (lRA, rRA))
@@ -192,17 +197,72 @@ ppInvertBox box
             error "box inversion currently supported only for dimensions 1 and 2"
 
 ppVolume :: (B.ERRealBase b) => PPBox b -> IRA b
-ppVolume (_, box, _)
-    = abs $ determinant $ 
-        Map.elems $ Map.unionsWith (++) $ 
-            map (Map.map ((:[]) . (2 *)) . snd) $ 
-                IMap.elems box
+ppVolume (skewed, box, varIsInts, _)
+    | skewed = volume box
+    | otherwise =
+--        unsafePrint
+--        (
+--            "ppVolume: axis-aligned:"
+--            ++ "\n boxContOnly = " ++ show (boxContOnly) 
+--            ++ "\n volume boxContOnly = " ++ show (volume boxContOnly) 
+--            ++ "\n boxIntIntervals = " ++ show boxIntIntervals
+--            ++ "\n map countIntegers boxIntIntervals = " ++ show (map countIntegers boxIntIntervals) 
+--        ) 
+        intCombinations * (volume boxContOnly)
+    where
+    volume b =
+        abs $ determinant $ 
+            Map.elems $ Map.unionsWith (++) $ 
+                map (Map.map ((:[]) . (2 *)) . snd) $ 
+                    IMap.elems b
+    boxContOnly = 
+        IMap.map (\(c,cf) -> (c, Map.filterWithKey isNotInt cf)) boxContOnlyPre
+        where
+        isNotInt var _ =
+            IMap.lookup var varIsInts /= Just True
+    (boxIntOnly, boxContOnlyPre) =
+        IMap.partitionWithKey isInt box
+        where
+        isInt var _ = 
+            IMap.lookup var varIsInts == Just True 
+    intCombinations =
+        product $ map countIntegers boxIntIntervals
+    countIntegers interval =
+        fromInteger $ 1 + rFloor - lCeil
+        where
+        (lCeil, rFloor) = shrinkIntervalToIntegerBounds interval 
+    boxIntIntervals =
+        ppNonSkewedToIntervals boxIntOnly
+
+shrinkIntervalToIntegerBounds interval =
+--    unsafePrint
+--    (
+--        "shrinkIntervalToIntegerBounds: "
+--        ++ "\n interval = " ++ show interval
+--        ++ "\n lCeilEI = " ++ show lCeilEI
+--        ++ "\n rFloorEI = " ++ show rFloorEI
+--    ) $
+    (lCeil, rFloor)
+    where
+    lCeil =  toInteger lCeilEI
+    rFloor = toInteger rFloorEI
+    (_, lCeilEI) = RA.integerBounds l
+    (rFloorEI, _) = RA.integerBounds r
+    (l,r) = RA.bounds interval
+        
+ppNonSkewedToIntervals box =
+    map affineUnivariateToInterval $ IMap.toList box 
+    
+affineUnivariateToInterval (var, (const, slopesMap)) =
+    const + slope * ((-1) RA.\/ 1)
+    where
+    Just slope = Map.lookup var slopesMap
     
 determinant :: (B.ERRealBase b) => [[IRA b]] -> IRA b
 determinant matrix 
     =
     case matrix of
-        [] -> 0
+        [] -> 1
         [[a]] -> a
         [[a,b],[c,d]] -> a * d - c * b
         firstCol : rest ->
@@ -219,7 +279,8 @@ determinant matrix
     
 
 ppEqual :: (B.ERRealBase b) => PPBox b -> PPBox b -> Bool
-ppEqual (_, box1, _) (_, box2, _) = and $ IMap.elems $ IMap.intersectionWith ppAffineEqual box1 box2
+ppEqual (_, box1, _, _) (_, box2, _, _) = 
+    and $ IMap.elems $ IMap.intersectionWith ppAffineEqual box1 box2
     
 ppAffineEqual :: (B.ERRealBase b) => Affine b -> Affine b -> Bool
 ppAffineEqual (c1, coeffs1) (c2, coeffs2)
@@ -254,7 +315,7 @@ ppCoeffsZero maybeRelevantVars coeffs
 ppIntersect ::
     (B.ERRealBase b) => 
     PPBox b -> PPBox b -> Maybe Bool
-ppIntersect (_, box1, _) (_, box2, _)
+ppIntersect (_, box1, _, _) (_, box2, _, _)
     | dim > 2 = Nothing -- box inversion currently supported only for dim <= 2
     | otherwise 
         =
@@ -305,7 +366,7 @@ insideBounds (aL,aR) (bL,bR)
 ppSkewAlongHyperPlane ::
     (B.ERRealBase b) => 
     PPBox b -> BoxHyperPlane b -> (IRA b, Maybe Int, PPBox b)
-ppSkewAlongHyperPlane ppbox@(skewed, prebox, varNames) hp@(hp_const, hp_coeffs)
+ppSkewAlongHyperPlane ppbox@(skewed, prebox, varIsInts, varNames) hp@(hp_const, hp_coeffs)
     | 0 `RA.refines` skewVar_stretch = 
 --        unsafePrint
 --        (
@@ -322,7 +383,7 @@ ppSkewAlongHyperPlane ppbox@(skewed, prebox, varNames) hp@(hp_const, hp_coeffs)
 --            ++"\n box = " ++ ppShow box
 --            ++"\n" 
 --        ) $
-        (isecPtDistance, maybeSkewVar, (True, box, varNames))
+        (isecPtDistance, maybeSkewVar, (True, box, varIsInts, varNames))
     where
     isecPtDistance = abs $ hp_const / largest_hp_coeff
     box = 

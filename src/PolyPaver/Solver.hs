@@ -60,7 +60,7 @@ loop
     mindepth maxdepth maxDepthReached
     ix maxtime prec originalForm 
 --    intvarids 
-    initppb@(_, initbox, varNames)
+    initppb@(_, initbox, varIsInts, varNames)
     =
     do
     putStrLn $ "proving: " ++ showForm originalForm
@@ -211,7 +211,7 @@ loop
                 reportSplit
                 bisectAndRecur undecidedMaybeSimplerForm currtime [boxL, boxR] False splitVar
 
-        (depth, skewAncestors, startdeg, form, prevSplitVar, ppb@(skewed, box, _)) = Q.index queue 0
+        (depth, skewAncestors, startdeg, form, prevSplitVar, ppb@(skewed, box, _, _)) = Q.index queue 0
         boxes = Q.drop 1 queue
 
         bisectAndRecur form currtime newBoxes isSimpleSplit splitVar =

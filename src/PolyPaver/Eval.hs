@@ -61,6 +61,8 @@ evalForm maxdeg maxsize pwdepth ix ppb fptype form =
         case form of
           Verum -> L.fromBool ppb True
           Falsum -> L.fromBool ppb False
+          Predicate (IsInt _) -> evForm Verum -- this "predicate" is only a type declaration
+          Predicate _ -> L.bot Falsum -- predicates not supported yet - leave undecided
           Not arg -> L.not $ evForm arg
           Or left right ->
                evForm left L.|| evForm right
@@ -112,7 +114,7 @@ evalTerm sampleTV maxdeg maxsize pwdepth ix ppbOrig fptype@(epsrelbits,epsabsbit
     where
     evForm = evalForm maxdeg maxsize pwdepth ix ppbOrig fptype
     evTerm = evTermBox ppbOrig
-    evTermBox ppb@(skewed, box, _) term =
+    evTermBox ppb@(skewed, box, _, _) term =
       case term of
           EpsAbs ->
               FA.setMaxDegree maxdeg $
@@ -250,7 +252,7 @@ evalTerm sampleTV maxdeg maxsize pwdepth ix ppbOrig fptype@(epsrelbits,epsabsbit
               evTermBox ppb $
               Round $ (1+4*EpsiRel) * (Exp arg)
 
-    evIntegral ppb@(skewed, box, namesMap) lo hi ivarId ivarName integrand =
+    evIntegral ppb@(skewed, box, isIntVarMap, namesMap) lo hi ivarId ivarName integrand =
 --        unsafePrint
 --        (
 --            "evIntegral:"
@@ -315,7 +317,10 @@ evalTerm sampleTV maxdeg maxsize pwdepth ix ppbOrig fptype@(epsrelbits,epsabsbit
                   evTermBox integrationPPB integrand
         integrationPPB 
             | skewed = error "Paralellopiped solving not yet supported for the integral operator."
-            | otherwise = (skewed, integrationBox, IMap.insert ivarId ivarName namesMap)
+            | otherwise = 
+                (skewed, integrationBox, 
+                 IMap.insert ivarId False isIntVarMap,
+                 IMap.insert ivarId ivarName namesMap)
             where
             integrationBox =
                 DBox.insert
@@ -325,8 +330,8 @@ evalTerm sampleTV maxdeg maxsize pwdepth ix ppbOrig fptype@(epsrelbits,epsabsbit
         integrationVarDomAffine@(ivarDomAffineConst, ivarDomAffineCoeffs) = affine
             where
             [(_, affine)] = IMap.toList ivbox
-            (_, ivbox, _) =
-                ppBoxFromRAs namesMap [(ivarId, integrationVarDomBounds)]
+            (_, ivbox, _, _) =
+                ppBoxFromRAs isIntVarMap namesMap [(ivarId, integrationVarDomBounds)]
         boundIntoUnit fn =
             (fn - constFA) * invslopeFA
             where

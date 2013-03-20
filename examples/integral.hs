@@ -19,14 +19,15 @@ main =
         {box = b
         ,conjecture = test}
 
-b = [(xNum, (0,1)), (yNum, (0,1))]
+b = [(xNum, (0,1), False), (yNum, (0,1), False)]
 x = Var xNum "x"
 y = Var yNum "y"
 t = Var tNum "t"
 (xNum : yNum : tNum : _) = [0..]
 
 test =
-    Integral x (x + y) tNum "t" t 
-    |<-|
---    (plusMinus 1) + 
+--    x/80 + 
     (y * (y + 2 * x) ) / 2
+    |<-|
+    (plusMinus 0.01) + 
+    Integral x (x + y) tNum "t" t 

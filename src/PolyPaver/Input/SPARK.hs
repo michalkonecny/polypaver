@@ -46,7 +46,7 @@ parseSivVC ::
     String {-^ description of the source (eg file name) for error reporting -} ->
     String {-^ the contents of the SPARK vcg or siv file -} -> 
     String {-^ VC name -} -> 
-    (String, Form, [(Int, (Rational, Rational))])
+    (String, Form, [(Int, (Rational, Rational), Bool)])
     {-^ the VC and the bounding box for its variables -}
 parseSivVC sourceDescription s vcName =
     case parse (sivVC vcName) "siv" s of
@@ -56,7 +56,7 @@ parseSivVC sourceDescription s vcName =
 parseSivAll ::
     String {-^ description of the source (eg file name) for error reporting -} ->
     String {-^ the contents of the SPARK vcg or siv file -} -> 
-    [(String, Form, [(Int, (Rational, Rational))])]
+    [(String, Form, [(Int, (Rational, Rational), Bool)])]
     {-^ the VC and the bounding box for its variables -}
 parseSivAll sourceDescription s =
     case parse sivAll "siv" s of
@@ -158,7 +158,7 @@ formTable =
     , [Infix (m_reservedOp "->" >> return (Implies)) AssocRight]
     ]
 
-atomicFormula = (try $ m_parens formula) <|> inequality
+atomicFormula = (try $ m_parens formula) <|> (try inequality) <|> predicateTerm 
     
 inequality =
     do
@@ -174,6 +174,11 @@ inequality =
         do
         m_reservedOp opS
         return opF
+
+predicateTerm =
+    do
+    term <- fncall
+    return $ Predicate term
 
 term :: Parser Term
 term = buildExpressionParser termTable atomicTerm <?> "term"
@@ -206,6 +211,7 @@ decodeFn "num__multiply" [arg1, arg2] = FTimes arg1 arg2
 decodeFn "num__add" [arg1, arg2] = FPlus arg1 arg2
 decodeFn "num__subtract" [arg1, arg2] = FMinus arg1 arg2
 decodeFn "num__exp" [arg1] = FExp arg1
+decodeFn "num__isint" [arg1] = IsInt arg1
 decodeFn "exact__sqrt" [arg1] = Sqrt arg1
 decodeFn "exact__exp" [arg1] = Exp arg1
 decodeFn "exact__sin" [arg1] = Sin arg1

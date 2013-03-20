@@ -1,7 +1,6 @@
 module Main(main) where
 
-import PolyPaver.Paver
-import Data.Ratio ((%))
+import PolyPaver
 
 main =
     defaultMain Problem
@@ -10,4 +9,4 @@ main =
           ,conjecture = thm
         }
 thm =
-    Eq (Lit (1 % 1)) (Lit (0 % 1))
+    0 |=| 1

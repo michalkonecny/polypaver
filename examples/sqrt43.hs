@@ -17,9 +17,9 @@ import PolyPaver
 main = 
     defaultMain Problem 
         {box = b
-        ,theorem = test}
+        ,conjecture = test}
 
-b = [(0, (0.5,2)), (1, (0,3))]
+b = [(0, (0.5,2), False), (1, (0,3), False)]
 
 x = Var 0 "x"
 

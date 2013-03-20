@@ -1,5 +1,6 @@
 0.2: March 2013
   * added support for the integral operator
+  * variables can be declared to range over integers only
   
 0.1: Sept 2011
   * initial release

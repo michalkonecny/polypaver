@@ -40,6 +40,7 @@ showVar varNames var =
 getFormVarNames :: Form -> IMap.IntMap String
 getFormVarNames form =
     case form of
+        Predicate term -> getTermVarNames term
         Not arg -> getFormVarNames arg
         Or left right ->
             (getFormVarNames left) `IMap.union` (getFormVarNames right)
@@ -86,6 +87,7 @@ getTermVarNames term =
         Sin arg -> getTermVarNames arg
         Cos arg -> getTermVarNames arg
         Atan arg -> getTermVarNames arg
+        IsInt arg -> getTermVarNames arg
         Hull left right ->
             (getTermVarNames left) `IMap.union` (getTermVarNames right)
         Integral lower upper ivarId ivarName integrand ->
@@ -109,6 +111,7 @@ getTermVarNames term =
 getFormFreeVars :: Form -> Set.Set Int
 getFormFreeVars form =
     case form of
+        Predicate term -> getTermFreeVars term
         Not arg -> getFormFreeVars arg
         Or left right ->
             (getFormFreeVars left) `Set.union` (getFormFreeVars right)
@@ -155,6 +158,7 @@ getTermFreeVars term =
         Sin arg -> getTermFreeVars arg
         Cos arg -> getTermFreeVars arg
         Atan arg -> getTermFreeVars arg
+        IsInt arg -> getTermFreeVars arg
         Hull left right ->
             (getTermFreeVars left) `Set.union` (getTermFreeVars right)
         Integral lower upper ivarId ivarName integrand ->
@@ -182,6 +186,7 @@ renameVarsForm old2new = rnm
     rnmT = renameVarsTerm old2new
     rnm form =
         case form of
+            Predicate term -> Predicate $ rnmT term
             Not arg -> Not $ rnm arg
             Or left right ->
                 Or (rnm left) (rnm right)
@@ -231,6 +236,7 @@ renameVarsTerm old2new = rnm
             Sin arg -> Sin $ rnm arg
             Cos arg -> Cos $ rnm arg
             Atan arg -> Atan $ rnm arg
+            IsInt arg -> IsInt $ rnm arg
             Hull left right ->
                 Hull (rnm left) (rnm right)
             Integral lower upper ivarId ivarName integrand ->

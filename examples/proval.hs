@@ -25,7 +25,7 @@ main =
 a -/ b = (a - b)/b
 
 proval_cosine_box =
-    [(0, o2 4),(1, o2 5)]
+    [(0, o2 4, False),(1, o2 5, False)]
 
 o2 n = (- d, d)
     where
@@ -94,7 +94,7 @@ proval_cosine_3 =
     exact_result3 = (exact_result - exact_result2);
 
 proval_sqrt_box =
-    [(0, (0.5,2)),(1, (0.25,4))]
+    [(0, (0.5,2), False),(1, (0.25,4), False)]
 
 proval_sqrt_3 =
     ((float_result -/ (1.0 / Sqrt(float_x))) |<-| (o2e 6))
