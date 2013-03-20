@@ -62,7 +62,7 @@ evalForm maxdeg maxsize pwdepth ix ppb fptype form =
           Verum -> L.fromBool ppb True
           Falsum -> L.fromBool ppb False
           Predicate (IsInt _) -> evForm Verum -- this "predicate" is only a type declaration
-          Predicate _ -> L.bot Falsum -- predicates not supported yet - leave undecided
+          Predicate _ -> L.bot Falsum -- predicates not supported yet - therefore must remain undecided
           Not arg -> L.not $ evForm arg
           Or left right ->
                evForm left L.|| evForm right
