@@ -1,7 +1,7 @@
 {-# LANGUAGE DeriveDataTypeable #-}
 
 {-|
-    Module      :  PolyPaver.Solver
+    Module      :  PolyPaver.ProverLoop
     Description :  the main counter-example search algorihtm 
     Copyright   :  (c) Jan Duracz, Michal Konecny 
     License     :  BSD3
@@ -12,7 +12,7 @@
 
     The main counter-example search algorihtm.
 -}
-module PolyPaver.Solver 
+module PolyPaver.ProverLoop
 (
     Order(..),
     Report(..),
