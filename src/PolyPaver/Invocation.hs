@@ -111,8 +111,12 @@ defaultParsingMain problemFactory =
     args <- cmdArgs paver
     let problemIdOpt = problemId args
     problems <- problemFactory problemIdOpt
-    mapM (runProblem args) problems
+    results <- mapM (runProblem args) problems
+    putStrLn ">>>>>>>>>>> SUMMARY <<<<<<<<<<<"
+    mapM printSummaryLine $ zip problems results
     where
+    printSummaryLine ((name, _problem), result) =
+        putStrLn $ name ++ ": " ++ show result
     runProblem args (name, problem)
         =
         do

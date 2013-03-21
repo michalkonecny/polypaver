@@ -314,7 +314,9 @@ makeSplit splitGuessing varsNotToSplit maybeSplitVar ppb@(skewed, box, varIsInts
             where
             (const, slope) = constSlopeFromRA (l,r)
             (_, coeffs) = intSplitVarAffine
-        mCeilRA = fromInteger mCeil
+        mCeilRA 
+            | mCeil == mFloor = fromInteger $ mCeil + 1
+            | otherwise = fromInteger mCeil
         mFloorRA = fromInteger mFloor
         (mCeil, mFloor) = shrinkIntervalToIntegerBounds mRA
         mRA = (lCeilRA + rFloorRA) / 2

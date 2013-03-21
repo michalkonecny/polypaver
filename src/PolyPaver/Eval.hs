@@ -184,7 +184,9 @@ evalTerm sampleTV maxdeg maxsize pwdepth ix ppbOrig fptype@(epsrelbits,epsabsbit
           Recip arg ->
               recip $ evTermBox ppb arg
           Over left right ->
-              evTermBox ppb left / evTermBox ppb right
+              evTermBox ppb left / 
+                evTermBox ppb right
+--                (UFA.const (FA.getRangeApprox $ evTermBox ppb right))
           Sqrt arg ->
               RAEL.sqrt (fromInteger $ toInteger ix) $
                 evTermBox ppb arg
