@@ -51,6 +51,18 @@ data Report =
     ReportNONE | ReportNORMAL | ReportALL 
     deriving (Show,Data,Typeable)
 
+data ProverResult
+    = Proved { proverResultCPUTime :: Integer }
+    | Disproved { proverResultCPUTime :: Integer }
+    | GaveUp { proverResultCPUTime :: Integer, proverResultReason ::  String }
+    deriving (Data,Typeable)
+    
+instance Show ProverResult where
+    show (Proved duration) = "PROVED in " ++ showDuration duration
+    show (Disproved duration) = "DISPROVED in " ++ showDuration duration
+    show (GaveUp duration reason) = "GAVE UP: " ++ reason ++ " after " ++ showDuration duration 
+
+
 loop
     plotSize plotStepDelayMs
     order report epsrelbits epsabsbits boxSkewing splitGuessing
@@ -109,12 +121,11 @@ loop
                 currtime <- getCPUTime
                 putStr $
                   "\nSearch complete.  Conjecture proved TRUE in " ++
-                    show ((fromInteger (currtime-inittime)) / 1000000000000) ++
-                    " seconds." ++
+                    showDuration (currtime-inittime) ++ "." ++
                   "\nComputed boxes : " ++ show computedboxes ++ 
                   "\nGreatest queue size : " ++ show maxQLength ++  
                   "\nGreatest depth : " ++ show maxDepthReached ++ "\n\n"
-                stopProver 
+                stopProver $ Proved $ currtime-inittime
             | depth < mindepth = 
                 do
                 reportInitSplit
@@ -124,14 +135,14 @@ loop
                 do
                 putStr $
                   "\nSearch aborted." ++ 
-                  "\nTIMES OUT after " ++ show maxtime ++ 
+                  "\nTIMED OUT after " ++ show maxtime ++ 
                   " second" ++ (if maxtime == 1 then "." else "s.") ++ 
                   "\nComputed boxes : " ++ show computedboxes ++ 
                   reportQLengthS ++
                   "\nGreatest queue size : " ++ show maxQLength ++  
                   "\nGreatest depth : " ++ show maxDepthReached ++ 
                   "\n\n"
-                stopProver 
+                stopProver $ GaveUp (prevtime-inittime) "TIMED OUT"
             | decided && decision = -- formula true on this box
                 do
                 currtime <- getCPUTime
@@ -148,8 +159,7 @@ loop
                 plotBox red
                 putStr $
                   "\nSearch aborted. Conjecture proved FALSE in " ++ 
-                  show ((fromInteger (currtime-inittime)) / 1000000000000) ++
-                  " second" ++ (if maxtime == 1 then "." else "s.") ++ 
+                  showDuration (currtime-inittime) ++ "." ++
                   "\nConjecture proved false for " ++
                   ppShow ppb ++
                   "\nComputed  boxes : " ++ show computedboxes ++ 
@@ -160,7 +170,7 @@ loop
                   "\nFormula : " ++ showForm form ++
                   "\nFormula details: \n" ++ formDebug ++
                   "\n\n" 
-                stopProver 
+                stopProver $ Disproved (currtime-inittime)
             | currdeg < maxdeg && undecidedMeasureImproved = -- try raising the degree before splitting
                 do
                 putStrLn $ "raising degree to " ++ show (currdeg + 1)
@@ -181,13 +191,12 @@ loop
 --                  "\nUndecided for : " ++
 --                  ppShow ppb ++
                   " after " ++
-                  show ((fromInteger (currtime-inittime)) / 1000000000000) ++
-                  " seconds." ++ 
+                  showDuration (currtime-inittime) ++ "." ++
                   "\nComputed boxes : " ++ show computedboxes ++
                   reportQLengthS ++
                   "\nGreatest queue size : " ++ show maxQLength ++  
                   "\n\n"
-                stopProver
+                stopProver $ GaveUp (currtime-inittime) "REACHED MAXIMUM DEPTH"
             | not splitSuccess ||
               length thinvarids == dim = -- cannot split any further
                 do
@@ -196,15 +205,14 @@ loop
                   "\nSearch aborted." ++ 
                   "\nFAILED TO SPLIT undecided box : " ++ ppShow ppb ++ 
                   " after " ++
-                  show ((fromInteger (currtime-inittime)) / 1000000000000) ++
-                  " seconds." ++
+                  showDuration (currtime-inittime) ++ "." ++
                   "\nComputed boxes : " ++ show computedboxes ++ 
                   reportQLengthS ++
                   "\nGreatest queue size : " ++ show maxQLength ++  
                   "\nDepth : " ++ show depth ++ 
                   "\nGreatest depth : " ++ show maxDepthReached ++  
                   "\n\n"
-                stopProver 
+                stopProver $ GaveUp (currtime-inittime) "FAILED TO SPLIT"
             | otherwise = -- formula undecided on this box, will split it
                 do
                 currtime <- getCPUTime
@@ -409,10 +417,13 @@ loop
             return ()
 
         -- plotting
-        stopProver =
+        stopProver result =
             case mstateTV of
-                Nothing -> return ()
-                Just stateTV -> Plot.waitForClose stateTV
+                Nothing -> return result
+                Just stateTV ->
+                    do 
+                    Plot.waitForClose stateTV
+                    return result
         
         plotBox colour 
             =
@@ -427,4 +438,5 @@ loop
         red = (0.6,0.1,0.1,1)
         yellow = (0.6,0.6,0.1,0.05)
         
-            
+showDuration durationInPicoseconds =
+    (show $ ((fromInteger durationInPicoseconds) / 1000000000000)) ++ " s"
