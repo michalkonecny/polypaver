@@ -2,6 +2,7 @@
   * added support for the integral operator
   * variables can be declared to range over integers only
   * proving each conclusion of a Spark VC separately
+  * sorting hypotheses in Spark VCs from smallest to largest
   
 0.1: Sept 2011
   * initial release
