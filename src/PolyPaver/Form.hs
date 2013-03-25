@@ -4,7 +4,7 @@ module PolyPaver.Form where
 
 import Data.Data
 import Data.Ratio
-import Data.List (intercalate)
+import Data.List (intercalate, sortBy)
 
 infixr 2 --->
 infixl 3 \/
@@ -50,6 +50,30 @@ splitFormula :: Form -> [Form]
 splitFormula (And f1 f2) =
     splitFormula f1 ++ splitFormula f2
 splitFormula f = [f] 
+
+getFormulaSize :: Form -> Int
+getFormulaSize form =
+    case form of
+        Verum -> 1
+        Falsum -> 1
+        Predicate t -> 1 + (getTermSize t)
+        Not f -> 1 + (getFormulaSize f)
+        Or f1 f2 -> 1 + (getFormulaSize f1) + (getFormulaSize f2)
+        And f1 f2 -> 1 + (getFormulaSize f1) + (getFormulaSize f2)
+        Implies f1 f2 -> 1 + (getFormulaSize f1) + (getFormulaSize f2)
+        Le t1 t2 -> 1 + (getTermSize t1) + (getTermSize t2)
+        Leq t1 t2 -> 1 + (getTermSize t1) + (getTermSize t2)
+        Ge t1 t2 -> 1 + (getTermSize t1) + (getTermSize t2)
+        Geq t1 t2 -> 1 + (getTermSize t1) + (getTermSize t2)
+        Eq t1 t2 -> 1 + (getTermSize t1) + (getTermSize t2)
+        Neq t1 t2 -> 1 + (getTermSize t1) + (getTermSize t2)
+        Ni t1 t2 -> 1 + (getTermSize t1) + (getTermSize t2)
+
+sortFormulasBySize :: [Form] -> [Form]
+sortFormulasBySize formulas =
+    map snd $ sortBy (\a b -> compare (fst a) (fst b)) $ map addSize formulas
+    where
+    addSize formula = (getFormulaSize formula, formula)
 
 (/\) = And
 (\/) = Or
@@ -109,6 +133,44 @@ isAtomicTerm Pi = True
 isAtomicTerm (Lit _) = True
 isAtomicTerm (Var _ _) = True
 isAtomicTerm _ = False
+
+getTermSize :: Term -> Int
+getTermSize term =
+    case term of
+        EpsAbs -> 1
+        EpsRel -> 1
+        Pi -> 1
+        Lit r -> 1 
+        Var n s -> 1
+        Plus t1 t2 -> 1 + (getTermSize t1) + (getTermSize t2)
+        Minus t1 t2 -> 1 + (getTermSize t1) + (getTermSize t2)
+        Neg t -> 1 + (getTermSize t)
+        Abs t -> 1 + (getTermSize t)
+        Min t1 t2 -> 1 + (getTermSize t1) + (getTermSize t2)
+        Max t1 t2 -> 1 + (getTermSize t1) + (getTermSize t2)
+        Times t1 t2 -> 1 + (getTermSize t1) + (getTermSize t2)
+        Square t -> 1 + (getTermSize t)
+        Recip t -> 1 + (getTermSize t)
+        Over t1 t2 -> 1 + (getTermSize t1) + (getTermSize t2)
+        Sqrt t -> 10 + (getTermSize t)
+        Exp t -> 10 + (getTermSize t)
+        Sin t -> 10 + (getTermSize t)
+        Cos t -> 10 + (getTermSize t)
+        Atan t -> 10 + (getTermSize t)
+        Hull t1 t2 -> 1 + (getTermSize t1) + (getTermSize t2)
+        IsInt t -> 1
+        Integral lower upper ivarId ivarName integrand -> 
+            2 + (getTermSize lower) + (getTermSize upper) + (getTermSize integrand)
+        EpsiAbs -> 1
+        EpsiRel -> 1
+        Round t -> 1 + (getTermSize t)
+        FPlus t1 t2 -> 1 + (getTermSize t1) + (getTermSize t2)
+        FMinus t1 t2 -> 1 + (getTermSize t1) + (getTermSize t2)
+        FTimes t1 t2 -> 1 + (getTermSize t1) + (getTermSize t2)
+        FOver t1 t2 -> 1 + (getTermSize t1) + (getTermSize t2)
+        FSquare t -> 1 + (getTermSize t)
+        FSqrt t -> 1 + (getTermSize t)
+        FExp t -> 1 + (getTermSize t)
 
 instance Num Term
   where

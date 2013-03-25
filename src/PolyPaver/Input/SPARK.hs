@@ -127,7 +127,7 @@ vcBody =
     return $
         case cs of
             [] -> Verum
-            _ -> foldr (--->) (foldl1 (/\) cs) hs 
+            _ -> foldr (--->) (foldl1 (/\) cs) $ sortFormulasBySize hs 
 
 vcEmptyBody :: Parser Form
 vcEmptyBody =
