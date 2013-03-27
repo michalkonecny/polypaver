@@ -26,7 +26,8 @@ import PolyPaver.PPBox
 import Numeric.ER.Misc
 
 import Data.Char (ord)
-import Data.List (intercalate)
+import Data.List (intercalate, partition)
+import qualified Data.IntMap as IMap
 
 import Text.Parsec
 import Text.Parsec.String
@@ -64,8 +65,20 @@ parseSivAll sourceDescription s =
         Left err -> error $ "parse error in " ++ sourceDescription ++ ":" ++ show err 
         
 addBox (name, form) =
-    (name, formN, box)
+    (name, formNoSingletonVars, boxNoSingletonVars)
     where
+    formNoSingletonVars =
+        substituteVarsForm replaceSingletonVarsWithValue formN
+        where
+        replaceSingletonVarsWithValue varid =
+            case IMap.lookup varid boxSingletonVarsMap of
+                Just value -> Just $ Lit value
+                _ -> Nothing
+    boxSingletonVarsMap =
+        IMap.fromList $ map (\(varid, (l, _), _) -> (varid, l)) boxSingletonVars 
+    (boxSingletonVars, boxNoSingletonVars) = partition isSingleton box
+        where
+        isSingleton (_varid, (l, r), _isInt) = l == r
     box =
         case getBox formN of
             Left err -> 
