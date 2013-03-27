@@ -20,6 +20,8 @@ module PolyPaver.Vars
     renameVarsForm,
     renameVarsTerm,
     normaliseVars,
+    substituteVarsForm,
+    substituteVarsTerm,
     removeDisjointHypotheses
 )
 where
@@ -271,6 +273,83 @@ normaliseVars form =
     old2newMap =
         Map.fromAscList $ zip (Set.toAscList varSet) [0..]
     varSet = getFormFreeVars form
+
+substituteVarsForm :: 
+    (Int -> Maybe Term) -> Form -> Form  
+substituteVarsForm old2new = subst
+    where
+    substT = substituteVarsTerm old2new
+    subst form =
+        case form of
+            Predicate term -> Predicate $ substT term
+            Not arg -> Not $ subst arg
+            Or left right ->
+                Or (subst left) (subst right)
+            And left right ->
+                And (subst left) (subst right)
+            Implies left right ->
+                Implies (subst left) (subst right)
+            Le left right ->
+                Le (substT left) (substT right)
+            Leq left right ->
+                Leq (substT left) (substT right)
+            Ge left right ->
+                Ge (substT left) (substT right)
+            Geq left right ->
+                Geq (substT left) (substT right)
+            Eq left right ->
+                Eq (substT left) (substT right)
+            Neq left right ->
+                Neq (substT left) (substT right)
+            Ni left right -> 
+                Ni (substT left) (substT right)
+            f -> f
+
+substituteVarsTerm :: 
+    (Int -> Maybe Term) -> Term -> Term  
+substituteVarsTerm old2new = subst
+    where
+    subst term =
+        case term of
+            Var varid s -> case (old2new varid) of Just newTerm -> newTerm; _ -> term
+            Plus left right ->
+                Plus (subst left) (subst right)
+            Minus left right ->
+                Minus (subst left) (subst right)
+            Neg arg -> Neg $ subst arg
+            Abs arg -> Abs $ subst arg
+    --          Min left right ->
+    --          Max left right ->
+            Times left right ->
+                Times (subst left) (subst right)
+            Square arg -> Square $ subst arg
+            Recip arg -> Recip $ subst arg
+            Over left right ->
+                Over (subst left) (subst right)
+            Sqrt arg -> Sqrt $ subst arg
+            Exp arg -> Exp $ subst arg
+            Sin arg -> Sin $ subst arg
+            Cos arg -> Cos $ subst arg
+            Atan arg -> Atan $ subst arg
+            IsInt arg -> IsInt $ subst arg
+            Hull left right ->
+                Hull (subst left) (subst right)
+            Integral lower upper ivarId ivarName integrand ->
+                Integral (subst lower) (subst upper) ivarId ivarName (subst integrand)
+            Round arg -> Round $ subst arg
+            FPlus left right ->
+                FPlus (subst left) (subst right)
+            FMinus left right ->
+                FMinus (subst left) (subst right)
+            FTimes left right ->
+                FTimes (subst left) (subst right)
+            FSquare arg -> FSquare $ subst arg
+            FSqrt arg -> FSqrt $ subst arg
+            FOver left right ->
+                FOver (subst left) (subst right)
+            FExp arg -> FExp $ subst arg
+            t -> t
+
 
 removeDisjointHypotheses :: Form -> Form
 removeDisjointHypotheses form
