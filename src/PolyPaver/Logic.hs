@@ -61,6 +61,7 @@ data TVM
         { 
             tvmSimplifiedFormula :: Form
         ,   tvmDistanceFromTruth :: Double
+--        ,   tvmAtomicResults :: [(Label, (Maybe Bool))]
         ,   tvmDecisionHyperPlanes :: [(Double, ((BoxHyperPlane BM, BoxHyperPlane BM), Form, IRA BM))] 
             -- the first one is the best one, keeping its measure, formula and vagueness 
         }
@@ -87,8 +88,7 @@ instance Show TVM where
             ++ "; form = " ++ showForm hpForm
 
 instance TruthValue TVM where
-    not (TVMDecided x) = TVMDecided (Prelude.not x)
-    not (TVMUndecided form dist hps) = TVMUndecided (Not form) dist hps
+    not tv = tvmNot tv
     -- and:
     (TVMDecided False) && _ = TVMDecided False
     (TVMDecided True) && tv = tv
@@ -107,7 +107,7 @@ instance TruthValue TVM where
     (TVMDecided False) ~> _ = TVMDecided True
     (TVMDecided True) ~> tv = tv
     _ ~> (TVMDecided True) = TVMDecided True
-    tv ~> (TVMDecided False) = PolyPaver.Logic.not tv
+    tv ~> (TVMDecided False) = tvmNot tv
     (TVMUndecided form1 dist1 hps1) ~> (TVMUndecided form2 dist2 hps2)
         = TVMUndecided (Implies form1 form2) (max dist1 dist2) (combineHPs hps1 hps2)
 
@@ -175,6 +175,9 @@ instance TruthValue TVM where
             = tryToSkew boxSkewing prebox tv
         (success, boxes, splitVar)    
             = makeSplit splitGuessing varsNotToSplit maybeVar box maybeSkewVar
+            
+tvmNot (TVMDecided x) = TVMDecided (Prelude.not x)
+tvmNot (TVMUndecided form dist hps) = TVMUndecided (Not form) dist hps
             
 combineHPs hps1 hps2
     = List.sortBy (\(m1, _) (m2, _) -> compare m1 m2) $ hps1 ++ hps2 
@@ -343,7 +346,7 @@ makeSplit splitGuessing varsNotToSplit maybeSplitVar ppb@(skewed, box, varIsInts
         lower i = fst $ RA.bounds i
         upper i = snd $ RA.bounds i
 
-data TVDebugReport = TVDebugReport String    
+data TVDebugReport = TVDebugReport String
     
 instance TruthValue TVDebugReport where
     not tv = tv
@@ -370,4 +373,6 @@ instance TruthValue TVDebugReport where
             ++ "\n\nRESULT = " ++ show (a `RA.includes` b)
             where
             banner = "\n" ++ (concat $ replicate 100 "⊆")
+    decide = error "TVDebugReport: `decide' not meaningful"
+    split = error "TVDebugReport: `split' not meaningful"
             

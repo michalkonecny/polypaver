@@ -50,19 +50,19 @@ getFormVarNames form =
             (getFormVarNames left) `IMap.union` (getFormVarNames right)
         Implies left right ->
             (getFormVarNames left) `IMap.union` (getFormVarNames right)
-        Le left right ->
+        Le _ left right ->
             (getTermVarNames left) `IMap.union` (getTermVarNames right)
-        Leq left right ->
+        Leq _ left right ->
             (getTermVarNames left) `IMap.union` (getTermVarNames right)
-        Ge left right ->
+        Ge _ left right ->
             (getTermVarNames left) `IMap.union` (getTermVarNames right)
-        Geq left right ->
+        Geq _ left right ->
             (getTermVarNames left) `IMap.union` (getTermVarNames right)
-        Eq left right ->
+        Eq _ left right ->
             (getTermVarNames left) `IMap.union` (getTermVarNames right)
-        Neq left right ->
+        Neq _ left right ->
             (getTermVarNames left) `IMap.union` (getTermVarNames right)
-        Ni left right -> 
+        Ni _ left right -> 
             (getTermVarNames left) `IMap.union` (getTermVarNames right)
         _ -> IMap.empty
 
@@ -121,19 +121,19 @@ getFormFreeVars form =
             (getFormFreeVars left) `Set.union` (getFormFreeVars right)
         Implies left right ->
             (getFormFreeVars left) `Set.union` (getFormFreeVars right)
-        Le left right ->
+        Le _ left right ->
             (getTermFreeVars left) `Set.union` (getTermFreeVars right)
-        Leq left right ->
+        Leq _ left right ->
             (getTermFreeVars left) `Set.union` (getTermFreeVars right)
-        Ge left right ->
+        Ge _ left right ->
             (getTermFreeVars left) `Set.union` (getTermFreeVars right)
-        Geq left right ->
+        Geq _ left right ->
             (getTermFreeVars left) `Set.union` (getTermFreeVars right)
-        Eq left right ->
+        Eq _ left right ->
             (getTermFreeVars left) `Set.union` (getTermFreeVars right)
-        Neq left right ->
+        Neq _ left right ->
             (getTermFreeVars left) `Set.union` (getTermFreeVars right)
-        Ni left right -> 
+        Ni _ left right -> 
             (getTermFreeVars left) `Set.union` (getTermFreeVars right)
         _ -> Set.empty
 
@@ -196,20 +196,20 @@ renameVarsForm old2new = rnm
                 And (rnm left) (rnm right)
             Implies left right ->
                 Implies (rnm left) (rnm right)
-            Le left right ->
-                Le (rnmT left) (rnmT right)
-            Leq left right ->
-                Leq (rnmT left) (rnmT right)
-            Ge left right ->
-                Ge (rnmT left) (rnmT right)
-            Geq left right ->
-                Geq (rnmT left) (rnmT right)
-            Eq left right ->
-                Eq (rnmT left) (rnmT right)
-            Neq left right ->
-                Neq (rnmT left) (rnmT right)
-            Ni left right -> 
-                Ni (rnmT left) (rnmT right)
+            Le lab left right ->
+                Le lab (rnmT left) (rnmT right)
+            Leq lab left right ->
+                Leq lab (rnmT left) (rnmT right)
+            Ge lab left right ->
+                Ge lab (rnmT left) (rnmT right)
+            Geq lab left right ->
+                Geq lab (rnmT left) (rnmT right)
+            Eq lab left right ->
+                Eq lab (rnmT left) (rnmT right)
+            Neq lab left right ->
+                Neq lab (rnmT left) (rnmT right)
+            Ni lab left right -> 
+                Ni lab (rnmT left) (rnmT right)
             f -> f
 
 renameVarsTerm :: 
@@ -289,20 +289,20 @@ substituteVarsForm old2new = subst
                 And (subst left) (subst right)
             Implies left right ->
                 Implies (subst left) (subst right)
-            Le left right ->
-                Le (substT left) (substT right)
-            Leq left right ->
-                Leq (substT left) (substT right)
-            Ge left right ->
-                Ge (substT left) (substT right)
-            Geq left right ->
-                Geq (substT left) (substT right)
-            Eq left right ->
-                Eq (substT left) (substT right)
-            Neq left right ->
-                Neq (substT left) (substT right)
-            Ni left right -> 
-                Ni (substT left) (substT right)
+            Le lab left right ->
+                Le lab (substT left) (substT right)
+            Leq lab left right ->
+                Leq lab (substT left) (substT right)
+            Ge lab left right ->
+                Ge lab (substT left) (substT right)
+            Geq lab left right ->
+                Geq lab (substT left) (substT right)
+            Eq lab left right ->
+                Eq lab (substT left) (substT right)
+            Neq lab left right ->
+                Neq lab (substT left) (substT right)
+            Ni lab left right -> 
+                Ni lab (substT left) (substT right)
             f -> f
 
 substituteVarsTerm :: 

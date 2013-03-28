@@ -1,5 +1,6 @@
 {-# OPTIONS_GHC -fno-warn-missing-methods #-}
 {-# LANGUAGE DeriveDataTypeable #-}
+{-# LANGUAGE ScopedTypeVariables #-}
 module PolyPaver.Form where
 
 import Data.Data
@@ -13,6 +14,8 @@ infixl 5 |<|, |<=|, |>|, |>=|, |<-|, |=|, |==|
 infixl 6 +:, -:
 infixl 7 *:, /:
 
+type Label = String
+
 data Form
   = Verum
   | Falsum
@@ -21,13 +24,13 @@ data Form
   | Or Form Form
   | And Form Form
   | Implies Form Form
-  | Le Term Term
-  | Leq Term Term
-  | Ge Term Term
-  | Geq Term Term
-  | Eq Term Term
-  | Neq Term Term
-  | Ni Term Term
+  | Le Label Term Term
+  | Leq Label Term Term
+  | Ge Label Term Term
+  | Geq Label Term Term
+  | Eq Label Term Term
+  | Neq Label Term Term
+  | Ni Label Term Term
   deriving (Eq,Show,Read,Data,Typeable)
 
 isAtomicForm :: Form -> Bool
@@ -61,13 +64,13 @@ getFormulaSize form =
         Or f1 f2 -> 1 + (getFormulaSize f1) + (getFormulaSize f2)
         And f1 f2 -> 1 + (getFormulaSize f1) + (getFormulaSize f2)
         Implies f1 f2 -> 1 + (getFormulaSize f1) + (getFormulaSize f2)
-        Le t1 t2 -> 1 + (getTermSize t1) + (getTermSize t2)
-        Leq t1 t2 -> 1 + (getTermSize t1) + (getTermSize t2)
-        Ge t1 t2 -> 1 + (getTermSize t1) + (getTermSize t2)
-        Geq t1 t2 -> 1 + (getTermSize t1) + (getTermSize t2)
-        Eq t1 t2 -> 1 + (getTermSize t1) + (getTermSize t2)
-        Neq t1 t2 -> 1 + (getTermSize t1) + (getTermSize t2)
-        Ni t1 t2 -> 1 + (getTermSize t1) + (getTermSize t2)
+        Le _ t1 t2 -> 1 + (getTermSize t1) + (getTermSize t2)
+        Leq _ t1 t2 -> 1 + (getTermSize t1) + (getTermSize t2)
+        Ge _ t1 t2 -> 1 + (getTermSize t1) + (getTermSize t2)
+        Geq _ t1 t2 -> 1 + (getTermSize t1) + (getTermSize t2)
+        Eq _ t1 t2 -> 1 + (getTermSize t1) + (getTermSize t2)
+        Neq _ t1 t2 -> 1 + (getTermSize t1) + (getTermSize t2)
+        Ni _ t1 t2 -> 1 + (getTermSize t1) + (getTermSize t2)
 
 sortFormulasBySize :: [Form] -> [Form]
 sortFormulasBySize formulas =
@@ -78,13 +81,13 @@ sortFormulasBySize formulas =
 (/\) = And
 (\/) = Or
 (--->) = Implies
-(|=|) = Eq
-(|==|) = Eq
-(|<|) = Le
-(|<=|) = Leq
-(|>|) = Ge
-(|>=|) = Geq
-(|<-|) = Ni
+(|=|) = Eq "anon"
+(|==|) = Eq "anon"
+(|<|) = Le "anon"
+(|<=|) = Leq "anon"
+(|>|) = Ge "anon"
+(|>=|) = Geq "anon"
+(|<-|) = Ni "anon"
 
 notVerum Verum = False
 notVerum _ = True
@@ -201,22 +204,15 @@ instance Floating Term
 plusMinus a = Hull (-a) a
 
 showForm :: Form -> String
-showTerm :: Term -> String
-(showForm, showTerm) =
-    (sf (Just 0), st (Just 0)) 
+showForm form = sf (Just 0) form
     where
+    st maybeIndentLevel = showTermIL maybeIndentLevel
     sf Nothing form = sf2 Nothing form
     sf maybeIndentLevel form
         | length oneLineForm <= 60 = oneLineForm
         | otherwise = sf2 maybeIndentLevel form
         where
         oneLineForm = sf2 Nothing form
-    st Nothing form = st2 Nothing form
-    st maybeIndentLevel term
-        | length oneLineTerm<= 60 = oneLineTerm
-        | otherwise = st2 maybeIndentLevel term
-        where
-        oneLineTerm = st2 Nothing term
     sf2 maybeIndentLevel form
         = 
         case form of
@@ -227,13 +223,13 @@ showTerm :: Term -> String
             Or f1 f2 -> showOpF "∨" f1 f2
             And f1 f2 -> showOpF "∧" f1 f2
             Implies f1 f2 -> showOpF "⇒" f1 f2
-            Le t1 t2 -> showOpT "<" t1 t2
-            Leq t1 t2 -> showOpT "≤" t1 t2
-            Ge t1 t2 -> showOpT ">" t1 t2
-            Geq t1 t2 -> showOpT "≥" t1 t2
-            Eq t1 t2 -> showOpT "=" t1 t2
-            Neq t1 t2 -> showOpT "≠" t1 t2
-            Ni t1 t2 -> showOpT "⊆" t1 t2
+            Le lab t1 t2 -> showOpT "<" lab t1 t2
+            Leq lab t1 t2 -> showOpT "≤" lab t1 t2
+            Ge lab t1 t2 -> showOpT ">" lab t1 t2
+            Geq lab t1 t2 -> showOpT "≥" lab t1 t2
+            Eq lab t1 t2 -> showOpT "=" lab t1 t2
+            Neq lab t1 t2 -> showOpT "≠" lab t1 t2
+            Ni lab t1 t2 -> showOpT "⊆" lab t1 t2
         where
         sfNext = sf maybeNextIndentLevel
         stNext = st maybeNextIndentLevel
@@ -249,15 +245,41 @@ showTerm :: Term -> String
             indentedBracketsF f1 
             ++ indent ++ padIfInline op ++ indent ++
             indentedBracketsF f2
-        showOpT op t1 t2 =
-            st maybeIndentLevel t1 
-            ++ indent ++ padIfInline op ++ indent ++
-            st maybeIndentLevel t2
-        padIfInline op = case maybeIndentLevel of Nothing -> " " ++ op ++ " "; _ -> op 
+        showOpT op lab t1 t2 =
+            labelIfInline lab
+            ++ st maybeIndentLevel t1 
+            ++ indent ++ padIfInline op ++ labelIfSeparateLine lab 
+            ++ indent ++ st maybeIndentLevel t2
+        padIfInline op = 
+            case maybeIndentLevel of 
+                Nothing -> " " ++ op ++ " "
+                _ -> op 
+        labelIfInline lab =
+            case maybeIndentLevel of
+                Nothing -> "[" ++ show lab ++ "] "
+                _ -> ""
+        labelIfSeparateLine lab =
+            case maybeIndentLevel of
+                Nothing -> ""
+                _ -> " [" ++ show lab ++ "] "
         indentedBracketsF form
             | isAtomicForm form = sf maybeIndentLevel form
             | otherwise = "(" ++ indentNext ++ sfNext form ++ indent ++ ")"
         maybeNextIndentLevel = fmap (+ 2) maybeIndentLevel
+
+showTerm :: Term -> String
+showTerm term = showTermIL (Just 0) term
+
+showTermIL :: (Maybe Int) -> Term -> String
+showTermIL = st
+    where
+    st Nothing term = st2 Nothing term
+    st maybeIndentLevel term
+        | length oneLineTerm<= 60 = oneLineTerm
+        | otherwise = st2 maybeIndentLevel term
+        where
+        oneLineTerm = st2 Nothing term
+
     st2 maybeIndentLevel term
         = 
         case term of

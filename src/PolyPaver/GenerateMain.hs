@@ -45,9 +45,9 @@ writePolyPaverMain outputFolder (name, form, box) =
             ,"        {"
             ,"          box = " ++ show box
 --            ,"          ,ivars = []"
-            ,"          ,theorem = thm"
+            ,"          ,conjecture = conjecture"
             ,"        }"
-            ,"thm ="
+            ,"conjecture ="
             ,"    " ++ show form
             ,""
             ]       
