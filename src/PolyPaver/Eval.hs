@@ -56,7 +56,8 @@ evalForm ::
 evalForm maxdeg maxsize pwdepth ix ppb fptype form =
     evForm form
     where
-    evTerm = evalTerm (evForm Verum) maxdeg maxsize pwdepth ix ppb fptype
+    evTerm = evalTerm sampleTV maxdeg maxsize pwdepth ix ppb fptype
+    sampleTV = evForm Verum
     evForm form =
         case form of
           Verum -> L.fromBool ppb True
@@ -70,26 +71,26 @@ evalForm maxdeg maxsize pwdepth ix ppb fptype form =
               evForm left L.&& evForm right
           Implies left right ->
               evForm left L.~> evForm right
-          Le left right ->
+          Le lab left right ->
               L.not $
-              L.leq (Leq right left) ppb (evTerm right) (evTerm left)          
-          Leq left right ->
+              L.leq (Leq lab right left) ppb (evTerm right) (evTerm left)          
+          Leq _lab left right ->
               L.leq form ppb (evTerm left) (evTerm right)          
-          Ge left right ->
+          Ge lab left right ->
               L.not $
-              L.leq (Leq left right) ppb (evTerm left) (evTerm right)          
-          Geq left right ->
+              L.leq (Leq lab left right) ppb (evTerm left) (evTerm right)          
+          Geq _lab left right ->
               L.leq form ppb (evTerm right) (evTerm left)          
-          Eq left right ->
-              (L.leq (Leq left right) ppb (evTerm left) (evTerm right))          
+          Eq lab left right ->
+              (L.leq (Leq lab left right) ppb (evTerm left) (evTerm right))          
               L.&&
-              (L.leq (Leq right left) ppb (evTerm right) (evTerm left))          
-          Neq left right ->
+              (L.leq (Leq lab right left) ppb (evTerm right) (evTerm left))          
+          Neq lab left right ->
               L.not $ 
-              (L.leq (Leq left right) ppb (evTerm left) (evTerm right))          
+              (L.leq (Leq lab left right) ppb (evTerm left) (evTerm right))          
               L.&&
-              (L.leq (Leq right left) ppb (evTerm right) (evTerm left))          
-          Ni left right -> 
+              (L.leq (Leq lab right left) ppb (evTerm right) (evTerm left))          
+          Ni _lab left right -> 
               if RA.isBottom rightArg || RA.isBottom leftArg then
                   L.bot form
               else 
@@ -112,7 +113,6 @@ evalTerm ::
 evalTerm sampleTV maxdeg maxsize pwdepth ix ppbOrig fptype@(epsrelbits,epsabsbits) term =
     evTerm term
     where
-    evForm = evalForm maxdeg maxsize pwdepth ix ppbOrig fptype
     evTerm = evTermBox ppbOrig
     evTermBox ppb@(skewed, box, _, _) term =
       case term of
@@ -223,15 +223,15 @@ evalTerm sampleTV maxdeg maxsize pwdepth ix ppbOrig fptype@(epsrelbits,epsabsbit
               | otherwise ->
                   evTermBox ppb $
                   ((1 + EpsiRel) * arg) + EpsiAbs
-              where
-              epsabsShownIrrelevant =
-                case (L.decide 0 aboveEpsTV, L.decide 0 belowEpsTV) of
-                    (Just True, _) -> True
-                    (_, Just True) -> True
-                    _ -> False 
-              _ = [aboveEpsTV, belowEpsTV, sampleTV]
-              aboveEpsTV = evForm $ Leq EpsAbs arg 
-              belowEpsTV = evForm $ Leq arg (Neg EpsAbs) 
+--              where
+--              epsabsShownIrrelevant =
+--                case (L.decide 0 aboveEpsTV, L.decide 0 belowEpsTV) of
+--                    (Just True, _) -> True
+--                    (_, Just True) -> True
+--                    _ -> False 
+--              _ = [aboveEpsTV, belowEpsTV, sampleTV]
+--              aboveEpsTV = evForm $ Leq sampleLabel EpsAbs arg 
+--              belowEpsTV = evForm $ Leq sampleLabel arg (Neg EpsAbs) 
           FPlus left right ->
               evTermBox ppb $
               Round (left + right)

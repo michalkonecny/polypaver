@@ -96,7 +96,7 @@ scanHypothesis (Or h1 h2) intervals =
     minM _ _ = Nothing
     maxM (Just a) (Just b) = Just $ max a b
     maxM _ _ = Nothing
-scanHypothesis (Eq t1@(Var v1 _) t2@(Var v2 _)) intervals = 
+scanHypothesis (Eq _ t1@(Var v1 _) t2@(Var v2 _)) intervals = 
     IMap.insert v1 val $
     IMap.insert v2 val $
     intervals
@@ -104,31 +104,31 @@ scanHypothesis (Eq t1@(Var v1 _) t2@(Var v2 _)) intervals =
     Just val1 = IMap.lookup v1 intervals
     Just val2 = IMap.lookup v2 intervals
     val = updateUpper val1 $ updateLower val1 $ val2
-scanHypothesis (Eq (Var v _) t) intervals = 
+scanHypothesis (Eq _ (Var v _) t) intervals = 
     IMap.insertWith updateUpper v val $
     IMap.insertWith updateLower v val intervals
     where
     val = evalT intervals t
-scanHypothesis (Eq t (Var v _)) intervals = 
+scanHypothesis (Eq _ t (Var v _)) intervals = 
     IMap.insertWith updateUpper v val $
     IMap.insertWith updateLower v val intervals
     where
     val = evalT intervals t
-scanHypothesis (Leq t1@(Var v1 _) t2@(Var v2 _)) intervals = 
+scanHypothesis (Leq _ t1@(Var v1 _) t2@(Var v2 _)) intervals = 
     IMap.insert v1 (updateUpper val2 val1) $
     IMap.insert v2 (updateLower val1 val2) $
     intervals
     where
     Just val1 = IMap.lookup v1 intervals
     Just val2 = IMap.lookup v2 intervals
-scanHypothesis (Leq (Var v _) t) intervals = 
+scanHypothesis (Leq _ (Var v _) t) intervals = 
     IMap.insertWith updateUpper v (evalT intervals t) intervals
-scanHypothesis (Leq t (Var v _)) intervals = 
+scanHypothesis (Leq _ t (Var v _)) intervals = 
     IMap.insertWith updateLower v (evalT intervals t) intervals
 -- reduce Le, Geq, Ge on equivalent Leq (note that we treat strict and non-strict the same way):
-scanHypothesis (Le t1 t2) intervals = scanHypothesis (Leq t1 t2) intervals 
-scanHypothesis (Geq t1 t2) intervals = scanHypothesis (Leq t2 t1) intervals
-scanHypothesis (Ge t1 t2) intervals = scanHypothesis (Leq t2 t1) intervals
+scanHypothesis (Le lab t1 t2) intervals = scanHypothesis (Leq lab t1 t2) intervals 
+scanHypothesis (Geq lab t1 t2) intervals = scanHypothesis (Leq lab t2 t1) intervals
+scanHypothesis (Ge lab t1 t2) intervals = scanHypothesis (Leq lab t2 t1) intervals
 scanHypothesis _ intervals = intervals
     
 evalT ::

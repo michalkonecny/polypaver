@@ -155,30 +155,29 @@ conclusion = vcItem "C"
 vcItem symb =
     do
     m_symbol symb
-    n <- m_integer
-    m_symbol ":"
+    id <- manyTill anyToken (m_symbol ":")
     m_whiteSpace
-    f <- formula
+    f <- formula $ symb ++ id
     m_dot
 --    unsafePrint ("vcItem: done item = " ++ symb ++ show n ++ "; form = " ++ showForm f) $ return ()
     return f
     
-formula :: Parser Form
-formula = buildExpressionParser formTable atomicFormula <?> "formula"
+formula :: Label -> Parser Form
+formula lab = buildExpressionParser formTable (atomicFormula lab) <?> ("formula " ++ lab)
 formTable = 
     [ [Infix (m_reserved "and" >> return (And)) AssocLeft]
     , [Infix (m_reserved "or" >> return (Or)) AssocLeft]
     , [Infix (m_reservedOp "->" >> return (Implies)) AssocRight]
     ]
 
-atomicFormula = (try $ m_parens formula) <|> (try inequality) <|> predicateTerm 
+atomicFormula lab = (try $ m_parens (formula lab)) <|> (try (inequality lab)) <|> (predicateTerm lab) 
     
-inequality =
+inequality lab =
     do
     left <- term
     opF <- op
     right <- term
-    return $ opF left right 
+    return $ opF lab left right 
     where
     op =
         choice $ map o [("<", Le), ("<=", Leq), (">", Ge), (">=", Geq), ("=", Eq), ("<>", Neq)]
@@ -188,7 +187,7 @@ inequality =
         m_reservedOp opS
         return opF
 
-predicateTerm =
+predicateTerm _lab =
     do
     term <- fncall
     return $ Predicate term
