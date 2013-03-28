@@ -72,29 +72,26 @@ evalForm maxdeg maxsize pwdepth ix ppb fptype form =
           Implies left right ->
               evForm left L.~> evForm right
           Le lab left right ->
-              L.not $
-              L.leq (Leq lab right left) ppb (evTerm right) (evTerm left)          
-          Leq _lab left right ->
-              L.leq form ppb (evTerm left) (evTerm right)          
+              L.less lab form ppb (evTerm left) (evTerm right)          
+          Leq lab left right ->
+              L.leq lab form ppb (evTerm left) (evTerm right)          
           Ge lab left right ->
-              L.not $
-              L.leq (Leq lab left right) ppb (evTerm left) (evTerm right)          
-          Geq _lab left right ->
-              L.leq form ppb (evTerm right) (evTerm left)          
+              L.less lab form ppb (evTerm right) (evTerm left)          
+          Geq lab left right ->
+              L.leq lab form ppb (evTerm right) (evTerm left)          
           Eq lab left right ->
-              (L.leq (Leq lab left right) ppb (evTerm left) (evTerm right))          
+              (L.leq (lab ++ "<=") (Leq lab left right) ppb (evTerm left) (evTerm right))          
               L.&&
-              (L.leq (Leq lab right left) ppb (evTerm right) (evTerm left))          
+              (L.leq (lab ++ ">=") (Leq lab right left) ppb (evTerm right) (evTerm left))          
           Neq lab left right ->
-              L.not $ 
-              (L.leq (Leq lab left right) ppb (evTerm left) (evTerm right))          
-              L.&&
-              (L.leq (Leq lab right left) ppb (evTerm right) (evTerm left))          
-          Ni _lab left right -> 
+              (L.less (lab ++ "<") (Le lab left right) ppb (evTerm left) (evTerm right))          
+              L.||
+              (L.less (lab ++ ">") (Le lab right left) ppb (evTerm right) (evTerm left))          
+          Ni lab left right -> 
               if RA.isBottom rightArg || RA.isBottom leftArg then
                   L.bot form
               else 
-                  L.includes form ppb rightArg leftArg
+                  L.includes lab form ppb rightArg leftArg
               where
               rightArg = evTerm right
               leftArg = evTerm left
@@ -225,7 +222,7 @@ evalTerm sampleTV maxdeg maxsize pwdepth ix ppbOrig fptype@(epsrelbits,epsabsbit
                   ((1 + EpsiRel) * arg) + EpsiAbs
 --              where
 --              epsabsShownIrrelevant =
---                case (L.decide 0 aboveEpsTV, L.decide 0 belowEpsTV) of
+--                case (L.decide aboveEpsTV, L.decide belowEpsTV) of
 --                    (Just True, _) -> True
 --                    (_, Just True) -> True
 --                    _ -> False 

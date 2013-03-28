@@ -39,10 +39,11 @@ class TruthValue tv where
     (||) :: tv -> tv -> tv
     (~>) :: tv -> tv -> tv
     fromBool :: PPBox BM -> Bool -> tv
-    leq :: Form -> PPBox BM -> FAPUOI BM -> FAPUOI BM -> tv
-    includes :: Form -> PPBox BM -> FAPUOI BM -> FAPUOI BM -> tv
+    leq :: Label -> Form -> PPBox BM -> FAPUOI BM -> FAPUOI BM -> tv
+    less :: Label -> Form -> PPBox BM -> FAPUOI BM -> FAPUOI BM -> tv
+    includes :: Label -> Form -> PPBox BM -> FAPUOI BM -> FAPUOI BM -> tv
     bot :: Form -> tv
-    decide :: Int -> tv -> Maybe Bool
+    decide :: tv -> Maybe Bool
     split :: 
         [Int] -> -- vars that must not be split
         Maybe Int -> -- preferred variable to split
@@ -56,21 +57,29 @@ class TruthValue tv where
          (PPBox BM, PPBox BM))
 
 data TVM
-    = TVMDecided Bool 
+    = TVMDecided 
+        {
+            tvmAtomicResults :: [(Label, (Maybe Bool))]
+        ,   tvmResult :: Bool 
+        } 
     | TVMUndecided 
         { 
             tvmSimplifiedFormula :: Form
         ,   tvmDistanceFromTruth :: Double
---        ,   tvmAtomicResults :: [(Label, (Maybe Bool))]
+        ,   tvmAtomicResults :: [(Label, (Maybe Bool))]
         ,   tvmDecisionHyperPlanes :: [(Double, ((BoxHyperPlane BM, BoxHyperPlane BM), Form, IRA BM))] 
             -- the first one is the best one, keeping its measure, formula and vagueness 
         }
     
 instance Show TVM where
-    show (TVMDecided result) = "TVMDecided " ++ show result
-    show (TVMUndecided form dist hps)
+    show (TVMDecided ares result) 
+        = 
+        "TVMDecided: " ++ show result 
+        ++ "\n sub-results = " ++ show ares 
+    show (TVMUndecided form dist ares hps)
         =
         "TVMUndecided"
+        ++ "\n sub-results = " ++ show ares
         ++ "\n form = " ++ showForm form 
         ++ "\n distance = " ++ show dist
         ++ "\n hyperplanes = "
@@ -90,38 +99,31 @@ instance Show TVM where
 instance TruthValue TVM where
     not tv = tvmNot tv
     -- and:
-    (TVMDecided False) && _ = TVMDecided False
-    (TVMDecided True) && tv = tv
-    _ && (TVMDecided False) = TVMDecided False
-    tv && (TVMDecided True) = tv
-    (TVMUndecided form1 dist1 hps1) && (TVMUndecided form2 dist2 hps2) 
-        = TVMUndecided (And form1 form2) (max dist1 dist2) (combineHPs hps1 hps2)
+    tv1@(TVMDecided _ False) && _ = tv1
+    tv1@(TVMDecided ares1 True) && tv2 = tv2 { tvmAtomicResults = ares1 ++ (tvmAtomicResults tv2) }
+    tv1 && (TVMDecided ares2 False) = TVMDecided (tvmAtomicResults tv1 ++ ares2) False
+    tv1 && (TVMDecided ares2 True) = tv1 { tvmAtomicResults = (tvmAtomicResults tv1) ++ ares2}
+    (TVMUndecided form1 dist1 ares1 hps1) && (TVMUndecided form2 dist2 ares2 hps2) 
+        = TVMUndecided (And form1 form2) (max dist1 dist2) (ares1 ++ ares2) (combineHPs hps1 hps2)
     -- or: 
-    (TVMDecided True) || _ = TVMDecided True
-    (TVMDecided False) || tv = tv
-    _ || (TVMDecided True) = TVMDecided True
-    tv || (TVMDecided False) = tv
-    (TVMUndecided form1 dist1 hps1) || (TVMUndecided form2 dist2 hps2)
-        = TVMUndecided (Or form1 form2) (max dist1 dist2) (combineHPs hps1 hps2)
+    tv1@(TVMDecided ares1 True) || _ = tv1
+    (TVMDecided ares1 False) || tv2 = tv2 { tvmAtomicResults = ares1 ++ (tvmAtomicResults tv2)}
+    tv1 || (TVMDecided ares2 True) = TVMDecided (tvmAtomicResults tv1 ++ ares2) True
+    tv1 || (TVMDecided ares2 False) = tv1 { tvmAtomicResults = tvmAtomicResults tv1 ++ ares2 }
+    (TVMUndecided form1 dist1 ares1 hps1) || (TVMUndecided form2 dist2 ares2 hps2)
+        = TVMUndecided (Or form1 form2) (max dist1 dist2) (ares1 ++ ares2) (combineHPs hps1 hps2)
     -- implication:
-    (TVMDecided False) ~> _ = TVMDecided True
-    (TVMDecided True) ~> tv = tv
-    _ ~> (TVMDecided True) = TVMDecided True
-    tv ~> (TVMDecided False) = tvmNot tv
-    (TVMUndecided form1 dist1 hps1) ~> (TVMUndecided form2 dist2 hps2)
-        = TVMUndecided (Implies form1 form2) (max dist1 dist2) (combineHPs hps1 hps2)
+    (TVMDecided ares1 False) ~> _ = TVMDecided ares1 True
+    (TVMDecided ares1 True) ~> tv2 = tv2 { tvmAtomicResults = ares1 ++ (tvmAtomicResults tv2)}
+    tv1 ~> (TVMDecided ares2 True) = TVMDecided (tvmAtomicResults tv1 ++ ares2) True
+    tv1 ~> (TVMDecided ares2 False) = tvmNot tv1 { tvmAtomicResults = tvmAtomicResults tv1 ++ ares2 }
+    (TVMUndecided form1 dist1 ares1 hps1) ~> (TVMUndecided form2 dist2 ares2 hps2)
+        = TVMUndecided (Implies form1 form2) (max dist1 dist2) (ares1 ++ ares2) (combineHPs hps1 hps2)
 
-    fromBool _ = TVMDecided
-    leq form box a b = 
-        case maybeResult of
-            Just result -> TVMDecided result
-            Nothing ->
-                case maybeHyperplane of
-                    Just hyperplane -> TVMUndecided form distance [(distance, (hyperplane, form, vagueness))]
-                    _ -> TVMUndecided form distance []
-        where
-        (maybeResult, distance, maybeHyperplane, vagueness) = analyseLeq box a b
-    includes form box a b -- b `Ni` a
+    fromBool _ = TVMDecided []
+    leq = tvmLeqLess True
+    less = tvmLeqLess False
+    includes lab form box a b -- b `Ni` a
         =
 --        unsafePrintReturn
 --        (
@@ -134,10 +136,10 @@ instance TruthValue TVM where
 --        )
 --        $
         case (maybeResultL, maybeResultR, maybeResultU, maybeResultD) of
-            (Just True, Just True, _, _) -> TVMDecided True
-            (_, _, Just True, _) -> TVMDecided False
-            (_, _, _, Just True) -> TVMDecided False
-            _ -> TVMUndecided form distance hyperplanes 
+            (Just True, Just True, _, _) -> TVMDecided [(lab, Just True)] True
+            (_, _, Just True, _) -> TVMDecided [(lab, Just False)] False
+            (_, _, _, Just True) -> TVMDecided [(lab, Just False)] False
+            _ -> TVMUndecided form distance [(lab, Nothing)] hyperplanes 
 --        case a `RA.includes` b of
 --            Just res -> TVMDecided res
 --            _ -> TVMUndecided form 1 []
@@ -153,18 +155,18 @@ instance TruthValue TVM where
                 (_, Just hyperplaneR) -> [(distanceR, (hyperplaneR, form, vaguenessR))]
                 _ -> []
         (maybeResultL, distanceL, maybeHyperplaneL, vaguenessL) 
-            = analyseLeq box aiL boL -- testing for truth (part 1)
+            = analyseLeqLess True box aiL boL -- testing for truth (part 1)
         (maybeResultR, distanceR, maybeHyperplaneR, vaguenessR) 
-            = analyseLeq box boR aiR -- testing for truth (part 2)
+            = analyseLeqLess True box boR aiR -- testing for truth (part 2)
         (maybeResultU, distanceU, maybeHyperplaneU, _) 
-            = analyseLeq box aoR boL -- testing for falsity due to b > a
+            = analyseLeqLess True box aoR boL -- testing for falsity due to b > a
         (maybeResultD, distanceD, maybeHyperplaneD, _) 
-            = analyseLeq box boR aoL -- testing for falsity due to b < a
+            = analyseLeqLess True box boR aoL -- testing for falsity due to b < a
         ((aoL,aoR),(aiL,aiR)) = RA.oiBounds a
         ((boL,boR),_) = RA.oiBounds b 
-    bot form = TVMUndecided form (1/0) [] -- infinite badness...
-    decide _ (TVMDecided result) = Just result
-    decide _ (TVMUndecided _ _ _) = Nothing
+    bot form = TVMUndecided form (1/0) [] [] -- infinite badness...
+    decide (TVMDecided _ result) = Just result
+    decide (TVMUndecided _ _ _ _) = Nothing
     
     split varsNotToSplit maybeVar prebox boxSkewing splitGuessing tv 
         = 
@@ -176,13 +178,25 @@ instance TruthValue TVM where
         (success, boxes, splitVar)    
             = makeSplit splitGuessing varsNotToSplit maybeVar box maybeSkewVar
             
-tvmNot (TVMDecided x) = TVMDecided (Prelude.not x)
-tvmNot (TVMUndecided form dist hps) = TVMUndecided (Not form) dist hps
+tvmNot (TVMDecided ares x) = TVMDecided ares (Prelude.not x)
+tvmNot (TVMUndecided form dist ares hps) = TVMUndecided (Not form) dist ares hps
             
 combineHPs hps1 hps2
     = List.sortBy (\(m1, _) (m2, _) -> compare m1 m2) $ hps1 ++ hps2 
 
-analyseLeq box a b =
+tvmLeqLess isLeq lab form box a b = 
+    case maybeResult of
+        Just result -> TVMDecided [(lab, maybeResult)] result
+        Nothing ->
+            case maybeHyperplane of
+                Just hyperplane -> 
+                    TVMUndecided form distance [(lab, maybeResult)] [(distance, (hyperplane, form, vagueness))]
+                _ -> 
+                    TVMUndecided form distance [(lab, maybeResult)] []
+    where
+    (maybeResult, distance, maybeHyperplane, vagueness) = analyseLeqLess isLeq box a b
+
+analyseLeqLess isLeq box a b =
 --    (maybeResult, 1, Nothing, 0)
     (maybeResult, distanceD + vaguenessD, maybeHyperplane, vagueness)
     where
@@ -193,7 +207,9 @@ analyseLeq box a b =
                 case vagueness `RA.leqReals` (2^^(0)) of
                     Just True -> Just (hyperplane, hyperplaneDn)
                     _ -> Nothing
-    maybeResult = a `RA.leqReals` b
+    maybeResult
+        | isLeq = a `RA.leqReals` b
+        | otherwise = fmap Prelude.not $ b `RA.leqReals` a
     distanceD = snd $ RA.doubleBounds $ a - b
     vaguenessD = snd $ RA.doubleBounds vagueness
     hyperplane
@@ -247,7 +263,7 @@ tryToSkew boxSkewing prebox tv
     ((hyperplane2,_), _, _) = hp2
     (gotHyperPlane, hp1, hp2)
         = case tv of
-            (TVMUndecided _ _ ((_, hp1) : (_, hp2) : _)) -> 
+            (TVMUndecided _ _ _ ((_, hp1) : (_, hp2) : _)) -> 
                 (True, hp1, hp2)
             _ -> 
                 (False, err, err)
@@ -355,19 +371,28 @@ instance TruthValue TVDebugReport where
     (TVDebugReport r1) ~> (TVDebugReport r2) = TVDebugReport $ r1 ++ r2 
     fromBool _ _ = TVDebugReport ""
     bot form = TVDebugReport ""
-    leq form box a b = 
+    leq lab form box a b = 
         TVDebugReport $
             banner
-            ++ "\nLEQ:\n" ++ showForm form
+            ++ "\nLEQ [" ++ lab ++ "]:\n" ++ showForm form
             ++ "\n\nLHS:\n" ++ show a
             ++ "\n\nRHS:\n" ++ show b
             ++ "\n\nRESULT = " ++ show (a `RA.leqReals` b)
             where
             banner = "\n" ++ (concat $ replicate 50 "<=")
-    includes form box a b = 
+    less lab form box a b = 
         TVDebugReport $
             banner
-            ++ "\nINCL:\n" ++ showForm form
+            ++ "\nLE [" ++ lab ++ "]:\n" ++ showForm form
+            ++ "\n\nLHS:\n" ++ show a
+            ++ "\n\nRHS:\n" ++ show b
+            ++ "\n\nRESULT = " ++ show (a `RA.leqReals` b)
+            where
+            banner = "\n" ++ (concat $ replicate 50 "<=")
+    includes lab form box a b = 
+        TVDebugReport $
+            banner
+            ++ "\nINCL [" ++ lab ++ "]:\n" ++ showForm form
             ++ "\n\nLHS:\n" ++ show b
             ++ "\n\nRHS:\n" ++ show a
             ++ "\n\nRESULT = " ++ show (a `RA.includes` b)

@@ -285,7 +285,7 @@ loop
 
         decided = isJust maybeDecision
         decision = fromJust maybeDecision
-        maybeDecision = L.decide dim value
+        maybeDecision = L.decide value
         value =
             evalForm currdeg maxsize pwdepth ix ppb (epsrelbits,epsabsbits) form :: L.TVM
 --            case fptype of
@@ -300,7 +300,7 @@ loop
             (origstartdeg + currdeg) `div` 2
         currdeg =  
             case maybeCurrdeg of Just currdeg -> currdeg; _ -> startdeg
-        (L.TVMUndecided undecidedSimplerForm undecidedMeasure _) = value
+        (L.TVMUndecided undecidedSimplerForm undecidedMeasure _ _) = value
         undecidedMeasureImproved = 
             case maybePrevMeasure of
                 Nothing -> True
