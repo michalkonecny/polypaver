@@ -59,14 +59,14 @@ class TruthValue tv where
 data TVM
     = TVMDecided 
         {
-            tvmAtomicResults :: [(Label, (Maybe Bool))]
+            tvmAtomicResults :: [(Label, (Maybe Bool, Double, Double))] -- result, distance, vagueness
         ,   tvmResult :: Bool 
         } 
     | TVMUndecided 
         { 
             tvmSimplifiedFormula :: Form
         ,   tvmDistanceFromTruth :: Double
-        ,   tvmAtomicResults :: [(Label, (Maybe Bool))]
+        ,   tvmAtomicResults :: [(Label, (Maybe Bool, Double, Double))] -- result, distance, vagueness
         ,   tvmDecisionHyperPlanes :: [(Double, ((BoxHyperPlane BM, BoxHyperPlane BM), Form, IRA BM))] 
             -- the first one is the best one, keeping its measure, formula and vagueness 
         }
@@ -75,13 +75,13 @@ instance Show TVM where
     show (TVMDecided ares result) 
         = 
         "TVMDecided: " ++ show result 
-        ++ "\n sub-results = " ++ show ares 
+        ++ "\n sub-results =\n " ++ unlines (map showAtomicResult ares) 
     show (TVMUndecided form dist ares hps)
         =
         "TVMUndecided"
-        ++ "\n sub-results = " ++ show ares
-        ++ "\n form = " ++ showForm form 
-        ++ "\n distance = " ++ show dist
+        ++ "\n sub-results = \n" ++ unlines (map showAtomicResult ares)
+        ++ " distance+vagueness = " ++ show dist
+--        ++ "\n form = " ++ showForm form 
         ++ "\n hyperplanes = "
             ++ (case hps of
                     [] -> "none"
@@ -95,6 +95,10 @@ instance Show TVM where
             ++ "; hp = " ++ showAffine hp
             ++ "; hpDn = " ++ showAffine hpDn
             ++ "; form = " ++ showForm hpForm
+
+showAtomicResult (lab, (maybeResult, distanceD, vaguenessD)) =
+    "    " ++ lab ++ ": " 
+    ++ show maybeResult ++ ", dist = " ++ show distanceD ++ ", vagu = " ++ show vaguenessD
 
 instance TruthValue TVM where
     not tv = tvmNot tv
@@ -136,31 +140,33 @@ instance TruthValue TVM where
 --        )
 --        $
         case (maybeResultL, maybeResultR, maybeResultU, maybeResultD) of
-            (Just True, Just True, _, _) -> TVMDecided [(lab, Just True)] True
-            (_, _, Just True, _) -> TVMDecided [(lab, Just False)] False
-            (_, _, _, Just True) -> TVMDecided [(lab, Just False)] False
-            _ -> TVMUndecided form distance [(lab, Nothing)] hyperplanes 
+            (Just True, Just True, _, _) -> TVMDecided [(lab, ares $ Just True)] True
+            (_, _, Just True, _) -> TVMDecided [(lab, ares $ Just False)] False
+            (_, _, _, Just True) -> TVMDecided [(lab, ares $ Just False)] False
+            _ -> TVMUndecided form (distanceD + vaguenessD) [(lab, ares Nothing)] hyperplanes 
 --        case a `RA.includes` b of
 --            Just res -> TVMDecided res
 --            _ -> TVMUndecided form 1 []
         where
-        distance = foldl1 max [distanceL, distanceR, distanceU, distanceD]
+        ares maybeResult = (maybeResult, distanceD, vaguenessD)
+        distanceD = foldl1 max [distanceDL, distanceDR, distanceDU, distanceDD]
+        vaguenessD = foldl1 max [vaguenessDL, vaguenessDR, vaguenessDU, vaguenessDD]
         hyperplanes 
             =
             case (maybeHyperplaneL, maybeHyperplaneR) of
                 (Just hyperplaneL, Just hyperplaneR) 
-                    -> [(distanceL, (hyperplaneL, form, vaguenessL)), 
-                        (distanceR, (hyperplaneR, form, vaguenessR))]
-                (Just hyperplaneL, _) -> [(distanceL, (hyperplaneL, form, vaguenessL))]
-                (_, Just hyperplaneR) -> [(distanceR, (hyperplaneR, form, vaguenessR))]
+                    -> [(distanceDL + vaguenessDL, (hyperplaneL, form, vaguenessL)), 
+                        (distanceDR + vaguenessDR, (hyperplaneR, form, vaguenessR))]
+                (Just hyperplaneL, _) -> [(distanceDL + vaguenessDL, (hyperplaneL, form, vaguenessL))]
+                (_, Just hyperplaneR) -> [(distanceDR + vaguenessDR, (hyperplaneR, form, vaguenessR))]
                 _ -> []
-        (maybeResultL, distanceL, maybeHyperplaneL, vaguenessL) 
+        (maybeResultL, distanceDL, vaguenessDL, maybeHyperplaneL, vaguenessL) 
             = analyseLeqLess True box aiL boL -- testing for truth (part 1)
-        (maybeResultR, distanceR, maybeHyperplaneR, vaguenessR) 
+        (maybeResultR, distanceDR, vaguenessDR, maybeHyperplaneR, vaguenessR) 
             = analyseLeqLess True box boR aiR -- testing for truth (part 2)
-        (maybeResultU, distanceU, maybeHyperplaneU, _) 
+        (maybeResultU, distanceDU, vaguenessDU, maybeHyperplaneU, _) 
             = analyseLeqLess True box aoR boL -- testing for falsity due to b > a
-        (maybeResultD, distanceD, maybeHyperplaneD, _) 
+        (maybeResultD, distanceDD, vaguenessDD, maybeHyperplaneD, _) 
             = analyseLeqLess True box boR aoL -- testing for falsity due to b < a
         ((aoL,aoR),(aiL,aiR)) = RA.oiBounds a
         ((boL,boR),_) = RA.oiBounds b 
@@ -186,19 +192,35 @@ combineHPs hps1 hps2
 
 tvmLeqLess isLeq lab form box a b = 
     case maybeResult of
-        Just result -> TVMDecided [(lab, maybeResult)] result
+        Just result -> TVMDecided [(lab, (maybeResult, distanceD, vaguenessD))] result
         Nothing ->
             case maybeHyperplane of
                 Just hyperplane -> 
-                    TVMUndecided form distance [(lab, maybeResult)] [(distance, (hyperplane, form, vagueness))]
+                    TVMUndecided form distanceVagueness
+                        [(lab, (Nothing, distanceD, vaguenessD))] 
+                        [(distanceVagueness, (hyperplane, form, vagueness))]
                 _ -> 
-                    TVMUndecided form distance [(lab, maybeResult)] []
+                    TVMUndecided form distanceVagueness 
+                        [(lab, (Nothing, distanceD, vaguenessD))] 
+                        []
     where
-    (maybeResult, distance, maybeHyperplane, vagueness) = analyseLeqLess isLeq box a b
+    distanceVagueness = distanceD + vaguenessD 
+    (maybeResult, distanceD, vaguenessD, maybeHyperplane, vagueness) = analyseLeqLess isLeq box a b
 
 analyseLeqLess isLeq box a b =
+--    unsafePrint
+--    (
+--        "analyseLeqLess:"
+--        ++ "\n isLeq = " ++ show isLeq
+--        ++ "\n box = " ++ show box
+--        ++ "\n a = " ++ show a
+--        ++ "\n b = " ++ show b
+--        ++ "\n maybeResult = " ++ show maybeResult
+--        ++ "\n distanceD = " ++ show distanceD
+--        ++ "\n vaguenessD = " ++ show vaguenessD
+--    )
 --    (maybeResult, 1, Nothing, 0)
-    (maybeResult, distanceD + vaguenessD, maybeHyperplane, vagueness)
+    (maybeResult, distanceD, vaguenessD, maybeHyperplane, vagueness)
     where
     maybeHyperplane =
         case maybeResult of
@@ -220,8 +242,10 @@ analyseLeqLess isLeq box a b =
     tn [a] = negate a
     (c, coeffs) = UFA.getAffineUpperBound $ a - b
     (cDnNeg, coeffsDnNeg) = UFA.getAffineUpperBound $ b - a
-    vagueness =
-        (t c + t cDnNeg) / avgSlope -- average distance of upper and lower linear bound of a - b
+    vagueness 
+        | Map.null coeffs = (t c + t cDnNeg)
+        | otherwise =
+            (t c + t cDnNeg) / (1 + avgSlope) -- average distance of upper and lower linear bound of a - b
 --        findMaxCoeffDifference 0 $ 
 --            Map.toAscList $ 
 --                Map.unionWith takeNonZero 
