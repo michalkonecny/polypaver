@@ -285,16 +285,16 @@ loop
 
         decided = isJust maybeDecision
         decision = fromJust maybeDecision
-        maybeDecision = L.decide value
-        value =
-            evalForm currdeg maxsize pwdepth ix ppb (epsrelbits,epsabsbits) form :: L.TVM
+        maybeDecision = L.decide (value :: L.TVM)
+        (value, formWithRanges) =
+            evalForm currdeg maxsize pwdepth ix ppb (epsrelbits,epsabsbits) form
 --            case fptype of
 --                 B32 -> evalForm currdeg maxsize ix box (23,-126) form :: L.TVM -- Maybe Bool
 --                 B32near -> evalForm currdeg maxsize ix box (24,-126) form :: L.TVM -- Maybe Bool
 --                 B64 -> evalForm currdeg maxsize ix box (52,-1022) form :: L.TVM -- Maybe Bool
 --                 B64near -> evalForm currdeg maxsize ix box (53,-1022) form :: L.TVM -- Maybe Bool
-        L.TVDebugReport formDebug = 
-            evalForm currdeg maxsize pwdepth ix ppb (epsrelbits,epsabsbits) form :: L.TVDebugReport
+        (L.TVDebugReport formDebug, _) = 
+            evalForm currdeg maxsize pwdepth ix ppb (epsrelbits,epsabsbits) form
 
         newstartdeg =
             (origstartdeg + currdeg) `div` 2

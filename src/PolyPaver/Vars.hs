@@ -67,22 +67,26 @@ getFormVarNames form =
         _ -> IMap.empty
 
 getTermVarNames :: Term -> IMap.IntMap String
-getTermVarNames term =
+getTermVarNames (Term (term, _)) =
     case term of
         Var varid name -> IMap.singleton varid name
         Plus left right ->
             (getTermVarNames left) `IMap.union` (getTermVarNames right)
+        Hull left right ->
+            (getTermVarNames left) `IMap.union` (getTermVarNames right)
         Minus left right ->
             (getTermVarNames left) `IMap.union` (getTermVarNames right)
         Neg arg -> getTermVarNames arg
-        Abs arg -> getTermVarNames arg
---          Min left right ->
---          Max left right ->
         Times left right ->
             (getTermVarNames left) `IMap.union` (getTermVarNames right)
         Square arg -> getTermVarNames arg
         Recip arg -> getTermVarNames arg
         Over left right ->
+            (getTermVarNames left) `IMap.union` (getTermVarNames right)
+        Abs arg -> getTermVarNames arg
+        Min left right ->
+            (getTermVarNames left) `IMap.union` (getTermVarNames right)
+        Max left right ->
             (getTermVarNames left) `IMap.union` (getTermVarNames right)
         Sqrt arg -> getTermVarNames arg
         Exp arg -> getTermVarNames arg
@@ -90,13 +94,11 @@ getTermVarNames term =
         Cos arg -> getTermVarNames arg
         Atan arg -> getTermVarNames arg
         IsInt arg -> getTermVarNames arg
-        Hull left right ->
-            (getTermVarNames left) `IMap.union` (getTermVarNames right)
-        Integral lower upper ivarId ivarName integrand ->
+        Integral ivarId ivarName lower upper integrand ->
             (getTermVarNames lower) `IMap.union` (getTermVarNames upper)
             `IMap.union`
             (IMap.delete ivarId $ getTermVarNames integrand)
-        Round arg -> getTermVarNames arg
+        FRound arg -> getTermVarNames arg
         FPlus left right ->
             (getTermVarNames left) `IMap.union` (getTermVarNames right)
         FMinus left right ->
@@ -138,36 +140,37 @@ getFormFreeVars form =
         _ -> Set.empty
 
 getTermFreeVars :: Term -> Set.Set Int
-getTermFreeVars term =
+getTermFreeVars (Term (term, _)) =
     case term of
         Var varid _ -> Set.singleton varid
+        Hull left right ->
+            (getTermFreeVars left) `Set.union` (getTermFreeVars right)
         Plus left right ->
             (getTermFreeVars left) `Set.union` (getTermFreeVars right)
         Minus left right ->
             (getTermFreeVars left) `Set.union` (getTermFreeVars right)
         Neg arg -> getTermFreeVars arg
-        Abs arg -> getTermFreeVars arg
---          Min left right ->
---          Max left right ->
         Times left right ->
             (getTermFreeVars left) `Set.union` (getTermFreeVars right)
         Square arg -> getTermFreeVars arg
         Recip arg -> getTermFreeVars arg
         Over left right ->
             (getTermFreeVars left) `Set.union` (getTermFreeVars right)
+        Abs arg -> getTermFreeVars arg
+        Min left right ->
+            (getTermFreeVars left) `Set.union` (getTermFreeVars right)
+        Max left right ->
+            (getTermFreeVars left) `Set.union` (getTermFreeVars right)
         Sqrt arg -> getTermFreeVars arg
         Exp arg -> getTermFreeVars arg
         Sin arg -> getTermFreeVars arg
         Cos arg -> getTermFreeVars arg
         Atan arg -> getTermFreeVars arg
-        IsInt arg -> getTermFreeVars arg
-        Hull left right ->
-            (getTermFreeVars left) `Set.union` (getTermFreeVars right)
-        Integral lower upper ivarId ivarName integrand ->
+        Integral ivarId ivarName lower upper integrand ->
             (getTermFreeVars lower) `Set.union` (getTermFreeVars upper)
             `Set.union`
             (Set.delete ivarId $ getTermFreeVars integrand)
-        Round arg -> getTermFreeVars arg
+        FRound arg -> getTermFreeVars arg
         FPlus left right ->
             (getTermFreeVars left) `Set.union` (getTermFreeVars right)
         FMinus left right ->
@@ -179,6 +182,7 @@ getTermFreeVars term =
         FOver left right ->
             (getTermFreeVars left) `Set.union` (getTermFreeVars right)
         FExp arg -> getTermFreeVars arg
+        IsInt arg -> getTermFreeVars arg
         _ -> Set.empty
 
 renameVarsForm :: 
@@ -216,50 +220,43 @@ renameVarsTerm ::
     (Int -> Int) -> Term -> Term  
 renameVarsTerm old2new = rnm
     where
-    rnm term =
+    rnm (Term (term, maybeRangeBounds)) =
+        Term (rnm' term, maybeRangeBounds)
+    rnm' term =
         case term of
             Var varid s -> Var (old2new varid) s 
-            Plus left right ->
-                Plus (rnm left) (rnm right)
-            Minus left right ->
-                Minus (rnm left) (rnm right)
+            Hull left right -> Hull (rnm left) (rnm right)
+            Plus left right -> Plus (rnm left) (rnm right)
+            Minus left right -> Minus (rnm left) (rnm right)
             Neg arg -> Neg $ rnm arg
-            Abs arg -> Abs $ rnm arg
-    --          Min left right ->
-    --          Max left right ->
-            Times left right ->
-                Times (rnm left) (rnm right)
+            Times left right -> Times (rnm left) (rnm right)
             Square arg -> Square $ rnm arg
             Recip arg -> Recip $ rnm arg
-            Over left right ->
-                Over (rnm left) (rnm right)
+            Over left right -> Over (rnm left) (rnm right)
+            Abs arg -> Abs $ rnm arg
+            Min left right -> Min (rnm left) (rnm right)
+            Max left right -> Max (rnm left) (rnm right)
             Sqrt arg -> Sqrt $ rnm arg
             Exp arg -> Exp $ rnm arg
             Sin arg -> Sin $ rnm arg
             Cos arg -> Cos $ rnm arg
             Atan arg -> Atan $ rnm arg
-            IsInt arg -> IsInt $ rnm arg
-            Hull left right ->
-                Hull (rnm left) (rnm right)
-            Integral lower upper ivarId ivarName integrand ->
-                Integral (rnm lower) (rnm upper) ivarId ivarName (rnmIV integrand)
+            Integral ivarId ivarName lower upper integrand ->
+                Integral ivarId ivarName (rnm lower) (rnm upper) (rnmIV integrand)
                 where
                 rnmIV = renameVarsTerm old2newIV
                 old2newIV id 
                     | id == ivarId = id
                     | otherwise = old2newIV id
-            Round arg -> Round $ rnm arg
-            FPlus left right ->
-                FPlus (rnm left) (rnm right)
-            FMinus left right ->
-                FMinus (rnm left) (rnm right)
-            FTimes left right ->
-                FTimes (rnm left) (rnm right)
+            FRound arg -> FRound $ rnm arg
+            FPlus left right -> FPlus (rnm left) (rnm right)
+            FMinus left right -> FMinus (rnm left) (rnm right)
+            FTimes left right -> FTimes (rnm left) (rnm right)
             FSquare arg -> FSquare $ rnm arg
             FSqrt arg -> FSqrt $ rnm arg
-            FOver left right ->
-                FOver (rnm left) (rnm right)
+            FOver left right -> FOver (rnm left) (rnm right)
             FExp arg -> FExp $ rnm arg
+            IsInt arg -> IsInt $ rnm arg
             t -> t
 
 normaliseVars :: Form -> Form
@@ -275,7 +272,7 @@ normaliseVars form =
     varSet = getFormFreeVars form
 
 substituteVarsForm :: 
-    (Int -> Maybe Term) -> Form -> Form  
+    (Int -> Maybe Term') -> Form -> Form  
 substituteVarsForm old2new = subst
     where
     substT = substituteVarsTerm old2new
@@ -306,48 +303,41 @@ substituteVarsForm old2new = subst
             f -> f
 
 substituteVarsTerm :: 
-    (Int -> Maybe Term) -> Term -> Term  
+    (Int -> Maybe Term') -> Term -> Term  
 substituteVarsTerm old2new = subst
     where
-    subst term =
+    subst (Term (term, maybeRangeBounds)) =
+        Term (subst' term, maybeRangeBounds)
+    subst' term =
         case term of
             Var varid s -> case (old2new varid) of Just newTerm -> newTerm; _ -> term
-            Plus left right ->
-                Plus (subst left) (subst right)
-            Minus left right ->
-                Minus (subst left) (subst right)
+            Hull left right -> Hull (subst left) (subst right)
+            Plus left right -> Plus (subst left) (subst right)
+            Minus left right -> Minus (subst left) (subst right)
             Neg arg -> Neg $ subst arg
-            Abs arg -> Abs $ subst arg
-    --          Min left right ->
-    --          Max left right ->
-            Times left right ->
-                Times (subst left) (subst right)
+            Times left right -> Times (subst left) (subst right)
             Square arg -> Square $ subst arg
             Recip arg -> Recip $ subst arg
-            Over left right ->
-                Over (subst left) (subst right)
+            Over left right -> Over (subst left) (subst right)
+            Abs arg -> Abs $ subst arg
+            Min left right -> Min (subst left) (subst right)
+            Max left right -> Max (subst left) (subst right)
             Sqrt arg -> Sqrt $ subst arg
             Exp arg -> Exp $ subst arg
             Sin arg -> Sin $ subst arg
             Cos arg -> Cos $ subst arg
             Atan arg -> Atan $ subst arg
-            IsInt arg -> IsInt $ subst arg
-            Hull left right ->
-                Hull (subst left) (subst right)
-            Integral lower upper ivarId ivarName integrand ->
-                Integral (subst lower) (subst upper) ivarId ivarName (subst integrand)
-            Round arg -> Round $ subst arg
-            FPlus left right ->
-                FPlus (subst left) (subst right)
-            FMinus left right ->
-                FMinus (subst left) (subst right)
-            FTimes left right ->
-                FTimes (subst left) (subst right)
+            Integral ivarId ivarName lower upper integrand ->
+                Integral ivarId ivarName (subst lower) (subst upper) (subst integrand)
+            FRound arg -> FRound $ subst arg
+            FPlus left right -> FPlus (subst left) (subst right)
+            FMinus left right -> FMinus (subst left) (subst right)
+            FTimes left right -> FTimes (subst left) (subst right)
             FSquare arg -> FSquare $ subst arg
             FSqrt arg -> FSqrt $ subst arg
-            FOver left right ->
-                FOver (subst left) (subst right)
+            FOver left right -> FOver (subst left) (subst right)
             FExp arg -> FExp $ subst arg
+            IsInt arg -> IsInt $ subst arg
             t -> t
 
 
