@@ -77,7 +77,7 @@ detectIntVar (And h1 h2) =
     (detectIntVar h1) `Set.union` (detectIntVar h2)
 detectIntVar (Or h1 h2) =
     (detectIntVar h1) `Set.union` (detectIntVar h2)
-detectIntVar (Predicate (IsInt (Var v _))) = Set.singleton v
+detectIntVar (Predicate (Term (IsInt (Term (Var v _, _)), _))) = Set.singleton v
 detectIntVar _ = Set.empty
     
 scanHypotheses (Implies h c) =
@@ -96,7 +96,7 @@ scanHypothesis (Or h1 h2) intervals =
     minM _ _ = Nothing
     maxM (Just a) (Just b) = Just $ max a b
     maxM _ _ = Nothing
-scanHypothesis (Eq _ t1@(Var v1 _) t2@(Var v2 _)) intervals = 
+scanHypothesis (Eq _ t1@(Term (Var v1 _, _)) t2@(Term (Var v2 _, _))) intervals = 
     IMap.insert v1 val $
     IMap.insert v2 val $
     intervals
@@ -104,26 +104,26 @@ scanHypothesis (Eq _ t1@(Var v1 _) t2@(Var v2 _)) intervals =
     Just val1 = IMap.lookup v1 intervals
     Just val2 = IMap.lookup v2 intervals
     val = updateUpper val1 $ updateLower val1 $ val2
-scanHypothesis (Eq _ (Var v _) t) intervals = 
+scanHypothesis (Eq _ (Term (Var v _, _)) t) intervals = 
     IMap.insertWith updateUpper v val $
     IMap.insertWith updateLower v val intervals
     where
     val = evalT intervals t
-scanHypothesis (Eq _ t (Var v _)) intervals = 
+scanHypothesis (Eq _ t (Term (Var v _, _))) intervals = 
     IMap.insertWith updateUpper v val $
     IMap.insertWith updateLower v val intervals
     where
     val = evalT intervals t
-scanHypothesis (Leq _ t1@(Var v1 _) t2@(Var v2 _)) intervals = 
+scanHypothesis (Leq _ t1@(Term (Var v1 _, _)) t2@(Term (Var v2 _, _))) intervals = 
     IMap.insert v1 (updateUpper val2 val1) $
     IMap.insert v2 (updateLower val1 val2) $
     intervals
     where
     Just val1 = IMap.lookup v1 intervals
     Just val2 = IMap.lookup v2 intervals
-scanHypothesis (Leq _ (Var v _) t) intervals = 
+scanHypothesis (Leq _ (Term (Var v _, _)) t) intervals = 
     IMap.insertWith updateUpper v (evalT intervals t) intervals
-scanHypothesis (Leq _ t (Var v _)) intervals = 
+scanHypothesis (Leq _ t (Term (Var v _, _))) intervals = 
     IMap.insertWith updateLower v (evalT intervals t) intervals
 -- reduce Le, Geq, Ge on equivalent Leq (note that we treat strict and non-strict the same way):
 scanHypothesis (Le lab t1 t2) intervals = scanHypothesis (Leq lab t1 t2) intervals 
@@ -157,7 +157,7 @@ evalT intervals term
     
     ((l,r),_) 
         = 
-        RA.oiBounds $
+        RA.oiBounds $ fst $
         evalTerm (TVMDecided [] True) 1 100 0 10 box (5,32) term
         where
         box = 

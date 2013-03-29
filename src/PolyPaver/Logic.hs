@@ -75,13 +75,13 @@ instance Show TVM where
     show (TVMDecided ares result) 
         = 
         "TVMDecided: " ++ show result 
-        ++ "\n sub-results =\n " ++ unlines (map showAtomicResult ares) 
+        ++ "\n sub-results =\n" ++ unlines (map showAtomicResult ares) 
     show (TVMUndecided form dist ares hps)
         =
         "TVMUndecided"
         ++ "\n sub-results = \n" ++ unlines (map showAtomicResult ares)
         ++ " distance+vagueness = " ++ show dist
---        ++ "\n form = " ++ showForm form 
+        ++ "\n form = " ++ showForm form 
         ++ "\n hyperplanes = "
             ++ (case hps of
                     [] -> "none"

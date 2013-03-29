@@ -3,6 +3,8 @@
 {-# LANGUAGE ScopedTypeVariables #-}
 module PolyPaver.Form where
 
+import Numeric.ER.Real.DefaultRepr
+
 import Data.Data
 import Data.Ratio
 import Data.List (intercalate, sortBy)
@@ -92,32 +94,35 @@ sortFormulasBySize formulas =
 notVerum Verum = False
 notVerum _ = True
 
-data Term
-  = EpsAbs
-  | EpsRel
-  | Pi
-  | Lit Rational
+newtype Term = Term (Term', Maybe (IRA BM))
+  deriving (Eq,Show,Data,Typeable)
+data Term'
+  = Lit Rational
   | Var Int String -- numeric identifier, string only for printing
+  | Hull Term Term -- interval covering both values
   | Plus Term Term
   | Minus Term Term
   | Neg Term
-  | Abs Term
-  | Min Term Term
-  | Max Term Term
   | Times Term Term
   | Square Term
   | Recip Term
   | Over Term Term
+  | Abs Term
+  | Min Term Term
+  | Max Term Term
+  | Pi
   | Sqrt Term
   | Exp Term
   | Sin Term
   | Cos Term
   | Atan Term
-  | Hull Term Term
-  | Integral Term Term Int String Term -- eg: Integral lower upper ivarId ivarName integrand
-  | EpsiAbs
-  | EpsiRel
-  | Round Term
+  | Integral Int String Term Term Term -- eg: Integral ivarId ivarName lower upper integrand
+-- the following term constructors depend on a specific floating-point arithmetic: 
+  | FEpsAbs
+  | FEpsRel
+  | FEpsiAbs
+  | FEpsiRel
+  | FRound Term
   | FPlus Term Term
   | FMinus Term Term
   | FTimes Term Term
@@ -125,48 +130,46 @@ data Term
   | FSquare Term
   | FSqrt Term
   | FExp Term
-  | IsInt Term
-  deriving (Eq,Show,Read,Data,Typeable) 
+-- the following are boolean terms, only allowed in the Predicate formula constructor:
+  | IsInt Term 
+  deriving (Eq,Show,Read,Data,Typeable)
 
-isAtomicTerm :: Term -> Bool
-isAtomicTerm EpsAbs = True
-isAtomicTerm EpsRel = True
-isAtomicTerm (Neg t) = isAtomicTerm t
-isAtomicTerm Pi = True
-isAtomicTerm (Lit _) = True
-isAtomicTerm (Var _ _) = True
-isAtomicTerm _ = False
+instance Read Term where
+    readsPrec p s =
+        map addTN $ readsPrec p s
+        where
+        addTN (t, cont) =
+            (Term (t, Nothing), cont) 
 
 getTermSize :: Term -> Int
-getTermSize term =
+getTermSize (Term (term, _)) =
     case term of
-        EpsAbs -> 1
-        EpsRel -> 1
-        Pi -> 1
         Lit r -> 1 
         Var n s -> 1
+        Hull t1 t2 -> 1 + (getTermSize t1) + (getTermSize t2)
         Plus t1 t2 -> 1 + (getTermSize t1) + (getTermSize t2)
         Minus t1 t2 -> 1 + (getTermSize t1) + (getTermSize t2)
         Neg t -> 1 + (getTermSize t)
-        Abs t -> 1 + (getTermSize t)
-        Min t1 t2 -> 1 + (getTermSize t1) + (getTermSize t2)
-        Max t1 t2 -> 1 + (getTermSize t1) + (getTermSize t2)
         Times t1 t2 -> 1 + (getTermSize t1) + (getTermSize t2)
         Square t -> 1 + (getTermSize t)
         Recip t -> 1 + (getTermSize t)
         Over t1 t2 -> 1 + (getTermSize t1) + (getTermSize t2)
+        Abs t -> 1 + (getTermSize t)
+        Min t1 t2 -> 1 + (getTermSize t1) + (getTermSize t2)
+        Max t1 t2 -> 1 + (getTermSize t1) + (getTermSize t2)
+        Pi -> 1
         Sqrt t -> 10 + (getTermSize t)
         Exp t -> 10 + (getTermSize t)
         Sin t -> 10 + (getTermSize t)
         Cos t -> 10 + (getTermSize t)
         Atan t -> 10 + (getTermSize t)
-        Hull t1 t2 -> 1 + (getTermSize t1) + (getTermSize t2)
-        IsInt t -> 1
-        Integral lower upper ivarId ivarName integrand -> 
+        Integral ivarId ivarName lower upper integrand -> 
             2 + (getTermSize lower) + (getTermSize upper) + (getTermSize integrand)
-        EpsiAbs -> 1
-        EpsiRel -> 1
-        Round t -> 1 + (getTermSize t)
+        FEpsAbs -> 1
+        FEpsRel -> 1
+        FEpsiAbs -> 1
+        FEpsiRel -> 1
+        FRound t -> 1 + (getTermSize t)
         FPlus t1 t2 -> 1 + (getTermSize t1) + (getTermSize t2)
         FMinus t1 t2 -> 1 + (getTermSize t1) + (getTermSize t2)
         FTimes t1 t2 -> 1 + (getTermSize t1) + (getTermSize t2)
@@ -174,34 +177,64 @@ getTermSize term =
         FSquare t -> 1 + (getTermSize t)
         FSqrt t -> 1 + (getTermSize t)
         FExp t -> 1 + (getTermSize t)
+        IsInt t -> 1
 
+
+{--- Operations for convenient encoding of literal values of type Term  ---}
+
+termOp0 op = Term (op, Nothing)
+termOp1 op t1 = Term (op t1, Nothing)
+termOp2 op t1 t2 = Term (op t1 t2, Nothing)
+termOp3 op t1 t2 t3 = Term (op t1 t2 t3, Nothing)
+
+termVar id name = termOp0 $ Var id name
+
+hull = termOp2 Hull
+plusMinus a = hull (negate a) a
+
+instance Ord Term
+  where
+  min = termOp2 Min
+  max = termOp2 Max
+  compare = error "compare not implemented for datatype Term"
+  
 instance Num Term
   where
-  fromInteger = Lit . fromInteger
-  negate = Neg
-  (+) = Plus
-  (*) = Times
+  fromInteger n = termOp1 Lit $ fromInteger n
+  negate = termOp1 Neg
+  (+) = termOp2 Plus
+  (*) = termOp2 Times
+  abs = termOp1 Abs
+
+square = termOp1 Square
 
 instance Fractional Term
   where
-  fromRational = Lit
-  recip = Recip
-  (/) = Over
+  fromRational = termOp1 Lit
+  recip = termOp1 Recip
+  (/) = termOp2 Over
 
 instance Floating Term
   where
-  sqrt = Sqrt
-  exp = Exp
-  cos = Cos
-  sin = Sin
-  atan = Atan
+  sqrt = termOp1 Sqrt
+  exp = termOp1 Exp
+  cos = termOp1 Cos
+  sin = termOp1 Sin
+  atan = termOp1 Atan
 
-(+:) = FPlus
-(-:) = FMinus
-(*:) = FTimes
-(/:) = FOver
+integral ivarId ivarName = termOp3 $ Integral ivarId ivarName
 
-plusMinus a = Hull (-a) a
+fepsAbs = termOp0 FEpsAbs
+fepsRel = termOp0 FEpsRel
+fepsiAbs = termOp0 FEpsiAbs
+fepsiRel = termOp0 FEpsiRel
+
+fround = termOp1 FRound
+
+(+:) = termOp2 FPlus
+(-:) = termOp2 FMinus
+(*:) = termOp2 FTimes
+(/:) = termOp2 FOver
 
 showForm :: Form -> String
 showForm form = sf (Just 0) form
@@ -280,46 +313,46 @@ showTermIL = st
         where
         oneLineTerm = st2 Nothing term
 
-    st2 maybeIndentLevel term
-        = 
+    st2 maybeIndentLevel (Term (term,maybeRangeBounds))
+        =
         case term of
-            EpsAbs -> "εabs"
-            EpsRel -> "εrel"
-            Pi -> "π"
             Lit r -> 
                 if floor r == ceiling r 
-                    then show (floor r) 
-                    else show (numerator r) ++ "/" ++ show (denominator r)
-            Var n s -> s
-            Plus t1 t2 -> showOpT "+" t1 t2
-            Minus t1 t2 -> showOpT "-" t1 t2
+                    then maybeAddBounds $ show (floor r) 
+                    else maybeAddBounds $ show (numerator r) ++ "/" ++ show (denominator r)
+            Var n s -> maybeAddBounds s
+            Hull t1 t2 -> showOpT ".." "hull" t1 t2
+            Plus t1 t2 -> showOpT "+" "sum" t1 t2
+            Minus t1 t2 -> showOpT "-" "diff" t1 t2
             Neg t -> showFnT "-" [t]
+            Times t1 t2 -> showOpT "*" "prod" t1 t2
+            Square t -> indentedOpenCloseT "(" ")^2" False t
+            Recip t -> st2 maybeIndentLevel $ Term (Over 1 t, maybeRangeBounds)
+            Over t1 t2 -> showOpT "/" "div" t1 t2
             Abs t -> indentedOpenCloseT "|" "|" False t
             Min t1 t2 -> showFnT "min" [t1, t2]
             Max t1 t2 -> showFnT "max" [t1, t2]
-            Times t1 t2 -> showOpT "*" t1 t2
-            Square t -> indentedOpenCloseT "(" ")^2" False t
-            Recip t -> st2 maybeIndentLevel $ Over (Lit 1) t
-            Over t1 t2 -> showOpT "/" t1 t2
+            Pi -> maybeAddBounds "π"
             Sqrt t -> showFnT "sqrt" [t]
             Exp t -> showFnT "exp" [t]
             Sin t -> showFnT "sin" [t]
             Cos t -> showFnT "cos" [t]
             Atan t -> showFnT "atan" [t]
-            Hull t1 t2 -> showOpT ".." t1 t2
-            IsInt t -> showFnT "isint" [t]
-            Integral lower upper ivarId ivarName integrand -> 
-                showFnT "∫" [lower, upper, Var ivarId ivarName, integrand]
-            EpsiAbs -> "εabsI"
-            EpsiRel -> "εrelI"
-            Round t -> showFnT "rnd" [t]
-            FPlus t1 t2 -> showOpT "⊕" t1 t2
-            FMinus t1 t2 -> showOpT "⊖" t1 t2
-            FTimes t1 t2 -> showOpT "⊛" t1 t2
-            FOver t1 t2 -> showOpT "⊘" t1 t2
+            Integral ivarId ivarName lower upper integrand -> 
+                showFnT "∫" [lower, upper, Term (Var ivarId ivarName, Nothing), integrand]
+            FEpsAbs -> maybeAddBounds "εabs"
+            FEpsRel -> maybeAddBounds "εrel"
+            FEpsiAbs -> maybeAddBounds "εabsI"
+            FEpsiRel -> maybeAddBounds "εrelI"
+            FRound t -> showFnT "rnd" [t]
+            FPlus t1 t2 -> showOpT "⊕" "sum" t1 t2
+            FMinus t1 t2 -> showOpT "⊖" "diff" t1 t2
+            FTimes t1 t2 -> showOpT "⊛" "prod" t1 t2
+            FOver t1 t2 -> showOpT "⊘" "div" t1 t2
             FSquare t -> showFnT "fsquare" [t]
             FSqrt t -> showFnT "fsqrt" [t]
             FExp t -> showFnT "fexp" [t]
+            IsInt t -> showFnT "isint" [t]
         where
         stNext = st maybeNextIndentLevel
         indent = 
@@ -330,18 +363,69 @@ showTermIL = st
             case maybeNextIndentLevel of
                 Just indentLevel -> "\n" ++ replicate indentLevel ' '
                 _ -> ""
-        showOpT op t1 t2 =
-            indentedBracketsT t1 
-            ++ indent ++ padIfInline op ++ indent ++
-            indentedBracketsT t2
+        maybeAddBounds s =
+            case maybeRangeBounds of
+                Just rangeBounds ->
+                    s ++ "∊" ++ show rangeBounds
+                _ -> s
+        showOpT op opname t1 t2 =
+            case maybeNextIndentLevel of
+                Just _ ->
+                    indent ++ rangeIfIndented
+                    ++ indent ++ indentedBracketsT t1
+                    ++ indent ++ op
+                    ++ indent ++ indentedBracketsT t2
+                _ -> 
+                    rangeIfInlineOpen
+                    ++ indentedBracketsT t1 
+                    ++ padIfInline op
+                    ++ indentedBracketsT t2
+                    ++ rangeIfInlineClose
+            where
+            rangeIfInlineOpen = 
+                case maybeRangeBounds of
+                    Just _ -> "("
+                    _ -> ""
+            rangeIfInlineClose = 
+                case maybeRangeBounds of
+                    Just rangeBounds -> ")∊" ++ show rangeBounds
+                    _ -> ""
+            rangeIfIndented =
+                case maybeRangeBounds of
+                    Just rangeBounds -> "{" ++ opname ++ "∊" ++ show rangeBounds ++ "}"
+                    _ -> ""
         showFnT fn ts =
-            fn ++ "("
+            fn ++ rangeIfIndented ++ "("
             ++ (intercalate (indent ++ ", ") $ map (\t -> indentNext ++ stNext t) ts)
             ++ indent ++ ")"
+            ++ range
+            where
+            rangeIfIndented =
+                case (maybeNextIndentLevel, maybeRangeBounds) of
+                    (Just _, Just rangeBounds) ->
+                        "{res∊" ++ show rangeBounds ++ "}"
+                    _ -> ""
+            range =
+                case maybeRangeBounds of
+                    Just rangeBounds -> "∊" ++ show rangeBounds
+                    _ -> ""
         padIfInline op = case maybeIndentLevel of Nothing -> " " ++ op ++ " "; _ -> op 
         indentedBracketsT = indentedOpenCloseT "(" ")" True
         indentedOpenCloseT open close optional term
             | optional && isAtomicTerm term = st maybeIndentLevel term
             | otherwise = open ++ indentNext ++ stNext term ++ indent ++ close
         maybeNextIndentLevel = fmap (+ 2) maybeIndentLevel
+        isAtomicTerm :: Term -> Bool
+        isAtomicTerm (Term (term, _)) = 
+            case term of
+                (Lit _) -> True
+                (Var _ _) -> True
+                (Neg t) -> isAtomicTerm t
+                Pi -> True
+                FEpsAbs -> True
+                FEpsRel -> True
+                FEpsiAbs -> True
+                FEpsiRel -> True
+                _ -> False
+
 

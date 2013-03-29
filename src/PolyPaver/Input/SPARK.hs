@@ -195,16 +195,16 @@ predicateTerm _lab =
 term :: Parser Term
 term = buildExpressionParser termTable atomicTerm <?> "term"
 termTable = 
-    [ [Prefix (m_reservedOp "-" >> return (Neg))]
-    , [Infix (m_reservedOp "/" >> return (Over)) AssocLeft]
-    , [Infix (m_reservedOp "*" >> return (Times)) AssocLeft]
-    , [Infix (m_reservedOp "-" >> return (Minus)) AssocLeft]
-    , [Infix (m_reservedOp "+" >> return (Plus)) AssocLeft]
+    [ [Prefix (m_reservedOp "-" >> return (termOp1 Neg))]
+    , [Infix (m_reservedOp "/" >> return (termOp2 Over)) AssocLeft]
+    , [Infix (m_reservedOp "*" >> return (termOp2 Times)) AssocLeft]
+    , [Infix (m_reservedOp "-" >> return (termOp2 Minus)) AssocLeft]
+    , [Infix (m_reservedOp "+" >> return (termOp2 Plus)) AssocLeft]
     ]
 
 atomicTerm = m_parens term
         <|> try fncall
-        <|> fmap (Lit . fromInteger) m_integer
+        <|> fmap fromInteger m_integer
         <|> fmap var m_identifier
         
 fncall =
@@ -214,34 +214,34 @@ fncall =
     return $ decodeFn fname args
 
 -- the following definition is incomplete, add cases as needed:
-decodeFn "numeric__divide" [arg1, arg2] = FOver arg1 arg2
-decodeFn "numeric__times" [arg1, arg2] = FTimes arg1 arg2
-decodeFn "numeric__plus" [arg1, arg2] = FPlus arg1 arg2
-decodeFn "numeric__minus" [arg1, arg2] = FMinus arg1 arg2
-decodeFn "num__divide" [arg1, arg2] = FOver arg1 arg2
-decodeFn "num__multiply" [arg1, arg2] = FTimes arg1 arg2
-decodeFn "num__add" [arg1, arg2] = FPlus arg1 arg2
-decodeFn "num__subtract" [arg1, arg2] = FMinus arg1 arg2
-decodeFn "num__exp" [arg1] = FExp arg1
-decodeFn "num__isint" [arg1] = IsInt arg1
-decodeFn "exact__sqrt" [arg1] = Sqrt arg1
-decodeFn "exact__exp" [arg1] = Exp arg1
-decodeFn "exact__sin" [arg1] = Sin arg1
-decodeFn "exact__cos" [arg1] = Cos arg1
-decodeFn "exact__integral" [arg1, arg2, arg3] = Integral arg1 arg2 ivNum ivName arg3
-decodeFn "abs" [arg1] = Abs arg1
+decodeFn "numeric__divide" [arg1, arg2] = arg1 /: arg2
+decodeFn "numeric__times" [arg1, arg2] = arg1 *: arg2
+decodeFn "numeric__plus" [arg1, arg2] = arg1 +: arg2
+decodeFn "numeric__minus" [arg1, arg2] = arg1 -: arg2
+decodeFn "num__divide" [arg1, arg2] = arg1 /: arg2
+decodeFn "num__multiply" [arg1, arg2] = arg1 *: arg2
+decodeFn "num__add" [arg1, arg2] = arg1 +: arg2
+decodeFn "num__subtract" [arg1, arg2] = arg1 -: arg2
+decodeFn "num__exp" [arg1] = termOp1 FExp arg1
+decodeFn "num__isint" [arg1] = termOp1 IsInt arg1
+decodeFn "exact__sqrt" [arg1] = sqrt arg1
+decodeFn "exact__exp" [arg1] = exp arg1
+decodeFn "exact__sin" [arg1] = sin arg1
+decodeFn "exact__cos" [arg1] = cos arg1
+decodeFn "exact__integral" [arg1, arg2, arg3] = termOp3 (Integral ivNum ivName) arg1 arg2 arg3
+decodeFn "abs" [arg1] = abs arg1
 decodeFn fn args =
     error $ 
         "cannot decode function call " ++ fn ++ 
         "(" ++ (intercalate "," $ map show args) ++ ")"
 
-var "numeric__epsabs" = EpsAbs
-var "numeric__epsrel" = EpsRel
-var "num__epsabs" = EpsAbs
-var "num__epsrel" = EpsRel
-var "exact__integrationvariable" = Var ivNum ivName
+var "numeric__epsabs" = fepsAbs
+var "numeric__epsrel" = fepsRel
+var "num__epsabs" = fepsAbs
+var "num__epsrel" = fepsRel
+var "exact__integrationvariable" = termVar ivNum ivName
 var name =
-    Var n name
+    termVar n name
     where
     n = sum $ zipWith (*) [1..] $ map ord name
 
