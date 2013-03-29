@@ -7,7 +7,10 @@
     Stability   :  experimental
     Portability :  portable
 
-    A minimal PolyPaver problem.
+    A few small PolyPaver problems.
+    
+    Example parameters that work:
+    sinsin2: -d 2 -e 30
 -}
 module Main where
 
@@ -17,49 +20,50 @@ main =
 --    defaultMain problem_exp 
 --    defaultMain test_skew 
 --    defaultMain sqrt_sin 
+--    defaultMain sinsin
     defaultMain sinsin2
     
 exp_shift =
-    Problem box thm 
+    Problem box conjecture 
     where
     box = [(0, (-1,1), False)]
-    x = Var 0 "x"
-    thm = exp(x) |<=| exp(x+0.0001) 
+    x = termVar 0 "x"
+    conjecture = exp x |<=| exp (x+0.0001) 
 
 test_skew =
-    Problem box thm 
+    Problem box conjecture
     where
     box = [(0, (0,4), False), (1, (0,4), False)]
-    x = Var 0 "x"
-    y = Var 1 "y"
-    thm = 
+    x = termVar 0 "x"
+    y = termVar 1 "y"
+    conjecture = 
         x |<=| y*y
         --->
         x |<=| y*y + 0.025
 --        exp x |<=| exp (y*y) + 0.1
          
 sqrt_sin =
-    Problem box thm
+    Problem box conjecture
     where
     box = [(0, (0.000001,1), False)]
-    x = Var 0 "x"
-    thm = 
+    x = termVar 0 "x"
+    conjecture = 
         2 * (sqrt(x+1) - 1) |<=| sin(x)
          
 sinsin =
-    Problem box thm
+    Problem box conjecture
     where
     box = [(0, (0.2,1), False)]
-    x = Var 0 "x"
-    thm = 
+    x = termVar 0 "x"
+    conjecture = 
         sin(3*x+1) |<=| sin(sin(3*x)+1) 
          
 sinsin2 =
-    Problem box thm
+    Problem box conjecture
     where
     box = [(0, (0.1,0.19), False)]
-    x = Var 0 "x"
-    thm = 
+    x = termVar 0 "x"
+    conjecture = 
         sin(sin(3*x)+1) |<=| sin(3*x+1)
 
     
