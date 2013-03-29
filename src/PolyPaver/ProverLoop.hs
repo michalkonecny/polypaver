@@ -389,10 +389,11 @@ loop
                 ReportALL ->
                     case maybeHP of
                         Nothing -> return ()
-                        Just ((hp, _), form, vagueness) ->
+                        Just ((hp, _), form, lab, vagueness) ->
                             do
                             putStrLn $
                                 "skewing using the hyperplane " ++ showAffine hp
+                                ++ "\n  label = " ++ lab
                                 ++ "\n  vagueness = " ++ show vagueness
                                 ++ "\n  derived from the formula " ++ showForm form
                 _ -> return ()

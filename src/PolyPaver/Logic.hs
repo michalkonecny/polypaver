@@ -52,7 +52,7 @@ class TruthValue tv where
         Maybe Int -> -- maybe allow split direction guessing but limit box width ratio to n 
         tv -> -- undecided truth value that may be used to help guide splitting and/or skewing 
         (Bool, -- whether split succeeded in providing two proper sub-boxes 
-         Maybe ((BoxHyperPlane BM, BoxHyperPlane BM), Form, IRA BM), -- whether box skewing has been used
+         Maybe ((BoxHyperPlane BM, BoxHyperPlane BM), Form, Label, IRA BM), -- whether box skewing has been used
          Int, -- variable whose domain was split
          (PPBox BM, PPBox BM))
 
@@ -67,7 +67,7 @@ data TVM
             tvmSimplifiedFormula :: Form
         ,   tvmDistanceFromTruth :: Double
         ,   tvmAtomicResults :: [(Label, (Maybe Bool, Double, Double))] -- result, distance, vagueness
-        ,   tvmDecisionHyperPlanes :: [(Double, ((BoxHyperPlane BM, BoxHyperPlane BM), Form, IRA BM))] 
+        ,   tvmDecisionHyperPlanes :: [(Double, ((BoxHyperPlane BM, BoxHyperPlane BM), Form, Label, IRA BM))] 
             -- the first one is the best one, keeping its measure, formula and vagueness 
         }
     
@@ -87,18 +87,19 @@ instance Show TVM where
                     [] -> "none"
                     _ -> (unlines $ map showHP $ zip [1..] hps))
         where
-        showHP (n,(dist, ((hp, hpDn), hpForm, vagueness)))
+        showHP (n,(dist, ((hp, hpDn), hpForm, hpLabel, vagueness)))
             =
             "\n   hp" ++ show n ++ ":"
-            ++ "dist = " ++ show dist
+            ++ "label = " ++ hpLabel
+            ++ "; dist = " ++ show dist
             ++ "; vagueness = " ++ show vagueness
             ++ "; hp = " ++ showAffine hp
             ++ "; hpDn = " ++ showAffine hpDn
-            ++ "; form = " ++ showForm hpForm
+--            ++ "; form = " ++ showForm hpForm
 
 showAtomicResult (lab, (maybeResult, distanceD, vaguenessD)) =
     "    " ++ lab ++ ": " 
-    ++ show maybeResult ++ ", dist = " ++ show distanceD ++ ", vagu = " ++ show vaguenessD
+    ++ show maybeResult ++ ", distance = " ++ show distanceD ++ ", vagueness = " ++ show vaguenessD
 
 instance TruthValue TVM where
     not tv = tvmNot tv
@@ -155,10 +156,10 @@ instance TruthValue TVM where
             =
             case (maybeHyperplaneL, maybeHyperplaneR) of
                 (Just hyperplaneL, Just hyperplaneR) 
-                    -> [(distanceDL + vaguenessDL, (hyperplaneL, form, vaguenessL)), 
-                        (distanceDR + vaguenessDR, (hyperplaneR, form, vaguenessR))]
-                (Just hyperplaneL, _) -> [(distanceDL + vaguenessDL, (hyperplaneL, form, vaguenessL))]
-                (_, Just hyperplaneR) -> [(distanceDR + vaguenessDR, (hyperplaneR, form, vaguenessR))]
+                    -> [(distanceDL + vaguenessDL, (hyperplaneL, form, lab, vaguenessL)), 
+                        (distanceDR + vaguenessDR, (hyperplaneR, form, lab, vaguenessR))]
+                (Just hyperplaneL, _) -> [(distanceDL + vaguenessDL, (hyperplaneL, form, lab, vaguenessL))]
+                (_, Just hyperplaneR) -> [(distanceDR + vaguenessDR, (hyperplaneR, form, lab, vaguenessR))]
                 _ -> []
         (maybeResultL, distanceDL, vaguenessDL, maybeHyperplaneL, vaguenessL) 
             = analyseLeqLess True box aiL boL -- testing for truth (part 1)
@@ -198,7 +199,7 @@ tvmLeqLess isLeq lab form box a b =
                 Just hyperplane -> 
                     TVMUndecided form distanceVagueness
                         [(lab, (Nothing, distanceD, vaguenessD))] 
-                        [(distanceVagueness, (hyperplane, form, vagueness))]
+                        [(distanceVagueness, (hyperplane, form, lab, vagueness))]
                 _ -> 
                     TVMUndecided form distanceVagueness 
                         [(lab, (Nothing, distanceD, vaguenessD))] 
@@ -283,8 +284,8 @@ tryToSkew boxSkewing prebox tv
         | otherwise = False
     (isecPtDistance,  maybeSkewVar, skewedBox) = ppSkewAlongHyperPlane prebox $ hyperplane1
     (isecPtDistance2, _, _) = ppSkewAlongHyperPlane prebox $ hyperplane2
-    ((hyperplane1,_), _, _) = hp1
-    ((hyperplane2,_), _, _) = hp2
+    ((hyperplane1,_), _, _, _) = hp1
+    ((hyperplane2,_), _, _, _) = hp2
     (gotHyperPlane, hp1, hp2)
         = case tv of
             (TVMUndecided _ _ _ ((_, hp1) : (_, hp2) : _)) -> 

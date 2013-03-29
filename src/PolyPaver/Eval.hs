@@ -95,7 +95,7 @@ evalForm maxdeg maxsize pwdepth ix ppb fptype form =
         (tv, formWithRanges)
         where
         tv 
-            | RA.isBottom rightVal || RA.isBottom leftVal = L.bot formWithRanges
+--            | RA.isBottom rightVal || RA.isBottom leftVal = L.bot formWithRanges
             | otherwise = opTV formWithRanges leftVal rightVal 
         formWithRanges = op leftWithRanges rightWithRanges
         (leftVal, leftWithRanges) = evTerm left

@@ -7,7 +7,7 @@
     Stability   :  experimental
     Portability :  portable
 
-    a simple property involving an integral
+    A simple property involving an integral.
 -}
 
 module Main where
@@ -20,9 +20,9 @@ main =
         ,conjecture = test}
 
 b = [(xNum, (0,1), False), (yNum, (0,1), False)]
-x = Var xNum "x"
-y = Var yNum "y"
-t = Var tNum "t"
+x = termVar xNum "x"
+y = termVar yNum "y"
+t = termVar tNum "t"
 (xNum : yNum : tNum : _) = [0..]
 
 test =
@@ -30,4 +30,5 @@ test =
     (y * (y + 2 * x) ) / 2
     |<-|
     (plusMinus 0.01) + 
-    Integral x (x + y) tNum "t" t 
+    integral tNum "t" x (x + y) t
+     

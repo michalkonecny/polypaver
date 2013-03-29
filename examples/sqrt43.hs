@@ -8,6 +8,8 @@
     Portability :  portable
 
     sqrt43 benchmark
+    
+    For precision -r 10 proved with -d 3 -e 10.  
 -}
 
 module Main where
@@ -21,12 +23,12 @@ main =
 
 b = [(0, (0.5,2), False), (1, (0,3), False)]
 
-x = Var 0 "x"
+x = termVar 0 "x"
 
-r = Var 1 "r"
+r = termVar 1 "r"
 
 test =
-    r |<-| Hull (-x^2/4+x) (x^2/4+1) /\ 
-    Eq r (0.5 *: (r +: x /: r))
+    r |<-| hull (-x^2/4+x) (x^2/4+1) /\ 
+    r |==| (0.5 *: (r +: x /: r))
     ---> 
-    0.5 *: (r +: x /: r) |<-| (1+4*EpsiRel) * sqrt(x)
+    0.5 *: (r +: x /: r) |<-| (1+4*fepsiRel) * sqrt(x)

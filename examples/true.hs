@@ -6,7 +6,7 @@ main =
     defaultMain Problem
         {
           box = []
-          ,conjecture = thm
+          ,conjecture = conjecture
         }
-thm =
+conjecture =
     0 |=| 0
