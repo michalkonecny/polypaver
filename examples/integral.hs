@@ -29,6 +29,6 @@ test =
 --    x/80 + 
     (y * (y + 2 * x) ) / 2
     |<-|
-    (plusMinus 0.01) + 
+    (plusMinus 0.1) + 
     integral tNum "t" x (x + y) t
      

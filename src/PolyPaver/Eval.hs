@@ -69,10 +69,10 @@ evalForm maxdeg maxsize pwdepth ix ppb fptype form =
           Or left right -> evOp2 Or (L.||) left right 
           And left right -> evOp2 And (L.&&) left right
           Implies left right -> evOp2 Implies (L.~>) left right
-          Le lab left right -> evOpT2 (Le lab) (\formWR -> L.less lab formWR ppb) left right 
-          Leq lab left right -> evOpT2 (Leq lab) (\formWR -> L.leq lab formWR ppb) left right
-          Ge lab left right -> evOpT2 (Ge lab) (\formWR -> L.less lab formWR ppb) right left
-          Geq lab left right -> evOpT2 (Leq lab) (\formWR -> L.leq lab formWR ppb) right left
+          Le lab left right -> evOpT2 False (Le lab) (\formWR -> L.less lab formWR ppb) left right 
+          Leq lab left right -> evOpT2 False (Leq lab) (\formWR -> L.leq lab formWR ppb) left right
+          Ge lab left right -> evOpT2 False (Ge lab) (\formWR -> L.less lab formWR ppb) right left
+          Geq lab left right -> evOpT2 False (Leq lab) (\formWR -> L.leq lab formWR ppb) right left
           Eq lab left right ->
             evForm $ And 
                 (Leq (lab ++ "<=") left right)
@@ -81,7 +81,7 @@ evalForm maxdeg maxsize pwdepth ix ppb fptype form =
             evForm $ Or 
                 (Le (lab ++ "<") left right)
                 (Le (lab ++ ">") right left)
-          Ni lab left right -> evOpT2 (Ni lab) (\formWR -> flip $ L.includes lab formWR ppb) left right 
+          Ni lab left right -> evOpT2 True (Ni lab) (\formWR -> flip $ L.includes lab formWR ppb) left right 
     evOp1 op opTV arg =
         (opTV argTV, op argWithRanges)
         where
@@ -91,15 +91,15 @@ evalForm maxdeg maxsize pwdepth ix ppb fptype form =
         where
         (leftTV, leftWithRanges) = evForm left
         (rightTV, rightWithRanges) = evForm right
-    evOpT2 op opTV left right =
+    evOpT2 rightNeedsInnerRounding op opTV left right =
         (tv, formWithRanges)
         where
         tv 
 --            | RA.isBottom rightVal || RA.isBottom leftVal = L.bot formWithRanges
             | otherwise = opTV formWithRanges leftVal rightVal 
         formWithRanges = op leftWithRanges rightWithRanges
-        (leftVal, leftWithRanges) = evTerm left
-        (rightVal, rightWithRanges) = evTerm right
+        (leftVal, leftWithRanges) = evTerm False left 
+        (rightVal, rightWithRanges) = evTerm rightNeedsInnerRounding right
 
 evalTerm ::
     (L.TruthValue tv) =>
@@ -109,17 +109,24 @@ evalTerm ::
     Int {-^ max split depth for ranges of integration variables -} -> 
     EffortIndex {-^ effort index for regulating model error -} -> 
     PPBox BM {-^ domains of variables -} -> 
-    (Int,Int) {-^ precision of emulated FP operations -} -> 
+    (Int,Int) {-^ precision of emulated FP operations -} ->
+    Bool {-^ should compute ranges using inner rounding? -} -> 
     Term {-^ term to evaluate -} -> 
     (FAPUOI BM, Term)
-evalTerm sampleTV maxdeg maxsize pwdepth ix ppbOrig fptype@(epsrelbits,epsabsbits) term =
+evalTerm sampleTV maxdeg maxsize pwdepth ix ppbOrig fptype@(epsrelbits,epsabsbits) needInnerRounding term =
     evTerm term
     where
     evTerm = evTermBox ppbOrig
     evTermBox ppb term =
         (valueFA, Term (term', Just valueRA))
         where
-        [valueRA] = FA.getRangeApprox valueFA
+        valueRA
+            | needInnerRounding = ilRA RA.\/ ihRA
+            | otherwise = valueRAOuter
+        [ilRA] = FA.getRangeApprox il
+        [ihRA] = FA.getRangeApprox ih
+        [valueRAOuter] = FA.getRangeApprox valueFA
+        ((ol, oh), (il, ih)) = RA.oiBounds valueFA
         (valueFA, term') = evTermBox' ppb term
     evTermBox' ppb@(skewed, box, isIntVarMap, namesMap) (Term (term, _)) =
         (valueFA, termWithRanges)
@@ -227,29 +234,32 @@ evalTerm sampleTV maxdeg maxsize pwdepth ix ppbOrig fptype@(epsrelbits,epsabsbit
             (rightFA, rightWithRanges) = evTermBox ppb right
         
         evIntegral ivarId ivarName lo hi integrand =
-    --        unsafePrint
-    --        (
-    --            "evIntegral:"
-    --            ++ "\n lo = " ++ showTerm lo
-    --            ++ "\n hi = " ++ showTerm hi
-    --            ++ "\n ivarName = " ++ ivarName
-    --            ++ "\n integrand = " ++ showTerm integrand
-    --            ++ "\n integrationVarDom = " ++ show integrationVarDom
-    --            ++ "\n getTermFreeVars integrand = " ++ show (getTermFreeVars integrand)
-    --            ++ "\n primitiveFunctionHi = " ++ show primitiveFunctionHi
-    --            ++ "\n primitiveFunctionLo = " ++ show primitiveFunctionLo
-    --        ) 
-    --        $
-            case RA.isExact integrationVarDom of
+--            unsafePrint
+--            (
+--                "evIntegral:"
+--                ++ "\n term = " ++ showTerm (Term (term, Nothing))
+--                ++ "\n ppb = " ++ show ppb
+--                ++ "\n loRange = " ++ show loRange
+--                ++ "\n hiRange = " ++ show hiRange
+--                ++ "\n segments = " ++ show segments
+--                ++ "\n primitiveFunctionLo = " ++ show primitiveFunctionLo
+--                ++ "\n primitiveFunctionHi = " ++ show primitiveFunctionHi
+--            ) 
+--            $
+            case RA.isExact integrationDom of
                 False ->
                     case ivarId `Set.member` (getTermFreeVars integrand) of
                         True -> -- nonconstant integrand
-                            case 0 `RA.leqReals` integrandEnclosure of
-                                Just True -> 
-                                    (FA.setMaxDegree maxdeg $ primitiveFunctionHi-primitiveFunctionLo,
-                                     termWithRanges)
-                                _ ->
-                                    (UFA.bottomApprox, termWithRanges)
+                            (setSizes $ primitiveFunctionHi-primitiveFunctionLo,
+                             termWithRanges)
+--                            case 0 `RA.leqReals` integrandEnclosure of
+--                                Just True -> 
+--                                    (FA.setMaxDegree maxdeg $ primitiveFunctionHi-primitiveFunctionLo,
+--                                     termWithRanges)
+--                                _ ->
+----                                    (UFA.bottomApprox, termWithRanges)
+--                                    integrand
+--                                    evTermBox' ppb $ (hi - lo) 
                         False -> -- constant integrand
                             evTermBox' ppb $ 
                                 integrand * (hi - lo) -- this is symbolic arithmetic
@@ -257,14 +267,22 @@ evalTerm sampleTV maxdeg maxsize pwdepth ix ppbOrig fptype@(epsrelbits,epsabsbit
                     (0, termWithRanges)
             where
             termWithRanges =
-                Integral ivarId ivarName loWithRanges hiWithRanges integrandWithRanges
+                Integral ivarId ivarName loWithRanges hiWithRanges integrandWithRangesLastSegment
             primitiveFunctionLo = 
     --            unsafePrintReturn "primitiveFunctionLo = " $
-                composeBoundEnclosure loBoundEnclosure
+                composeBoundEnclosure primitiveFunctionFirstSegment loBoundEnclosureInUnit
             primitiveFunctionHi = 
     --            unsafePrintReturn "primitiveFunctionHi = " $
-                composeBoundEnclosure hiBoundEnclosure
-            composeBoundEnclosure boundEnclosure =
+                composeBoundEnclosure primitiveFunctionLastSegment hiBoundEnclosureInUnit
+            loBoundEnclosureInUnit = boundIntoUnit (head segments) loBoundEnclosure
+            hiBoundEnclosureInUnit = boundIntoUnit (last segments) hiBoundEnclosure
+            boundIntoUnit segment fn =
+                (fn - constFA) * invslopeFA
+                where
+                constFA = setSizes $ UFA.const [constRA]
+                invslopeFA = setSizes $ UFA.const [1/slopeRA]
+                (constRA, slopeRA) = constSlopeFromRA $ RA.bounds segment
+            composeBoundEnclosure primitiveFunction boundEnclosure =
                 -- the following relies on the assumption that primitiveFunction is isotone 
                 RA.fromOIBounds ((rol,roh), (ril, rih))
                 where
@@ -274,64 +292,104 @@ evalTerm sampleTV maxdeg maxsize pwdepth ix ppbOrig fptype@(epsrelbits,epsabsbit
                 ((_  ,_  ),(_  ,rih)) = RA.oiBounds $ composeThinBound ih 
                 ((ol,oh),(il,ih)) = RA.oiBounds boundEnclosure
                 composeThinBound b =
-                    UFA.composeWithThin
-                        primitiveFunction $
-                        Map.fromList [(ivarId, boundIntoUnit b)] 
-            primitiveFunction =
-    --                   unsafePrintReturn "primitive function = " $
-                (UFA.const [slopeRA]) * primitiveFunctionUFA
+                    UFA.composeWithThin primitiveFunction $ Map.fromList [(ivarId, b)]
+
+
+            primitiveFunctionFirstSegment = head primitiveFunctionSegments
+            primitiveFunctionLastSegment = last primitiveFunctionSegments
+            primitiveFunctionSegments =
+                integratePiecewise
+                    0 -- ix
+                    (zip integrandEnclosuresOverSegments segments)
+                    ivarId
+                    0 -- value of primitive function at the left endpoint
+            
+            integrandWithRangesLastSegment = last integrandWithRangesOverSegments
+            (integrandEnclosuresOverSegments, integrandWithRangesOverSegments) =
+                unzip $ map evaluateIntegrandOnSegment segments
+            evaluateIntegrandOnSegment segment =
+                evTermBox segmentPPB integrand
                 where
-                primitiveFunctionUFA =
-                    UFA.integrate
-                        ix
-                        integrandEnclosure
-                        ivarId
-                        0 -- an integration start point
-                        0 -- value of primitive function at the above start point
-            ix = 0 -- 1 -- 5
-            (integrandEnclosure, integrandWithRanges) =
-    --                   unsafePrintReturn "integrand = " $ FA.setMaxDegree 0 $
-                      evTermBox integrationPPB integrand
-            integrationPPB 
-                | skewed = error "Paralellopiped solving not yet supported for the integral operator."
-                | otherwise = 
-                    (skewed, integrationBox, 
+                segmentPPB = 
+--                    | skewed = error "Paralellepiped solving not yet supported for the integral operator."
+                    (skewed, segmentBox, 
                      IMap.insert ivarId False isIntVarMap,
                      IMap.insert ivarId ivarName namesMap)
+                segmentBox =
+                    DBox.insert ivarId segmentAffine box
+                segmentAffine = affine
+                    where
+                    [(_, affine)] = IMap.toList ivbox
+                    (_, ivbox, _, _) =
+                        ppBoxFromRAs isIntVarMap namesMap [(ivarId, RA.bounds segment)]
+            segments 
+                | loRangeIntersectsHiRange = [integrationDom]
+                | otherwise =
+                    loRangeIfNonempty ++
+                    midSegments ++
+                    hiRangeIfNonempty
                 where
-                integrationBox =
-                    DBox.insert
-                        ivarId
-                        integrationVarDomAffine
-                        box
-            integrationVarDomAffine@(ivarDomAffineConst, ivarDomAffineCoeffs) = affine
-                where
-                [(_, affine)] = IMap.toList ivbox
-                (_, ivbox, _, _) =
-                    ppBoxFromRAs isIntVarMap namesMap [(ivarId, integrationVarDomBounds)]
-            boundIntoUnit fn =
-                (fn - constFA) * invslopeFA
-                where
-                constFA =
-                          FA.setMaxDegree maxdeg $ 
-                          FA.setMaxSize maxsize $
-                          UFA.const [constRA]
-                invslopeFA =
-                          FA.setMaxDegree maxdeg $ 
-                          FA.setMaxSize maxsize $
-                          UFA.const [1/slopeRA]
-            (constRA, slopeRA) = constSlopeFromRA integrationVarDomBounds
-            integrationVarDom = loRange RA.\/ hiRange
+                loRangeIntersectsHiRange = not $ loRangeHi < hiRangeLo 
+                midSegments = bisect integrationDepth (loRangeHi, hiRangeLo)
+                integrationDepth = 2  -- TODO: define as parameter
+                hiRangeIfNonempty
+                    | hiRangeLo < hiRangeHi = [hiRange]
+                    | otherwise = []
+                loRangeIfNonempty
+                    | loRangeLo < loRangeHi = [loRange]
+                    | otherwise = []
+                (loRangeLo, loRangeHi) = RA.bounds loRange
+                (hiRangeLo, hiRangeHi) = RA.bounds hiRange
+                bisect depth (lo,hi) 
+                    | depth > 0 = 
+                        (bisect (depth-1) (lo, mid)) ++ 
+                        (bisect (depth-1) (mid, hi))
+                    | otherwise = [RA.fromBounds (lo, hi)]
+                    where
+                    mid = fst $ RA.bounds $ (hi + lo) / 2 
+            
+            integrationDom = loRange RA.\/ hiRange
             [loRange] = FA.getRangeApprox loBoundEnclosure
             [hiRange] = FA.getRangeApprox hiBoundEnclosure
-            (loBoundEnclosure, loWithRanges) =
-    --                   unsafePrintReturn "low bound = " $
-                evTermBox ppb lo
-            (hiBoundEnclosure, hiWithRanges) =
-    --                   unsafePrintReturn "high bound = " $
-                evTermBox ppb hi
-            integrationVarDomBounds@(integrationVarDomLowBound,integrationVarDomHighBound) = 
-                RA.bounds integrationVarDom
-            integrationConstant = 0
+            (loBoundEnclosure, loWithRanges) = evTermBox ppb lo
+            (hiBoundEnclosure, hiWithRanges) = evTermBox ppb hi
+            
+            integratePiecewise ix integrandEnclosuresSegments ivarId fnAtLeftEndpoint =
+                aux fnAtLeftEndpoint integrandEnclosuresSegments
+                where
+                aux _ [] = []
+                aux fnInit ((integrandEnclosure, segment) : rest) =
+--                    unsafePrint
+--                    (
+--                        "integratePiecewise: aux:"
+--                        ++ "\n segment = " ++ show segment
+--                        ++ "\n slopeRA = " ++ show slopeRA
+--                        ++ "\n fnInit = " ++ show fnInit
+--                        ++ "\n integrandEnclosure = " ++ show integrandEnclosure
+--                        ++ "\n primitiveFunctionUFA = " ++ show primitiveFunctionUFA
+--                        ++ "\n primitiveFunction = " ++ show primitiveFunction
+--                        ++ "\n fnFinal = " ++ show fnFinal
+--                    ) $
+                    primitiveFunction : (aux fnFinal rest)
+                    where
+                    fnFinal = 
+                        setSizes $ 
+                        FA.partialEval substitution primitiveFunction
+                        where
+                        substitution = DBox.singleton ivarId (1) 
+                    primitiveFunction =
+                        fnInit +
+                        ((UFA.const [slopeRA]) * primitiveFunctionUFA)
+                    primitiveFunctionUFA =
+                        UFA.integrate
+                            ix
+                            integrandEnclosure
+                            ivarId
+                            (-1) -- an integration start point
+                            0 -- value of primitive function at the above start point
+                    (_constRA, slopeRA) = constSlopeFromRA segmentBounds 
+                    segmentBounds@(segmentLE, segmentRE) = RA.bounds segment
+
+
         
               
