@@ -170,7 +170,12 @@ formTable =
     , [Infix (m_reservedOp "->" >> return (Implies)) AssocRight]
     ]
 
-atomicFormula lab = (try $ m_parens (formula lab)) <|> (try (inequality lab)) <|> (predicateTerm lab) 
+atomicFormula lab = 
+    (try $ m_parens (formula lab)) 
+    <|> 
+    (try (inequality lab)) 
+    <|> 
+    (try (predicate lab))
     
 inequality lab =
     do
@@ -187,10 +192,21 @@ inequality lab =
         m_reservedOp opS
         return opF
 
-predicateTerm _lab =
+predicate lab =
     do
-    term <- fncall
-    return $ Predicate term
+    pname <- m_identifier
+    args <- m_parens $ sepBy term (m_symbol ",")
+    return $ decodePred lab pname args
+
+decodePred lab "num__isint" [arg1] = IsInt lab arg1
+decodePred lab "num__isintegerrange" [arg1, arg2, arg3] = IsIntRange lab arg1 arg2 arg3
+decodePred lab "num__isfloatrange" [arg1, arg2, arg3] = IsRange lab arg1 arg2 arg3
+decodePred lab "num__isdoublerange" [arg1, arg2, arg3] = IsRange lab arg1 arg2 arg3
+decodePred lab pred args =
+    error $ 
+        "in [" ++ lab ++ "], cannot decode predicate " ++ pred ++ 
+        "(" ++ (intercalate "," $ map show args) ++ ")"
+
 
 term :: Parser Term
 term = buildExpressionParser termTable atomicTerm <?> "term"
@@ -223,7 +239,6 @@ decodeFn "num__multiply" [arg1, arg2] = arg1 *: arg2
 decodeFn "num__add" [arg1, arg2] = arg1 +: arg2
 decodeFn "num__subtract" [arg1, arg2] = arg1 -: arg2
 decodeFn "num__exp" [arg1] = termOp1 FExp arg1
-decodeFn "num__isint" [arg1] = termOp1 IsInt arg1
 decodeFn "exact__sqrt" [arg1] = sqrt arg1
 decodeFn "exact__exp" [arg1] = exp arg1
 decodeFn "exact__sin" [arg1] = sin arg1

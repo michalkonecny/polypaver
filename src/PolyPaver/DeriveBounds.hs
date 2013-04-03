@@ -47,7 +47,7 @@ getBox form
     removeJustAddIsInt (v, (Just l, Just r)) = (v, (l,r), isInt)
         where
         isInt = v `Set.member` intVars
-    intVars = detectIntVars form
+    intVars = getIntVarsFromHyps form
     errorMessage =
         unlines $ map reportBadVar $ filter (not . isGood) varRanges
         where
@@ -69,16 +69,17 @@ getBox form
     boxSeq = 
         iterate (scanHypotheses form) initBox
     
-detectIntVars (Implies h c) =
-    (detectIntVar h) `Set.union` (detectIntVars c)
-detectIntVars _ = Set.empty
+getIntVarsFromHyps (Implies h c) =
+    (getIntVars h) `Set.union` (getIntVarsFromHyps c)
+getIntVarsFromHyps _ = Set.empty
 
-detectIntVar (And h1 h2) =
-    (detectIntVar h1) `Set.union` (detectIntVar h2)
-detectIntVar (Or h1 h2) =
-    (detectIntVar h1) `Set.union` (detectIntVar h2)
-detectIntVar (Predicate (Term (IsInt (Term (Var v _, _)), _))) = Set.singleton v
-detectIntVar _ = Set.empty
+getIntVars (And h1 h2) =
+    (getIntVars h1) `Set.union` (getIntVars h2)
+getIntVars (Or h1 h2) =
+    (getIntVars h1) `Set.intersection` (getIntVars h2)
+getIntVars (IsInt _ term) = getTermFreeVars term
+getIntVars (IsIntRange _ term _ _) = getTermFreeVars term
+getIntVars _ = Set.empty
     
 scanHypotheses (Implies h c) =
     scanHypotheses c . scanHypothesis h 
@@ -129,6 +130,10 @@ scanHypothesis (Leq _ t (Term (Var v _, _))) intervals =
 scanHypothesis (Le lab t1 t2) intervals = scanHypothesis (Leq lab t1 t2) intervals 
 scanHypothesis (Geq lab t1 t2) intervals = scanHypothesis (Leq lab t2 t1) intervals
 scanHypothesis (Ge lab t1 t2) intervals = scanHypothesis (Leq lab t2 t1) intervals
+scanHypothesis (IsRange lab t lower upper) intervals = 
+    scanHypothesis ((Leq lab lower t) /\ (Leq lab t upper)) intervals
+scanHypothesis (IsIntRange lab t lower upper) intervals =
+    scanHypothesis (IsRange lab t lower upper) intervals
 scanHypothesis _ intervals = intervals
     
 evalT ::
