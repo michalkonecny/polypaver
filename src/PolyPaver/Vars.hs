@@ -42,148 +42,124 @@ showVar varNames var =
 getFormVarNames :: Form -> IMap.IntMap String
 getFormVarNames form =
     case form of
-        Predicate term -> getTermVarNames term
         Not arg -> getFormVarNames arg
-        Or left right ->
-            (getFormVarNames left) `IMap.union` (getFormVarNames right)
-        And left right ->
-            (getFormVarNames left) `IMap.union` (getFormVarNames right)
-        Implies left right ->
-            (getFormVarNames left) `IMap.union` (getFormVarNames right)
-        Le _ left right ->
-            (getTermVarNames left) `IMap.union` (getTermVarNames right)
-        Leq _ left right ->
-            (getTermVarNames left) `IMap.union` (getTermVarNames right)
-        Ge _ left right ->
-            (getTermVarNames left) `IMap.union` (getTermVarNames right)
-        Geq _ left right ->
-            (getTermVarNames left) `IMap.union` (getTermVarNames right)
-        Eq _ left right ->
-            (getTermVarNames left) `IMap.union` (getTermVarNames right)
-        Neq _ left right ->
-            (getTermVarNames left) `IMap.union` (getTermVarNames right)
-        Ni _ left right -> 
-            (getTermVarNames left) `IMap.union` (getTermVarNames right)
+        Or left right -> getFormVarNames2 left right
+        And left right -> getFormVarNames2 left right
+        Implies left right -> getFormVarNames2 left right
+        Le _ left right -> getTermVarNames2 left right
+        Leq _ left right -> getTermVarNames2 left right
+        Ge _ left right -> getTermVarNames2 left right
+        Geq _ left right -> getTermVarNames2 left right
+        Eq _ left right -> getTermVarNames2 left right
+        Neq _ left right -> getTermVarNames2 left right
+        Ni _ left right -> getTermVarNames2 left right 
+        IsRange _ t1 t2 t3 -> getTermVarNames3 t1 t2 t3
+        IsIntRange _ t1 t2 t3 -> getTermVarNames3 t1 t2 t3
+        IsInt _ t -> getTermVarNames t
         _ -> IMap.empty
+
+getFormVarNames2 f1 f2 = 
+    (getFormVarNames f1) `IMap.union` (getFormVarNames f2)
 
 getTermVarNames :: Term -> IMap.IntMap String
 getTermVarNames (Term (term, _)) =
     case term of
         Var varid name -> IMap.singleton varid name
-        Plus left right ->
-            (getTermVarNames left) `IMap.union` (getTermVarNames right)
-        Hull left right ->
-            (getTermVarNames left) `IMap.union` (getTermVarNames right)
-        Minus left right ->
-            (getTermVarNames left) `IMap.union` (getTermVarNames right)
+        Plus left right -> getTermVarNames2 left right
+        Hull left right -> getTermVarNames2 left right
+        Minus left right -> getTermVarNames2 left right
         Neg arg -> getTermVarNames arg
-        Times left right ->
-            (getTermVarNames left) `IMap.union` (getTermVarNames right)
+        Times left right -> getTermVarNames2 left right
         Square arg -> getTermVarNames arg
         Recip arg -> getTermVarNames arg
-        Over left right ->
-            (getTermVarNames left) `IMap.union` (getTermVarNames right)
+        Over left right -> getTermVarNames2 left right
         Abs arg -> getTermVarNames arg
-        Min left right ->
-            (getTermVarNames left) `IMap.union` (getTermVarNames right)
-        Max left right ->
-            (getTermVarNames left) `IMap.union` (getTermVarNames right)
+        Min left right -> getTermVarNames2 left right
+        Max left right -> getTermVarNames2 left right
         Sqrt arg -> getTermVarNames arg
         Exp arg -> getTermVarNames arg
         Sin arg -> getTermVarNames arg
         Cos arg -> getTermVarNames arg
         Atan arg -> getTermVarNames arg
-        IsInt arg -> getTermVarNames arg
         Integral ivarId ivarName lower upper integrand ->
-            (getTermVarNames lower) `IMap.union` (getTermVarNames upper)
+            (getTermVarNames2 lower upper)
             `IMap.union`
             (IMap.delete ivarId $ getTermVarNames integrand)
         FRound arg -> getTermVarNames arg
-        FPlus left right ->
-            (getTermVarNames left) `IMap.union` (getTermVarNames right)
-        FMinus left right ->
-            (getTermVarNames left) `IMap.union` (getTermVarNames right)
-        FTimes left right ->
-            (getTermVarNames left) `IMap.union` (getTermVarNames right)
+        FPlus left right -> getTermVarNames2 left right
+        FMinus left right -> getTermVarNames2 left right
+        FTimes left right -> getTermVarNames2 left right
         FSquare arg -> getTermVarNames arg
         FSqrt arg -> getTermVarNames arg
-        FOver left right ->
-            (getTermVarNames left) `IMap.union` (getTermVarNames right)
+        FOver left right -> getTermVarNames2 left right
         FExp arg -> getTermVarNames arg
         _ -> IMap.empty
+
+getTermVarNames2 t1 t2 = 
+    (getTermVarNames t1) `IMap.union` (getTermVarNames t2)
+getTermVarNames3 t1 t2 t3 = 
+    (getTermVarNames t1) `IMap.union` (getTermVarNames t2) `IMap.union` (getTermVarNames t3)
 
 getFormFreeVars :: Form -> Set.Set Int
 getFormFreeVars form =
     case form of
-        Predicate term -> getTermFreeVars term
         Not arg -> getFormFreeVars arg
-        Or left right ->
-            (getFormFreeVars left) `Set.union` (getFormFreeVars right)
-        And left right ->
-            (getFormFreeVars left) `Set.union` (getFormFreeVars right)
-        Implies left right ->
-            (getFormFreeVars left) `Set.union` (getFormFreeVars right)
-        Le _ left right ->
-            (getTermFreeVars left) `Set.union` (getTermFreeVars right)
-        Leq _ left right ->
-            (getTermFreeVars left) `Set.union` (getTermFreeVars right)
-        Ge _ left right ->
-            (getTermFreeVars left) `Set.union` (getTermFreeVars right)
-        Geq _ left right ->
-            (getTermFreeVars left) `Set.union` (getTermFreeVars right)
-        Eq _ left right ->
-            (getTermFreeVars left) `Set.union` (getTermFreeVars right)
-        Neq _ left right ->
-            (getTermFreeVars left) `Set.union` (getTermFreeVars right)
-        Ni _ left right -> 
-            (getTermFreeVars left) `Set.union` (getTermFreeVars right)
+        Or left right -> getFormFreeVars2 left right
+        And left right -> getFormFreeVars2 left right
+        Implies left right -> getFormFreeVars2 left right
+        Le _ left right -> getTermFreeVars2 left right
+        Leq _ left right -> getTermFreeVars2 left right
+        Ge _ left right -> getTermFreeVars2 left right
+        Geq _ left right -> getTermFreeVars2 left right
+        Eq _ left right -> getTermFreeVars2 left right
+        Neq _ left right -> getTermFreeVars2 left right
+        Ni _ left right -> getTermFreeVars2 left right
+        IsIntRange _ arg1 arg2 arg3 -> (getTermFreeVars3 arg1 arg2 arg3)
+        IsRange _ arg1 arg2 arg3 -> (getTermFreeVars3 arg1 arg2 arg3)
+        IsInt _ arg -> getTermFreeVars arg
         _ -> Set.empty
+
+getFormFreeVars2 f1 f2 = 
+    (getFormFreeVars f1) `Set.union` (getFormFreeVars f2)
 
 getTermFreeVars :: Term -> Set.Set Int
 getTermFreeVars (Term (term, _)) =
     case term of
         Var varid _ -> Set.singleton varid
-        Hull left right ->
-            (getTermFreeVars left) `Set.union` (getTermFreeVars right)
-        Plus left right ->
-            (getTermFreeVars left) `Set.union` (getTermFreeVars right)
-        Minus left right ->
-            (getTermFreeVars left) `Set.union` (getTermFreeVars right)
+        Hull left right -> getTermFreeVars2 left right
+        Plus left right -> getTermFreeVars2 left right
+        Minus left right -> getTermFreeVars2 left right
         Neg arg -> getTermFreeVars arg
-        Times left right ->
-            (getTermFreeVars left) `Set.union` (getTermFreeVars right)
+        Times left right -> getTermFreeVars2 left right
         Square arg -> getTermFreeVars arg
         Recip arg -> getTermFreeVars arg
-        Over left right ->
-            (getTermFreeVars left) `Set.union` (getTermFreeVars right)
+        Over left right -> getTermFreeVars2 left right
         Abs arg -> getTermFreeVars arg
-        Min left right ->
-            (getTermFreeVars left) `Set.union` (getTermFreeVars right)
-        Max left right ->
-            (getTermFreeVars left) `Set.union` (getTermFreeVars right)
+        Min left right -> getTermFreeVars2 left right
+        Max left right -> getTermFreeVars2 left right
         Sqrt arg -> getTermFreeVars arg
         Exp arg -> getTermFreeVars arg
         Sin arg -> getTermFreeVars arg
         Cos arg -> getTermFreeVars arg
         Atan arg -> getTermFreeVars arg
         Integral ivarId ivarName lower upper integrand ->
-            (getTermFreeVars lower) `Set.union` (getTermFreeVars upper)
+            (getTermFreeVars2 lower upper)
             `Set.union`
             (Set.delete ivarId $ getTermFreeVars integrand)
         FRound arg -> getTermFreeVars arg
-        FPlus left right ->
-            (getTermFreeVars left) `Set.union` (getTermFreeVars right)
-        FMinus left right ->
-            (getTermFreeVars left) `Set.union` (getTermFreeVars right)
-        FTimes left right ->
-            (getTermFreeVars left) `Set.union` (getTermFreeVars right)
+        FPlus left right -> getTermFreeVars2 left right
+        FMinus left right -> getTermFreeVars2 left right
+        FTimes left right -> getTermFreeVars2 left right
         FSquare arg -> getTermFreeVars arg
         FSqrt arg -> getTermFreeVars arg
-        FOver left right ->
-            (getTermFreeVars left) `Set.union` (getTermFreeVars right)
+        FOver left right -> getTermFreeVars2 left right
         FExp arg -> getTermFreeVars arg
-        IsInt arg -> getTermFreeVars arg
         _ -> Set.empty
+
+getTermFreeVars2 t1 t2 =
+    (getTermFreeVars t1) `Set.union` (getTermFreeVars t2)
+getTermFreeVars3 t1 t2 t3 =
+    (getTermFreeVars t1) `Set.union` (getTermFreeVars t2) `Set.union` (getTermFreeVars t3)
 
 renameVarsForm :: 
     (Int -> Int) -> Form -> Form  
@@ -192,7 +168,6 @@ renameVarsForm old2new = rnm
     rnmT = renameVarsTerm old2new
     rnm form =
         case form of
-            Predicate term -> Predicate $ rnmT term
             Not arg -> Not $ rnm arg
             Or left right ->
                 Or (rnm left) (rnm right)
@@ -214,6 +189,12 @@ renameVarsForm old2new = rnm
                 Neq lab (rnmT left) (rnmT right)
             Ni lab left right -> 
                 Ni lab (rnmT left) (rnmT right)
+            IsRange lab arg1 arg2 arg3 -> 
+                IsRange lab (rnmT arg1) (rnmT arg2) (rnmT arg3)
+            IsIntRange lab arg1 arg2 arg3 -> 
+                IsIntRange lab (rnmT arg1) (rnmT arg2) (rnmT arg3)
+            IsInt lab arg -> 
+                IsInt lab $ rnmT arg
             f -> f
 
 renameVarsTerm :: 
@@ -256,7 +237,6 @@ renameVarsTerm old2new = rnm
             FSqrt arg -> FSqrt $ rnm arg
             FOver left right -> FOver (rnm left) (rnm right)
             FExp arg -> FExp $ rnm arg
-            IsInt arg -> IsInt $ rnm arg
             t -> t
 
 normaliseVars :: Form -> Form
@@ -300,6 +280,12 @@ substituteVarsForm old2new = subst
                 Neq lab (substT left) (substT right)
             Ni lab left right -> 
                 Ni lab (substT left) (substT right)
+            IsRange lab arg1 arg2 arg3 -> 
+                IsRange lab (substT arg1) (substT arg2) (substT arg3)
+            IsIntRange lab arg1 arg2 arg3 -> 
+                IsIntRange lab (substT arg1) (substT arg2) (substT arg3)
+            IsInt lab arg -> 
+                IsInt lab $ substT arg
             f -> f
 
 substituteVarsTerm :: 
@@ -337,9 +323,7 @@ substituteVarsTerm old2new = subst
             FSqrt arg -> FSqrt $ subst arg
             FOver left right -> FOver (subst left) (subst right)
             FExp arg -> FExp $ subst arg
-            IsInt arg -> IsInt $ subst arg
             t -> t
-
 
 removeDisjointHypotheses :: Form -> Form
 removeDisjointHypotheses form

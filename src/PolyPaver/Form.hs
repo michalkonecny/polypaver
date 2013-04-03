@@ -33,6 +33,9 @@ data Form
   | Eq Label Term Term
   | Neq Label Term Term
   | Ni Label Term Term
+  | IsRange Label Term Term Term 
+  | IsIntRange Label Term Term Term 
+  | IsInt Label Term
   deriving (Eq,Show,Read,Data,Typeable)
 
 isAtomicForm :: Form -> Bool
@@ -73,6 +76,9 @@ getFormulaSize form =
         Eq _ t1 t2 -> 1 + (getTermSize t1) + (getTermSize t2)
         Neq _ t1 t2 -> 1 + (getTermSize t1) + (getTermSize t2)
         Ni _ t1 t2 -> 1 + (getTermSize t1) + (getTermSize t2)
+        IsRange _ t1 t2 t3 -> 1 + (getTermSize t1) + (getTermSize t2) + (getTermSize t3)
+        IsIntRange _ t1 t2 t3 -> 1 + (getTermSize t1) + (getTermSize t2) + (getTermSize t3)
+        IsInt _ t -> 1 + (getTermSize t)
 
 sortFormulasBySize :: [Form] -> [Form]
 sortFormulasBySize formulas =
@@ -130,8 +136,6 @@ data Term'
   | FSquare Term
   | FSqrt Term
   | FExp Term
--- the following are boolean terms, only allowed in the Predicate formula constructor:
-  | IsInt Term 
   deriving (Eq,Show,Read,Data,Typeable)
 
 instance Read Term where
@@ -177,7 +181,6 @@ getTermSize (Term (term, _)) =
         FSquare t -> 1 + (getTermSize t)
         FSqrt t -> 1 + (getTermSize t)
         FExp t -> 1 + (getTermSize t)
-        IsInt t -> 1
 
 
 {--- Operations for convenient encoding of literal values of type Term  ---}
@@ -263,6 +266,9 @@ showForm form = sf (Just 0) form
             Eq lab t1 t2 -> showOpT "=" lab t1 t2
             Neq lab t1 t2 -> showOpT "≠" lab t1 t2
             Ni lab t1 t2 -> showOpT "⊆" lab t1 t2
+            IsRange lab t1 t2 t3 -> showPred lab "isrange" [t1, t2, t3]
+            IsIntRange lab t1 t2 t3 -> showPred lab "isintrange" [t1, t2, t3]
+            IsInt lab t -> showPred lab "isint" [t]
         where
         sfNext = sf maybeNextIndentLevel
         stNext = st maybeNextIndentLevel
@@ -278,8 +284,13 @@ showForm form = sf (Just 0) form
             indentedBracketsF f1 
             ++ indent ++ padIfInline op ++ indent ++
             indentedBracketsF f2
-        showOpT op lab t1 t2 =
+        showPred lab pred ts =
             labelIfInline lab
+            ++ pred ++ "("
+            ++ (intercalate (indent ++ ", ") $ map (\t -> indentNext ++ stNext t) ts)
+            ++ indent ++ ")"
+        showOpT op lab t1 t2 =
+            "[" ++ show lab ++ "] "
             ++ st maybeIndentLevel t1 
             ++ indent ++ padIfInline op ++ labelIfSeparateLine lab 
             ++ indent ++ st maybeIndentLevel t2
@@ -352,7 +363,6 @@ showTermIL = st
             FSquare t -> showFnT "fsquare" [t]
             FSqrt t -> showFnT "fsqrt" [t]
             FExp t -> showFnT "fexp" [t]
-            IsInt t -> showFnT "isint" [t]
         where
         stNext = st maybeNextIndentLevel
         indent = 

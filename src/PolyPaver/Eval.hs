@@ -37,6 +37,7 @@ import Numeric.ER.Misc
 import qualified Data.Set as Set
 import qualified Data.Map as Map
 import qualified Data.IntMap as IMap
+import qualified Data.Ratio as Q
 
 
 {-|
@@ -54,34 +55,37 @@ evalForm ::
     Form {-^ form to evaluate -} -> 
     (tv, 
      Form) {-^ form with added range bounds in all terms -}
-evalForm maxdeg maxsize pwdepth ix ppb fptype form =
+evalForm maxdeg maxsize pwdepth ix ppb@(_, _, isIntVarMap, _) fptype form =
     evForm form
     where
     evTerm = evalTerm sampleTV maxdeg maxsize pwdepth ix ppb fptype
     (sampleTV, _) = evForm Verum
     evForm form =
         case form of
-          Verum -> (L.fromBool ppb True, form)
-          Falsum -> (L.fromBool ppb False, form)
-          Predicate (Term (IsInt _, _)) -> evForm Verum -- this "predicate" is only a type declaration
-          Predicate _ -> (L.bot Falsum, form) -- predicates not supported yet - therefore must remain undecided
-          Not arg -> evOp1 Not L.not arg
-          Or left right -> evOp2 Or (L.||) left right 
-          And left right -> evOp2 And (L.&&) left right
-          Implies left right -> evOp2 Implies (L.~>) left right
-          Le lab left right -> evOpT2 False (Le lab) (\formWR -> L.less lab formWR ppb) left right 
-          Leq lab left right -> evOpT2 False (Leq lab) (\formWR -> L.leq lab formWR ppb) left right
-          Ge lab left right -> evOpT2 False (Le lab) (\formWR -> L.less lab formWR ppb) right left
-          Geq lab left right -> evOpT2 False (Leq lab) (\formWR -> L.leq lab formWR ppb) right left
-          Eq lab left right ->
-            evForm $ And 
-                (Leq (lab ++ "<=") left right)
-                (Leq (lab ++ ">=") right left)
-          Neq lab left right ->
-            evForm $ Or 
-                (Le (lab ++ "<") left right)
-                (Le (lab ++ ">") right left)
-          Ni lab left right -> evOpT2 True (Ni lab) (\formWR -> flip $ L.includes lab formWR ppb) left right 
+            Verum -> (L.fromBool "Verum" ppb True, form)
+            Falsum -> (L.fromBool "Falsum" ppb False, form)
+            Not arg -> evOp1 Not L.not arg
+            Or left right -> evOp2 Or (L.||) left right 
+            And left right -> evOp2 And (L.&&) left right
+            Implies left right -> evOp2 Implies (L.~>) left right
+            Le lab left right -> evOpT2 False (Le lab) (\formWR -> L.less lab formWR ppb) left right 
+            Leq lab left right -> evOpT2 False (Leq lab) (\formWR -> L.leq lab formWR ppb) left right
+            Ge lab left right -> evOpT2 False (Le lab) (\formWR -> L.less lab formWR ppb) right left
+            Geq lab left right -> evOpT2 False (Leq lab) (\formWR -> L.leq lab formWR ppb) right left
+            Eq lab left right ->
+                evForm $ And 
+                    (Leq (lab ++ "<=") left right)
+                    (Leq (lab ++ ">=") right left)
+            Neq lab left right ->
+                evForm $ Or 
+                    (Le (lab ++ "<") left right)
+                    (Le (lab ++ ">") right left)
+            Ni lab left right -> evOpT2 True (Ni lab) (\formWR -> flip $ L.includes lab formWR ppb) left right 
+            IsRange lab t lower upper -> 
+                evForm $  (Leq (lab ++ "LO") lower t) /\ (Leq (lab ++ "HI") t upper)
+            IsIntRange lab t lower upper -> 
+                evForm $  (IsInt lab t) /\ (IsRange lab t lower upper)
+            IsInt lab t -> (L.fromBool lab ppb $ termIsIntegerType t, form)
     evOp1 op opTV arg =
         (opTV argTV, op argWithRanges)
         where
@@ -100,7 +104,23 @@ evalForm maxdeg maxsize pwdepth ix ppb fptype form =
         formWithRanges = op leftWithRanges rightWithRanges
         (leftVal, leftWithRanges) = evTerm False left 
         (rightVal, rightWithRanges) = evTerm rightNeedsInnerRounding right
-
+    termIsIntegerType (Term (t, _)) =
+        case t of
+            Lit val -> Q.denominator val == 1
+            Var varId _ -> case IMap.lookup varId isIntVarMap of Just res -> res; _ -> False
+            Plus left right -> termIsIntegerType2 left right
+            Minus left right -> termIsIntegerType2 left right
+            Neg arg -> termIsIntegerType arg
+            Abs arg -> termIsIntegerType arg
+            Min left right -> termIsIntegerType2 left right
+            Max left right -> termIsIntegerType2 left right
+            Times left right -> termIsIntegerType2 left right
+            Square arg -> termIsIntegerType arg
+            _ -> False
+    termIsIntegerType2 t1 t2 = 
+        termIsIntegerType t1 && termIsIntegerType t2
+            
+     
 evalTerm ::
     (L.TruthValue tv) =>
     tv {-^ sample truth value to aid type checking -} -> 
@@ -163,12 +183,6 @@ evalTerm sampleTV maxdeg maxsize pwdepth ix ppbOrig fptype@(epsrelbits,epsabsbit
                 Minus left right -> evOp2 Minus (-) left right
                 Neg arg -> evOp1 Neg negate arg
                 Abs arg -> evOp1 Abs (RAEL.abs ix) arg
---            let argEncl = evTerm arg in 
---              case RA.leqReals 0 argEncl of
---                Just True -> -- argument certainly non-negative
---                  argEncl    -- so do nothing
---                _ -> -- otherwise
---                  RAEL.sqrt ix $ argEncl^2 -- do smooth approx of abs           
                 Min left right -> evOp2 Min min left right
                 Max left right -> evOp2 Max max left right
                 Times left right -> evOp2 Times (*) left right
@@ -203,8 +217,6 @@ evalTerm sampleTV maxdeg maxsize pwdepth ix ppbOrig fptype@(epsrelbits,epsabsbit
 --                    (_, Just True) -> True
 --                    _ -> False 
 --              _ = [aboveEpsTV, belowEpsTV, sampleTV]
---              aboveEpsTV = evForm $ Leq sampleLabel EpsAbs arg 
---              belowEpsTV = evForm $ Leq sampleLabel arg (Neg EpsAbs) 
                 FPlus left right -> 
                     evTermBox' ppb $ fround (left + right)
                 FMinus left right ->

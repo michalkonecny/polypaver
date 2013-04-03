@@ -38,7 +38,7 @@ class TruthValue tv where
     (&&) :: tv -> tv -> tv
     (||) :: tv -> tv -> tv
     (~>) :: tv -> tv -> tv
-    fromBool :: PPBox BM -> Bool -> tv
+    fromBool :: Label -> PPBox BM -> Bool -> tv
     leq :: Label -> Form -> PPBox BM -> FAPUOI BM -> FAPUOI BM -> tv
     less :: Label -> Form -> PPBox BM -> FAPUOI BM -> FAPUOI BM -> tv
     includes :: Label -> Form -> PPBox BM -> FAPUOI BM -> FAPUOI BM -> tv
@@ -125,7 +125,7 @@ instance TruthValue TVM where
     (TVMUndecided form1 dist1 ares1 hps1) ~> (TVMUndecided form2 dist2 ares2 hps2)
         = TVMUndecided (Implies form1 form2) (max dist1 dist2) (ares1 ++ ares2) (combineHPs hps1 hps2)
 
-    fromBool _ = TVMDecided []
+    fromBool lab _ b = TVMDecided [(lab, (Just b, 1, 0))] b
     leq = tvmLeqLess True
     less = tvmLeqLess False
     includes lab form box a b -- b `Ni` a
@@ -394,7 +394,7 @@ instance TruthValue TVDebugReport where
     (TVDebugReport r1) && (TVDebugReport r2) = TVDebugReport $ r1 ++ r2 
     (TVDebugReport r1) || (TVDebugReport r2) = TVDebugReport $ r1 ++ r2 
     (TVDebugReport r1) ~> (TVDebugReport r2) = TVDebugReport $ r1 ++ r2 
-    fromBool _ _ = TVDebugReport ""
+    fromBool lab _ b = TVDebugReport $ "BOOL [" ++ lab ++ "]: " ++ show b 
     bot form = TVDebugReport ""
     leq lab form box a b = 
         TVDebugReport $
