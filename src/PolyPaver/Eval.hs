@@ -71,7 +71,7 @@ evalForm maxdeg maxsize pwdepth ix ppb fptype form =
           Implies left right -> evOp2 Implies (L.~>) left right
           Le lab left right -> evOpT2 False (Le lab) (\formWR -> L.less lab formWR ppb) left right 
           Leq lab left right -> evOpT2 False (Leq lab) (\formWR -> L.leq lab formWR ppb) left right
-          Ge lab left right -> evOpT2 False (Ge lab) (\formWR -> L.less lab formWR ppb) right left
+          Ge lab left right -> evOpT2 False (Le lab) (\formWR -> L.less lab formWR ppb) right left
           Geq lab left right -> evOpT2 False (Leq lab) (\formWR -> L.leq lab formWR ppb) right left
           Eq lab left right ->
             evForm $ And 
@@ -330,8 +330,7 @@ evalTerm sampleTV maxdeg maxsize pwdepth ix ppbOrig fptype@(epsrelbits,epsabsbit
                     hiRangeIfNonempty
                 where
                 loRangeIntersectsHiRange = not $ loRangeHi < hiRangeLo 
-                midSegments = bisect integrationDepth (loRangeHi, hiRangeLo)
-                integrationDepth = 2  -- TODO: define as parameter
+                midSegments = bisect (loRangeHi, hiRangeLo)
                 hiRangeIfNonempty
                     | hiRangeLo < hiRangeHi = [hiRange]
                     | otherwise = []
@@ -340,13 +339,20 @@ evalTerm sampleTV maxdeg maxsize pwdepth ix ppbOrig fptype@(epsrelbits,epsabsbit
                     | otherwise = []
                 (loRangeLo, loRangeHi) = RA.bounds loRange
                 (hiRangeLo, hiRangeHi) = RA.bounds hiRange
-                bisect depth (lo,hi) 
-                    | depth > 0 = 
-                        (bisect (depth-1) (lo, mid)) ++ 
-                        (bisect (depth-1) (mid, hi))
+                bisect (lo,hi) 
+                    | (stepSize < hi - lo) = 
+                        (bisect (lo, mid)) ++ 
+                        (bisect (mid, hi))
                     | otherwise = [RA.fromBounds (lo, hi)]
-                    where
+                    where                    
                     mid = fst $ RA.bounds $ (hi + lo) / 2 
+                stepSize 
+                    | useBounds > 0 = useBounds
+--                    | useBox > 0 = useBox -- TODO
+                    | otherwise = useIx 
+                    where
+                    useBounds = snd $ RA.bounds $ max (loRangeHi - loRangeLo) (hiRangeHi - hiRangeLo)
+                    useIx = snd $ RA.bounds $ (hiRangeLo - loRangeHi) / (fromInteger $ toInteger ix) 
             
             integrationDom = loRange RA.\/ hiRange
             [loRange] = FA.getRangeApprox loBoundEnclosure
