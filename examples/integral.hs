@@ -26,9 +26,9 @@ t = termVar tNum "t"
 (xNum : yNum : tNum : _) = [0..]
 
 test =
---    x/80 + 
+    x + -- /80 + -- uncomment to make it false
     (y * (y + 2 * x) ) / 2
     |<-|
-    (plusMinus 0.1) + 
+--    (plusMinus 0.1) + -- uncomment to make it non-touching
     integral tNum "t" x (x + y) t
      

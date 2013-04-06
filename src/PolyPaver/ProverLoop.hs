@@ -75,8 +75,8 @@ loop
     initppb@(_, initbox, varIsInts, varNames)
     =
     do
-    putStrLn $ "proving: " ++ showForm originalForm
-    putStrLn $ "over box: " ++ ppShow initppb
+    putStrLn $ "Trying to decide the conjecture: " ++ showForm False originalForm
+    putStrLn $ "over the box " ++ ppShow initppb
     -- possibly initialise plotting:
     mstateTV <- case plotSize of
         (w,h) 
@@ -110,18 +110,18 @@ loop
             queue qlength maxQLength prevtime 
             computedboxes problemvol truevol 
             maybeCurrdeg maybePrevMeasure 
-        | qlength == 0 = proved
+        | qlength == 0 = reportProvedEverywhere
         | otherwise = do { reportBox; tryNextBox } 
         where
-        proved = 
+        reportProvedEverywhere = 
             do
             currtime <- getCPUTime
             putStr $
               "\nSearch complete.  Conjecture proved TRUE in " ++
                 showDuration (currtime-inittime) ++ "." ++
-              "\nComputed boxes : " ++ show computedboxes ++ 
-              "\nGreatest queue size : " ++ show maxQLength ++  
-              "\nGreatest depth : " ++ show maxDepthReached ++ "\n\n"
+              "\nComputed boxes: " ++ show computedboxes ++ 
+              "\nGreatest queue size: " ++ show maxQLength ++  
+              "\nGreatest depth: " ++ show maxDepthReached ++ "\n\n"
             stopProver $ Proved $ currtime-inittime
         tryNextBox
             | depth < mindepth = 
@@ -135,10 +135,10 @@ loop
                   "\nSearch aborted." ++ 
                   "\nTIMED OUT after " ++ show maxtime ++ 
                   " second" ++ (if maxtime == 1 then "." else "s.") ++ 
-                  "\nComputed boxes : " ++ show computedboxes ++ 
-                  "\nQueue size : " ++ show qlength ++
-                  "\nGreatest queue size : " ++ show maxQLength ++  
-                  "\nGreatest depth : " ++ show maxDepthReached ++ 
+                  "\nComputed boxes: " ++ show computedboxes ++ 
+                  "\nQueue size: " ++ show qlength ++
+                  "\nGreatest queue size: " ++ show maxQLength ++  
+                  "\nGreatest depth: " ++ show maxDepthReached ++ 
                   "\n\n"
                 stopProver $ GaveUp (prevtime-inittime) "TIMED OUT"
             | decided && decision = -- formula true on this box
@@ -160,12 +160,12 @@ loop
                   showDuration (currtime-inittime) ++ "." ++
                   "\nConjecture proved false for " ++
                   ppShow ppb ++
-                  "\nComputed  boxes : " ++ show computedboxes ++ 
-                  "\nQueue size : " ++ show qlength ++
-                  "\nGreatest queue size : " ++ show maxQLength ++  
-                  "\nDepth : " ++ show depth ++
-                  "\nGreatest depth : " ++ show maxDepthReached ++  
-                  "\nFormula : " ++ showForm form ++
+                  "\nComputed  boxes: " ++ show computedboxes ++ 
+                  "\nQueue size: " ++ show qlength ++
+                  "\nGreatest queue size: " ++ show maxQLength ++  
+                  "\nDepth: " ++ show depth ++
+                  "\nGreatest depth: " ++ show maxDepthReached ++  
+                  "\nFormula: " ++ showForm False form ++
                   "\nFormula details: \n" ++ formDebug ++
                   "\n\n" 
                 stopProver $ Disproved (currtime-inittime)
@@ -335,13 +335,13 @@ loop
                         _ ->
                             case reportLevel of
                                 ReportALL ->
-                                    putStrLn $ " evaluation result = " ++ show value
+                                    putStrLn $ " Evaluation result: " ++ show value
                                 _ ->
-                                    putStrLn $ " evaluation result = " ++ show maybeDecision
+                                    putStrLn $ " Evaluation result: " ++ show maybeDecision
                 
         banner = replicate 100 '*'
         identifyBox =
-            "proving over box" ++ show computedboxes 
+            "Deciding over box" ++ show computedboxes 
             ++ "(depth=" ++ show depth ++ ", queue size=" ++ show qlength ++ ")"            
             ++ ": " ++ ppShow ppb
         reportInitSplit
@@ -352,7 +352,7 @@ loop
                 ReportNONE -> return ()
                 _ ->
                     do
-                    putStrLn $ "initial splitting at depth " ++ show depth
+                    putStrLn $ "Initial splitting at depth " ++ show depth
             
         reportProved
             =
@@ -390,17 +390,17 @@ loop
                         Just ((hp, _), form, lab, vagueness) ->
                             do
                             putStrLn $
-                                "skewing using the hyperplane " ++ showAffine hp
+                                "Skewing using the hyperplane " ++ showAffine hp
                                 ++ "\n  label = " ++ lab
                                 ++ "\n  vagueness = " ++ show vagueness
-                                ++ "\n  derived from the formula " ++ showForm form
+                                ++ "\n  derived from the formula " ++ showForm False form
                 _ -> return ()
             case reportLevel of
                 ReportNONE -> return ()
                 _ ->
                     do
                     putStrLn $ 
-                        "splitting at depth " ++ show depth
+                        "Splitting at depth " ++ show depth
                         ++ reportVar 
                         ++ reportQSize 
                     reportFraction

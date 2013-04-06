@@ -79,10 +79,11 @@ instance Show TVM where
     show (TVMUndecided form dist ares hps)
         =
         "TVMUndecided"
-        ++ "\n sub-results = \n" ++ unlines (map showAtomicResult ares)
-        ++ " distance+vagueness = " ++ show dist
-        ++ "\n form = " ++ showForm form 
-        ++ "\n hyperplanes = "
+        ++ "\n Sub-results: \n" ++ unlines (map showAtomicResult ares)
+        ++ " Distance+vagueness: " ++ show dist
+        ++ "\n Formula: " ++ showForm False form 
+        ++ "\n Formula with ranges:\n" ++ showForm True form 
+        ++ "\n Hyperplanes: "
             ++ (case hps of
                     [] -> "none"
                     _ -> (unlines $ map showHP $ zip [1..] hps))
@@ -95,7 +96,7 @@ instance Show TVM where
             ++ "; vagueness = " ++ show vagueness
             ++ "; hp = " ++ showAffine hp
             ++ "; hpDn = " ++ showAffine hpDn
---            ++ "; form = " ++ showForm hpForm
+            ++ "; form = " ++ showForm False hpForm
 
 showAtomicResult (lab, (maybeResult, distanceD, vaguenessD)) =
     "    " ++ lab ++ ": " 
@@ -399,7 +400,7 @@ instance TruthValue TVDebugReport where
     leq lab form box a b = 
         TVDebugReport $
             banner
-            ++ "\nLEQ [" ++ lab ++ "]:\n" ++ showForm form
+            ++ "\nLEQ:\n" ++ showForm True form
             ++ "\n\nLHS:\n" ++ show a
             ++ "\n\nRHS:\n" ++ show b
             ++ "\n\nRESULT = " ++ show (a `RA.leqReals` b)
@@ -408,7 +409,7 @@ instance TruthValue TVDebugReport where
     less lab form box a b = 
         TVDebugReport $
             banner
-            ++ "\nLE [" ++ lab ++ "]:\n" ++ showForm form
+            ++ "\nLE:\n" ++ showForm True form
             ++ "\n\nLHS:\n" ++ show a
             ++ "\n\nRHS:\n" ++ show b
             ++ "\n\nRESULT = " ++ show (a `RA.leqReals` b)
@@ -417,7 +418,7 @@ instance TruthValue TVDebugReport where
     includes lab form box a b = 
         TVDebugReport $
             banner
-            ++ "\nINCL [" ++ lab ++ "]:\n" ++ showForm form
+            ++ "\nINCL:\n" ++ showForm True form
             ++ "\n\nLHS:\n" ++ show b
             ++ "\n\nRHS:\n" ++ show a
             ++ "\n\nRESULT = " ++ show (a `RA.includes` b)

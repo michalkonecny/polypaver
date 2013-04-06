@@ -239,10 +239,10 @@ fround = termOp1 FRound
 (*:) = termOp2 FTimes
 (/:) = termOp2 FOver
 
-showForm :: Form -> String
-showForm form = sf (Just 0) form
+showForm :: Bool -> Form -> String
+showForm shouldShowRanges form = sf (Just 0) form
     where
-    st maybeIndentLevel = showTermIL maybeIndentLevel
+    st maybeIndentLevel = showTermIL shouldShowRanges maybeIndentLevel
     sf Nothing form = sf2 Nothing form
     sf maybeIndentLevel form
         | length oneLineForm <= 60 = oneLineForm
@@ -311,11 +311,11 @@ showForm form = sf (Just 0) form
             | otherwise = "(" ++ indentNext ++ sfNext form ++ indent ++ ")"
         maybeNextIndentLevel = fmap (+ 2) maybeIndentLevel
 
-showTerm :: Term -> String
-showTerm term = showTermIL (Just 0) term
+showTerm :: Bool -> Term -> String
+showTerm shouldShowRanges term = showTermIL shouldShowRanges (Just 0) term
 
-showTermIL :: (Maybe Int) -> Term -> String
-showTermIL = st
+showTermIL :: Bool -> (Maybe Int) -> Term -> String
+showTermIL shouldShowRanges = st
     where
     st Nothing term = st2 Nothing term
     st maybeIndentLevel term
@@ -374,8 +374,8 @@ showTermIL = st
                 Just indentLevel -> "\n" ++ replicate indentLevel ' '
                 _ -> ""
         maybeAddBounds s =
-            case maybeRangeBounds of
-                Just rangeBounds ->
+            case (shouldShowRanges, maybeRangeBounds) of
+                (True, Just rangeBounds) ->
                     s ++ "∊" ++ show rangeBounds
                 _ -> s
         showOpT op opname t1 t2 =
@@ -393,16 +393,16 @@ showTermIL = st
                     ++ rangeIfInlineClose
             where
             rangeIfInlineOpen = 
-                case maybeRangeBounds of
-                    Just _ -> "("
+                case (shouldShowRanges, maybeRangeBounds) of
+                    (True, Just _) -> "("
                     _ -> ""
             rangeIfInlineClose = 
-                case maybeRangeBounds of
-                    Just rangeBounds -> ")∊" ++ show rangeBounds
+                case (shouldShowRanges, maybeRangeBounds) of
+                    (True, Just rangeBounds) -> ")∊" ++ show rangeBounds
                     _ -> ""
             rangeIfIndented =
-                case maybeRangeBounds of
-                    Just rangeBounds -> "{" ++ opname ++ "∊" ++ show rangeBounds ++ "}"
+                case (shouldShowRanges, maybeRangeBounds) of
+                    (True, Just rangeBounds) -> "{" ++ opname ++ "∊" ++ show rangeBounds ++ "}"
                     _ -> ""
         showFnT fn ts =
             fn ++ rangeIfIndented ++ "("
@@ -411,13 +411,13 @@ showTermIL = st
             ++ range
             where
             rangeIfIndented =
-                case (maybeNextIndentLevel, maybeRangeBounds) of
-                    (Just _, Just rangeBounds) ->
+                case (maybeNextIndentLevel, shouldShowRanges, maybeRangeBounds) of
+                    (Just _, True, Just rangeBounds) ->
                         "{res∊" ++ show rangeBounds ++ "}"
                     _ -> ""
             range =
-                case maybeRangeBounds of
-                    Just rangeBounds -> "∊" ++ show rangeBounds
+                case (shouldShowRanges, maybeRangeBounds) of
+                    (True, Just rangeBounds) -> "∊" ++ show rangeBounds
                     _ -> ""
         padIfInline op = case maybeIndentLevel of Nothing -> " " ++ op ++ " "; _ -> op 
         indentedBracketsT = indentedOpenCloseT "(" ")" True

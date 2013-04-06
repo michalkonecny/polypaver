@@ -52,7 +52,7 @@ getBox form
         unlines $ map reportBadVar $ filter (not . isGood) varRanges
         where
         reportBadVar (v, _) =
-            "*** failed to derive a bound for variable " ++ showVar varNames v ++ " in formula " ++ showForm form 
+            "*** failed to derive a bound for variable " ++ showVar varNames v ++ " in formula " ++ showForm False form 
     varSet = getFormFreeVars form
     varNames = getFormVarNames form
     initBox
