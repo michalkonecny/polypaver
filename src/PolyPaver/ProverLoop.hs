@@ -15,7 +15,7 @@
 module PolyPaver.ProverLoop
 (
     Order(..),
-    Report(..),
+    ReportLevel(..),
     loop
 )
 where
@@ -47,7 +47,7 @@ data Order =
     B | D
     deriving (Show,Data,Typeable)
 
-data Report =
+data ReportLevel =
     ReportNONE | ReportNORMAL | ReportALL 
     deriving (Show,Data,Typeable)
 
@@ -65,7 +65,7 @@ instance Show ProverResult where
 
 loop
     plotSize plotStepDelayMs
-    order report epsrelbits epsabsbits boxSkewing splitGuessing
+    order reportLevel epsrelbits epsabsbits boxSkewing splitGuessing
     origstartdeg maxdeg improvementRatioThreshold 
     maxsize
     pwdepth
@@ -105,27 +105,25 @@ loop
     where
     dim = DBox.size initbox
     loopAux 
-        mstateTV inittime
-        maxDepthReached 
-        queue qlength maxQLength prevtime 
-        computedboxes problemvol truevol 
-        maybeCurrdeg maybePrevMeasure 
-        =
-        do
-        if (qlength > 0) then reportBox else return ()
-        trySolvingBox
+            mstateTV inittime
+            maxDepthReached 
+            queue qlength maxQLength prevtime 
+            computedboxes problemvol truevol 
+            maybeCurrdeg maybePrevMeasure 
+        | qlength == 0 = proved
+        | otherwise = do { reportBox; tryNextBox } 
         where
-        trySolvingBox
-            | Q.null queue = 
-                do
-                currtime <- getCPUTime
-                putStr $
-                  "\nSearch complete.  Conjecture proved TRUE in " ++
-                    showDuration (currtime-inittime) ++ "." ++
-                  "\nComputed boxes : " ++ show computedboxes ++ 
-                  "\nGreatest queue size : " ++ show maxQLength ++  
-                  "\nGreatest depth : " ++ show maxDepthReached ++ "\n\n"
-                stopProver $ Proved $ currtime-inittime
+        proved = 
+            do
+            currtime <- getCPUTime
+            putStr $
+              "\nSearch complete.  Conjecture proved TRUE in " ++
+                showDuration (currtime-inittime) ++ "." ++
+              "\nComputed boxes : " ++ show computedboxes ++ 
+              "\nGreatest queue size : " ++ show maxQLength ++  
+              "\nGreatest depth : " ++ show maxDepthReached ++ "\n\n"
+            stopProver $ Proved $ currtime-inittime
+        tryNextBox
             | depth < mindepth = 
                 do
                 reportInitSplit
@@ -138,7 +136,7 @@ loop
                   "\nTIMED OUT after " ++ show maxtime ++ 
                   " second" ++ (if maxtime == 1 then "." else "s.") ++ 
                   "\nComputed boxes : " ++ show computedboxes ++ 
-                  reportQLengthS ++
+                  "\nQueue size : " ++ show qlength ++
                   "\nGreatest queue size : " ++ show maxQLength ++  
                   "\nGreatest depth : " ++ show maxDepthReached ++ 
                   "\n\n"
@@ -163,7 +161,7 @@ loop
                   "\nConjecture proved false for " ++
                   ppShow ppb ++
                   "\nComputed  boxes : " ++ show computedboxes ++ 
-                  reportQLengthS ++
+                  "\nQueue size : " ++ show qlength ++
                   "\nGreatest queue size : " ++ show maxQLength ++  
                   "\nDepth : " ++ show depth ++
                   "\nGreatest depth : " ++ show maxDepthReached ++  
@@ -193,7 +191,7 @@ loop
                   " after " ++
                   showDuration (currtime-inittime) ++ "." ++
                   "\nComputed boxes : " ++ show computedboxes ++
-                  reportQLengthS ++
+                  "\nQueue size : " ++ show qlength ++
                   "\nGreatest queue size : " ++ show maxQLength ++  
                   "\n\n"
                 stopProver $ GaveUp (currtime-inittime) "REACHED MAXIMUM DEPTH"
@@ -207,7 +205,7 @@ loop
                   " after " ++
                   showDuration (currtime-inittime) ++ "." ++
                   "\nComputed boxes : " ++ show computedboxes ++ 
-                  reportQLengthS ++
+                  "\nQueue size : " ++ show qlength ++
                   "\nGreatest queue size : " ++ show maxQLength ++  
                   "\nDepth : " ++ show depth ++ 
                   "\nGreatest depth : " ++ show maxDepthReached ++  
@@ -223,7 +221,7 @@ loop
         boxes = Q.drop 1 queue
 
         bisectAndRecur form currtime newBoxes isSimpleSplit splitVar =
-            case order of 
+            case order of
                 B -> 
                     loopAux
                         mstateTV inittime
@@ -233,7 +231,7 @@ loop
                         (computedboxes+1) newproblemvol truevol 
                         Nothing Nothing
                 D ->
-                    loopAux 
+                    loopAux
                         mstateTV inittime
                         (max (depth+1) maxDepthReached) 
                         ((Q.fromList $ map prepareBox newBoxes2) Q.>< boxes) 
@@ -326,31 +324,31 @@ loop
         -- reporting
         reportBox
             =
-            case report of
+            case reportLevel of
                 ReportNONE -> return ()
                 _ ->
                     do
-                    putStrLn $ replicate 100 '*'
-                    putStrLn $ "proving over box" ++ show computedboxes ++  ": " ++ ppShow ppb
+                    putStrLn banner
+                    putStrLn identifyBox
                     case depth < mindepth of
                         True -> return ()
                         _ ->
-                            case report of
+                            case reportLevel of
                                 ReportALL ->
                                     putStrLn $ " evaluation result = " ++ show value
                                 _ ->
                                     putStrLn $ " evaluation result = " ++ show maybeDecision
                 
-        reportQLengthS
-            = 
-            case order of
-                D -> "\nQueue size : " ++ show qlength
-                _ -> ""
+        banner = replicate 100 '*'
+        identifyBox =
+            "proving over box" ++ show computedboxes 
+            ++ "(depth=" ++ show depth ++ ", queue size=" ++ show qlength ++ ")"            
+            ++ ": " ++ ppShow ppb
         reportInitSplit
             =
             do
             plotBox yellow
-            case report of
+            case reportLevel of
                 ReportNONE -> return ()
                 _ ->
                     do
@@ -360,7 +358,7 @@ loop
             =
             do
             plotBox green
-            case report of
+            case reportLevel of
                 ReportNONE -> return ()
                 _ ->
                     do
@@ -385,7 +383,7 @@ loop
             =
             do
             plotBox yellow
-            case report of
+            case reportLevel of
                 ReportALL ->
                     case maybeHP of
                         Nothing -> return ()
@@ -397,7 +395,7 @@ loop
                                 ++ "\n  vagueness = " ++ show vagueness
                                 ++ "\n  derived from the formula " ++ showForm form
                 _ -> return ()
-            case report of
+            case reportLevel of
                 ReportNONE -> return ()
                 _ ->
                     do
