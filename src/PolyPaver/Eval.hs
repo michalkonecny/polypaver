@@ -48,17 +48,16 @@ evalForm ::
     (L.TruthValue tv) =>
     Int {-^ polynomial degree limit -} -> 
     Int {-^ polynomial term size limit -} -> 
-    Int {-^ max split depth for ranges of integration variables -} -> 
     EffortIndex {-^ effort index for regulating model error -} -> 
     PPBox BM {-^ domains of variables -} -> 
     (Int,Int) {-^ precision of emulated FP operations -} -> 
     Form {-^ form to evaluate -} -> 
     (tv, 
      Form) {-^ form with added range bounds in all terms -}
-evalForm maxdeg maxsize pwdepth ix ppb@(_, _, isIntVarMap, _) fptype form =
+evalForm maxdeg maxsize ix ppb@(_, _, isIntVarMap, _) fptype form =
     evForm form
     where
-    evTerm = evalTerm sampleTV maxdeg maxsize pwdepth ix ppb fptype
+    evTerm = evalTerm sampleTV maxdeg maxsize ix ppb fptype
     (sampleTV, _) = evForm Verum
     evForm form =
         case form of
@@ -126,14 +125,13 @@ evalTerm ::
     tv {-^ sample truth value to aid type checking -} -> 
     Int {-^ polynomial degree limit -} -> 
     Int {-^ polynomial term size limit -} -> 
-    Int {-^ max split depth for ranges of integration variables -} -> 
     EffortIndex {-^ effort index for regulating model error -} -> 
     PPBox BM {-^ domains of variables -} -> 
     (Int,Int) {-^ precision of emulated FP operations -} ->
     Bool {-^ should compute ranges using inner rounding? -} -> 
     Term {-^ term to evaluate -} -> 
     (FAPUOI BM, Term)
-evalTerm sampleTV maxdeg maxsize pwdepth ix ppbOrig fptype@(epsrelbits,epsabsbits) needInnerRounding term =
+evalTerm sampleTV maxdeg maxsize ix ppbOrig fptype@(epsrelbits,epsabsbits) needInnerRounding term =
     evTerm term
     where
     evTerm = evTermBox ppbOrig

@@ -68,8 +68,8 @@ loop
     order reportLevel epsrelbits epsabsbits boxSkewing splitGuessing
     origstartdeg maxdeg improvementRatioThreshold 
     maxsize
-    pwdepth
-    mindepth maxdepth maxDepthReached
+--    pwdepth
+    mindepth maxdepth maxQLength
     ix maxtime prec originalForm 
 --    intvarids 
     initppb@(_, initbox, varIsInts, varNames)
@@ -90,7 +90,7 @@ loop
     -- start looping:
     loopAux
         mstateTV inittime
-        maxDepthReached
+        0 -- maxDepthReached
 
         (Q.singleton (0,[],origstartdeg,originalForm,0,initppb)) -- initial queue with one box only
         1 -- queue length
@@ -107,7 +107,7 @@ loop
     loopAux 
             mstateTV inittime
             maxDepthReached 
-            queue qlength maxQLength prevtime 
+            queue qlength maxQLengthReached prevtime 
             computedboxes problemvol truevol 
             maybeCurrdeg maybePrevMeasure 
         | qlength == 0 = reportProvedEverywhere
@@ -120,104 +120,100 @@ loop
               "\nSearch complete.  Conjecture proved TRUE in " ++
                 showDuration (currtime-inittime) ++ "." ++
               "\nComputed boxes: " ++ show computedboxes ++ 
-              "\nGreatest queue size: " ++ show maxQLength ++  
+              "\nGreatest queue size: " ++ show maxQLengthReached ++  
               "\nGreatest depth: " ++ show maxDepthReached ++ "\n\n"
             stopProver $ Proved $ currtime-inittime
         tryNextBox
+            -- detect timeout:
+            | prevtime-inittime > maxtime*1000000000000 =  
+                do
+                abort prevtime "TIMED OUT" "TIMED OUT"
+            -- split when forced:
             | depth < mindepth = 
                 do
                 reportInitSplit
                 currtime <- getCPUTime
                 bisectAndRecur form currtime [boxLNoHP, boxRNoHP] True splitVarNoHP
-            | prevtime-inittime > maxtime*1000000000000 = 
-                do
-                putStr $
-                  "\nSearch aborted." ++ 
-                  "\nTIMED OUT after " ++ show maxtime ++ 
-                  " second" ++ (if maxtime == 1 then "." else "s.") ++ 
-                  "\nComputed boxes: " ++ show computedboxes ++ 
-                  "\nQueue size: " ++ show qlength ++
-                  "\nGreatest queue size: " ++ show maxQLength ++  
-                  "\nGreatest depth: " ++ show maxDepthReached ++ 
-                  "\n\n"
-                stopProver $ GaveUp (prevtime-inittime) "TIMED OUT"
-            | decided && decision = -- formula true on this box
+            -- formula is true on this box:
+            | decided && decision =
                 do
                 currtime <- getCPUTime
                 reportProved
                 loopAux
                     mstateTV inittime
                     maxDepthReached 
-                    boxes (qlength-1) maxQLength currtime
+                    boxes (qlength-1) maxQLengthReached currtime
                     (computedboxes+1) problemvol newtruevol 
                     Nothing Nothing
-            | decided = -- formula false on this box
+            -- formula is false on this box:
+            | decided =
                 do
                 currtime <- getCPUTime
                 plotBox red
                 putStr $
-                  "\nSearch aborted. Conjecture proved FALSE in " ++ 
+                  "\nConjecture shown FALSE in " ++ 
                   showDuration (currtime-inittime) ++ "." ++
-                  "\nConjecture proved false for " ++
+                  "\nConjecture is false for " ++
                   ppShow ppb ++
                   "\nComputed  boxes: " ++ show computedboxes ++ 
                   "\nQueue size: " ++ show qlength ++
-                  "\nGreatest queue size: " ++ show maxQLength ++  
+                  "\nGreatest queue size: " ++ show maxQLengthReached ++  
                   "\nDepth: " ++ show depth ++
                   "\nGreatest depth: " ++ show maxDepthReached ++  
                   "\nFormula: " ++ showForm False form ++
                   "\nFormula details: \n" ++ formDebug ++
                   "\n\n" 
                 stopProver $ Disproved (currtime-inittime)
-            | currdeg < maxdeg && undecidedMeasureImproved = -- try raising the degree before splitting
+            -- formula undecided, raise degree:
+            | currdeg < maxdeg && undecidedMeasureImproved =
                 do
-                putStrLn $ "raising degree to " ++ show (currdeg + 1)
+                putStrLn $ "Raising degree to " ++ show (currdeg + 1)
                 currtime <- getCPUTime
                 loopAux
                     mstateTV inittime
                     maxDepthReached 
-                    queue qlength maxQLength currtime 
+                    queue qlength maxQLengthReached currtime 
                     computedboxes problemvol truevol
                     (Just $ currdeg + 1)
                     (Just undecidedMeasure)
+            -- formula undecided, reached maximum depth:
             | depth >= maxdepth = 
                 do
                 currtime <- getCPUTime
-                putStr $ 
-                  "\nSearch aborted." ++ 
-                  "\nReached MAXIMUM DEPTH " ++ show maxdepth ++ 
---                  "\nUndecided for : " ++
---                  ppShow ppb ++
-                  " after " ++
-                  showDuration (currtime-inittime) ++ "." ++
-                  "\nComputed boxes : " ++ show computedboxes ++
-                  "\nQueue size : " ++ show qlength ++
-                  "\nGreatest queue size : " ++ show maxQLength ++  
-                  "\n\n"
-                stopProver $ GaveUp (currtime-inittime) "REACHED MAXIMUM DEPTH"
-            | not splitSuccess ||
-              length thinvarids == dim = -- cannot split any further
+                abort currtime "REACHED MAXIMUM DEPTH" ("Reached MAXIMUM DEPTH " ++ show maxdepth)
+            -- formula undecided, reached maximum queue size:
+            | qlength >= maxQLength = 
                 do
                 currtime <- getCPUTime
-                putStr $ 
-                  "\nSearch aborted." ++ 
-                  "\nFAILED TO SPLIT undecided box : " ++ ppShow ppb ++ 
-                  " after " ++
-                  showDuration (currtime-inittime) ++ "." ++
-                  "\nComputed boxes : " ++ show computedboxes ++ 
-                  "\nQueue size : " ++ show qlength ++
-                  "\nGreatest queue size : " ++ show maxQLength ++  
-                  "\nDepth : " ++ show depth ++ 
-                  "\nGreatest depth : " ++ show maxDepthReached ++  
-                  "\n\n"
-                stopProver $ GaveUp (currtime-inittime) "FAILED TO SPLIT"
-            | otherwise = -- formula undecided on this box, will split it
+                abort currtime "REACHED MAXIMUM QUEUE SIZE" ("Reached MAXIMUM QUEUE SIZE " ++ show maxQLength)
+            -- formula undecided, cannot split the box any further:
+            | not splitSuccess ||
+              length thinvarids == dim =
+                do
+                currtime <- getCPUTime
+                abort currtime "FAILED TO SPLIT" ("FAILED TO SPLIT undecided box : " ++ ppShow ppb)
+            -- split the box:
+            | otherwise =
                 do
                 currtime <- getCPUTime
                 reportSplit
                 bisectAndRecur undecidedMaybeSimplerForm currtime [boxL, boxR] False splitVar
 
+        abort currtime shorterMsg longerMsg =
+            do
+            putStr $
+              "\nSearch aborted." ++ 
+              "\n" ++ longerMsg ++ " after " ++ showDuration (currtime-inittime) ++ "." ++
+              "\nComputed boxes : " ++ show computedboxes ++ 
+              "\nQueue size : " ++ show qlength ++
+              "\nGreatest queue size : " ++ show maxQLengthReached ++  
+              "\nDepth : " ++ show depth ++ 
+              "\nGreatest depth : " ++ show maxDepthReached ++  
+              "\n\n"
+            stopProver $ GaveUp (currtime-inittime) shorterMsg
+
         (depth, skewAncestors, startdeg, form, prevSplitVar, ppb@(skewed, box, _, _)) = Q.index queue 0
+            -- beware: "form" above has ranges left over in it from a parent box - do not show them
         boxes = Q.drop 1 queue
 
         bisectAndRecur form currtime newBoxes isSimpleSplit splitVar =
@@ -239,7 +235,7 @@ loop
                         (computedboxes+1) newproblemvol truevol 
                         Nothing Nothing
             where
-            newMaxQLength = max newQLength maxQLength
+            newMaxQLength = max newQLength maxQLengthReached
             newQLength = qlength - 1 + newBoxes2length
             newBoxes2length = length newBoxes2
             newBoxes2
@@ -285,14 +281,14 @@ loop
         decision = fromJust maybeDecision
         maybeDecision = L.decide (value :: L.TVM)
         (value, formWithRanges) =
-            evalForm currdeg maxsize pwdepth ix ppb (epsrelbits,epsabsbits) form
+            evalForm currdeg maxsize ix ppb (epsrelbits,epsabsbits) form
 --            case fptype of
 --                 B32 -> evalForm currdeg maxsize ix box (23,-126) form :: L.TVM -- Maybe Bool
 --                 B32near -> evalForm currdeg maxsize ix box (24,-126) form :: L.TVM -- Maybe Bool
 --                 B64 -> evalForm currdeg maxsize ix box (52,-1022) form :: L.TVM -- Maybe Bool
 --                 B64near -> evalForm currdeg maxsize ix box (53,-1022) form :: L.TVM -- Maybe Bool
         (L.TVDebugReport formDebug, _) = 
-            evalForm currdeg maxsize pwdepth ix ppb (epsrelbits,epsabsbits) form
+            evalForm currdeg maxsize ix ppb (epsrelbits,epsabsbits) form
 
         newstartdeg =
             (origstartdeg + currdeg) `div` 2
@@ -438,4 +434,11 @@ loop
         yellow = (0.6,0.6,0.1,0.05)
         
 showDuration durationInPicoseconds =
-    (show $ ((fromInteger durationInPicoseconds) / 1000000000000)) ++ " s"
+    (show durationInSeconds) ++ " s (" ++ show days ++ "d, " ++ show hours ++ "h, " ++ show mins ++ "min, " ++ show secs ++ "s)" 
+    where
+    durationInSeconds = (fromInteger durationInPicoseconds) / 1000000000000 
+    (minsAll, secs) = quotRem (Prelude.round durationInSeconds) 60
+    (hoursAll, mins) = quotRem minsAll 60
+    (days, hours) = quotRem hoursAll 24
+    _ = [secs, mins, hours, days :: Int]
+      

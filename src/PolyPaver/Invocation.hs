@@ -58,6 +58,7 @@ data Paver = Paver
     ,maxSize :: Int
     ,minDepth :: Int
     ,maxDepth :: Int
+    ,maxQueueLength :: Int
     ,effort :: Int
     ,time :: Int
     ,order :: Order
@@ -72,7 +73,8 @@ data Paver = Paver
     }
     deriving (Show,Data,Typeable)
 
-paver = Paver 
+paver =
+    Paver 
     {problemId = [] &= args &= typ "PROBLEM_ID" 
     ,degree = 0 &= help "maximum polynomial degree (default = 0)" &= groupname "Proving effort"
     ,startDegree = -1 &= help "first polynomial degree to try on each box (default = degree)"
@@ -80,6 +82,10 @@ paver = Paver
     ,order = D &= help "sub-problem processing order, b for breadth-first or d for depth-first (default)"
     ,minDepth = 0 &= help "minimum bisection depth (default = 0)"
     ,maxDepth = 1000 &= name "b" &= help "maximum bisection depth (default = 1000)"
+    ,maxQueueLength = -1 &= name "u" 
+        &= help ("maximum queue size (default = " 
+                    ++ show maxQueueLengthDefaultDepthFirst ++ " for depth-first and "
+                    ++ show maxQueueLengthDefaultBreadthFirst ++ " for breadth-first order)")
     ,effort = 10 &= help "approximation effort parameter (default = 10)" 
     ,time = 7*24*3600 &= help "timeout in seconds (default = 7*24*3600 ie 1 week)"    
     ,boxSkewing = False &= name "k" &= help "allow parallelepiped boxes, by default only coaxial rectangles" &= groupname "Experimental"
@@ -98,17 +104,33 @@ paver = Paver
     &= summary "PolyPaver 0.2 (c) 2011, 2013 Jan Duracz and Michal Konecny (Aston University)"
     &= name "polypaver"
 
+setDefaults :: Paver -> Paver
+setDefaults = setMaxQLength
+    where
+    setMaxQLength args =
+        case maxQueueLength args == -1 of
+            False -> args -- maxQueueLength is explicitly set, do no change
+            True -> 
+                case order args of
+                    D -> args { maxQueueLength = maxQueueLengthDefaultDepthFirst }
+                    B -> args { maxQueueLength = maxQueueLengthDefaultBreadthFirst }
+
+maxQueueLengthDefaultDepthFirst = 30
+maxQueueLengthDefaultBreadthFirst = 5000
+
 
 defaultMain problem = 
     do
     reportCmdLine
-    args <- cmdArgs paver
+    argsPre <- cmdArgs paver
+    let args = setDefaults argsPre
     runPaver problem args
 
 defaultParsingMain problemFactory =
     do
     reportCmdLine
-    args <- cmdArgs paver
+    argsPre <- cmdArgs paver
+    let args = setDefaults argsPre
     let problemIdOpt = problemId args
     problems <- problemFactory problemIdOpt
     results <- mapM (runProblem args) problems
@@ -151,10 +173,10 @@ runPaver problem args =
         maxdeg -- maximum bound degree
         improvementRatioThreshold -- when to try raising degree/effort and when to give up and split
         maxsize
-        0 -- pwdepth, currently has no effect; FIXME: either remove or finish 
+--        0 -- pwdepth, currently has no effect; either remove or make effective 
         mindepth -- minimum bisection depth
         maxdepth -- maximum bisection depth
-        0 -- maxdepth
+        maxQLength -- maximum queue length
         ix
         maxtime -- 24 hour timeout
         23 -- mantissa bit size (read precisionS)
@@ -170,6 +192,7 @@ runPaver problem args =
     ix = fromInteger $ toInteger $ effort args
     mindepth = minDepth args 
     maxdepth = maxDepth args 
+    maxQLength = maxQueueLength args 
     conj = conjecture problem
     varNames = getFormVarNames conj
     initbox = ppBoxFromIntervals varIsInts varNames boxBounds 
