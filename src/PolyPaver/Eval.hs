@@ -188,8 +188,12 @@ evalTerm sampleTV maxdeg maxsize pwdepth ix ppbOrig fptype@(epsrelbits,epsabsbit
                 Times left right -> evOp2 Times (*) left right
                 Square arg -> evOp1 Square (\x -> x^2) arg
                 Recip arg -> evOp1 Recip recip arg
-                Over left right -> evOp2 Over (/) left right
---                (UFA.const (FA.getRangeApprox $ evTermBox ppb right))
+                Over left right -> evOp2 Over divOp left right
+                    where
+                    divOp = (/)
+--                    divOp l r =  l * (UFA.const (map recip $ FA.getRangeApprox r)) 
+                        -- the above poor man's division is surprisingly 2x slower than the ordinary division
+                        -- at least for erfriemann -d 1 
                 Sqrt arg -> evOp1 Sqrt (RAEL.sqrt (fromInteger $ toInteger ix)) arg
                 Exp arg -> evOp1 Exp (RAEL.exp ix) arg
 --                    ix $ -- (fromInteger $ 3*(toInteger maxdeg)+10) $ 
