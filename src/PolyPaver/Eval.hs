@@ -79,7 +79,7 @@ evalForm maxdeg maxsize ix ppb@(_, _, isIntVarMap, _) fptype form =
                 evForm $ Or 
                     (Le (lab ++ "<") left right)
                     (Le (lab ++ ">") right left)
-            Ni lab left right -> evOpT2 True (Ni lab) (\formWR -> flip $ L.includes lab formWR ppb) left right 
+            Contains lab left right -> evOpT2 True (Contains lab) (\formWR -> flip $ L.includes lab formWR ppb) left right 
             IsRange lab t lower upper -> 
                 evForm $  (Leq (lab ++ "LO") lower t) /\ (Leq (lab ++ "HI") t upper)
             IsIntRange lab t lower upper -> 
@@ -354,13 +354,13 @@ evalTerm sampleTV maxdeg maxsize ix ppbOrig fptype@(epsrelbits,epsabsbits) needI
                 (loRangeLo, loRangeHi) = RA.bounds loRange
                 (hiRangeLo, hiRangeHi) = RA.bounds hiRange
                 bisect (lo,hi) 
-                    | (stepSize < hi - lo) = 
+                    | (minStepSize < hi - lo) = 
                         (bisect (lo, mid)) ++ 
                         (bisect (mid, hi))
                     | otherwise = [RA.fromBounds (lo, hi)]
                     where                    
                     mid = fst $ RA.bounds $ (hi + lo) / 2 
-                stepSize 
+                minStepSize
                     | useBounds > 0 = useBounds
 --                    | useBox > 0 = useBox -- TODO
                     | otherwise = useIx 

@@ -52,7 +52,7 @@ getFormVarNames form =
         Geq _ left right -> getTermVarNames2 left right
         Eq _ left right -> getTermVarNames2 left right
         Neq _ left right -> getTermVarNames2 left right
-        Ni _ left right -> getTermVarNames2 left right 
+        Contains _ left right -> getTermVarNames2 left right 
         IsRange _ t1 t2 t3 -> getTermVarNames3 t1 t2 t3
         IsIntRange _ t1 t2 t3 -> getTermVarNames3 t1 t2 t3
         IsInt _ t -> getTermVarNames t
@@ -113,7 +113,7 @@ getFormFreeVars form =
         Geq _ left right -> getTermFreeVars2 left right
         Eq _ left right -> getTermFreeVars2 left right
         Neq _ left right -> getTermFreeVars2 left right
-        Ni _ left right -> getTermFreeVars2 left right
+        Contains _ left right -> getTermFreeVars2 left right
         IsIntRange _ arg1 arg2 arg3 -> (getTermFreeVars3 arg1 arg2 arg3)
         IsRange _ arg1 arg2 arg3 -> (getTermFreeVars3 arg1 arg2 arg3)
         IsInt _ arg -> getTermFreeVars arg
@@ -187,8 +187,8 @@ renameVarsForm old2new = rnm
                 Eq lab (rnmT left) (rnmT right)
             Neq lab left right ->
                 Neq lab (rnmT left) (rnmT right)
-            Ni lab left right -> 
-                Ni lab (rnmT left) (rnmT right)
+            Contains lab left right -> 
+                Contains lab (rnmT left) (rnmT right)
             IsRange lab arg1 arg2 arg3 -> 
                 IsRange lab (rnmT arg1) (rnmT arg2) (rnmT arg3)
             IsIntRange lab arg1 arg2 arg3 -> 
@@ -278,8 +278,8 @@ substituteVarsForm old2new = subst
                 Eq lab (substT left) (substT right)
             Neq lab left right ->
                 Neq lab (substT left) (substT right)
-            Ni lab left right -> 
-                Ni lab (substT left) (substT right)
+            Contains lab left right -> 
+                Contains lab (substT left) (substT right)
             IsRange lab arg1 arg2 arg3 -> 
                 IsRange lab (substT arg1) (substT arg2) (substT arg3)
             IsIntRange lab arg1 arg2 arg3 -> 
