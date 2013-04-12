@@ -129,7 +129,7 @@ instance TruthValue TVM where
     fromBool lab _ b = TVMDecided [(lab, (Just b, 1, 0))] b
     leq = tvmLeqLess True
     less = tvmLeqLess False
-    includes lab form box a b -- b `Contains` a
+    includes lab form box a b -- b `ContainedIn` a
         =
 --        unsafePrintReturn
 --        (
