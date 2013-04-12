@@ -32,7 +32,7 @@ data Form
   | Geq Label Term Term
   | Eq Label Term Term
   | Neq Label Term Term
-  | Contains Label Term Term
+  | ContainedIn Label Term Term
   | IsRange Label Term Term Term 
   | IsIntRange Label Term Term Term 
   | IsInt Label Term
@@ -75,7 +75,7 @@ getFormulaSize form =
         Geq _ t1 t2 -> 1 + (getTermSize t1) + (getTermSize t2)
         Eq _ t1 t2 -> 1 + (getTermSize t1) + (getTermSize t2)
         Neq _ t1 t2 -> 1 + (getTermSize t1) + (getTermSize t2)
-        Contains _ t1 t2 -> 1 + (getTermSize t1) + (getTermSize t2)
+        ContainedIn _ t1 t2 -> 1 + (getTermSize t1) + (getTermSize t2)
         IsRange _ t1 t2 t3 -> 1 + (getTermSize t1) + (getTermSize t2) + (getTermSize t3)
         IsIntRange _ t1 t2 t3 -> 1 + (getTermSize t1) + (getTermSize t2) + (getTermSize t3)
         IsInt _ t -> 1 + (getTermSize t)
@@ -95,7 +95,7 @@ sortFormulasBySize formulas =
 (|<=|) = Leq "anon"
 (|>|) = Ge "anon"
 (|>=|) = Geq "anon"
-(|<-|) = Contains "anon"
+(|<-|) = ContainedIn "anon"
 
 notVerum Verum = False
 notVerum _ = True
@@ -265,7 +265,7 @@ showForm shouldShowRanges form = sf (Just 0) form
             Geq lab t1 t2 -> showOpT "≥" lab t1 t2
             Eq lab t1 t2 -> showOpT "=" lab t1 t2
             Neq lab t1 t2 -> showOpT "≠" lab t1 t2
-            Contains lab t1 t2 -> showOpT "⊆" lab t1 t2
+            ContainedIn lab t1 t2 -> showOpT "⊆" lab t1 t2
             IsRange lab t1 t2 t3 -> showPred lab "isrange" [t1, t2, t3]
             IsIntRange lab t1 t2 t3 -> showPred lab "isintrange" [t1, t2, t3]
             IsInt lab t -> showPred lab "isint" [t]

@@ -79,7 +79,7 @@ evalForm maxdeg maxsize ix ppb@(_, _, isIntVarMap, _) fptype form =
                 evForm $ Or 
                     (Le (lab ++ "<") left right)
                     (Le (lab ++ ">") right left)
-            Contains lab left right -> evOpT2 True (Contains lab) (\formWR -> flip $ L.includes lab formWR ppb) left right 
+            ContainedIn lab left right -> evOpT2 True (ContainedIn lab) (\formWR -> flip $ L.includes lab formWR ppb) left right 
             IsRange lab t lower upper -> 
                 evForm $  (Leq (lab ++ "LO") lower t) /\ (Leq (lab ++ "HI") t upper)
             IsIntRange lab t lower upper -> 
