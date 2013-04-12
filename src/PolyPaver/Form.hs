@@ -423,7 +423,16 @@ showTermIL shouldShowRanges = st
         indentedBracketsT = indentedOpenCloseT "(" ")" True
         indentedOpenCloseT open close optional term
             | optional && isAtomicTerm term = st maybeIndentLevel term
-            | otherwise = open ++ indentNext ++ stNext term ++ indent ++ close
+            | optional = 
+                open ++ indentNext ++ stNext term ++ indent ++ close
+            | otherwise = 
+                open ++ rangeIfIndented ++ indentNext ++ stNext term ++ indent ++ maybeAddBounds close
+            where
+            rangeIfIndented =
+                case (maybeNextIndentLevel, shouldShowRanges, maybeRangeBounds) of
+                    (Just _, True, Just rangeBounds) ->
+                        "{res∊" ++ show rangeBounds ++ "}"
+                    _ -> ""
         maybeNextIndentLevel = fmap (+ 2) maybeIndentLevel
         isAtomicTerm :: Term -> Bool
         isAtomicTerm (Term (term, _)) = 

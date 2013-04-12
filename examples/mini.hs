@@ -21,7 +21,8 @@ main =
 --    defaultMain test_skew 
 --    defaultMain sqrt_sin 
 --    defaultMain sinsin
-    defaultMain sinsin2
+--    defaultMain sinsin2
+    defaultMain absNonneg
     
 exp_shift =
     Problem box conjecture 
@@ -66,5 +67,14 @@ sinsin2 =
     conjecture = 
         sin(sin(3*x)+1) |<=| sin(3*x+1)
 
+
+absNonneg =
+    Problem box conjecture
+    where
+    box = [(0, (-1,1), False), (1, (-1,1), False)]
+    x = termVar 0 "x"
+    y = termVar 1 "y"
+    conjecture = 
+         -0.01 |<=| (termOp1 FSqrt $ abs (x *: y))
     
     
