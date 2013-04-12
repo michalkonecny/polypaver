@@ -240,6 +240,7 @@ decodeFn "num__multiply" [arg1, arg2] = arg1 *: arg2
 decodeFn "num__add" [arg1, arg2] = arg1 +: arg2
 decodeFn "num__subtract" [arg1, arg2] = arg1 -: arg2
 decodeFn "num__exp" [arg1] = termOp1 FExp arg1
+decodeFn "exact__hull" [arg1, arg2] = hull arg1 arg2
 decodeFn "exact__sqrt" [arg1] = sqrt arg1
 decodeFn "exact__exp" [arg1] = exp arg1
 decodeFn "exact__sin" [arg1] = sin arg1
