@@ -202,7 +202,7 @@ decodePred lab "num__isint" [arg1] = IsInt lab arg1
 decodePred lab "num__isintegerrange" [arg1, arg2, arg3] = IsIntRange lab arg1 arg2 arg3
 decodePred lab "num__isfloatrange" [arg1, arg2, arg3] = IsRange lab arg1 arg2 arg3
 decodePred lab "num__isdoublerange" [arg1, arg2, arg3] = IsRange lab arg1 arg2 arg3
-decodePred lab "exact__contains" [arg1, arg2] = ContainedIn lab arg1 arg2
+decodePred lab "exact__containedin" [arg1, arg2] = ContainedIn lab arg1 arg2
 decodePred lab pred args =
     error $ 
         "in [" ++ lab ++ "], cannot decode predicate " ++ pred ++ 
