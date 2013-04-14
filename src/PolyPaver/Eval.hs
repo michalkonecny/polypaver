@@ -180,7 +180,10 @@ evalTerm sampleTV maxdeg maxsize ix ppbOrig fptype@(epsrelbits,epsabsbits) needI
                 Plus left right -> evOp2 Plus (+) left right
                 Minus left right -> evOp2 Minus (-) left right
                 Neg arg -> evOp1 Neg negate arg
-                Abs arg -> evOp1 Abs (RAEL.abs ix) arg
+                Abs arg -> evOp1 Abs absOp arg
+                    where
+--                    absOp = RAEL.abs ix
+                    absOp = setSizes . RAEL.abs ix . setSizes0
                 Min left right -> evOp2 Min min left right
                 Max left right -> evOp2 Max max left right
                 Times left right -> evOp2 Times (*) left right
@@ -236,6 +239,7 @@ evalTerm sampleTV maxdeg maxsize ix ppbOrig fptype@(epsrelbits,epsabsbits) needI
 
         setSizes :: FAPUOI BM -> FAPUOI BM  
         setSizes = FA.setMaxDegree maxdeg . FA.setMaxSize maxsize
+        setSizes0 = FA.setMaxDegree 0
         rationalToFA = setSizes . fromRational
         evOp1 opT opFA arg =
             (opFA argFA, opT argWithRanges)
