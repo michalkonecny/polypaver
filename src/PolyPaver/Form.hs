@@ -101,7 +101,7 @@ notVerum Verum = False
 notVerum _ = True
 
 newtype Term = Term (Term', Maybe (IRA BM))
-  deriving (Eq,Show,Data,Typeable)
+  deriving (Eq,Data,Typeable)
 data Term'
   = Lit Rational
   | Var Int String -- numeric identifier, string only for printing
@@ -138,6 +138,9 @@ data Term'
   | FExp Term
   deriving (Eq,Show,Read,Data,Typeable)
 
+instance Show Term where
+    show (Term (term', _)) = show term'
+    
 instance Read Term where
     readsPrec p s =
         map addTN $ readsPrec p s
