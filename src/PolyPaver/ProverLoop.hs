@@ -44,7 +44,7 @@ import Control.Concurrent (threadDelay)
 import System.CPUTime
 
 data Order = 
-    B | D
+    BFS | DFS | DFSthenBFS | BFSFalsifyOnly
     deriving (Show,Data,Typeable)
 
 data ReportLevel =
@@ -89,6 +89,7 @@ loop
     inittime <- getCPUTime
     -- start looping:
     loopAux
+        order
         mstateTV inittime
         0 -- maxDepthReached
 
@@ -105,12 +106,19 @@ loop
     where
     dim = DBox.size initbox
     loopAux 
+            loopOrder
             mstateTV inittime
             maxDepthReached 
             queue qlength maxQLengthReached prevtime 
             computedboxes problemvol truevol 
             maybeCurrdeg maybePrevMeasure 
-        | qlength == 0 = reportProvedEverywhere
+        | qlength == 0 =
+            case loopOrder of
+                BFSFalsifyOnly -> 
+                    do
+                    currtime <- getCPUTime
+                    abort currtime "FAILED TO FALSIFY" "FAILED TO FALSIFY during BFSFalsifyOnly" 
+                _ -> reportProvedEverywhere
         | otherwise = do { reportBox; tryNextBox } 
         where
         reportProvedEverywhere = 
@@ -140,6 +148,7 @@ loop
                 currtime <- getCPUTime
                 reportProved
                 loopAux
+                    loopOrder
                     mstateTV inittime
                     maxDepthReached 
                     boxes (qlength-1) maxQLengthReached currtime
@@ -170,6 +179,7 @@ loop
                 putStrLn $ "Raising degree to " ++ show (currdeg + 1)
                 currtime <- getCPUTime
                 loopAux
+                    loopOrder
                     mstateTV inittime
                     maxDepthReached 
                     queue qlength maxQLengthReached currtime 
@@ -182,7 +192,7 @@ loop
                 currtime <- getCPUTime
                 abort currtime "REACHED MAXIMUM DEPTH" ("Reached MAXIMUM DEPTH " ++ show maxdepth)
             -- formula undecided, reached maximum queue size:
-            | qlength >= maxQLength = 
+            | qlength >= (case loopOrder of BFSFalsifyOnly -> 5000 ; _ -> maxQLength) = 
                 do
                 currtime <- getCPUTime
                 abort currtime "REACHED MAXIMUM QUEUE SIZE" ("Reached MAXIMUM QUEUE SIZE " ++ show maxQLength)
@@ -200,8 +210,15 @@ loop
                 bisectAndRecur undecidedMaybeSimplerForm currtime [boxL, boxR] False splitVar
 
         abort currtime shorterMsg longerMsg =
-            do
-            putStr $
+            case loopOrder of
+                DFSthenBFS -> restartAsBFS
+                _ -> doAbort
+            where
+            doAbort =
+                do
+                putStr abortReport
+                stopProver $ GaveUp (currtime-inittime) shorterMsg
+            abortReport =
               "\nSearch aborted." ++ 
               "\n" ++ longerMsg ++ " after " ++ showDuration (currtime-inittime) ++ "." ++
               "\nComputed boxes : " ++ show computedboxes ++ 
@@ -210,31 +227,55 @@ loop
               "\nDepth : " ++ show depth ++ 
               "\nGreatest depth : " ++ show maxDepthReached ++  
               "\n\n"
-            stopProver $ GaveUp (currtime-inittime) shorterMsg
+            restartAsBFS =
+                do
+                putStr abortReport
+                loopAux
+                    BFSFalsifyOnly
+                    mstateTV inittime
+                    0 -- maxDepthReached
+                    initqueueDifficultPoint 
+                    1 -- queue length
+                    1 -- greatest computed queue size
+                    currtime 
+                    0 -- number of computed boxes
+                    (ppVolume initppbDifficultPoint) 
+                    0 -- volume of proved boxes
+                    Nothing Nothing
+            initqueueDifficultPoint =
+                Q.singleton queueElem
+            queueElem@(_, _, _, _, _, initppbDifficultPoint) =
+                Q.index queue $ min 10 $ Q.length queue - 1
 
         (depth, skewAncestors, startdeg, form, prevSplitVar, ppb@(skewed, box, _, _)) = Q.index queue 0
             -- beware: "form" above has ranges left over in it from a parent box - do not show them
         boxes = Q.drop 1 queue
 
         bisectAndRecur form currtime newBoxes isSimpleSplit splitVar =
-            case order of
-                B -> 
+            case loopOrder of
+                DFS -> bisectAndRecurDFS
+                DFSthenBFS -> bisectAndRecurDFS
+                BFS -> bisectAndRecurBFS
+                BFSFalsifyOnly -> bisectAndRecurBFS
+            where
+            bisectAndRecurBFS =
                     loopAux
+                        loopOrder
                         mstateTV inittime
                         (max (depth+1) maxDepthReached) 
                         (boxes Q.>< (Q.fromList $ map prepareBox newBoxes2)) 
                         newQLength newMaxQLength currtime 
                         (computedboxes+1) newproblemvol truevol 
                         Nothing Nothing
-                D ->
+            bisectAndRecurDFS =
                     loopAux
+                        loopOrder
                         mstateTV inittime
                         (max (depth+1) maxDepthReached) 
                         ((Q.fromList $ map prepareBox newBoxes2) Q.>< boxes) 
                         newQLength newMaxQLength currtime 
                         (computedboxes+1) newproblemvol truevol 
                         Nothing Nothing
-            where
             newMaxQLength = max newQLength maxQLengthReached
             newQLength = qlength - 1 + newBoxes2length
             newBoxes2length = length newBoxes2
@@ -398,13 +439,8 @@ loop
                     putStrLn $ 
                         "Splitting at depth " ++ show depth
                         ++ reportVar 
-                        ++ reportQSize 
                     reportFraction
                     where
-                    reportQSize =
-                        case order of
-                            D -> ", new queue size is " ++ show (qlength + 1)
-                            B -> ""
                     reportVar
                         | skewed = " domain of skewed variable _" ++ showVar varNames splitVar ++ "_"
                         | otherwise = " domain of variable " ++ showVar varNames splitVar
