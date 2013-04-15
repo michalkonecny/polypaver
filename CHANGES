@@ -1,8 +1,11 @@
 0.2: March 2013
-  * added support for the integral operator
-  * variables can be declared to range over integers only
-  * proving each conclusion of a Spark VC separately
-  * sorting hypotheses in Spark VCs from smallest to largest
+  * Added support for the integral operator.
+  * Variables can be declared to range over integers only.
+  * Proving each conclusion of a Spark VC separately.
+  * Sorting hypotheses in Spark VCs from smallest to largest.
+  * By default PolyPaver now uses DFS and if this fails to decide, 
+    PolyPaver automatically runs BFS to search for counter-example
+    near where DFS stopped.
   
 0.1: Sept 2011
   * initial release
