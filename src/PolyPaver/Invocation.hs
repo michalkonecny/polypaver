@@ -79,13 +79,13 @@ paver =
     ,degree = 0 &= help "maximum polynomial degree (default = 0)" &= groupname "Proving effort"
     ,startDegree = -1 &= help "first polynomial degree to try on each box (default = degree)"
     ,maxSize = 100 &= name "z" &= help "maximum polynomial term size (default = 100)"
-    ,order = D &= help "sub-problem processing order, b for breadth-first or d for depth-first (default)"
+    ,order = DFSthenBFS &= help "sub-problem processing order, bfs for breadth-first or dfs for depth-first, (default = DFSthenBFS)"
     ,minDepth = 0 &= help "minimum bisection depth (default = 0)"
     ,maxDepth = 1000 &= name "b" &= help "maximum bisection depth (default = 1000)"
     ,maxQueueLength = -1 &= name "u" 
         &= help ("maximum queue size (default = " 
-                    ++ show maxQueueLengthDefaultDepthFirst ++ " for depth-first and "
-                    ++ show maxQueueLengthDefaultBreadthFirst ++ " for breadth-first order)")
+                    ++ show maxQueueLengthDefaultDFS ++ " for depth-first and "
+                    ++ show maxQueueLengthDefaultBFS ++ " for breadth-first order)")
     ,effort = 10 &= help "approximation effort parameter (default = 10)" 
     ,time = 7*24*3600 &= help "timeout in seconds (default = 7*24*3600 ie 1 week)"    
     ,boxSkewing = False &= name "k" &= help "allow parallelepiped boxes, by default only coaxial rectangles" &= groupname "Experimental"
@@ -112,11 +112,13 @@ setDefaults = setMaxQLength
             False -> args -- maxQueueLength is explicitly set, do no change
             True -> 
                 case order args of
-                    D -> args { maxQueueLength = maxQueueLengthDefaultDepthFirst }
-                    B -> args { maxQueueLength = maxQueueLengthDefaultBreadthFirst }
+                    DFS -> args { maxQueueLength = maxQueueLengthDefaultDFS }
+                    BFS -> args { maxQueueLength = maxQueueLengthDefaultBFS }
+                    DFSthenBFS -> args { maxQueueLength = maxQueueLengthDefaultDFS }
+                    BFSFalsifyOnly -> args { maxQueueLength = maxQueueLengthDefaultBFS }
 
-maxQueueLengthDefaultDepthFirst = 30
-maxQueueLengthDefaultBreadthFirst = 5000
+maxQueueLengthDefaultDFS = 50
+maxQueueLengthDefaultBFS = 5000
 
 
 defaultMain problem = 
