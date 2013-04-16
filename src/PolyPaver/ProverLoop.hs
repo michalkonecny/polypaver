@@ -54,13 +54,20 @@ data ReportLevel =
 data ProverResult
     = Proved { proverResultCPUTime :: Integer }
     | Disproved { proverResultCPUTime :: Integer }
-    | GaveUp { proverResultCPUTime :: Integer, proverResultReason ::  String }
+    | GaveUp 
+        { 
+            proverResultCPUTime :: Integer, 
+            proverResultReason ::  String, 
+            proverResultProvedFraction ::  Double
+        }
     deriving (Data,Typeable)
     
 instance Show ProverResult where
     show (Proved duration) = "PROVED in " ++ showDuration duration
     show (Disproved duration) = "DISPROVED in " ++ showDuration duration
-    show (GaveUp duration reason) = "GAVE UP: " ++ reason ++ " after " ++ showDuration duration 
+    show (GaveUp duration reason percent) = 
+        "GAVE UP: " ++ reason ++ " after " ++ showDuration duration
+        ++ " (proved fraction: " ++ show percent ++ ")" 
 
 
 loop
@@ -214,10 +221,12 @@ loop
                 DFSthenBFS -> restartAsBFS
                 _ -> doAbort
             where
+            firstRunResult = GaveUp (currtime-inittime) shorterMsg (fst $ RA.doubleBounds provedFraction)
             doAbort =
                 do
                 putStr abortReport
-                stopProver $ GaveUp (currtime-inittime) shorterMsg
+                reportFraction
+                stopProver firstRunResult
             abortReport =
               "\nSearch aborted." ++ 
               "\n" ++ longerMsg ++ " after " ++ showDuration (currtime-inittime) ++ "." ++
@@ -225,14 +234,14 @@ loop
               "\nQueue size : " ++ show qlength ++
               "\nGreatest queue size : " ++ show maxQLengthReached ++  
               "\nDepth : " ++ show depth ++ 
-              "\nGreatest depth : " ++ show maxDepthReached ++  
-              "\n\n"
+              "\nGreatest depth : " ++ show maxDepthReached ++ "\n"
             restartAsBFS =
                 do
                 putStr abortReport
-                loopAux
+                reportFraction
+                secondRunResult <- loopAux
                     BFSFalsifyOnly
-                    mstateTV inittime
+                    mstateTV currtime
                     0 -- maxDepthReached
                     initqueueDifficultPoint 
                     1 -- queue length
@@ -242,6 +251,7 @@ loop
                     (ppVolume initppbDifficultPoint) 
                     0 -- volume of proved boxes
                     Nothing Nothing
+                return $ case secondRunResult of Disproved _ -> secondRunResult; _ -> firstRunResult
             initqueueDifficultPoint =
                 Q.singleton queueElem
             queueElem@(_, _, _, _, _, initppbDifficultPoint) =
@@ -408,13 +418,12 @@ loop
                 "Proved fraction : " ++ show provedFraction
                 ++ " (Proved volume : " ++ show oldornewtruevol
                 ++ " ; Overall volume : " ++ show problemvol ++ ")"
-            where
-            provedFraction
-                | problemvol `RA.equalReals` 0 == Just True = 1
-                | otherwise = (oldornewtruevol / problemvol)
-            oldornewtruevol
-                | decided && decision = newtruevol
-                | otherwise = truevol
+        provedFraction
+            | problemvol `RA.equalReals` 0 == Just True = 1
+            | otherwise = (oldornewtruevol / problemvol)
+        oldornewtruevol
+            | decided && decision = newtruevol
+            | otherwise = truevol
                 
         reportSplit
             =
