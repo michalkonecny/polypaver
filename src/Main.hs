@@ -17,8 +17,10 @@ module Main where
 import PolyPaver.Form (splitConclusion)
 import PolyPaver.Invocation
 import PolyPaver.Input.SPARK
-import PolyPaver.DeriveBounds
+import PolyPaver.DeriveBounds (getBox)
+import PolyPaver.Vars (substituteVarsForm,getFormVarNames)
 
+import qualified Data.IntMap as IMap
 import Data.List
 
 main 
@@ -39,7 +41,26 @@ lookupForm [inputPath] =
     form2problem form =
         case getBox form of
             Right box -> mkProblems (inputPath, form, box)
-            Left msg -> error $ "PolyPaver: " ++ show msg
+            Left msg ->
+                case tryWithT of
+                    Just problems -> problems
+                    Nothing -> error $ "PolyPaver: " ++ show msg
+        where
+        tryWithT = 
+            case IMap.lookup 0 varNames of
+                Just name | name == "T" ->
+                    Just $ concat $ map mkProblems $ map substT decreasingT
+                _ -> Nothing
+        varNames = getFormVarNames form
+        substT t =
+            case getBox formT of
+                Right box -> (inputPath ++ "-T=" ++ show t, formT, box)
+                Left msg -> error $ "PolyPaver: " ++ show msg
+            where
+            formT = substituteVarsForm s form
+            s varId | varId == 0 = Just $ Lit $ fromInteger t
+            s _ = Nothing
+        decreasingT = reverse $ take 11 $ iterate (*2) 1
     
 lookupSiv [inputPath] =
     do
