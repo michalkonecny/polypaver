@@ -16,6 +16,7 @@ module PolyPaver.Invocation
 (
     defaultMain,
     defaultParsingMain,
+    getTightnessExpValues,
     Problem(..),
     module PolyPaver.Form
 )
@@ -53,6 +54,7 @@ data Problem = Problem
 
 data Paver = Paver 
     {problemId :: [String]
+    ,tightnessExpValues :: String
     ,degree :: Int
     ,startDegree :: Int
     ,maxSize :: Int
@@ -76,6 +78,7 @@ data Paver = Paver
 paver =
     Paver 
     {problemId = [] &= args &= typ "PROBLEM_ID" 
+    ,tightnessExpValues = "0..10" &= name "i" &= help "value(s) of T to try (if the formula has an unbound var T, default = 0..10])"
     ,degree = 0 &= help "maximum polynomial degree (default = 0)" &= groupname "Proving effort"
     ,startDegree = -1 &= help "first polynomial degree to try on each box (default = degree)"
     ,maxSize = 100 &= name "z" &= help "maximum polynomial term size (default = 100)"
@@ -120,6 +123,24 @@ setDefaults = setMaxQLength
 maxQueueLengthDefaultDFS = 50
 maxQueueLengthDefaultBFS = 5000
 
+getTightnessExpValues :: IO [Int]
+getTightnessExpValues =
+    do
+    argsPre <- cmdArgs paver
+    let args = setDefaults argsPre
+    return $ parse $ tightnessExpValues args
+    where
+    parse s =
+        case reads s of
+            [(t,"")] -> [t]
+            [(tL,'.' : '.' : rest)] ->
+                case reads rest of
+                  [(tR,"")] -> 
+                    if tL <= tR then [tL..tR] else [tR,(tR-1)..tL]
+                  _ -> parseError  
+            _ -> parseError
+        where
+        parseError = error $ "Failed to parse argument of i: " ++ s
 
 defaultMain problem = 
     do
