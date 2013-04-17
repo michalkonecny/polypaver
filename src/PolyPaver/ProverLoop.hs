@@ -82,7 +82,7 @@ loop
     initppb@(_, initbox, varIsInts, varNames)
     =
     do
-    putStrLn $ "Trying to decide the conjecture: " ++ showForm False originalForm
+    putStrLn $ "Trying to decide the conjecture: " ++ (take 1000 $ showForm False originalForm)
     putStrLn $ "over the box " ++ ppShow initppb
     -- possibly initialise plotting:
     mstateTV <- case plotSize of
@@ -386,7 +386,7 @@ loop
                                 _ ->
                                     putStrLn $ " Evaluation result: " ++ show maybeDecision
                 
-        banner = replicate 100 '*'
+        banner = "**** time = " ++ showDuration (prevtime - inittime) ++ replicate 50 '*'
         identifyBox =
             "Deciding over box" ++ show computedboxes 
             ++ "(depth=" ++ show depth ++ ", queue size=" ++ show qlength ++ ")"            

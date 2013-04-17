@@ -37,12 +37,12 @@ lookupFile args@(inputPath : _)
     
 lookupForm [inputPath] =
     do
-    tightnessExpValues <- getTightnessExpValues
-    putStrLn $ show tightnessExpValues
+    tightnessValues <- getTightnessValues
+    putStrLn $ show tightnessValues
     fileContents <- readFile inputPath
-    return $ form2problems tightnessExpValues $ read fileContents
+    return $ form2problems tightnessValues $ read fileContents
     where
-    form2problems tightnessExpValues form =
+    form2problems tightnessValues form =
         case getBox form of
             Right box -> mkProblems (inputPath, form, box)
             Left msg ->
@@ -53,7 +53,7 @@ lookupForm [inputPath] =
         tryWithT = 
             case IMap.lookup 0 varNames of
                 Just name | name == "T" ->
-                    Just $ concat $ map mkProblems $ map substT ts
+                    Just $ concat $ map mkProblems $ map substT tightnessValues
                 _ -> Nothing
         varNames = getFormVarNames form
         substT t =
@@ -65,7 +65,6 @@ lookupForm [inputPath] =
             s varId | varId == 0 = Just $ Lit $ fromInteger t
             s _ = Nothing
 --        ts = reverse $ take 11 $ iterate (*2) 1
-        ts = map (2^) tightnessExpValues
     
 lookupSiv [inputPath] =
     do
