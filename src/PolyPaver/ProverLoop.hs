@@ -221,11 +221,12 @@ loop
                 DFSthenBFS -> restartAsBFS
                 _ -> doAbort
             where
-            firstRunResult = GaveUp (currtime-inittime) shorterMsg (fst $ RA.doubleBounds provedFraction)
+            firstRunResult = 
+                GaveUp (currtime-inittime) shorterMsg (fst $ RA.doubleBounds $ provedFraction False)
             doAbort =
                 do
                 putStr abortReport
-                reportFraction
+                reportFraction False -- ie not takeCurrentBoxIntoAccount
                 stopProver firstRunResult
             abortReport =
               "\nSearch aborted." ++ 
@@ -238,7 +239,7 @@ loop
             restartAsBFS =
                 do
                 putStr abortReport
-                reportFraction
+                reportFraction False -- ie not takeCurrentBoxIntoAccount
                 secondRunResult <- loopAux
                     BFSFalsifyOnly
                     mstateTV currtime
@@ -407,22 +408,26 @@ loop
             plotBox green
             case reportLevel of
                 ReportNONE -> return ()
-                _ ->
+                ReportNORMAL ->
                     do
-                    reportFraction
---                    putStrLn $ formDebug
+                    reportFraction True
+                ReportALL ->
+                    do
+                    reportFraction True
+                    putStrLn $ formDebug
 
-        reportFraction
+        reportFraction takeCurrentBoxIntoAccount
             =
             putStrLn $
-                "Proved fraction : " ++ show provedFraction
-                ++ " (Proved volume : " ++ show oldornewtruevol
+                "Proved fraction : " ++ show (provedFraction takeCurrentBoxIntoAccount)
+                ++ " (Proved volume : " ++ show (oldornewtruevol takeCurrentBoxIntoAccount)
                 ++ " ; Overall volume : " ++ show problemvol ++ ")"
-        provedFraction
+        provedFraction takeCurrentBoxIntoAccount
             | problemvol `RA.equalReals` 0 == Just True = 1
-            | otherwise = (oldornewtruevol / problemvol)
-        oldornewtruevol
-            | decided && decision = newtruevol
+            | otherwise = ((oldornewtruevol takeCurrentBoxIntoAccount) / problemvol)
+        oldornewtruevol takeCurrentBoxIntoAccount
+            | takeCurrentBoxIntoAccount =
+                if decided && decision then newtruevol else truevol
             | otherwise = truevol
                 
         reportSplit
@@ -448,7 +453,7 @@ loop
                     putStrLn $ 
                         "Splitting at depth " ++ show depth
                         ++ reportVar 
-                    reportFraction
+                    reportFraction True
                     where
                     reportVar
                         | skewed = " domain of skewed variable _" ++ showVar varNames splitVar ++ "_"

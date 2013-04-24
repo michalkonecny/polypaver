@@ -32,6 +32,7 @@ Extra-Source-Files:
     CHANGES
     examples/mini.hs
     examples/bench.hs
+    examples/integral.hs
     examples/SPARK/peak/gnat.cfg
     examples/SPARK/peak/src/exact.ads
     examples/SPARK/peak/src/peak.adb
