@@ -62,6 +62,7 @@ data Paver = Paver
     ,maxDepth :: Int
     ,maxQueueLength :: Int
     ,effort :: Int
+    ,minIntegrExp :: Int
     ,time :: Int
     ,order :: Order
     ,quiet :: Bool
@@ -90,6 +91,7 @@ paver =
                     ++ show maxQueueLengthDefaultDFS ++ " for depth-first and "
                     ++ show maxQueueLengthDefaultBFS ++ " for breadth-first order)")
     ,effort = 10 &= help "approximation effort parameter (default = 10)" 
+    ,minIntegrExp = 0 &= name "I" &= help "n to compute approximate integration step using 2^(-n)" 
     ,time = 7*24*3600 &= help "timeout in seconds (default = 7*24*3600 ie 1 week)"    
     ,boxSkewing = False &= name "k" &= help "allow parallelepiped boxes, by default only coaxial rectangles" &= groupname "Experimental"
     ,splitGuessing = -1 &= name "g" &= opt (20 :: Int) &= help "try guessing the best direction but do not allow a box in which a pair of edge lengths exceeds this ratio (default 20)"
@@ -206,6 +208,7 @@ runPaver problem args =
         maxdepth -- maximum bisection depth
         maxQLength -- maximum queue length
         ix
+        minIntegrationStepSize
         maxtime -- 24 hour timeout
         23 -- mantissa bit size (read precisionS)
         conj -- to be decided, defined in IntegralTest
@@ -214,6 +217,7 @@ runPaver problem args =
     where
     maxdeg = degree args
     startdeg = case startDegree args of s | s == -1 -> maxdeg; s -> s
+    minIntegrationStepSize = 2^^(- (minIntegrExp args))
     improvementRatioThreshold = 1.2
     maxsize = maxSize args 
     maxtime = toInteger $ time args
