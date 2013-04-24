@@ -58,6 +58,7 @@ data Paver = Paver
     ,degree :: Int
     ,startDegree :: Int
     ,maxSize :: Int
+    ,splitIntFirst :: Bool
     ,minDepth :: Int
     ,maxDepth :: Int
     ,maxQueueLength :: Int
@@ -84,6 +85,7 @@ paver =
     ,startDegree = -1 &= help "first polynomial degree to try on each box (default = degree)"
     ,maxSize = 100 &= name "z" &= help "maximum polynomial term size (default = 100)"
     ,order = DFSthenBFS &= help "sub-problem processing order, bfs for breadth-first or dfs for depth-first, (default = DFSthenBFS)"
+    ,splitIntFirst = False &= name "f" &= help "whether to split integer valued domains until they are thin before splitting the continuous domains"
     ,minDepth = 0 &= help "minimum bisection depth (default = 0)"
     ,maxDepth = 1000 &= name "b" &= help "maximum bisection depth (default = 1000)"
     ,maxQueueLength = -1 &= name "u" 
@@ -199,6 +201,7 @@ runPaver problem args =
         epsabsbitsOpt 
         boxSkewingOpt
         splitGuessingOpt
+        splitIntFirstOpt
         startdeg
         maxdeg -- maximum bound degree
         improvementRatioThreshold -- when to try raising degree/effort and when to give up and split
@@ -238,6 +241,7 @@ runPaver problem args =
     epsrelbitsOpt = epsrelbits args 
     epsabsbitsOpt = epsabsbits args 
     splitGuessingOpt = case splitGuessing args of -1 -> Nothing; n -> Just n
+    splitIntFirstOpt = splitIntFirst args
     boxSkewingOpt = boxSkewing args
     plotSizesOpt = (plotWidth args, plotHieght args)
     plotStepDelayMs = 0

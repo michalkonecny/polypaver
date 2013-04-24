@@ -38,6 +38,7 @@ import Numeric.ER.Misc
 import Data.List
 import Data.Maybe
 import qualified Data.Map as Map
+import qualified Data.IntMap as IMap
 
 import System.Console.CmdArgs
 import Control.Concurrent (threadDelay)
@@ -72,10 +73,10 @@ instance Show ProverResult where
 
 loop
     plotSize plotStepDelayMs
-    order reportLevel epsrelbits epsabsbits boxSkewing splitGuessing
+    order reportLevel epsrelbits epsabsbits boxSkewing 
+    splitGuessing splitIntFirst
     origstartdeg maxdeg improvementRatioThreshold 
     maxsize
---    pwdepth
     mindepth maxdepth maxQLength 
     ix minIntegrationStepSize 
     maxtime prec originalForm 
@@ -206,7 +207,7 @@ loop
                 abort currtime "REACHED MAXIMUM QUEUE SIZE" ("Reached MAXIMUM QUEUE SIZE " ++ show maxQLength)
             -- formula undecided, cannot split the box any further:
             | not splitSuccess ||
-              length thinvarids == dim =
+              length thinVars == dim =
                 do
                 currtime <- getCPUTime
                 abort currtime "FAILED TO SPLIT" ("FAILED TO SPLIT undecided box : " ++ ppShow ppb)
@@ -317,9 +318,9 @@ loop
                         (Nothing, 2) -> problemvol -- no skewing or dropping of boxes - a clean split
                         _ -> problemvol - (ppVolume ppb) + (sum $ map ppVolume newBoxes2)
         (splitSuccess, maybeHP, splitVar, (boxL,boxR))
-            = L.split thinvarids maybeVar ppb boxSkewing splitGuessing value
+            = L.split thinVarsMaybeNonIntVars maybeVar ppb boxSkewing splitGuessing value
         (_, _, splitVarNoHP, (boxLNoHP,boxRNoHP))
-            = L.split thinvarids maybeVar ppb False Nothing value
+            = L.split thinVarsMaybeNonIntVars maybeVar ppb False Nothing value
         undecidedMaybeSimplerForm
             =
             case maybeHP of
@@ -357,7 +358,7 @@ loop
         maybeVar =
             case splitGuessing of
                 Nothing -> Nothing
-                _ -> Just $ advanceVar thinvarids prevSplitVar
+                _ -> Just $ advanceVar thinVarsMaybeNonIntVars prevSplitVar
             where
             advanceVar forbiddenVars var
                 | allVarsForbidden = var
@@ -367,8 +368,21 @@ loop
                 allVarsForbidden = length forbiddenVars == dim
                 newVar = (var + 1) `mod` dim
 
-        thinvarids = DBox.keys thincbox
-        thincbox = DBox.filter (ppCoeffsZero Nothing . snd) box -- thin subbox of contracted box
+        thinVarsMaybeNonIntVars
+            | splitIntFirst && canSplitIntVar = thinVarsAndNonIntVars
+            | otherwise = thinVars
+            where
+            canSplitIntVar = not $ null thickIntVars
+            thinVarsAndNonIntVars = thinVars ++ thickNonIntVars
+            (thickIntVars, thickNonIntVars) = partition isIntV thickVars
+                where
+                isIntV var = 
+                    case IMap.lookup var varIsInts of Just res -> res; _ -> False
+            thickVars = DBox.keys thickbox 
+            thickbox = DBox.filter (not . ppCoeffsZero Nothing . snd) box -- thick projection of box
+        thinVars = DBox.keys thinbox
+            where
+            thinbox = DBox.filter (ppCoeffsZero Nothing . snd) box -- thin projection of box
 
         -- reporting
         reportBox
