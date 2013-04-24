@@ -49,15 +49,16 @@ evalForm ::
     Int {-^ polynomial degree limit -} -> 
     Int {-^ polynomial term size limit -} -> 
     EffortIndex {-^ effort index for regulating model error -} -> 
+    IRA BM {-^ minIntegrationStepSize -} -> 
     PPBox BM {-^ domains of variables -} -> 
     (Int,Int) {-^ precision of emulated FP operations -} -> 
     Form {-^ form to evaluate -} -> 
     (tv, 
      Form) {-^ form with added range bounds in all terms -}
-evalForm maxdeg maxsize ix ppb@(_, _, isIntVarMap, _) fptype form =
+evalForm maxdeg maxsize ix minIntegrationStepSize ppb@(_, _, isIntVarMap, _) fptype form =
     evForm form
     where
-    evTerm = evalTerm sampleTV maxdeg maxsize ix ppb fptype
+    evTerm = evalTerm sampleTV maxdeg maxsize ix minIntegrationStepSize ppb fptype
     (sampleTV, _) = evForm Verum
     evForm form =
         case form of
@@ -126,12 +127,13 @@ evalTerm ::
     Int {-^ polynomial degree limit -} -> 
     Int {-^ polynomial term size limit -} -> 
     EffortIndex {-^ effort index for regulating model error -} -> 
+    IRA BM {-^ minIntegrationStepSize -} -> 
     PPBox BM {-^ domains of variables -} -> 
     (Int,Int) {-^ precision of emulated FP operations -} ->
     Bool {-^ should compute ranges using inner rounding? -} -> 
     Term {-^ term to evaluate -} -> 
     (FAPUOI BM, Term)
-evalTerm sampleTV maxdeg maxsize ix ppbOrig fptype@(epsrelbits,epsabsbits) needInnerRounding term =
+evalTerm sampleTV maxdeg maxsize ix minIntegrationStepSize ppbOrig fptype@(epsrelbits,epsabsbits) needInnerRounding term =
     evTerm term
     where
     evTerm = evTermBox ppbOrig
@@ -358,19 +360,19 @@ evalTerm sampleTV maxdeg maxsize ix ppbOrig fptype@(epsrelbits,epsabsbits) needI
                 (loRangeLo, loRangeHi) = RA.bounds loRange
                 (hiRangeLo, hiRangeHi) = RA.bounds hiRange
                 bisect (lo,hi) 
-                    | (minStepSize < hi - lo) = 
+                    | (minIntegrationStepSize < hi - lo) = 
                         (bisect (lo, mid)) ++ 
                         (bisect (mid, hi))
                     | otherwise = [RA.fromBounds (lo, hi)]
                     where                    
                     mid = fst $ RA.bounds $ (hi + lo) / 2 
-                minStepSize
-                    | useBounds > 0 = useBounds
---                    | useBox > 0 = useBox -- TODO
-                    | otherwise = useIx 
-                    where
-                    useBounds = snd $ RA.bounds $ max (loRangeHi - loRangeLo) (hiRangeHi - hiRangeLo)
-                    useIx = snd $ RA.bounds $ (hiRangeLo - loRangeHi) / (fromInteger $ toInteger ix) 
+--                minIntegrationStepSize
+--                    | useBounds > 0 = useBounds
+----                    | useBox > 0 = useBox -- TODO
+--                    | otherwise = useIx 
+--                    where
+--                    useBounds = snd $ RA.bounds $ max (loRangeHi - loRangeLo) (hiRangeHi - hiRangeLo)
+--                    useIx = snd $ RA.bounds $ (hiRangeLo - loRangeHi) / (fromInteger $ toInteger ix) 
             
             integrationDom = loRange RA.\/ hiRange
             [loRange] = FA.getRangeApprox loBoundEnclosure
