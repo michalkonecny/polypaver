@@ -11,7 +11,9 @@ Homepage:       http://code.google.com/p/polypaver/
 Stability:      experimental
 Category:       Numerical, Theorem Provers
 Synopsis:       numerical constraint solver based on polynomial interval arithmetic
-Tested-with:    GHC ==6.12.3
+Tested-with:    
+                GHC ==6.12.3,
+                GHC ==7.4.2
 Description:
     Tools for deciding systems of real inequalities and interval inclusions over bounded domains, featuring:
     .    
@@ -95,9 +97,9 @@ Library
         gtk >= 0.12.0 && < 0.13,
         cairo >= 0.12.0 && < 0.13,
         stm >= 2 && < 3,
-        cmdargs >= 0.7 && < 0.8,
+        cmdargs >= 0.7 && < 0.11,
         filepath >= 1.1 && < 2,
-        regex-compat >= 0.93.1 && < 0.94,
+        regex-compat >= 0.93.1 && < 0.96,
         html >= 1.0.1.2 && < 2, 
         binary >= 0.5 && < 1, 
         syb >= 0.1 && < 1,
@@ -176,13 +178,13 @@ Executable polypaver
   main-is: Main.hs
   Build-Depends:
         base >= 4 && < 5,
-        containers >= 0.3.0.0 && < 0.4,
+        containers >= 0.3.0.0 && < 0.5,
         gtk >= 0.12.0 && < 0.13,
         cairo >= 0.12.0 && < 0.13,
         stm >= 2 && < 3,
-        cmdargs >= 0.7 && < 0.8,
+        cmdargs >= 0.7 && < 0.11,
         filepath >= 1.1 && < 2,
-        regex-compat >= 0.93.1 && < 0.94,
+        regex-compat >= 0.93.1 && < 0.96,
         html >= 1.0.1.2 && < 2, 
         binary >= 0.5 && < 1, 
         syb >= 0.1 && < 1,
