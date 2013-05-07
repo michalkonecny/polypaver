@@ -106,7 +106,8 @@ paver =
     } 
     &= help (unlines 
                 ["Tries to decide conjectures using polynomial interval arithmetic.",
-                 "For the polypaver executable [PROBLEM_ID] is <file.siv> <vc name>.",
+                 "For the polypaver executable [PROBLEM_ID] is <file.form>",
+                 "or [PROBLEM_ID] is <file.siv> [<vc name> [<conclusion number>]].",
                  "For problems defined in Haskell [PROBLEM_ID] should be blank."]) 
     &= summary "PolyPaver 0.2 (c) 2011, 2013 Jan Duracz and Michal Konecny (Aston University)"
     &= name "polypaver"
