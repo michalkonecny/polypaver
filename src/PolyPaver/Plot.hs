@@ -27,10 +27,11 @@ import Graphics.Rendering.Cairo
 addBox stateTV rgba box  
     =
     do
---    putStrLn $ "addBox called with " ++ ppShow box
+--    putStrLn $ "addBox called" -- ++ ppShow box
     atomically $ do
         state <- readTVar stateTV
         writeTVar stateTV ((box,rgba) : state)
+--    putStrLn $ "addBox completed"
 
 waitForClose stateTV =
     atomically $
@@ -54,14 +55,15 @@ initPlot initbox w h =
 
 myCanvas stateTV draw initboxInfo w h = 
     do
-    unsafeInitGUIForThreadedRTS
+--    unsafeInitGUIForThreadedRTS
+    initGUI
     window <- windowNew
     da <- drawingAreaNew
     set window [ containerChild := da ]
     windowSetDefaultSize window w h
     onExpose da (myExposeHandler stateTV da draw initboxInfo)
     timeoutAdd (widgetQueueDraw da >> return True) 500 >> return ()
-    -- idleAdd (yield >> return True) priorityDefaultIdle >> return () -- this throttles the CPU
+    idleAdd (yield >> threadDelay 10000 >> return True) priorityDefaultIdle >> return () -- this throttles the CPU
     onDestroy window mainQuit
     widgetShowAll window
     mainGUI
@@ -77,6 +79,7 @@ myExposeHandler stateTV widget draw initboxInfo _event =
     renderWithDrawable drawWin $ 
         do
         draw initboxInfo w h state
+--    putStrLn $ "myExposeHandler completed"
     return True
 
 draw initboxInfo w h state  = 
