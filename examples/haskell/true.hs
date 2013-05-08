@@ -1,12 +1,16 @@
-module Main(main) where
+module Main where
 
 import PolyPaver
 
 main =
-    defaultMain Problem
+    defaultMain problem
+
+problem =
+    Problem
         {
           box = []
           ,conjecture = conjecture
         }
-conjecture =
-    0 |=| 0
+    where
+    conjecture =
+        0 |=| 0

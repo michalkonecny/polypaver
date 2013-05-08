@@ -16,7 +16,7 @@ module PolyPaver.ProverLoop
 (
     Order(..),
     ReportLevel(..),
-    loop
+    solveAndReportOnConsole
 )
 where
 
@@ -71,7 +71,7 @@ instance Show ProverResult where
         ++ " (proved fraction: " ++ show percent ++ ")" 
 
 
-loop
+solveAndReportOnConsole
     plotSize plotStepDelayMs
     order reportLevel epsrelbits epsabsbits boxSkewing 
     splitGuessing splitIntFirst
@@ -79,8 +79,7 @@ loop
     maxsize
     mindepth maxdepth maxQLength 
     ix minIntegrationStepSize 
-    maxtime prec originalForm 
---    intvarids 
+    maxtime originalForm 
     initppb@(_, initbox, varIsInts, varNames)
     =
     do
@@ -234,10 +233,9 @@ loop
               "\nSearch aborted." ++ 
               "\n" ++ longerMsg ++ " after " ++ showDuration (currtime-inittime) ++ "." ++
               "\nComputed boxes : " ++ show computedboxes ++ 
-              "\nQueue size : " ++ show qlength ++
               "\nGreatest queue size : " ++ show maxQLengthReached ++  
-              "\nDepth : " ++ show depth ++ 
-              "\nGreatest depth : " ++ show maxDepthReached ++ "\n"
+              "\nGreatest depth : " ++ show maxDepthReached ++ 
+              "\n"
             restartAsBFS =
                 do
                 putStr abortReport

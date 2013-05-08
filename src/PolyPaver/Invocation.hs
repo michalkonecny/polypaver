@@ -15,7 +15,7 @@
 module PolyPaver.Invocation
 (
     defaultMain,
-    defaultParsingMain,
+    batchMain,
     getTightnessValues,
     Problem(..),
     module PolyPaver.Form
@@ -50,7 +50,7 @@ data Problem = Problem
                Bool)], -- is the variable restricted to integers?
         conjecture :: Form
     }
-    deriving (Show,Read)
+    deriving (Show,Read,Typeable)
 
 data Paver = Paver 
     {problemId :: [String]
@@ -80,7 +80,7 @@ data Paver = Paver
 paver =
     Paver 
     {problemId = [] &= args &= typ "PROBLEM_ID" 
-    ,tightnessValues = "2^0..10" &= name "i" &= help "value(s) of T to try (if the formula has an unbound var T, default = 2^0..10)"
+    ,tightnessValues = "1" &= name "i" &= help "value(s) of T to try (if the formula has an unbound var T) (eg 2^0..10 or 1..10 or 1,10,100) (default = 1)"
     ,degree = 0 &= help "maximum polynomial degree (default = 0)" &= groupname "Proving effort"
     ,startDegree = -1 &= help "first polynomial degree to try on each box (default = degree)"
     ,maxSize = 100 &= name "z" &= help "maximum polynomial term size (default = 100)"
@@ -159,7 +159,7 @@ defaultMain problem =
     let args = setDefaults argsPre
     runPaver problem args
 
-defaultParsingMain problemFactory =
+batchMain problemFactory =
     do
     reportCmdLine
     argsPre <- cmdArgs paver
@@ -193,30 +193,27 @@ runPaver problem args =
     do
     initMachineDouble -- round upwards
     hSetBuffering stdout LineBuffering -- print progress in real time, not in batches
-    loop
+    solveAndReportOnConsole
         plotSizesOpt
         plotStepDelayMs
         ordr -- sub-problem processing order
-        report -- 
+        report -- level of verbosity
         epsrelbitsOpt
         epsabsbitsOpt 
         boxSkewingOpt
         splitGuessingOpt
         splitIntFirstOpt
-        startdeg
-        maxdeg -- maximum bound degree
+        startdeg -- maximum polynomial degree for the first attempt
+        maxdeg -- maximum polynomial degree to try
         improvementRatioThreshold -- when to try raising degree/effort and when to give up and split
-        maxsize
---        0 -- pwdepth, currently has no effect; either remove or make effective 
+        maxsize -- maximum number of terms in a polynomial
         mindepth -- minimum bisection depth
         maxdepth -- maximum bisection depth
         maxQLength -- maximum queue length
-        ix
-        minIntegrationStepSize
-        maxtime -- 24 hour timeout
-        23 -- mantissa bit size (read precisionS)
-        conj -- to be decided, defined in IntegralTest
---        intvarids -- variable IDs of integer variables, defined in IntegralTest
+        ix -- effort index for AERN
+        minIntegrationStepSize -- approximate step to use in piecewise numerical integration
+        maxtime -- timeout
+        conj -- formula to be decided, defined in IntegralTest
         initbox
     where
     maxdeg = degree args

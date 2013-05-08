@@ -1,5 +1,5 @@
 {-|
-    Module      :  Main
+    Module      :  PolyPaver.Input.SPARK
     Description :  parser of SPARK vcg and siv files 
     Copyright   :  (c) Michal Konecny, Jan Duracz
     License     :  BSD3
