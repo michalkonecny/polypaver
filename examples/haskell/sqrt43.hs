@@ -16,8 +16,10 @@ module Main where
 
 import PolyPaver
 
-main = 
-    defaultMain Problem 
+main = defaultMain problem 
+
+problem =
+    Problem 
         {box = b
         ,conjecture = test}
 

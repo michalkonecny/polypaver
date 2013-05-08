@@ -14,14 +14,20 @@ module Main where
 import PolyPaver
 
 main = 
-    defaultMain Problem 
+    defaultMain problem
+
+problem = problemCos
+
+problemCos =
+    Problem 
         {box = proval_cosine_box
         ,conjecture = proval_cosine_2}
---    defaultMain Problem 
---        {box = proval_sqrt_box
---        ,ivars = []
---        ,theorem = proval_sqrt_3}
 
+problemSqrt =
+    Problem 
+       {box = proval_sqrt_box
+       ,conjecture = proval_sqrt_3}
+        
 a -/ b = (a - b)/b
 
 proval_cosine_box =

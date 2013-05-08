@@ -10,12 +10,20 @@
     A simple property involving an integral.
 -}
 
+{- 
+    There are several ways to invoke PolyPaver on problem defined below:
+    * compile this module and execute it
+    * run the polypaver executable and pass it this file as parameter, eg:
+        polypaver examples/haskell/integral.hs
+-}
+
 module Main where
 
 import PolyPaver
 
-main = 
-    defaultMain Problem 
+main = defaultMain problem
+
+problem = Problem 
         {box = b
         ,conjecture = test}
 
