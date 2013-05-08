@@ -239,9 +239,26 @@ decodeFn "num__divide" [arg1, arg2] = arg1 /: arg2
 decodeFn "num__multiply" [arg1, arg2] = arg1 *: arg2
 decodeFn "num__add" [arg1, arg2] = arg1 +: arg2
 decodeFn "num__subtract" [arg1, arg2] = arg1 -: arg2
-decodeFn "num__square" [arg1] = termOp1 FSquare arg1
-decodeFn "num__sqrt" [arg1] = termOp1 FSqrt arg1
-decodeFn "num__exp" [arg1] = termOp1 FExp arg1
+decodeFn "num__square" [arg1] = termOp1 (FSquare 24 126) arg1
+decodeFn "num__sqrt" [arg1] = termOp1 (FSqrt 24 126) arg1
+decodeFn "num__exp" [arg1] = termOp1 (FExp 24 126) arg1
+
+decodeFn "polypaver__float__divide" [arg1, arg2] = termOp2 (FOver 24 126) arg1 arg2
+decodeFn "polypaver__float__multiply" [arg1, arg2] = termOp2 (FTimes 24 126) arg1 arg2
+decodeFn "polypaver__float__add" [arg1, arg2] = termOp2 (FPlus 24 126) arg1 arg2
+decodeFn "polypaver__float__subtract" [arg1, arg2] = termOp2 (FMinus 24 126) arg1 arg2
+decodeFn "polypaver__float__square" [arg1] = termOp1 (FSquare 24 126) arg1
+decodeFn "polypaver__float__sqrt" [arg1] = termOp1 (FSqrt 24 126) arg1
+decodeFn "polypaver__float__exp" [arg1] = termOp1 (FExp 24 126) arg1
+
+decodeFn "polypaver__long_float__divide" [arg1, arg2] = termOp2 (FOver 53 1022) arg1 arg2
+decodeFn "polypaver__long_float__multiply" [arg1, arg2] = termOp2 (FTimes 53 1022) arg1 arg2
+decodeFn "polypaver__long_float__add" [arg1, arg2] = termOp2 (FPlus 53 1022) arg1 arg2
+decodeFn "polypaver__long_float__subtract" [arg1, arg2] = termOp2 (FMinus 53 1022) arg1 arg2
+decodeFn "polypaver__long_float__square" [arg1] = termOp1 (FSquare 53 1022) arg1
+decodeFn "polypaver__long_float__sqrt" [arg1] = termOp1 (FSqrt 53 1022) arg1
+decodeFn "polypaver__long_float__exp" [arg1] = termOp1 (FExp 53 1022) arg1
+
 decodeFn "exact__hull" [arg1, arg2] = hull arg1 arg2
 decodeFn "exact__interval" [arg1, arg2] = hull arg1 arg2
 decodeFn "exact__sqrt" [arg1] = sqrt arg1
@@ -250,6 +267,7 @@ decodeFn "exact__sin" [arg1] = sin arg1
 decodeFn "exact__cos" [arg1] = cos arg1
 decodeFn "exact__integral" [arg1, arg2, arg3] = termOp3 (Integral ivNum ivName) arg1 arg2 arg3
 decodeFn "abs" [arg1] = abs arg1
+
 decodeFn fn args =
     error $ 
         "cannot decode function call " ++ fn ++ 

@@ -73,7 +73,7 @@ loadSourceGhc path =
     setSessionDynFlags (dflags{
         ghcLink = LinkInMemory,
         hscTarget = HscInterpreted,
-        packageFlags = [ExposePackage "polypaver"],
+--        packageFlags = [ExposePackage "polypaver"],
         log_action = throwingLogAction
         })
     target <- guessTarget path Nothing

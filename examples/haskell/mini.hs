@@ -87,6 +87,6 @@ absNonneg =
     x = termVar 0 "x"
     y = termVar 1 "y"
     conjecture = 
-         -0.01 |<=| (termOp1 FSqrt $ abs (x *: y))
+         -0.01 |<=| (termOp1 (FSqrt 24 126) $ abs (x *: y))
     
     
