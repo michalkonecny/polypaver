@@ -398,6 +398,7 @@ solveAndReportOnConsole
                                 ReportALL ->
                                     putStrLn $ " Evaluation result: " ++ show value
                                 _ ->
+                                    do
                                     putStrLn $ " Evaluation result: " ++ show maybeDecision
                 
         banner = "**** time = " ++ showDuration (prevtime - inittime) ++ replicate 50 '*'
