@@ -31,8 +31,7 @@ Description:
 
 Extra-Source-Files:
     CHANGES
-    examples/haskell/mini.hs
-    examples/haskell/bench.hs
+    examples/haskell/sqrtexp.hs
     examples/haskell/integral.hs
     examples/SPARK/peak/gnat.cfg
     examples/SPARK/peak/src/exact.ads
