@@ -206,17 +206,20 @@ evalTerm sampleTV maxdeg maxsize ix minIntegrationStepSize ppbOrig fptype@(epsre
                 Hull left right -> evOp2 Hull (RA.\/) left right
                 Integral ivarId ivarName lower upper integrand ->
                     evIntegral ivarId ivarName lower upper integrand
-                FEpsAbs -> (rationalToFA $ 2^^(- epsabsbits), term) 
-                FEpsRel -> (rationalToFA $ 2^^(- epsrelbits), term) 
-                FEpsiAbs -> evTermBox' ppb $ plusMinus fepsAbs
-                FEpsiRel -> evTermBox' ppb $ plusMinus fepsRel
-                FRound arg 
+                FEpsAbs _ epsabsbits -> (rationalToFA $ 2^^(- epsabsbits), term) 
+                FEpsRel epsrelbits _ -> (rationalToFA $ 2^^(- epsrelbits), term) 
+                FEpsiAbs rel abs -> evTermBox' ppb $ plusMinus $ termOp0 $ FEpsAbs rel abs 
+                FEpsiRel rel abs -> evTermBox' ppb $ plusMinus $ termOp0 $ FEpsRel rel abs
+                FRound rel abs arg 
 --              | epsabsShownIrrelevant -> -- TOOOOOOOO SLOW
 --                  evTerm $
 --                  (1 + EpsiRel) * arg
                     | otherwise ->
                         evTermBox' ppb $
-                            ((1 + fepsiRel) * arg) + fepsiAbs
+                            ((1 + epsiRel) * arg) + epsiAbs
+                    where
+                    epsiRel = termOp0 $ FEpsRel rel abs
+                    epsiAbs = termOp0 $ FEpsAbs rel abs
 --              where
 --              epsabsShownIrrelevant =
 --                case (L.decide aboveEpsTV, L.decide belowEpsTV) of
@@ -224,20 +227,34 @@ evalTerm sampleTV maxdeg maxsize ix minIntegrationStepSize ppbOrig fptype@(epsre
 --                    (_, Just True) -> True
 --                    _ -> False 
 --              _ = [aboveEpsTV, belowEpsTV, sampleTV]
-                FPlus left right -> 
-                    evTermBox' ppb $ fround (left + right)
-                FMinus left right ->
-                    evTermBox' ppb $ fround (left - right)        
-                FTimes left right ->
-                    evTermBox' ppb $ fround (left * right)
-                FSquare arg ->
-                    evTermBox' ppb $ fround (square arg)
-                FSqrt arg ->
-                    evTermBox' ppb $ fround $ (1+2*fepsiRel) * (sqrt arg)
-                FOver left right ->
-                    evTermBox' ppb $ fround (left / right)
-                FExp arg ->
-                    evTermBox' ppb $ fround $ (1+4*fepsiRel) * (exp arg)
+                FPlus rel abs left right -> 
+                    evTermBox' ppb $ round (left + right)
+                    where
+                    round = termOp1 $ FRound rel abs
+                FMinus rel abs left right ->
+                    evTermBox' ppb $ round (left - right)        
+                    where
+                    round = termOp1 $ FRound rel abs
+                FTimes rel abs left right ->
+                    evTermBox' ppb $ round (left * right)
+                    where
+                    round = termOp1 $ FRound rel abs
+                FSquare rel abs arg ->
+                    evTermBox' ppb $ round (square arg)
+                    where
+                    round = termOp1 $ FRound rel abs
+                FSqrt rel abs arg ->
+                    evTermBox' ppb $ round $ (1+2*fepsiRel) * (sqrt arg)
+                    where
+                    round = termOp1 $ FRound rel abs
+                FOver rel abs left right ->
+                    evTermBox' ppb $ round (left / right)
+                    where
+                    round = termOp1 $ FRound rel abs
+                FExp rel abs arg ->
+                    evTermBox' ppb $ round $ (1+4*fepsiRel) * (exp arg)
+                    where
+                    round = termOp1 $ FRound rel abs
 
         setSizes :: FAPUOI BM -> FAPUOI BM  
         setSizes = FA.setMaxDegree maxdeg . FA.setMaxSize maxsize

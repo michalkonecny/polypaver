@@ -85,14 +85,14 @@ getTermVarNames (Term (term, _)) =
             (getTermVarNames2 lower upper)
             `IMap.union`
             (IMap.delete ivarId $ getTermVarNames integrand)
-        FRound arg -> getTermVarNames arg
-        FPlus left right -> getTermVarNames2 left right
-        FMinus left right -> getTermVarNames2 left right
-        FTimes left right -> getTermVarNames2 left right
-        FSquare arg -> getTermVarNames arg
-        FSqrt arg -> getTermVarNames arg
-        FOver left right -> getTermVarNames2 left right
-        FExp arg -> getTermVarNames arg
+        FRound _ _ arg -> getTermVarNames arg
+        FPlus _ _ left right -> getTermVarNames2 left right
+        FMinus _ _ left right -> getTermVarNames2 left right
+        FTimes _ _ left right -> getTermVarNames2 left right
+        FSquare _ _ arg -> getTermVarNames arg
+        FSqrt _ _ arg -> getTermVarNames arg
+        FOver _ _ left right -> getTermVarNames2 left right
+        FExp _ _ arg -> getTermVarNames arg
         _ -> IMap.empty
 
 getTermVarNames2 t1 t2 = 
@@ -146,14 +146,14 @@ getTermFreeVars (Term (term, _)) =
             (getTermFreeVars2 lower upper)
             `Set.union`
             (Set.delete ivarId $ getTermFreeVars integrand)
-        FRound arg -> getTermFreeVars arg
-        FPlus left right -> getTermFreeVars2 left right
-        FMinus left right -> getTermFreeVars2 left right
-        FTimes left right -> getTermFreeVars2 left right
-        FSquare arg -> getTermFreeVars arg
-        FSqrt arg -> getTermFreeVars arg
-        FOver left right -> getTermFreeVars2 left right
-        FExp arg -> getTermFreeVars arg
+        FRound _ _ arg -> getTermFreeVars arg
+        FPlus _ _ left right -> getTermFreeVars2 left right
+        FMinus _ _ left right -> getTermFreeVars2 left right
+        FTimes _ _ left right -> getTermFreeVars2 left right
+        FSquare _ _ arg -> getTermFreeVars arg
+        FSqrt _ _ arg -> getTermFreeVars arg
+        FOver _ _ left right -> getTermFreeVars2 left right
+        FExp _ _ arg -> getTermFreeVars arg
         _ -> Set.empty
 
 getTermFreeVars2 t1 t2 =
@@ -229,14 +229,14 @@ renameVarsTerm old2new = rnm
                 old2newIV id 
                     | id == ivarId = id
                     | otherwise = old2newIV id
-            FRound arg -> FRound $ rnm arg
-            FPlus left right -> FPlus (rnm left) (rnm right)
-            FMinus left right -> FMinus (rnm left) (rnm right)
-            FTimes left right -> FTimes (rnm left) (rnm right)
-            FSquare arg -> FSquare $ rnm arg
-            FSqrt arg -> FSqrt $ rnm arg
-            FOver left right -> FOver (rnm left) (rnm right)
-            FExp arg -> FExp $ rnm arg
+            FRound rel abs arg -> FRound rel abs $ rnm arg
+            FPlus rel abs left right -> FPlus rel abs (rnm left) (rnm right)
+            FMinus rel abs left right -> FMinus rel abs (rnm left) (rnm right)
+            FTimes rel abs left right -> FTimes rel abs (rnm left) (rnm right)
+            FSquare rel abs arg -> FSquare rel abs $ rnm arg
+            FSqrt rel abs arg -> FSqrt rel abs $ rnm arg
+            FOver rel abs left right -> FOver rel abs (rnm left) (rnm right)
+            FExp rel abs arg -> FExp rel abs $ rnm arg
             t -> t
 
 normaliseVars :: Form -> Form
@@ -315,14 +315,14 @@ substituteVarsTerm old2new = subst
             Atan arg -> Atan $ subst arg
             Integral ivarId ivarName lower upper integrand ->
                 Integral ivarId ivarName (subst lower) (subst upper) (subst integrand)
-            FRound arg -> FRound $ subst arg
-            FPlus left right -> FPlus (subst left) (subst right)
-            FMinus left right -> FMinus (subst left) (subst right)
-            FTimes left right -> FTimes (subst left) (subst right)
-            FSquare arg -> FSquare $ subst arg
-            FSqrt arg -> FSqrt $ subst arg
-            FOver left right -> FOver (subst left) (subst right)
-            FExp arg -> FExp $ subst arg
+            FRound rel abs arg -> FRound rel abs $ subst arg
+            FPlus rel abs left right -> FPlus rel abs (subst left) (subst right)
+            FMinus rel abs left right -> FMinus rel abs (subst left) (subst right)
+            FTimes rel abs left right -> FTimes rel abs (subst left) (subst right)
+            FSquare rel abs arg -> FSquare rel abs $ subst arg
+            FSqrt rel abs arg -> FSqrt rel abs $ subst arg
+            FOver rel abs left right -> FOver rel abs (subst left) (subst right)
+            FExp rel abs arg -> FExp rel abs $ subst arg
             t -> t
 
 removeDisjointHypotheses :: Form -> Form

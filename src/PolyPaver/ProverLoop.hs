@@ -83,7 +83,7 @@ solveAndReportOnConsole
     initppb@(_, initbox, varIsInts, varNames)
     =
     do
-    putStrLn $ "Trying to decide the conjecture: " ++ (take 1000 $ showForm False originalForm)
+    putStrLn $ "Trying to decide the conjecture: " ++ (showForm 10000 False originalForm)
     putStrLn $ "over the box " ++ ppShow initppb
     -- possibly initialise plotting:
     mstateTV <- case plotSize of
@@ -177,7 +177,7 @@ solveAndReportOnConsole
                   "\nGreatest queue size: " ++ show maxQLengthReached ++  
                   "\nDepth: " ++ show depth ++
                   "\nGreatest depth: " ++ show maxDepthReached ++  
-                  "\nFormula: " ++ showForm False form ++
+                  "\nFormula: " ++ showForm 1000 False form ++
                   "\nFormula details: \n" ++ formDebug ++
                   "\n\n" 
                 stopProver $ Disproved (currtime-inittime)
@@ -458,7 +458,7 @@ solveAndReportOnConsole
                                 "Skewing using the hyperplane " ++ showAffine hp
                                 ++ "\n  label = " ++ lab
                                 ++ "\n  vagueness = " ++ show vagueness
-                                ++ "\n  derived from the formula " ++ showForm False form
+                                ++ "\n  derived from the formula " ++ showForm 1000 False form
                 _ -> return ()
             case reportLevel of
                 ReportNONE -> return ()

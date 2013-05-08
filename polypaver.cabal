@@ -33,6 +33,7 @@ Extra-Source-Files:
     CHANGES
     examples/haskell/sqrtexp.hs
     examples/haskell/integral.hs
+    examples/form/true.form
     examples/SPARK/peak/gnat.cfg
     examples/SPARK/peak/src/exact.ads
     examples/SPARK/peak/src/peak.adb

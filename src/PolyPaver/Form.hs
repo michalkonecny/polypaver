@@ -124,18 +124,18 @@ data Term'
   | Atan Term
   | Integral Int String Term Term Term -- eg: Integral ivarId ivarName lower upper integrand
 -- the following term constructors depend on a specific floating-point arithmetic: 
-  | FEpsAbs
-  | FEpsRel
-  | FEpsiAbs
-  | FEpsiRel
-  | FRound Term
-  | FPlus Term Term
-  | FMinus Term Term
-  | FTimes Term Term
-  | FOver Term Term
-  | FSquare Term
-  | FSqrt Term
-  | FExp Term
+  | FEpsAbs Int Int
+  | FEpsRel Int Int
+  | FEpsiAbs Int Int
+  | FEpsiRel Int Int
+  | FRound Int Int Term
+  | FPlus Int Int Term Term
+  | FMinus Int Int Term Term
+  | FTimes Int Int Term Term
+  | FOver Int Int Term Term
+  | FSquare Int Int Term
+  | FSqrt Int Int Term
+  | FExp Int Int Term
   deriving (Eq,Show,Read,Data,Typeable)
 
 instance Show Term where
@@ -172,18 +172,18 @@ getTermSize (Term (term, _)) =
         Atan t -> 10 + (getTermSize t)
         Integral ivarId ivarName lower upper integrand -> 
             2 + (getTermSize lower) + (getTermSize upper) + (getTermSize integrand)
-        FEpsAbs -> 1
-        FEpsRel -> 1
-        FEpsiAbs -> 1
-        FEpsiRel -> 1
-        FRound t -> 1 + (getTermSize t)
-        FPlus t1 t2 -> 1 + (getTermSize t1) + (getTermSize t2)
-        FMinus t1 t2 -> 1 + (getTermSize t1) + (getTermSize t2)
-        FTimes t1 t2 -> 1 + (getTermSize t1) + (getTermSize t2)
-        FOver t1 t2 -> 1 + (getTermSize t1) + (getTermSize t2)
-        FSquare t -> 1 + (getTermSize t)
-        FSqrt t -> 1 + (getTermSize t)
-        FExp t -> 1 + (getTermSize t)
+        FEpsAbs _ _ -> 1
+        FEpsRel _ _ -> 1
+        FEpsiAbs _ _ -> 1
+        FEpsiRel _ _ -> 1
+        FRound _ _ t -> 1 + (getTermSize t)
+        FPlus _ _ t1 t2 -> 1 + (getTermSize t1) + (getTermSize t2)
+        FMinus _ _ t1 t2 -> 1 + (getTermSize t1) + (getTermSize t2)
+        FTimes _ _ t1 t2 -> 1 + (getTermSize t1) + (getTermSize t2)
+        FOver _ _ t1 t2 -> 1 + (getTermSize t1) + (getTermSize t2)
+        FSquare _ _ t -> 1 + (getTermSize t)
+        FSqrt _ _ t -> 1 + (getTermSize t)
+        FExp _ _ t -> 1 + (getTermSize t)
 
 
 {--- Operations for convenient encoding of literal values of type Term  ---}
@@ -230,21 +230,30 @@ instance Floating Term
 
 integral ivarId ivarName = termOp3 $ Integral ivarId ivarName
 
-fepsAbs = termOp0 FEpsAbs
-fepsRel = termOp0 FEpsRel
-fepsiAbs = termOp0 FEpsiAbs
-fepsiRel = termOp0 FEpsiRel
+fepsAbs = termOp0 $ FEpsAbs 24 126
+fepsRel = termOp0 $ FEpsRel 24 126
+fepsiAbs = termOp0 $ FEpsiAbs 24 126
+fepsiRel = termOp0 $ FEpsiRel 24 126
 
-fround = termOp1 FRound
+fround = termOp1 $ FRound 24 126
 
-(+:) = termOp2 FPlus
-(-:) = termOp2 FMinus
-(*:) = termOp2 FTimes
-(/:) = termOp2 FOver
+(+:) = termOp2 $ FPlus 24 126
+(-:) = termOp2 $ FMinus 24 126
+(*:) = termOp2 $ FTimes 24 126
+(/:) = termOp2 $ FOver 24 126
 
-showForm :: Bool -> Form -> String
-showForm shouldShowRanges form = sf (Just 0) form
+showForm :: Int -> Bool -> Form -> String
+showForm maxLength shouldShowRanges form = 
+    shorten $ sf (Just 0) form
     where
+    shorten s 
+        | extraCharCount < 100 = s
+        | otherwise = sStart ++ "\n...(cut " ++ show extraCharCount ++ " characters)...\n" ++ sEnd
+        where
+        extraCharCount = (length s) - (2 * maxLengthHalf) 
+        sStart = take maxLengthHalf s
+        sEnd = drop (length s - maxLengthHalf) s
+        maxLengthHalf = maxLength `div` 2
     st maybeIndentLevel = showTermIL shouldShowRanges maybeIndentLevel
     sf Nothing form = sf2 Nothing form
     sf maybeIndentLevel form
@@ -354,18 +363,18 @@ showTermIL shouldShowRanges = st
             Atan t -> showFnT "atan" [t]
             Integral ivarId ivarName lower upper integrand -> 
                 showFnT "∫" [lower, upper, Term (Var ivarId ivarName, Nothing), integrand]
-            FEpsAbs -> maybeAddBounds "εabs"
-            FEpsRel -> maybeAddBounds "εrel"
-            FEpsiAbs -> maybeAddBounds "εabsI"
-            FEpsiRel -> maybeAddBounds "εrelI"
-            FRound t -> showFnT "rnd" [t]
-            FPlus t1 t2 -> showOpT "⊕" "sum" t1 t2
-            FMinus t1 t2 -> showOpT "⊖" "diff" t1 t2
-            FTimes t1 t2 -> showOpT "⊛" "prod" t1 t2
-            FOver t1 t2 -> showOpT "⊘" "div" t1 t2
-            FSquare t -> showFnT "fsquare" [t]
-            FSqrt t -> showFnT "fsqrt" [t]
-            FExp t -> showFnT "fexp" [t]
+            FEpsAbs _ _ -> maybeAddBounds "εabs"
+            FEpsRel _ _ -> maybeAddBounds "εrel"
+            FEpsiAbs _ _ -> maybeAddBounds "εabsI"
+            FEpsiRel _ _ -> maybeAddBounds "εrelI"
+            FRound _ _ t -> showFnT "rnd" [t]
+            FPlus _ _ t1 t2 -> showOpT "⊕" "sum" t1 t2
+            FMinus _ _ t1 t2 -> showOpT "⊖" "diff" t1 t2
+            FTimes _ _ t1 t2 -> showOpT "⊛" "prod" t1 t2
+            FOver _ _ t1 t2 -> showOpT "⊘" "div" t1 t2
+            FSquare _ _ t -> showFnT "fsquare" [t]
+            FSqrt _ _ t -> showFnT "fsqrt" [t]
+            FExp _ _ t -> showFnT "fexp" [t]
         where
         stNext = st maybeNextIndentLevel
         indent = 
@@ -444,10 +453,10 @@ showTermIL shouldShowRanges = st
                 (Var _ _) -> True
                 (Neg t) -> isAtomicTerm t
                 Pi -> True
-                FEpsAbs -> True
-                FEpsRel -> True
-                FEpsiAbs -> True
-                FEpsiRel -> True
+                FEpsAbs _ _ -> True
+                FEpsRel _ _ -> True
+                FEpsiAbs _ _ -> True
+                FEpsiRel _ _ -> True
                 _ -> False
 
 

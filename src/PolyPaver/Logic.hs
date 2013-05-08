@@ -81,8 +81,8 @@ instance Show TVM where
         "TVMUndecided"
         ++ "\n Sub-results: \n" ++ unlines (map showAtomicResult ares)
         ++ " Distance+vagueness: " ++ show dist
-        ++ "\n Formula: " ++ showForm False form 
-        ++ "\n Formula with ranges:\n" ++ showForm True form 
+        ++ "\n Formula: " ++ showForm 1000 False form 
+        ++ "\n Formula with ranges:\n" ++ showForm 10000 True form 
         ++ "\n Hyperplanes: "
             ++ (case hps of
                     [] -> "none"
@@ -96,7 +96,7 @@ instance Show TVM where
             ++ "; vagueness = " ++ show vagueness
             ++ "; hp = " ++ showAffine hp
             ++ "; hpDn = " ++ showAffine hpDn
-            ++ "; form = " ++ showForm False hpForm
+            ++ "; form = " ++ showForm 1000 False hpForm
 
 showAtomicResult (lab, (maybeResult, distanceD, vaguenessD)) =
     "    " ++ lab ++ ": " 
@@ -400,7 +400,7 @@ instance TruthValue TVDebugReport where
     leq lab form box a b = 
         TVDebugReport $
             banner
-            ++ "\nLEQ:\n" ++ showForm True form
+            ++ "\nLEQ:\n" ++ showForm 1000 True form
             ++ "\n\nLHS:\n" ++ show a
             ++ "\n\nRHS:\n" ++ show b
             ++ "\n\nRESULT = " ++ show (a `RA.leqReals` b)
@@ -409,7 +409,7 @@ instance TruthValue TVDebugReport where
     less lab form box a b = 
         TVDebugReport $
             banner
-            ++ "\nLE:\n" ++ showForm True form
+            ++ "\nLE:\n" ++ showForm 1000 True form
             ++ "\n\nLHS:\n" ++ show a
             ++ "\n\nRHS:\n" ++ show b
             ++ "\n\nRESULT = " ++ show (a `RA.leqReals` b)
@@ -418,7 +418,7 @@ instance TruthValue TVDebugReport where
     includes lab form box a b = 
         TVDebugReport $
             banner
-            ++ "\nINCL:\n" ++ showForm True form
+            ++ "\nINCL:\n" ++ showForm 1000 True form
             ++ "\n\nLHS:\n" ++ show b
             ++ "\n\nRHS:\n" ++ show a
             ++ "\n\nRESULT = " ++ show (a `RA.includes` b)
