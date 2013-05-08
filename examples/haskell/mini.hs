@@ -58,7 +58,19 @@ sinsin =
     x = termVar 0 "x"
     conjecture = 
         sin(3*x+1) |<=| sin(sin(3*x)+1) 
-         
+
+--sinDebug =
+--    Problem box conjecture
+--    where
+--    box = [(0, (0.2,1), False)]
+--    x = termVar 0 "x"
+--    conjecture = 
+--        sin arg |<=| -1000
+--        where 
+--        arg = hull lower upper
+--        lower = 1.6  
+--        upper = 4
+        
 sinsin2 =
     Problem box conjecture
     where
