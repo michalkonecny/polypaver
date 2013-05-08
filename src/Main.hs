@@ -17,6 +17,7 @@ module Main where
 import PolyPaver.Form (splitConclusion)
 import PolyPaver.Invocation
 import PolyPaver.Input.SPARK
+import PolyPaver.Input.Haskell
 import PolyPaver.DeriveBounds (getBox)
 import PolyPaver.Vars (substituteVarsForm,getFormVarNames)
 
@@ -26,19 +27,25 @@ import qualified Data.IntMap as IMap
 import Data.List
 
 main 
-    = defaultParsingMain lookupFile
+    = batchMain lookupFile
     
 lookupFile args@(inputPath : _)
+    | hasHsExtension inputPath = lookupHaskell args
     | hasFormExtension inputPath = lookupForm args
     | hasSivExtension inputPath = lookupSiv args
     | hasTptpExtension inputPath =
         error "Input of TPTP files not supported yet"  
 --        lookupTptp args
     
+lookupHaskell [inputPath] = lookupHaskell [inputPath, "problem"]
+lookupHaskell (inputPath : problemNames) =
+    do
+    problems <- loadHaskellProblems inputPath problemNames
+    return $ zip problemNames problems
+    
 lookupForm [inputPath] =
     do
     tightnessValues <- getTightnessValues
-    putStrLn $ show tightnessValues
     fileContents <- readFile inputPath
     return $ form2problems tightnessValues $ read fileContents
     where
@@ -99,6 +106,7 @@ mkProblems (name, vc, box) =
         (name ++ " part " ++ show conclusionNumber, Problem box subvc)
     subvcs = splitConclusion vc 
     
+hasHsExtension path = ".hs" `isSuffixOf` path
 hasFormExtension path = ".form" `isSuffixOf` path
 hasSivExtension path = ".siv" `isSuffixOf` path
 hasTptpExtension path = ".tptp" `isSuffixOf` path

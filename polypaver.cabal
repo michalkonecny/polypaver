@@ -12,7 +12,6 @@ Stability:      experimental
 Category:       Numerical, Theorem Provers
 Synopsis:       numerical constraint solver based on polynomial interval arithmetic
 Tested-with:    
-                GHC ==6.12.3,
                 GHC ==7.4.2
 Description:
     Tools for deciding systems of real inequalities and interval inclusions over bounded domains, featuring:
@@ -32,9 +31,9 @@ Description:
 
 Extra-Source-Files:
     CHANGES
-    examples/mini.hs
-    examples/bench.hs
-    examples/integral.hs
+    examples/haskell/mini.hs
+    examples/haskell/bench.hs
+    examples/haskell/integral.hs
     examples/SPARK/peak/gnat.cfg
     examples/SPARK/peak/src/exact.ads
     examples/SPARK/peak/src/peak.adb
@@ -100,12 +99,14 @@ Library
         cmdargs >= 0.7 && < 0.11,
         filepath >= 1.1 && < 2,
         regex-compat >= 0.93.1 && < 0.96,
-        html >= 1.0.1.2 && < 2, 
-        binary >= 0.5 && < 1, 
+        html >= 1.0.1.2 && < 2,
+        binary >= 0.5 && < 1,
         syb >= 0.1 && < 1,
-        time >= 1.1 && < 2, 
-        convertible >= 1.0 && < 2, 
-        parsec >= 3.1.1 && < 3.2
+        time >= 1.1 && < 2,
+        convertible >= 1.0 && < 2,
+        parsec >= 3.1.1 && < 3.2,
+        ghc >= 7.4 && < 7.5,
+        ghc-paths >= 0.1 && < 0.2
   Exposed-modules:
         PolyPaver
         PolyPaver.GenerateMain
@@ -170,7 +171,8 @@ Library
     Numeric.ER.RnToRm.UnitDom.ChebyshevBase.Polynom.Elementary,
     Numeric.ER.RnToRm.UnitDom.ChebyshevBase.Polynom.ElementaryInner,
     Numeric.ER.RnToRm.UnitDom.ChebyshevBase.Polynom,
-    Numeric.ER.RnToRm.DefaultRepr
+    Numeric.ER.RnToRm.DefaultRepr,
+    PolyPaver.Input.Haskell
 
 Executable polypaver
   hs-source-dirs: src
@@ -185,9 +187,11 @@ Executable polypaver
         cmdargs >= 0.7 && < 0.11,
         filepath >= 1.1 && < 2,
         regex-compat >= 0.93.1 && < 0.96,
-        html >= 1.0.1.2 && < 2, 
-        binary >= 0.5 && < 1, 
+        html >= 1.0.1.2 && < 2,
+        binary >= 0.5 && < 1,
         syb >= 0.1 && < 1,
-        time >= 1.1 && < 2, 
+        time >= 1.1 && < 2,
         convertible >= 1.0 && < 2,
-        parsec >= 3.1.1 && < 3.2
+        parsec >= 3.1.1 && < 3.2,
+        ghc >= 7.4 && < 7.5,
+        ghc-paths >= 0.1 && < 0.2
