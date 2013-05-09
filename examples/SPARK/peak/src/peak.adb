@@ -1,53 +1,63 @@
 
-package body peak is
+package body Peak is
 
-  procedure max (x,y : in Float; r : out Float) is
-  begin
-    if x >= y then
-      r := x;
-    else
-      r := y;
-    end if;
-  end max;
+	procedure Max (X,Y : in Float; R : out Float) 
+	is
+	begin
+		if X >= Y then
+			R := X;
+		else
+			R := Y;
+		end if;
+	end max;
+  	
+	procedure Coeffs (Y1,Y2,Y3 : in Float; A,B,C : out Float) 
+	is
+	begin
+		A := -- 0.5*(Y1-2*Y2+Y3)
+			PolyPaver.Floats.Multiply(
+				0.5,
+				PolyPaver.Floats.Add(
+					Y1,
+					PolyPaver.Floats.Add(
+						PolyPaver.Floats.Multiply(-2.0,Y2),
+						Y3)));
+		B := -- 0.5*(Y3-Y1)
+			PolyPaver.Floats.Multiply(0.5,PolyPaver.Floats.Add(y3,-y1));
+		C := Y2;
+	end Coeffs;
+  	
+	procedure PeakQ (A,B,C,X : in Float; R : out Float) 
+	is
+		Ghost : Float;
+	begin
+		Ghost := 
+			PolyPaver.Floats.Add(
+				A,
+				PolyPaver.Floats.Add(X,-X)); 
+		R :=
+			PolyPaver.Floats.Add(
+				C,
+	  			-PolyPaver.Floats.Divide(
+	  				PolyPaver.Floats.Multiply(B,B),
+	  				PolyPaver.Floats.Multiply(4.0,Ghost)));
+	end peakQ;
+  	
+	procedure PeakUnit (Y1,Y2,Y3 : in Float; R : out Float) 
+	is
+		A,B,C,M1,M2 : Float;
+	begin
+		Max(Y1,Y3,M1);
+		Coeffs(Y1,Y2,Y3,A,B,C);
+		if A < -0.05 
+			and PolyPaver.Floats.Multiply(2.0,A) <= B 
+			and	B <= -2.0*A 
+		then -- poly has peak within [-1,1]
+			peakQ(A,B,C,0.0,M2);
+			max(M1,M2,R);
+		else
+			r := m1;
+		end if;
+	end PeakUnit;
 
-  procedure coeffs (y1,y2,y3 : in Float; a,b,c : out Float) is
-  begin
-    a := -- 0.5*(y1-2*y2+y3)
-      numeric.times(
-        0.5,
-        numeric.plus(
-          y1,
-          numeric.plus(
-            numeric.times(-2.0,y2),
-            y3)));
-    b := -- 0.5*(y3-y1)
-      numeric.times(0.5,numeric.minus(y3,y1));
-    c := y2;
-  end coeffs;
-
-  procedure peakQ (a,b,c,x : in Float; r : out Float) is
-    ghost : Float;
-  begin
-    ghost := a+(x-x); 
-    r :=
-      numeric.minus(
-        c,
-        numeric.divide(
-          numeric.times(b,b),
-          numeric.times(4.0,ghost)));
-  end peakQ;
-
-  procedure peakUnit (y1,y2,y3 : in Float; r : out Float) is
-    a,b,c,m1,m2 : Float;
-  begin
-    max(y1,y3,m1);
-    coeffs(y1,y2,y3,a,b,c);
-    if a < -0.05 and 2.0*a <= b and b <= -2.0*a then -- poly has peak within [-1,1]
-      peakQ(a,b,c,0.0,m2);
-      max(m1,m2,r);
-    else
-      r := m1;
-    end if;
-  end peakUnit;
-
-end peak;
+end Peak;

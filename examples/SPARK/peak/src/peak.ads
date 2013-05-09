@@ -1,45 +1,44 @@
-with numeric;
---# inherit numeric;
-package peak is 
+with PolyPaver.Floats;
+--# inherit PolyPaver.Floats;
+package Peak is 
 
-  procedure max (x,y : in Float; r : out Float) ;
-  --# derives r from x,y;
-  --# post (r = x and x >= y) or (r = y and y >= x);
+	procedure Max (X,Y : in Float; R : out Float) ;
+	--# derives R from X,Y;
+	--# post (R = X and X >= Y) or (R = Y and Y >= X);
+  	
+	Y_Min : constant := 0.0 ;
+	Y_Max : constant := 1.0 ; -- 100.0 ;
+  	
+	subtype Iy is Float range Y_Min .. Y_Max ;
+  	
+	Pad : constant := 0.000001;
+  	
+	subtype Ipad is Float range -Pad .. Pad ;	  	
+	subtype Icoeff1 is Float range 1.1*(Y_Min-Y_Max) .. 1.1*(Y_Max-Y_Min) ;
+	subtype Icoeff2 is Float range 1.2*(Y_Min-Y_Max) .. 1.2*(Y_Max-Y_Min) ;
+  	
+	-- coefficients of quadratic A*X**2+B*X+C over [-1,1] 
+	-- interpolating the points (-1,Y1), (0,Y2) and (1,Y3)
+	procedure Coeffs (Y1,Y2,Y3 : in Float; A,B,C : out Float);
+	--# derives A from Y1,Y2,Y3 &
+	--#         B from Y1,Y3 &
+	--#         C from Y2 ;
+	--# pre  Y1 in Iy and Y2 in Iy and Y3 in Iy;
+	--# post A-B+C - Y1 in Ipad and
+	--#          C = Y2 and
+	--#      A+B+C - Y3 in Ipad and 
+	--#      A in Icoeff1 and B in Icoeff1 and C in Icoeff1;
+  	
+	procedure PeakQ (A,B,C,X : in Float; R : out Float);
+	--# derives R from A,B,C,X;
+	--# pre  X in -1.0 .. 1.0 and 
+	--#      A < -0.05 and 
+	--#      A in Icoeff2 and B in Icoeff2 and C in Icoeff2 ;
+	--# post R >= A*X**2+B*X+C-0.05 and R <= 10.0;
+  	
+	procedure PeakUnit (Y1,Y2,Y3 : in Float; R : out Float);
+	--# derives R from Y1,Y2,Y3;
+	--# pre Y1 in Iy and Y2 in Iy and Y3 in Iy;
+	--# post R >= Y1 - 0.2 and R >= Y2 - 0.2 and R >= Y3 - 0.2;
 
-  y_min : constant := 0.0 ;
-  y_max : constant := 1.0 ; -- 100.0 ;
-
-  subtype Iy is Float range y_min .. y_max ;
-
-  pad : constant := 0.000001;
-
-  subtype Ipad is Float range -pad .. pad ;
-
-  subtype Icoeff1 is Float range 1.1*(y_min-y_max) .. 1.1*(y_max-y_min) ;
-  subtype Icoeff2 is Float range 1.2*(y_min-y_max) .. 1.2*(y_max-y_min) ;
-
-  -- coefficients of quadratic a*x**2+b*x+c over [-1,1] 
-  -- interpolating the points (-1,y1), (0,y2) and (1,y3)
-  procedure coeffs (y1,y2,y3 : in Float; a,b,c : out Float);
-  --# derives a from y1,y2,y3 &
-  --#         b from y1,y3 &
-  --#         c from y2 ;
-  --# pre  y1 in Iy and y2 in Iy and y3 in Iy;
-  --# post a-b+c - y1 in Ipad and
-  --#          c = y2 and
-  --#      a+b+c - y3 in Ipad and 
-  --#      a in Icoeff1 and b in Icoeff1 and c in Icoeff1;
-
-  procedure peakQ (a,b,c,x : in Float; r : out Float);
-  --# derives r from a,b,c,x;
-  --# pre  x in -1.0 .. 1.0 and 
-  --#      a < -0.05 and 
-  --#      a in Icoeff2 and b in Icoeff2 and c in Icoeff2 ;
-  --# post r >= a*x**2+b*x+c-0.05 and r <= 10.0;
-
-  procedure peakUnit (y1,y2,y3 : in Float; r : out Float);
-  --# derives r from y1,y2,y3;
-  --# pre y1 in Iy and y2 in Iy and y3 in Iy;
-  --# post r >= y1 - 0.2 and r >= y2 - 0.2 and r >= y3 - 0.2;
-
-end peak;
+end Peak;

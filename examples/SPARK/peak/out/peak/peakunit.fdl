@@ -1,19 +1,23 @@
            {*******************************************************}
                                {FDL Declarations}
-                              {Examiner GPL 2011}
-             {Copyright (C) 2011 Altran Praxis Limited, Bath, U.K.}
+                              {Examiner GPL 2012}
+             {Copyright (C) 2012 Altran Praxis Limited, Bath, U.K.}
            {*******************************************************}
 
 
-                        {DATE : 07-SEP-2011 17:22:08.32}
+                        {DATE : 09-MAY-2013 23:39:42.51}
 
-                          {procedure peak.peakUnit}
+                          {procedure Peak.PeakUnit}
 
 
 title procedure peakunit;
 
   function round__(real) : integer;
   type universal_real = real;
+  type iy = real;
+  type ipad = real;
+  type icoeff1 = real;
+  type icoeff2 = real;
   const icoeff2__base__first : real = pending; 
   const icoeff2__base__last : real = pending; 
   const icoeff1__base__first : real = pending; 
@@ -53,6 +57,7 @@ title procedure peakunit;
   var c : real;
   var m1 : real;
   var m2 : real;
+  function polypaver__floats__multiply(real, real) : real;
   var r__4 : real;
   var m2__3 : real;
   var c__2 : real;

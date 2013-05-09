@@ -1,40 +1,38 @@
            *******************************************************
                        Semantic Analysis of SPARK Text
-                              Examiner GPL 2011
-             Copyright (C) 2011 Altran Praxis Limited, Bath, U.K.
+                              Examiner GPL 2012
+             Copyright (C) 2012 Altran Praxis Limited, Bath, U.K.
            *******************************************************
 
 
-                        DATE : 07-SEP-2011 17:22:08.29
+                        DATE : 09-MAY-2013 23:39:42.47
 
-                             procedure peak.max
-
-
+                             procedure Peak.Max
 
 
-For path(s) from start to run-time check associated with statement of line 7:
+
+
+For path(s) from start to run-time check associated with statement of line 8:
 
 procedure_max_1.
-H1:    true .
-H2:    x >= float__first .
-H3:    x <= float__last .
-H4:    y >= float__first .
-H5:    y <= float__last .
-H6:    x >= y .
+H1:    x >= float__first .
+H2:    x <= float__last .
+H3:    y >= float__first .
+H4:    y <= float__last .
+H5:    x >= y .
         ->
 C1:    x >= float__first .
 C2:    x <= float__last .
  
 
-For path(s) from start to run-time check associated with statement of line 9:
+For path(s) from start to run-time check associated with statement of line 10:
 
 procedure_max_2.
-H1:    true .
-H2:    x >= float__first .
-H3:    x <= float__last .
-H4:    y >= float__first .
-H5:    y <= float__last .
-H6:    not (x >= y) .
+H1:    x >= float__first .
+H2:    x <= float__last .
+H3:    y >= float__first .
+H4:    y <= float__last .
+H5:    not (x >= y) .
         ->
 C1:    y >= float__first .
 C2:    y <= float__last .
@@ -43,27 +41,25 @@ C2:    y <= float__last .
 For path(s) from start to finish:
 
 procedure_max_3.
-H1:    true .
-H2:    x >= float__first .
-H3:    x <= float__last .
-H4:    y >= float__first .
-H5:    y <= float__last .
-H6:    x >= y .
-H7:    x >= float__first .
-H8:    x <= float__last .
+H1:    x >= float__first .
+H2:    x <= float__last .
+H3:    y >= float__first .
+H4:    y <= float__last .
+H5:    x >= y .
+H6:    x >= float__first .
+H7:    x <= float__last .
         ->
 C1:    ((x = x) and (x >= y)) or ((x = y) and (y >= x)) .
  
 
 procedure_max_4.
-H1:    true .
-H2:    x >= float__first .
-H3:    x <= float__last .
-H4:    y >= float__first .
-H5:    y <= float__last .
-H6:    not (x >= y) .
-H7:    y >= float__first .
-H8:    y <= float__last .
+H1:    x >= float__first .
+H2:    x <= float__last .
+H3:    y >= float__first .
+H4:    y <= float__last .
+H5:    not (x >= y) .
+H6:    y >= float__first .
+H7:    y <= float__last .
         ->
 C1:    ((y = x) and (x >= y)) or ((y = y) and (y >= x)) .
  

@@ -1,18 +1,19 @@
            {*******************************************************}
                                {FDL Declarations}
-                              {Examiner GPL 2011}
-             {Copyright (C) 2011 Altran Praxis Limited, Bath, U.K.}
+                              {Examiner GPL 2012}
+             {Copyright (C) 2012 Altran Praxis Limited, Bath, U.K.}
            {*******************************************************}
 
 
-                        {DATE : 07-SEP-2011 17:22:08.31}
+                        {DATE : 09-MAY-2013 23:39:42.49}
 
-                            {procedure peak.peakQ}
+                            {procedure Peak.PeakQ}
 
 
 title procedure peakq;
 
   function round__(real) : integer;
+  type icoeff2 = real;
   const icoeff2__base__first : real = pending; 
   const icoeff2__base__last : real = pending; 
   const float__base__first : real = pending; 
@@ -27,8 +28,8 @@ title procedure peakq;
   var b : real;
   var c : real;
   var x : real;
-  function numeric__minus(real, real) : real;
-  function numeric__times(real, real) : real;
-  function numeric__divide(real, real) : real;
+  function polypaver__floats__add(real, real) : real;
+  function polypaver__floats__multiply(real, real) : real;
+  function polypaver__floats__divide(real, real) : real;
 
 end;
