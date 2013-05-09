@@ -5,12 +5,12 @@
            {*******************************************************}
 
 
-                        {DATE : 09-MAY-2013 23:39:42.47}
+                        {DATE : 10-MAY-2013 00:12:39.76}
 
-                             {procedure Peak.Max}
+                             {function Peak.Max}
 
 
-title procedure max;
+title function max;
 
   function round__(real) : integer;
   const float__base__first : real = pending; 

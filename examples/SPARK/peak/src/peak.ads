@@ -2,9 +2,8 @@ with PolyPaver.Floats;
 --# inherit PolyPaver.Floats;
 package Peak is 
 
-	procedure Max (X,Y : in Float; R : out Float) ;
-	--# derives R from X,Y;
-	--# post (R = X and X >= Y) or (R = Y and Y >= X);
+	function Max (X,Y : Float) return Float ;
+	--# return R => (R = X and X >= Y) or (R = Y and Y >= X);
   	
 	Y_Min : constant := 0.0 ;
 	Y_Max : constant := 1.0 ; -- 100.0 ;
@@ -29,16 +28,14 @@ package Peak is
 	--#      A+B+C - Y3 in Ipad and 
 	--#      A in Icoeff1 and B in Icoeff1 and C in Icoeff1;
   	
-	procedure PeakQ (A,B,C,X : in Float; R : out Float);
-	--# derives R from A,B,C,X;
+	function PeakQ (A,B,C,X : Float) return Float;
 	--# pre  X in -1.0 .. 1.0 and 
 	--#      A < -0.05 and 
 	--#      A in Icoeff2 and B in Icoeff2 and C in Icoeff2 ;
-	--# post R >= A*X**2+B*X+C-0.05 and R <= 10.0;
+	--# return R => R >= A*X**2+B*X+C-0.05 and R <= 10.0;
   	
-	procedure PeakUnit (Y1,Y2,Y3 : in Float; R : out Float);
-	--# derives R from Y1,Y2,Y3;
+	function PeakUnit (Y1,Y2,Y3 : Float) return Float;
 	--# pre Y1 in Iy and Y2 in Iy and Y3 in Iy;
-	--# post R >= Y1 - 0.2 and R >= Y2 - 0.2 and R >= Y3 - 0.2;
+	--# return R => R >= Y1 - 0.2 and R >= Y2 - 0.2 and R >= Y3 - 0.2;
 
 end Peak;

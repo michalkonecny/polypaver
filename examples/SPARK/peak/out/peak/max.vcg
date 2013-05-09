@@ -5,16 +5,16 @@
            *******************************************************
 
 
-                        DATE : 09-MAY-2013 23:39:42.47
+                        DATE : 10-MAY-2013 00:12:39.76
 
-                             procedure Peak.Max
+                             function Peak.Max
 
 
 
 
 For path(s) from start to run-time check associated with statement of line 8:
 
-procedure_max_1.
+function_max_1.
 H1:    x >= float__first .
 H2:    x <= float__last .
 H3:    y >= float__first .
@@ -27,7 +27,7 @@ C2:    x <= float__last .
 
 For path(s) from start to run-time check associated with statement of line 10:
 
-procedure_max_2.
+function_max_2.
 H1:    x >= float__first .
 H2:    x <= float__last .
 H3:    y >= float__first .
@@ -40,7 +40,7 @@ C2:    y <= float__last .
 
 For path(s) from start to finish:
 
-procedure_max_3.
+function_max_3.
 H1:    x >= float__first .
 H2:    x <= float__last .
 H3:    y >= float__first .
@@ -48,11 +48,15 @@ H4:    y <= float__last .
 H5:    x >= y .
 H6:    x >= float__first .
 H7:    x <= float__last .
+H8:    x >= float__first .
+H9:    x <= float__last .
         ->
 C1:    ((x = x) and (x >= y)) or ((x = y) and (y >= x)) .
+C2:    x >= float__first .
+C3:    x <= float__last .
  
 
-procedure_max_4.
+function_max_4.
 H1:    x >= float__first .
 H2:    x <= float__last .
 H3:    y >= float__first .
@@ -60,7 +64,11 @@ H4:    y <= float__last .
 H5:    not (x >= y) .
 H6:    y >= float__first .
 H7:    y <= float__last .
+H8:    y >= float__first .
+H9:    y <= float__last .
         ->
 C1:    ((y = x) and (x >= y)) or ((y = y) and (y >= x)) .
+C2:    y >= float__first .
+C3:    y <= float__last .
  
 

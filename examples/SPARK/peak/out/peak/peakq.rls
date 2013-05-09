@@ -5,9 +5,9 @@
            /*********************************************************/
 
 
-                        /*DATE : 09-MAY-2013 23:39:42.49*/
+                        /*DATE : 10-MAY-2013 00:12:39.78*/
 
-                            /*procedure Peak.PeakQ*/
+                            /*function Peak.PeakQ*/
 
 
 rule_family peakq_rules:

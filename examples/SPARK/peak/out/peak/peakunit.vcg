@@ -5,16 +5,16 @@
            *******************************************************
 
 
-                        DATE : 09-MAY-2013 23:39:42.51
+                        DATE : 10-MAY-2013 00:12:39.79
 
-                          procedure Peak.PeakUnit
+                           function Peak.PeakUnit
 
 
 
 
 For path(s) from start to run-time check associated with statement of line 50:
 
-procedure_peakunit_1.
+function_peakunit_1.
 H1:    y1 >= iy__first .
 H2:    y1 <= iy__last .
 H3:    y2 >= iy__first .
@@ -36,7 +36,7 @@ C4:    y1 <= float__last .
 
 For path(s) from start to run-time check associated with statement of line 50:
 
-procedure_peakunit_2.
+function_peakunit_2.
 H1:    y1 >= iy__first .
 H2:    y1 <= iy__last .
 H3:    y2 >= iy__first .
@@ -53,18 +53,18 @@ H13:   y3 >= float__first .
 H14:   y3 <= float__last .
 H15:   y1 >= float__first .
 H16:   y1 <= float__last .
-H17:   ((m1__1 = y1) and (y1 >= y3)) or ((m1__1 = y3) and (
-           y3 >= y1)) .
-H18:   m1__1 >= float__first .
-H19:   m1__1 <= float__last .
+H17:   max(y1, y3) >= float__first .
+H18:   max(y1, y3) <= float__last .
+H19:   ((max(y1, y3) = y1) and (y1 >= y3)) or ((max(y1, y3) = 
+           y3) and (y3 >= y1)) .
         ->
-C1:    m1__1 >= float__first .
-C2:    m1__1 <= float__last .
+C1:    max(y1, y3) >= float__first .
+C2:    max(y1, y3) <= float__last .
  
 
 For path(s) from start to precondition check associated with statement of line 51:
 
-procedure_peakunit_3.
+function_peakunit_3.
 H1:    y1 >= iy__first .
 H2:    y1 <= iy__last .
 H3:    y2 >= iy__first .
@@ -81,12 +81,12 @@ H13:   y3 >= float__first .
 H14:   y3 <= float__last .
 H15:   y1 >= float__first .
 H16:   y1 <= float__last .
-H17:   ((m1__1 = y1) and (y1 >= y3)) or ((m1__1 = y3) and (
-           y3 >= y1)) .
-H18:   m1__1 >= float__first .
-H19:   m1__1 <= float__last .
-H20:   m1__1 >= float__first .
-H21:   m1__1 <= float__last .
+H17:   max(y1, y3) >= float__first .
+H18:   max(y1, y3) <= float__last .
+H19:   ((max(y1, y3) = y1) and (y1 >= y3)) or ((max(y1, y3) = 
+           y3) and (y3 >= y1)) .
+H20:   max(y1, y3) >= float__first .
+H21:   max(y1, y3) <= float__last .
         ->
 C1:    y3 >= float__first .
 C2:    y3 <= float__last .
@@ -104,7 +104,7 @@ C12:   y3 <= iy__last .
 
 For path(s) from start to run-time check associated with statement of line 51:
 
-procedure_peakunit_4.
+function_peakunit_4.
 H1:    y1 >= iy__first .
 H2:    y1 <= iy__last .
 H3:    y2 >= iy__first .
@@ -121,12 +121,12 @@ H13:   y3 >= float__first .
 H14:   y3 <= float__last .
 H15:   y1 >= float__first .
 H16:   y1 <= float__last .
-H17:   ((m1__1 = y1) and (y1 >= y3)) or ((m1__1 = y3) and (
-           y3 >= y1)) .
-H18:   m1__1 >= float__first .
-H19:   m1__1 <= float__last .
-H20:   m1__1 >= float__first .
-H21:   m1__1 <= float__last .
+H17:   max(y1, y3) >= float__first .
+H18:   max(y1, y3) <= float__last .
+H19:   ((max(y1, y3) = y1) and (y1 >= y3)) or ((max(y1, y3) = 
+           y3) and (y3 >= y1)) .
+H20:   max(y1, y3) >= float__first .
+H21:   max(y1, y3) <= float__last .
 H22:   y3 >= float__first .
 H23:   y3 <= float__last .
 H24:   y2 >= float__first .
@@ -139,35 +139,35 @@ H30:   y2 >= iy__first .
 H31:   y2 <= iy__last .
 H32:   y3 >= iy__first .
 H33:   y3 <= iy__last .
-H34:   a__2 - b__2 + c__2 - y1 >= ipad__first .
-H35:   a__2 - b__2 + c__2 - y1 <= ipad__last .
-H36:   c__2 = y2 .
-H37:   a__2 + b__2 + c__2 - y3 >= ipad__first .
-H38:   a__2 + b__2 + c__2 - y3 <= ipad__last .
-H39:   a__2 >= icoeff1__first .
-H40:   a__2 <= icoeff1__last .
-H41:   b__2 >= icoeff1__first .
-H42:   b__2 <= icoeff1__last .
-H43:   c__2 >= icoeff1__first .
-H44:   c__2 <= icoeff1__last .
-H45:   a__2 >= float__first .
-H46:   a__2 <= float__last .
-H47:   b__2 >= float__first .
-H48:   b__2 <= float__last .
-H49:   c__2 >= float__first .
-H50:   c__2 <= float__last .
+H34:   a__1 - b__1 + c__1 - y1 >= ipad__first .
+H35:   a__1 - b__1 + c__1 - y1 <= ipad__last .
+H36:   c__1 = y2 .
+H37:   a__1 + b__1 + c__1 - y3 >= ipad__first .
+H38:   a__1 + b__1 + c__1 - y3 <= ipad__last .
+H39:   a__1 >= icoeff1__first .
+H40:   a__1 <= icoeff1__last .
+H41:   b__1 >= icoeff1__first .
+H42:   b__1 <= icoeff1__last .
+H43:   c__1 >= icoeff1__first .
+H44:   c__1 <= icoeff1__last .
+H45:   a__1 >= float__first .
+H46:   a__1 <= float__last .
+H47:   b__1 >= float__first .
+H48:   b__1 <= float__last .
+H49:   c__1 >= float__first .
+H50:   c__1 <= float__last .
         ->
-C1:    c__2 >= float__first .
-C2:    c__2 <= float__last .
-C3:    b__2 >= float__first .
-C4:    b__2 <= float__last .
-C5:    a__2 >= float__first .
-C6:    a__2 <= float__last .
+C1:    c__1 >= float__first .
+C2:    c__1 <= float__last .
+C3:    b__1 >= float__first .
+C4:    b__1 <= float__last .
+C5:    a__1 >= float__first .
+C6:    a__1 <= float__last .
  
 
 For path(s) from start to precondition check associated with statement of line 52:
 
-procedure_peakunit_5.
+function_peakunit_5.
 H1:    y1 >= iy__first .
 H2:    y1 <= iy__last .
 H3:    y2 >= iy__first .
@@ -184,12 +184,12 @@ H13:   y3 >= float__first .
 H14:   y3 <= float__last .
 H15:   y1 >= float__first .
 H16:   y1 <= float__last .
-H17:   ((m1__1 = y1) and (y1 >= y3)) or ((m1__1 = y3) and (
-           y3 >= y1)) .
-H18:   m1__1 >= float__first .
-H19:   m1__1 <= float__last .
-H20:   m1__1 >= float__first .
-H21:   m1__1 <= float__last .
+H17:   max(y1, y3) >= float__first .
+H18:   max(y1, y3) <= float__last .
+H19:   ((max(y1, y3) = y1) and (y1 >= y3)) or ((max(y1, y3) = 
+           y3) and (y3 >= y1)) .
+H20:   max(y1, y3) >= float__first .
+H21:   max(y1, y3) <= float__last .
 H22:   y3 >= float__first .
 H23:   y3 <= float__last .
 H24:   y2 >= float__first .
@@ -202,45 +202,45 @@ H30:   y2 >= iy__first .
 H31:   y2 <= iy__last .
 H32:   y3 >= iy__first .
 H33:   y3 <= iy__last .
-H34:   a__2 - b__2 + c__2 - y1 >= ipad__first .
-H35:   a__2 - b__2 + c__2 - y1 <= ipad__last .
-H36:   c__2 = y2 .
-H37:   a__2 + b__2 + c__2 - y3 >= ipad__first .
-H38:   a__2 + b__2 + c__2 - y3 <= ipad__last .
-H39:   a__2 >= icoeff1__first .
-H40:   a__2 <= icoeff1__last .
-H41:   b__2 >= icoeff1__first .
-H42:   b__2 <= icoeff1__last .
-H43:   c__2 >= icoeff1__first .
-H44:   c__2 <= icoeff1__last .
-H45:   a__2 >= float__first .
-H46:   a__2 <= float__last .
-H47:   b__2 >= float__first .
-H48:   b__2 <= float__last .
-H49:   c__2 >= float__first .
-H50:   c__2 <= float__last .
-H51:   c__2 >= float__first .
-H52:   c__2 <= float__last .
-H53:   b__2 >= float__first .
-H54:   b__2 <= float__last .
-H55:   a__2 >= float__first .
-H56:   a__2 <= float__last .
-H57:   a__2 >= float__first .
-H58:   a__2 <= float__last .
+H34:   a__1 - b__1 + c__1 - y1 >= ipad__first .
+H35:   a__1 - b__1 + c__1 - y1 <= ipad__last .
+H36:   c__1 = y2 .
+H37:   a__1 + b__1 + c__1 - y3 >= ipad__first .
+H38:   a__1 + b__1 + c__1 - y3 <= ipad__last .
+H39:   a__1 >= icoeff1__first .
+H40:   a__1 <= icoeff1__last .
+H41:   b__1 >= icoeff1__first .
+H42:   b__1 <= icoeff1__last .
+H43:   c__1 >= icoeff1__first .
+H44:   c__1 <= icoeff1__last .
+H45:   a__1 >= float__first .
+H46:   a__1 <= float__last .
+H47:   b__1 >= float__first .
+H48:   b__1 <= float__last .
+H49:   c__1 >= float__first .
+H50:   c__1 <= float__last .
+H51:   c__1 >= float__first .
+H52:   c__1 <= float__last .
+H53:   b__1 >= float__first .
+H54:   b__1 <= float__last .
+H55:   a__1 >= float__first .
+H56:   a__1 <= float__last .
+H57:   a__1 >= float__first .
+H58:   a__1 <= float__last .
         ->
-C1:    polypaver__floats__multiply(2, a__2) >= float__first .
-C2:    polypaver__floats__multiply(2, a__2) <= float__last .
-C3:    a__2 >= float__first .
-C4:    a__2 <= float__last .
+C1:    polypaver__floats__multiply(2, a__1) >= float__first .
+C2:    polypaver__floats__multiply(2, a__1) <= float__last .
+C3:    a__1 >= float__first .
+C4:    a__1 <= float__last .
 C5:    2 >= float__first .
 C6:    2 <= float__last .
 C7:     -(1/20) >= universal_real__base__first .
 C8:     -(1/20) <= universal_real__base__last .
  
 
-For path(s) from start to run-time check associated with statement of line 52:
+For path(s) from start to precondition check associated with statement of line 52:
 
-procedure_peakunit_6.
+function_peakunit_6.
 H1:    y1 >= iy__first .
 H2:    y1 <= iy__last .
 H3:    y2 >= iy__first .
@@ -257,12 +257,12 @@ H13:   y3 >= float__first .
 H14:   y3 <= float__last .
 H15:   y1 >= float__first .
 H16:   y1 <= float__last .
-H17:   ((m1__1 = y1) and (y1 >= y3)) or ((m1__1 = y3) and (
-           y3 >= y1)) .
-H18:   m1__1 >= float__first .
-H19:   m1__1 <= float__last .
-H20:   m1__1 >= float__first .
-H21:   m1__1 <= float__last .
+H17:   max(y1, y3) >= float__first .
+H18:   max(y1, y3) <= float__last .
+H19:   ((max(y1, y3) = y1) and (y1 >= y3)) or ((max(y1, y3) = 
+           y3) and (y3 >= y1)) .
+H20:   max(y1, y3) >= float__first .
+H21:   max(y1, y3) <= float__last .
 H22:   y3 >= float__first .
 H23:   y3 <= float__last .
 H24:   y2 >= float__first .
@@ -275,55 +275,59 @@ H30:   y2 >= iy__first .
 H31:   y2 <= iy__last .
 H32:   y3 >= iy__first .
 H33:   y3 <= iy__last .
-H34:   a__2 - b__2 + c__2 - y1 >= ipad__first .
-H35:   a__2 - b__2 + c__2 - y1 <= ipad__last .
-H36:   c__2 = y2 .
-H37:   a__2 + b__2 + c__2 - y3 >= ipad__first .
-H38:   a__2 + b__2 + c__2 - y3 <= ipad__last .
-H39:   a__2 >= icoeff1__first .
-H40:   a__2 <= icoeff1__last .
-H41:   b__2 >= icoeff1__first .
-H42:   b__2 <= icoeff1__last .
-H43:   c__2 >= icoeff1__first .
-H44:   c__2 <= icoeff1__last .
-H45:   a__2 >= float__first .
-H46:   a__2 <= float__last .
-H47:   b__2 >= float__first .
-H48:   b__2 <= float__last .
-H49:   c__2 >= float__first .
-H50:   c__2 <= float__last .
-H51:   c__2 >= float__first .
-H52:   c__2 <= float__last .
-H53:   b__2 >= float__first .
-H54:   b__2 <= float__last .
-H55:   a__2 >= float__first .
-H56:   a__2 <= float__last .
-H57:   a__2 >= float__first .
-H58:   a__2 <= float__last .
-H59:   polypaver__floats__multiply(2, a__2) >= float__first .
-H60:   polypaver__floats__multiply(2, a__2) <= float__last .
-H61:   a__2 >= float__first .
-H62:   a__2 <= float__last .
+H34:   a__1 - b__1 + c__1 - y1 >= ipad__first .
+H35:   a__1 - b__1 + c__1 - y1 <= ipad__last .
+H36:   c__1 = y2 .
+H37:   a__1 + b__1 + c__1 - y3 >= ipad__first .
+H38:   a__1 + b__1 + c__1 - y3 <= ipad__last .
+H39:   a__1 >= icoeff1__first .
+H40:   a__1 <= icoeff1__last .
+H41:   b__1 >= icoeff1__first .
+H42:   b__1 <= icoeff1__last .
+H43:   c__1 >= icoeff1__first .
+H44:   c__1 <= icoeff1__last .
+H45:   a__1 >= float__first .
+H46:   a__1 <= float__last .
+H47:   b__1 >= float__first .
+H48:   b__1 <= float__last .
+H49:   c__1 >= float__first .
+H50:   c__1 <= float__last .
+H51:   c__1 >= float__first .
+H52:   c__1 <= float__last .
+H53:   b__1 >= float__first .
+H54:   b__1 <= float__last .
+H55:   a__1 >= float__first .
+H56:   a__1 <= float__last .
+H57:   a__1 >= float__first .
+H58:   a__1 <= float__last .
+H59:   polypaver__floats__multiply(2, a__1) >= float__first .
+H60:   polypaver__floats__multiply(2, a__1) <= float__last .
+H61:   a__1 >= float__first .
+H62:   a__1 <= float__last .
 H63:   2 >= float__first .
 H64:   2 <= float__last .
 H65:    -(1/20) >= universal_real__base__first .
 H66:    -(1/20) <= universal_real__base__last .
-H67:   polypaver__floats__multiply(2, a__2) >= float__first .
-H68:   polypaver__floats__multiply(2, a__2) <= float__last .
-H69:   a__2 >= float__first .
-H70:   a__2 <= float__last .
-H71:   b__2 >= float__first .
-H72:   b__2 <= float__last .
+H67:   polypaver__floats__multiply(2, a__1) >= float__first .
+H68:   polypaver__floats__multiply(2, a__1) <= float__last .
+H69:   a__1 >= float__first .
+H70:   a__1 <= float__last .
+H71:   b__1 >= float__first .
+H72:   b__1 <= float__last .
         ->
-C1:     -(2 * a__2) >= float__base__first .
-C2:     -(2 * a__2) <= float__base__last .
-C3:    2 * a__2 >= float__base__first .
-C4:    2 * a__2 <= float__base__last .
+C1:    polypaver__floats__multiply( -2, a__1) >= float__first .
+C2:    polypaver__floats__multiply( -2, a__1) <= float__last .
+C3:    a__1 >= float__first .
+C4:    a__1 <= float__last .
+C5:     -2 >= float__first .
+C6:     -2 <= float__last .
+C7:     -2 >= float__base__first .
+C8:     -2 <= float__base__last .
  
 
 For path(s) from start to precondition check associated with statement of line 56:
 
-procedure_peakunit_7.
+function_peakunit_7.
 H1:    y1 >= iy__first .
 H2:    y1 <= iy__last .
 H3:    y2 >= iy__first .
@@ -340,12 +344,12 @@ H13:   y3 >= float__first .
 H14:   y3 <= float__last .
 H15:   y1 >= float__first .
 H16:   y1 <= float__last .
-H17:   ((m1__1 = y1) and (y1 >= y3)) or ((m1__1 = y3) and (
-           y3 >= y1)) .
-H18:   m1__1 >= float__first .
-H19:   m1__1 <= float__last .
-H20:   m1__1 >= float__first .
-H21:   m1__1 <= float__last .
+H17:   max(y1, y3) >= float__first .
+H18:   max(y1, y3) <= float__last .
+H19:   ((max(y1, y3) = y1) and (y1 >= y3)) or ((max(y1, y3) = 
+           y3) and (y3 >= y1)) .
+H20:   max(y1, y3) >= float__first .
+H21:   max(y1, y3) <= float__last .
 H22:   y3 >= float__first .
 H23:   y3 <= float__last .
 H24:   y2 >= float__first .
@@ -358,81 +362,91 @@ H30:   y2 >= iy__first .
 H31:   y2 <= iy__last .
 H32:   y3 >= iy__first .
 H33:   y3 <= iy__last .
-H34:   a__2 - b__2 + c__2 - y1 >= ipad__first .
-H35:   a__2 - b__2 + c__2 - y1 <= ipad__last .
-H36:   c__2 = y2 .
-H37:   a__2 + b__2 + c__2 - y3 >= ipad__first .
-H38:   a__2 + b__2 + c__2 - y3 <= ipad__last .
-H39:   a__2 >= icoeff1__first .
-H40:   a__2 <= icoeff1__last .
-H41:   b__2 >= icoeff1__first .
-H42:   b__2 <= icoeff1__last .
-H43:   c__2 >= icoeff1__first .
-H44:   c__2 <= icoeff1__last .
-H45:   a__2 >= float__first .
-H46:   a__2 <= float__last .
-H47:   b__2 >= float__first .
-H48:   b__2 <= float__last .
-H49:   c__2 >= float__first .
-H50:   c__2 <= float__last .
-H51:   c__2 >= float__first .
-H52:   c__2 <= float__last .
-H53:   b__2 >= float__first .
-H54:   b__2 <= float__last .
-H55:   a__2 >= float__first .
-H56:   a__2 <= float__last .
-H57:   a__2 >= float__first .
-H58:   a__2 <= float__last .
-H59:   polypaver__floats__multiply(2, a__2) >= float__first .
-H60:   polypaver__floats__multiply(2, a__2) <= float__last .
-H61:   a__2 >= float__first .
-H62:   a__2 <= float__last .
+H34:   a__1 - b__1 + c__1 - y1 >= ipad__first .
+H35:   a__1 - b__1 + c__1 - y1 <= ipad__last .
+H36:   c__1 = y2 .
+H37:   a__1 + b__1 + c__1 - y3 >= ipad__first .
+H38:   a__1 + b__1 + c__1 - y3 <= ipad__last .
+H39:   a__1 >= icoeff1__first .
+H40:   a__1 <= icoeff1__last .
+H41:   b__1 >= icoeff1__first .
+H42:   b__1 <= icoeff1__last .
+H43:   c__1 >= icoeff1__first .
+H44:   c__1 <= icoeff1__last .
+H45:   a__1 >= float__first .
+H46:   a__1 <= float__last .
+H47:   b__1 >= float__first .
+H48:   b__1 <= float__last .
+H49:   c__1 >= float__first .
+H50:   c__1 <= float__last .
+H51:   c__1 >= float__first .
+H52:   c__1 <= float__last .
+H53:   b__1 >= float__first .
+H54:   b__1 <= float__last .
+H55:   a__1 >= float__first .
+H56:   a__1 <= float__last .
+H57:   a__1 >= float__first .
+H58:   a__1 <= float__last .
+H59:   polypaver__floats__multiply(2, a__1) >= float__first .
+H60:   polypaver__floats__multiply(2, a__1) <= float__last .
+H61:   a__1 >= float__first .
+H62:   a__1 <= float__last .
 H63:   2 >= float__first .
 H64:   2 <= float__last .
 H65:    -(1/20) >= universal_real__base__first .
 H66:    -(1/20) <= universal_real__base__last .
-H67:   polypaver__floats__multiply(2, a__2) >= float__first .
-H68:   polypaver__floats__multiply(2, a__2) <= float__last .
-H69:   a__2 >= float__first .
-H70:   a__2 <= float__last .
-H71:   b__2 >= float__first .
-H72:   b__2 <= float__last .
-H73:    -(2 * a__2) >= float__base__first .
-H74:    -(2 * a__2) <= float__base__last .
-H75:   2 * a__2 >= float__base__first .
-H76:   2 * a__2 <= float__base__last .
-H77:   a__2 <  -(1/20) .
-H78:   polypaver__floats__multiply(2, a__2) <= b__2 .
-H79:   b__2 <=  -(2 * a__2) .
-H80:   a__2 >= float__first .
-H81:   a__2 <= float__last .
-H82:   b__2 >= float__first .
-H83:   b__2 <= float__last .
-H84:   c__2 >= float__first .
-H85:   c__2 <= float__last .
+H67:   polypaver__floats__multiply(2, a__1) >= float__first .
+H68:   polypaver__floats__multiply(2, a__1) <= float__last .
+H69:   a__1 >= float__first .
+H70:   a__1 <= float__last .
+H71:   b__1 >= float__first .
+H72:   b__1 <= float__last .
+H73:   polypaver__floats__multiply( -2, a__1) >= float__first .
+H74:   polypaver__floats__multiply( -2, a__1) <= float__last .
+H75:   a__1 >= float__first .
+H76:   a__1 <= float__last .
+H77:    -2 >= float__first .
+H78:    -2 <= float__last .
+H79:    -2 >= float__base__first .
+H80:    -2 <= float__base__last .
+H81:   polypaver__floats__multiply( -2, a__1) >= float__first .
+H82:   polypaver__floats__multiply( -2, a__1) <= float__last .
+H83:   a__1 <  -(1/20) .
+H84:   polypaver__floats__multiply(2, a__1) <= b__1 .
+H85:   b__1 <= polypaver__floats__multiply( -2, a__1) .
+H86:   a__1 >= float__first .
+H87:   a__1 <= float__last .
+H88:   b__1 >= float__first .
+H89:   b__1 <= float__last .
+H90:   c__1 >= float__first .
+H91:   c__1 <= float__last .
+H92:   max(y1, y3) >= float__first .
+H93:   max(y1, y3) <= float__last .
         ->
-C1:    0 >= float__first .
-C2:    0 <= float__last .
-C3:    c__2 >= float__first .
-C4:    c__2 <= float__last .
-C5:    b__2 >= float__first .
-C6:    b__2 <= float__last .
-C7:    a__2 >= float__first .
-C8:    a__2 <= float__last .
-C9:    0 >=  -1 .
-C10:   0 <= 1 .
-C11:   a__2 <  -(1/20) .
-C12:   a__2 >= icoeff2__first .
-C13:   a__2 <= icoeff2__last .
-C14:   b__2 >= icoeff2__first .
-C15:   b__2 <= icoeff2__last .
-C16:   c__2 >= icoeff2__first .
-C17:   c__2 <= icoeff2__last .
+C1:    0 >=  -1 .
+C2:    0 <= 1 .
+C3:    a__1 <  -(1/20) .
+C4:    a__1 >= icoeff2__first .
+C5:    a__1 <= icoeff2__last .
+C6:    b__1 >= icoeff2__first .
+C7:    b__1 <= icoeff2__last .
+C8:    c__1 >= icoeff2__first .
+C9:    c__1 <= icoeff2__last .
+C10:   0 >= float__first .
+C11:   0 <= float__last .
+C12:   c__1 >= float__first .
+C13:   c__1 <= float__last .
+C14:   b__1 >= float__first .
+C15:   b__1 <= float__last .
+C16:   a__1 >= float__first .
+C17:   a__1 <= float__last .
+C18:   max(y1, y3) >= float__first .
+C19:   max(y1, y3) <= float__last .
  
 
 For path(s) from start to run-time check associated with statement of line 56:
 
-procedure_peakunit_8.
+function_peakunit_8.
 H1:    y1 >= iy__first .
 H2:    y1 <= iy__last .
 H3:    y2 >= iy__first .
@@ -449,12 +463,12 @@ H13:   y3 >= float__first .
 H14:   y3 <= float__last .
 H15:   y1 >= float__first .
 H16:   y1 <= float__last .
-H17:   ((m1__1 = y1) and (y1 >= y3)) or ((m1__1 = y3) and (
-           y3 >= y1)) .
-H18:   m1__1 >= float__first .
-H19:   m1__1 <= float__last .
-H20:   m1__1 >= float__first .
-H21:   m1__1 <= float__last .
+H17:   max(y1, y3) >= float__first .
+H18:   max(y1, y3) <= float__last .
+H19:   ((max(y1, y3) = y1) and (y1 >= y3)) or ((max(y1, y3) = 
+           y3) and (y3 >= y1)) .
+H20:   max(y1, y3) >= float__first .
+H21:   max(y1, y3) <= float__last .
 H22:   y3 >= float__first .
 H23:   y3 <= float__last .
 H24:   y2 >= float__first .
@@ -467,87 +481,98 @@ H30:   y2 >= iy__first .
 H31:   y2 <= iy__last .
 H32:   y3 >= iy__first .
 H33:   y3 <= iy__last .
-H34:   a__2 - b__2 + c__2 - y1 >= ipad__first .
-H35:   a__2 - b__2 + c__2 - y1 <= ipad__last .
-H36:   c__2 = y2 .
-H37:   a__2 + b__2 + c__2 - y3 >= ipad__first .
-H38:   a__2 + b__2 + c__2 - y3 <= ipad__last .
-H39:   a__2 >= icoeff1__first .
-H40:   a__2 <= icoeff1__last .
-H41:   b__2 >= icoeff1__first .
-H42:   b__2 <= icoeff1__last .
-H43:   c__2 >= icoeff1__first .
-H44:   c__2 <= icoeff1__last .
-H45:   a__2 >= float__first .
-H46:   a__2 <= float__last .
-H47:   b__2 >= float__first .
-H48:   b__2 <= float__last .
-H49:   c__2 >= float__first .
-H50:   c__2 <= float__last .
-H51:   c__2 >= float__first .
-H52:   c__2 <= float__last .
-H53:   b__2 >= float__first .
-H54:   b__2 <= float__last .
-H55:   a__2 >= float__first .
-H56:   a__2 <= float__last .
-H57:   a__2 >= float__first .
-H58:   a__2 <= float__last .
-H59:   polypaver__floats__multiply(2, a__2) >= float__first .
-H60:   polypaver__floats__multiply(2, a__2) <= float__last .
-H61:   a__2 >= float__first .
-H62:   a__2 <= float__last .
+H34:   a__1 - b__1 + c__1 - y1 >= ipad__first .
+H35:   a__1 - b__1 + c__1 - y1 <= ipad__last .
+H36:   c__1 = y2 .
+H37:   a__1 + b__1 + c__1 - y3 >= ipad__first .
+H38:   a__1 + b__1 + c__1 - y3 <= ipad__last .
+H39:   a__1 >= icoeff1__first .
+H40:   a__1 <= icoeff1__last .
+H41:   b__1 >= icoeff1__first .
+H42:   b__1 <= icoeff1__last .
+H43:   c__1 >= icoeff1__first .
+H44:   c__1 <= icoeff1__last .
+H45:   a__1 >= float__first .
+H46:   a__1 <= float__last .
+H47:   b__1 >= float__first .
+H48:   b__1 <= float__last .
+H49:   c__1 >= float__first .
+H50:   c__1 <= float__last .
+H51:   c__1 >= float__first .
+H52:   c__1 <= float__last .
+H53:   b__1 >= float__first .
+H54:   b__1 <= float__last .
+H55:   a__1 >= float__first .
+H56:   a__1 <= float__last .
+H57:   a__1 >= float__first .
+H58:   a__1 <= float__last .
+H59:   polypaver__floats__multiply(2, a__1) >= float__first .
+H60:   polypaver__floats__multiply(2, a__1) <= float__last .
+H61:   a__1 >= float__first .
+H62:   a__1 <= float__last .
 H63:   2 >= float__first .
 H64:   2 <= float__last .
 H65:    -(1/20) >= universal_real__base__first .
 H66:    -(1/20) <= universal_real__base__last .
-H67:   polypaver__floats__multiply(2, a__2) >= float__first .
-H68:   polypaver__floats__multiply(2, a__2) <= float__last .
-H69:   a__2 >= float__first .
-H70:   a__2 <= float__last .
-H71:   b__2 >= float__first .
-H72:   b__2 <= float__last .
-H73:    -(2 * a__2) >= float__base__first .
-H74:    -(2 * a__2) <= float__base__last .
-H75:   2 * a__2 >= float__base__first .
-H76:   2 * a__2 <= float__base__last .
-H77:   a__2 <  -(1/20) .
-H78:   polypaver__floats__multiply(2, a__2) <= b__2 .
-H79:   b__2 <=  -(2 * a__2) .
-H80:   a__2 >= float__first .
-H81:   a__2 <= float__last .
-H82:   b__2 >= float__first .
-H83:   b__2 <= float__last .
-H84:   c__2 >= float__first .
-H85:   c__2 <= float__last .
-H86:   0 >= float__first .
-H87:   0 <= float__last .
-H88:   c__2 >= float__first .
-H89:   c__2 <= float__last .
-H90:   b__2 >= float__first .
-H91:   b__2 <= float__last .
-H92:   a__2 >= float__first .
-H93:   a__2 <= float__last .
+H67:   polypaver__floats__multiply(2, a__1) >= float__first .
+H68:   polypaver__floats__multiply(2, a__1) <= float__last .
+H69:   a__1 >= float__first .
+H70:   a__1 <= float__last .
+H71:   b__1 >= float__first .
+H72:   b__1 <= float__last .
+H73:   polypaver__floats__multiply( -2, a__1) >= float__first .
+H74:   polypaver__floats__multiply( -2, a__1) <= float__last .
+H75:   a__1 >= float__first .
+H76:   a__1 <= float__last .
+H77:    -2 >= float__first .
+H78:    -2 <= float__last .
+H79:    -2 >= float__base__first .
+H80:    -2 <= float__base__last .
+H81:   polypaver__floats__multiply( -2, a__1) >= float__first .
+H82:   polypaver__floats__multiply( -2, a__1) <= float__last .
+H83:   a__1 <  -(1/20) .
+H84:   polypaver__floats__multiply(2, a__1) <= b__1 .
+H85:   b__1 <= polypaver__floats__multiply( -2, a__1) .
+H86:   a__1 >= float__first .
+H87:   a__1 <= float__last .
+H88:   b__1 >= float__first .
+H89:   b__1 <= float__last .
+H90:   c__1 >= float__first .
+H91:   c__1 <= float__last .
+H92:   max(y1, y3) >= float__first .
+H93:   max(y1, y3) <= float__last .
 H94:   0 >=  -1 .
 H95:   0 <= 1 .
-H96:   a__2 <  -(1/20) .
-H97:   a__2 >= icoeff2__first .
-H98:   a__2 <= icoeff2__last .
-H99:   b__2 >= icoeff2__first .
-H100:  b__2 <= icoeff2__last .
-H101:  c__2 >= icoeff2__first .
-H102:  c__2 <= icoeff2__last .
-H103:  m2__3 >= a__2 * 0 ** 2 + b__2 * 0 + c__2 - (1/20) .
-H104:  m2__3 <= 10 .
-H105:  m2__3 >= float__first .
-H106:  m2__3 <= float__last .
+H96:   a__1 <  -(1/20) .
+H97:   a__1 >= icoeff2__first .
+H98:   a__1 <= icoeff2__last .
+H99:   b__1 >= icoeff2__first .
+H100:  b__1 <= icoeff2__last .
+H101:  c__1 >= icoeff2__first .
+H102:  c__1 <= icoeff2__last .
+H103:  0 >= float__first .
+H104:  0 <= float__last .
+H105:  c__1 >= float__first .
+H106:  c__1 <= float__last .
+H107:  b__1 >= float__first .
+H108:  b__1 <= float__last .
+H109:  a__1 >= float__first .
+H110:  a__1 <= float__last .
+H111:  max(y1, y3) >= float__first .
+H112:  max(y1, y3) <= float__last .
+H113:  peakq(a__1, b__1, c__1, 0) >= float__first .
+H114:  peakq(a__1, b__1, c__1, 0) <= float__last .
+H115:  peakq(a__1, b__1, c__1, 0) >= a__1 * 0 ** 2 + b__1 * 0 + c__1 - 
+           (1/20) .
+H116:  peakq(a__1, b__1, c__1, 0) <= 10 .
         ->
-C1:    m2__3 >= float__first .
-C2:    m2__3 <= float__last .
+C1:    peakq(a__1, b__1, c__1, 0) >= float__first .
+C2:    peakq(a__1, b__1, c__1, 0) <= float__last .
  
 
-For path(s) from start to run-time check associated with statement of line 57:
+For path(s) from start to run-time check associated with statement of line 56:
 
-procedure_peakunit_9.
+function_peakunit_9.
 H1:    y1 >= iy__first .
 H2:    y1 <= iy__last .
 H3:    y2 >= iy__first .
@@ -564,12 +589,12 @@ H13:   y3 >= float__first .
 H14:   y3 <= float__last .
 H15:   y1 >= float__first .
 H16:   y1 <= float__last .
-H17:   ((m1__1 = y1) and (y1 >= y3)) or ((m1__1 = y3) and (
-           y3 >= y1)) .
-H18:   m1__1 >= float__first .
-H19:   m1__1 <= float__last .
-H20:   m1__1 >= float__first .
-H21:   m1__1 <= float__last .
+H17:   max(y1, y3) >= float__first .
+H18:   max(y1, y3) <= float__last .
+H19:   ((max(y1, y3) = y1) and (y1 >= y3)) or ((max(y1, y3) = 
+           y3) and (y3 >= y1)) .
+H20:   max(y1, y3) >= float__first .
+H21:   max(y1, y3) <= float__last .
 H22:   y3 >= float__first .
 H23:   y3 <= float__last .
 H24:   y2 >= float__first .
@@ -582,95 +607,111 @@ H30:   y2 >= iy__first .
 H31:   y2 <= iy__last .
 H32:   y3 >= iy__first .
 H33:   y3 <= iy__last .
-H34:   a__2 - b__2 + c__2 - y1 >= ipad__first .
-H35:   a__2 - b__2 + c__2 - y1 <= ipad__last .
-H36:   c__2 = y2 .
-H37:   a__2 + b__2 + c__2 - y3 >= ipad__first .
-H38:   a__2 + b__2 + c__2 - y3 <= ipad__last .
-H39:   a__2 >= icoeff1__first .
-H40:   a__2 <= icoeff1__last .
-H41:   b__2 >= icoeff1__first .
-H42:   b__2 <= icoeff1__last .
-H43:   c__2 >= icoeff1__first .
-H44:   c__2 <= icoeff1__last .
-H45:   a__2 >= float__first .
-H46:   a__2 <= float__last .
-H47:   b__2 >= float__first .
-H48:   b__2 <= float__last .
-H49:   c__2 >= float__first .
-H50:   c__2 <= float__last .
-H51:   c__2 >= float__first .
-H52:   c__2 <= float__last .
-H53:   b__2 >= float__first .
-H54:   b__2 <= float__last .
-H55:   a__2 >= float__first .
-H56:   a__2 <= float__last .
-H57:   a__2 >= float__first .
-H58:   a__2 <= float__last .
-H59:   polypaver__floats__multiply(2, a__2) >= float__first .
-H60:   polypaver__floats__multiply(2, a__2) <= float__last .
-H61:   a__2 >= float__first .
-H62:   a__2 <= float__last .
+H34:   a__1 - b__1 + c__1 - y1 >= ipad__first .
+H35:   a__1 - b__1 + c__1 - y1 <= ipad__last .
+H36:   c__1 = y2 .
+H37:   a__1 + b__1 + c__1 - y3 >= ipad__first .
+H38:   a__1 + b__1 + c__1 - y3 <= ipad__last .
+H39:   a__1 >= icoeff1__first .
+H40:   a__1 <= icoeff1__last .
+H41:   b__1 >= icoeff1__first .
+H42:   b__1 <= icoeff1__last .
+H43:   c__1 >= icoeff1__first .
+H44:   c__1 <= icoeff1__last .
+H45:   a__1 >= float__first .
+H46:   a__1 <= float__last .
+H47:   b__1 >= float__first .
+H48:   b__1 <= float__last .
+H49:   c__1 >= float__first .
+H50:   c__1 <= float__last .
+H51:   c__1 >= float__first .
+H52:   c__1 <= float__last .
+H53:   b__1 >= float__first .
+H54:   b__1 <= float__last .
+H55:   a__1 >= float__first .
+H56:   a__1 <= float__last .
+H57:   a__1 >= float__first .
+H58:   a__1 <= float__last .
+H59:   polypaver__floats__multiply(2, a__1) >= float__first .
+H60:   polypaver__floats__multiply(2, a__1) <= float__last .
+H61:   a__1 >= float__first .
+H62:   a__1 <= float__last .
 H63:   2 >= float__first .
 H64:   2 <= float__last .
 H65:    -(1/20) >= universal_real__base__first .
 H66:    -(1/20) <= universal_real__base__last .
-H67:   polypaver__floats__multiply(2, a__2) >= float__first .
-H68:   polypaver__floats__multiply(2, a__2) <= float__last .
-H69:   a__2 >= float__first .
-H70:   a__2 <= float__last .
-H71:   b__2 >= float__first .
-H72:   b__2 <= float__last .
-H73:    -(2 * a__2) >= float__base__first .
-H74:    -(2 * a__2) <= float__base__last .
-H75:   2 * a__2 >= float__base__first .
-H76:   2 * a__2 <= float__base__last .
-H77:   a__2 <  -(1/20) .
-H78:   polypaver__floats__multiply(2, a__2) <= b__2 .
-H79:   b__2 <=  -(2 * a__2) .
-H80:   a__2 >= float__first .
-H81:   a__2 <= float__last .
-H82:   b__2 >= float__first .
-H83:   b__2 <= float__last .
-H84:   c__2 >= float__first .
-H85:   c__2 <= float__last .
-H86:   0 >= float__first .
-H87:   0 <= float__last .
-H88:   c__2 >= float__first .
-H89:   c__2 <= float__last .
-H90:   b__2 >= float__first .
-H91:   b__2 <= float__last .
-H92:   a__2 >= float__first .
-H93:   a__2 <= float__last .
+H67:   polypaver__floats__multiply(2, a__1) >= float__first .
+H68:   polypaver__floats__multiply(2, a__1) <= float__last .
+H69:   a__1 >= float__first .
+H70:   a__1 <= float__last .
+H71:   b__1 >= float__first .
+H72:   b__1 <= float__last .
+H73:   polypaver__floats__multiply( -2, a__1) >= float__first .
+H74:   polypaver__floats__multiply( -2, a__1) <= float__last .
+H75:   a__1 >= float__first .
+H76:   a__1 <= float__last .
+H77:    -2 >= float__first .
+H78:    -2 <= float__last .
+H79:    -2 >= float__base__first .
+H80:    -2 <= float__base__last .
+H81:   polypaver__floats__multiply( -2, a__1) >= float__first .
+H82:   polypaver__floats__multiply( -2, a__1) <= float__last .
+H83:   a__1 <  -(1/20) .
+H84:   polypaver__floats__multiply(2, a__1) <= b__1 .
+H85:   b__1 <= polypaver__floats__multiply( -2, a__1) .
+H86:   a__1 >= float__first .
+H87:   a__1 <= float__last .
+H88:   b__1 >= float__first .
+H89:   b__1 <= float__last .
+H90:   c__1 >= float__first .
+H91:   c__1 <= float__last .
+H92:   max(y1, y3) >= float__first .
+H93:   max(y1, y3) <= float__last .
 H94:   0 >=  -1 .
 H95:   0 <= 1 .
-H96:   a__2 <  -(1/20) .
-H97:   a__2 >= icoeff2__first .
-H98:   a__2 <= icoeff2__last .
-H99:   b__2 >= icoeff2__first .
-H100:  b__2 <= icoeff2__last .
-H101:  c__2 >= icoeff2__first .
-H102:  c__2 <= icoeff2__last .
-H103:  m2__3 >= a__2 * 0 ** 2 + b__2 * 0 + c__2 - (1/20) .
-H104:  m2__3 <= 10 .
-H105:  m2__3 >= float__first .
-H106:  m2__3 <= float__last .
-H107:  m2__3 >= float__first .
-H108:  m2__3 <= float__last .
-H109:  m1__1 >= float__first .
-H110:  m1__1 <= float__last .
-H111:  m2__3 >= float__first .
-H112:  m2__3 <= float__last .
+H96:   a__1 <  -(1/20) .
+H97:   a__1 >= icoeff2__first .
+H98:   a__1 <= icoeff2__last .
+H99:   b__1 >= icoeff2__first .
+H100:  b__1 <= icoeff2__last .
+H101:  c__1 >= icoeff2__first .
+H102:  c__1 <= icoeff2__last .
+H103:  0 >= float__first .
+H104:  0 <= float__last .
+H105:  c__1 >= float__first .
+H106:  c__1 <= float__last .
+H107:  b__1 >= float__first .
+H108:  b__1 <= float__last .
+H109:  a__1 >= float__first .
+H110:  a__1 <= float__last .
+H111:  max(y1, y3) >= float__first .
+H112:  max(y1, y3) <= float__last .
+H113:  peakq(a__1, b__1, c__1, 0) >= float__first .
+H114:  peakq(a__1, b__1, c__1, 0) <= float__last .
+H115:  peakq(a__1, b__1, c__1, 0) >= a__1 * 0 ** 2 + b__1 * 0 + c__1 - 
+           (1/20) .
+H116:  peakq(a__1, b__1, c__1, 0) <= 10 .
+H117:  peakq(a__1, b__1, c__1, 0) >= float__first .
+H118:  peakq(a__1, b__1, c__1, 0) <= float__last .
+H119:  max(max(y1, y3), peakq(a__1, b__1, c__1, 0)) >= 
+           float__first .
+H120:  max(max(y1, y3), peakq(a__1, b__1, c__1, 0)) <= 
+           float__last .
+H121:  ((max(max(y1, y3), peakq(a__1, b__1, c__1, 0)) = max(
+           y1, y3)) and (max(y1, y3) >= peakq(a__1, b__1, c__1, 0))) or ((
+           max(max(y1, y3), peakq(a__1, b__1, c__1, 0)) = 
+           peakq(a__1, b__1, c__1, 0)) and (peakq(a__1, b__1, c__1, 0) >= 
+           max(y1, y3))) .
         ->
-C1:    m2__3 >= float__first .
-C2:    m2__3 <= float__last .
-C3:    m1__1 >= float__first .
-C4:    m1__1 <= float__last .
+C1:    max(max(y1, y3), peakq(a__1, b__1, c__1, 0)) >= 
+           float__first .
+C2:    max(max(y1, y3), peakq(a__1, b__1, c__1, 0)) <= 
+           float__last .
  
 
-For path(s) from start to run-time check associated with statement of line 57:
+For path(s) from start to run-time check associated with statement of line 58:
 
-procedure_peakunit_10.
+function_peakunit_10.
 H1:    y1 >= iy__first .
 H2:    y1 <= iy__last .
 H3:    y2 >= iy__first .
@@ -687,12 +728,12 @@ H13:   y3 >= float__first .
 H14:   y3 <= float__last .
 H15:   y1 >= float__first .
 H16:   y1 <= float__last .
-H17:   ((m1__1 = y1) and (y1 >= y3)) or ((m1__1 = y3) and (
-           y3 >= y1)) .
-H18:   m1__1 >= float__first .
-H19:   m1__1 <= float__last .
-H20:   m1__1 >= float__first .
-H21:   m1__1 <= float__last .
+H17:   max(y1, y3) >= float__first .
+H18:   max(y1, y3) <= float__last .
+H19:   ((max(y1, y3) = y1) and (y1 >= y3)) or ((max(y1, y3) = 
+           y3) and (y3 >= y1)) .
+H20:   max(y1, y3) >= float__first .
+H21:   max(y1, y3) <= float__last .
 H22:   y3 >= float__first .
 H23:   y3 <= float__last .
 H24:   y2 >= float__first .
@@ -705,191 +746,68 @@ H30:   y2 >= iy__first .
 H31:   y2 <= iy__last .
 H32:   y3 >= iy__first .
 H33:   y3 <= iy__last .
-H34:   a__2 - b__2 + c__2 - y1 >= ipad__first .
-H35:   a__2 - b__2 + c__2 - y1 <= ipad__last .
-H36:   c__2 = y2 .
-H37:   a__2 + b__2 + c__2 - y3 >= ipad__first .
-H38:   a__2 + b__2 + c__2 - y3 <= ipad__last .
-H39:   a__2 >= icoeff1__first .
-H40:   a__2 <= icoeff1__last .
-H41:   b__2 >= icoeff1__first .
-H42:   b__2 <= icoeff1__last .
-H43:   c__2 >= icoeff1__first .
-H44:   c__2 <= icoeff1__last .
-H45:   a__2 >= float__first .
-H46:   a__2 <= float__last .
-H47:   b__2 >= float__first .
-H48:   b__2 <= float__last .
-H49:   c__2 >= float__first .
-H50:   c__2 <= float__last .
-H51:   c__2 >= float__first .
-H52:   c__2 <= float__last .
-H53:   b__2 >= float__first .
-H54:   b__2 <= float__last .
-H55:   a__2 >= float__first .
-H56:   a__2 <= float__last .
-H57:   a__2 >= float__first .
-H58:   a__2 <= float__last .
-H59:   polypaver__floats__multiply(2, a__2) >= float__first .
-H60:   polypaver__floats__multiply(2, a__2) <= float__last .
-H61:   a__2 >= float__first .
-H62:   a__2 <= float__last .
+H34:   a__1 - b__1 + c__1 - y1 >= ipad__first .
+H35:   a__1 - b__1 + c__1 - y1 <= ipad__last .
+H36:   c__1 = y2 .
+H37:   a__1 + b__1 + c__1 - y3 >= ipad__first .
+H38:   a__1 + b__1 + c__1 - y3 <= ipad__last .
+H39:   a__1 >= icoeff1__first .
+H40:   a__1 <= icoeff1__last .
+H41:   b__1 >= icoeff1__first .
+H42:   b__1 <= icoeff1__last .
+H43:   c__1 >= icoeff1__first .
+H44:   c__1 <= icoeff1__last .
+H45:   a__1 >= float__first .
+H46:   a__1 <= float__last .
+H47:   b__1 >= float__first .
+H48:   b__1 <= float__last .
+H49:   c__1 >= float__first .
+H50:   c__1 <= float__last .
+H51:   c__1 >= float__first .
+H52:   c__1 <= float__last .
+H53:   b__1 >= float__first .
+H54:   b__1 <= float__last .
+H55:   a__1 >= float__first .
+H56:   a__1 <= float__last .
+H57:   a__1 >= float__first .
+H58:   a__1 <= float__last .
+H59:   polypaver__floats__multiply(2, a__1) >= float__first .
+H60:   polypaver__floats__multiply(2, a__1) <= float__last .
+H61:   a__1 >= float__first .
+H62:   a__1 <= float__last .
 H63:   2 >= float__first .
 H64:   2 <= float__last .
 H65:    -(1/20) >= universal_real__base__first .
 H66:    -(1/20) <= universal_real__base__last .
-H67:   polypaver__floats__multiply(2, a__2) >= float__first .
-H68:   polypaver__floats__multiply(2, a__2) <= float__last .
-H69:   a__2 >= float__first .
-H70:   a__2 <= float__last .
-H71:   b__2 >= float__first .
-H72:   b__2 <= float__last .
-H73:    -(2 * a__2) >= float__base__first .
-H74:    -(2 * a__2) <= float__base__last .
-H75:   2 * a__2 >= float__base__first .
-H76:   2 * a__2 <= float__base__last .
-H77:   a__2 <  -(1/20) .
-H78:   polypaver__floats__multiply(2, a__2) <= b__2 .
-H79:   b__2 <=  -(2 * a__2) .
-H80:   a__2 >= float__first .
-H81:   a__2 <= float__last .
-H82:   b__2 >= float__first .
-H83:   b__2 <= float__last .
-H84:   c__2 >= float__first .
-H85:   c__2 <= float__last .
-H86:   0 >= float__first .
-H87:   0 <= float__last .
-H88:   c__2 >= float__first .
-H89:   c__2 <= float__last .
-H90:   b__2 >= float__first .
-H91:   b__2 <= float__last .
-H92:   a__2 >= float__first .
-H93:   a__2 <= float__last .
-H94:   0 >=  -1 .
-H95:   0 <= 1 .
-H96:   a__2 <  -(1/20) .
-H97:   a__2 >= icoeff2__first .
-H98:   a__2 <= icoeff2__last .
-H99:   b__2 >= icoeff2__first .
-H100:  b__2 <= icoeff2__last .
-H101:  c__2 >= icoeff2__first .
-H102:  c__2 <= icoeff2__last .
-H103:  m2__3 >= a__2 * 0 ** 2 + b__2 * 0 + c__2 - (1/20) .
-H104:  m2__3 <= 10 .
-H105:  m2__3 >= float__first .
-H106:  m2__3 <= float__last .
-H107:  m2__3 >= float__first .
-H108:  m2__3 <= float__last .
-H109:  m1__1 >= float__first .
-H110:  m1__1 <= float__last .
-H111:  m2__3 >= float__first .
-H112:  m2__3 <= float__last .
-H113:  m2__3 >= float__first .
-H114:  m2__3 <= float__last .
-H115:  m1__1 >= float__first .
-H116:  m1__1 <= float__last .
-H117:  ((r__4 = m1__1) and (m1__1 >= m2__3)) or ((r__4 = m2__3) and (
-           m2__3 >= m1__1)) .
-H118:  r__4 >= float__first .
-H119:  r__4 <= float__last .
+H67:   polypaver__floats__multiply(2, a__1) >= float__first .
+H68:   polypaver__floats__multiply(2, a__1) <= float__last .
+H69:   a__1 >= float__first .
+H70:   a__1 <= float__last .
+H71:   b__1 >= float__first .
+H72:   b__1 <= float__last .
+H73:   polypaver__floats__multiply( -2, a__1) >= float__first .
+H74:   polypaver__floats__multiply( -2, a__1) <= float__last .
+H75:   a__1 >= float__first .
+H76:   a__1 <= float__last .
+H77:    -2 >= float__first .
+H78:    -2 <= float__last .
+H79:    -2 >= float__base__first .
+H80:    -2 <= float__base__last .
+H81:   polypaver__floats__multiply( -2, a__1) >= float__first .
+H82:   polypaver__floats__multiply( -2, a__1) <= float__last .
+H83:   not ((a__1 <  -(1/20)) and ((
+           polypaver__floats__multiply(2, a__1) <= b__1) and (b__1 <= 
+           polypaver__floats__multiply( -2, a__1)))) .
+H84:   max(y1, y3) >= float__first .
+H85:   max(y1, y3) <= float__last .
         ->
-C1:    r__4 >= float__first .
-C2:    r__4 <= float__last .
- 
-
-For path(s) from start to run-time check associated with statement of line 59:
-
-procedure_peakunit_11.
-H1:    y1 >= iy__first .
-H2:    y1 <= iy__last .
-H3:    y2 >= iy__first .
-H4:    y2 <= iy__last .
-H5:    y3 >= iy__first .
-H6:    y3 <= iy__last .
-H7:    y1 >= float__first .
-H8:    y1 <= float__last .
-H9:    y2 >= float__first .
-H10:   y2 <= float__last .
-H11:   y3 >= float__first .
-H12:   y3 <= float__last .
-H13:   y3 >= float__first .
-H14:   y3 <= float__last .
-H15:   y1 >= float__first .
-H16:   y1 <= float__last .
-H17:   ((m1__1 = y1) and (y1 >= y3)) or ((m1__1 = y3) and (
-           y3 >= y1)) .
-H18:   m1__1 >= float__first .
-H19:   m1__1 <= float__last .
-H20:   m1__1 >= float__first .
-H21:   m1__1 <= float__last .
-H22:   y3 >= float__first .
-H23:   y3 <= float__last .
-H24:   y2 >= float__first .
-H25:   y2 <= float__last .
-H26:   y1 >= float__first .
-H27:   y1 <= float__last .
-H28:   y1 >= iy__first .
-H29:   y1 <= iy__last .
-H30:   y2 >= iy__first .
-H31:   y2 <= iy__last .
-H32:   y3 >= iy__first .
-H33:   y3 <= iy__last .
-H34:   a__2 - b__2 + c__2 - y1 >= ipad__first .
-H35:   a__2 - b__2 + c__2 - y1 <= ipad__last .
-H36:   c__2 = y2 .
-H37:   a__2 + b__2 + c__2 - y3 >= ipad__first .
-H38:   a__2 + b__2 + c__2 - y3 <= ipad__last .
-H39:   a__2 >= icoeff1__first .
-H40:   a__2 <= icoeff1__last .
-H41:   b__2 >= icoeff1__first .
-H42:   b__2 <= icoeff1__last .
-H43:   c__2 >= icoeff1__first .
-H44:   c__2 <= icoeff1__last .
-H45:   a__2 >= float__first .
-H46:   a__2 <= float__last .
-H47:   b__2 >= float__first .
-H48:   b__2 <= float__last .
-H49:   c__2 >= float__first .
-H50:   c__2 <= float__last .
-H51:   c__2 >= float__first .
-H52:   c__2 <= float__last .
-H53:   b__2 >= float__first .
-H54:   b__2 <= float__last .
-H55:   a__2 >= float__first .
-H56:   a__2 <= float__last .
-H57:   a__2 >= float__first .
-H58:   a__2 <= float__last .
-H59:   polypaver__floats__multiply(2, a__2) >= float__first .
-H60:   polypaver__floats__multiply(2, a__2) <= float__last .
-H61:   a__2 >= float__first .
-H62:   a__2 <= float__last .
-H63:   2 >= float__first .
-H64:   2 <= float__last .
-H65:    -(1/20) >= universal_real__base__first .
-H66:    -(1/20) <= universal_real__base__last .
-H67:   polypaver__floats__multiply(2, a__2) >= float__first .
-H68:   polypaver__floats__multiply(2, a__2) <= float__last .
-H69:   a__2 >= float__first .
-H70:   a__2 <= float__last .
-H71:   b__2 >= float__first .
-H72:   b__2 <= float__last .
-H73:    -(2 * a__2) >= float__base__first .
-H74:    -(2 * a__2) <= float__base__last .
-H75:   2 * a__2 >= float__base__first .
-H76:   2 * a__2 <= float__base__last .
-H77:   not ((a__2 <  -(1/20)) and ((
-           polypaver__floats__multiply(2, a__2) <= b__2) and (b__2 <=  -(2 * 
-           a__2)))) .
-H78:   m1__1 >= float__first .
-H79:   m1__1 <= float__last .
-        ->
-C1:    m1__1 >= float__first .
-C2:    m1__1 <= float__last .
+C1:    max(y1, y3) >= float__first .
+C2:    max(y1, y3) <= float__last .
  
 
 For path(s) from start to finish:
 
-procedure_peakunit_12.
+function_peakunit_11.
 H1:    y1 >= iy__first .
 H2:    y1 <= iy__last .
 H3:    y2 >= iy__first .
@@ -906,12 +824,12 @@ H13:   y3 >= float__first .
 H14:   y3 <= float__last .
 H15:   y1 >= float__first .
 H16:   y1 <= float__last .
-H17:   ((m1__1 = y1) and (y1 >= y3)) or ((m1__1 = y3) and (
-           y3 >= y1)) .
-H18:   m1__1 >= float__first .
-H19:   m1__1 <= float__last .
-H20:   m1__1 >= float__first .
-H21:   m1__1 <= float__last .
+H17:   max(y1, y3) >= float__first .
+H18:   max(y1, y3) <= float__last .
+H19:   ((max(y1, y3) = y1) and (y1 >= y3)) or ((max(y1, y3) = 
+           y3) and (y3 >= y1)) .
+H20:   max(y1, y3) >= float__first .
+H21:   max(y1, y3) <= float__last .
 H22:   y3 >= float__first .
 H23:   y3 <= float__last .
 H24:   y2 >= float__first .
@@ -924,102 +842,120 @@ H30:   y2 >= iy__first .
 H31:   y2 <= iy__last .
 H32:   y3 >= iy__first .
 H33:   y3 <= iy__last .
-H34:   a__2 - b__2 + c__2 - y1 >= ipad__first .
-H35:   a__2 - b__2 + c__2 - y1 <= ipad__last .
-H36:   c__2 = y2 .
-H37:   a__2 + b__2 + c__2 - y3 >= ipad__first .
-H38:   a__2 + b__2 + c__2 - y3 <= ipad__last .
-H39:   a__2 >= icoeff1__first .
-H40:   a__2 <= icoeff1__last .
-H41:   b__2 >= icoeff1__first .
-H42:   b__2 <= icoeff1__last .
-H43:   c__2 >= icoeff1__first .
-H44:   c__2 <= icoeff1__last .
-H45:   a__2 >= float__first .
-H46:   a__2 <= float__last .
-H47:   b__2 >= float__first .
-H48:   b__2 <= float__last .
-H49:   c__2 >= float__first .
-H50:   c__2 <= float__last .
-H51:   c__2 >= float__first .
-H52:   c__2 <= float__last .
-H53:   b__2 >= float__first .
-H54:   b__2 <= float__last .
-H55:   a__2 >= float__first .
-H56:   a__2 <= float__last .
-H57:   a__2 >= float__first .
-H58:   a__2 <= float__last .
-H59:   polypaver__floats__multiply(2, a__2) >= float__first .
-H60:   polypaver__floats__multiply(2, a__2) <= float__last .
-H61:   a__2 >= float__first .
-H62:   a__2 <= float__last .
+H34:   a__1 - b__1 + c__1 - y1 >= ipad__first .
+H35:   a__1 - b__1 + c__1 - y1 <= ipad__last .
+H36:   c__1 = y2 .
+H37:   a__1 + b__1 + c__1 - y3 >= ipad__first .
+H38:   a__1 + b__1 + c__1 - y3 <= ipad__last .
+H39:   a__1 >= icoeff1__first .
+H40:   a__1 <= icoeff1__last .
+H41:   b__1 >= icoeff1__first .
+H42:   b__1 <= icoeff1__last .
+H43:   c__1 >= icoeff1__first .
+H44:   c__1 <= icoeff1__last .
+H45:   a__1 >= float__first .
+H46:   a__1 <= float__last .
+H47:   b__1 >= float__first .
+H48:   b__1 <= float__last .
+H49:   c__1 >= float__first .
+H50:   c__1 <= float__last .
+H51:   c__1 >= float__first .
+H52:   c__1 <= float__last .
+H53:   b__1 >= float__first .
+H54:   b__1 <= float__last .
+H55:   a__1 >= float__first .
+H56:   a__1 <= float__last .
+H57:   a__1 >= float__first .
+H58:   a__1 <= float__last .
+H59:   polypaver__floats__multiply(2, a__1) >= float__first .
+H60:   polypaver__floats__multiply(2, a__1) <= float__last .
+H61:   a__1 >= float__first .
+H62:   a__1 <= float__last .
 H63:   2 >= float__first .
 H64:   2 <= float__last .
 H65:    -(1/20) >= universal_real__base__first .
 H66:    -(1/20) <= universal_real__base__last .
-H67:   polypaver__floats__multiply(2, a__2) >= float__first .
-H68:   polypaver__floats__multiply(2, a__2) <= float__last .
-H69:   a__2 >= float__first .
-H70:   a__2 <= float__last .
-H71:   b__2 >= float__first .
-H72:   b__2 <= float__last .
-H73:    -(2 * a__2) >= float__base__first .
-H74:    -(2 * a__2) <= float__base__last .
-H75:   2 * a__2 >= float__base__first .
-H76:   2 * a__2 <= float__base__last .
-H77:   a__2 <  -(1/20) .
-H78:   polypaver__floats__multiply(2, a__2) <= b__2 .
-H79:   b__2 <=  -(2 * a__2) .
-H80:   a__2 >= float__first .
-H81:   a__2 <= float__last .
-H82:   b__2 >= float__first .
-H83:   b__2 <= float__last .
-H84:   c__2 >= float__first .
-H85:   c__2 <= float__last .
-H86:   0 >= float__first .
-H87:   0 <= float__last .
-H88:   c__2 >= float__first .
-H89:   c__2 <= float__last .
-H90:   b__2 >= float__first .
-H91:   b__2 <= float__last .
-H92:   a__2 >= float__first .
-H93:   a__2 <= float__last .
+H67:   polypaver__floats__multiply(2, a__1) >= float__first .
+H68:   polypaver__floats__multiply(2, a__1) <= float__last .
+H69:   a__1 >= float__first .
+H70:   a__1 <= float__last .
+H71:   b__1 >= float__first .
+H72:   b__1 <= float__last .
+H73:   polypaver__floats__multiply( -2, a__1) >= float__first .
+H74:   polypaver__floats__multiply( -2, a__1) <= float__last .
+H75:   a__1 >= float__first .
+H76:   a__1 <= float__last .
+H77:    -2 >= float__first .
+H78:    -2 <= float__last .
+H79:    -2 >= float__base__first .
+H80:    -2 <= float__base__last .
+H81:   polypaver__floats__multiply( -2, a__1) >= float__first .
+H82:   polypaver__floats__multiply( -2, a__1) <= float__last .
+H83:   a__1 <  -(1/20) .
+H84:   polypaver__floats__multiply(2, a__1) <= b__1 .
+H85:   b__1 <= polypaver__floats__multiply( -2, a__1) .
+H86:   a__1 >= float__first .
+H87:   a__1 <= float__last .
+H88:   b__1 >= float__first .
+H89:   b__1 <= float__last .
+H90:   c__1 >= float__first .
+H91:   c__1 <= float__last .
+H92:   max(y1, y3) >= float__first .
+H93:   max(y1, y3) <= float__last .
 H94:   0 >=  -1 .
 H95:   0 <= 1 .
-H96:   a__2 <  -(1/20) .
-H97:   a__2 >= icoeff2__first .
-H98:   a__2 <= icoeff2__last .
-H99:   b__2 >= icoeff2__first .
-H100:  b__2 <= icoeff2__last .
-H101:  c__2 >= icoeff2__first .
-H102:  c__2 <= icoeff2__last .
-H103:  m2__3 >= a__2 * 0 ** 2 + b__2 * 0 + c__2 - (1/20) .
-H104:  m2__3 <= 10 .
-H105:  m2__3 >= float__first .
-H106:  m2__3 <= float__last .
-H107:  m2__3 >= float__first .
-H108:  m2__3 <= float__last .
-H109:  m1__1 >= float__first .
-H110:  m1__1 <= float__last .
-H111:  m2__3 >= float__first .
-H112:  m2__3 <= float__last .
-H113:  m2__3 >= float__first .
-H114:  m2__3 <= float__last .
-H115:  m1__1 >= float__first .
-H116:  m1__1 <= float__last .
-H117:  ((r__4 = m1__1) and (m1__1 >= m2__3)) or ((r__4 = m2__3) and (
-           m2__3 >= m1__1)) .
-H118:  r__4 >= float__first .
-H119:  r__4 <= float__last .
-H120:  r__4 >= float__first .
-H121:  r__4 <= float__last .
+H96:   a__1 <  -(1/20) .
+H97:   a__1 >= icoeff2__first .
+H98:   a__1 <= icoeff2__last .
+H99:   b__1 >= icoeff2__first .
+H100:  b__1 <= icoeff2__last .
+H101:  c__1 >= icoeff2__first .
+H102:  c__1 <= icoeff2__last .
+H103:  0 >= float__first .
+H104:  0 <= float__last .
+H105:  c__1 >= float__first .
+H106:  c__1 <= float__last .
+H107:  b__1 >= float__first .
+H108:  b__1 <= float__last .
+H109:  a__1 >= float__first .
+H110:  a__1 <= float__last .
+H111:  max(y1, y3) >= float__first .
+H112:  max(y1, y3) <= float__last .
+H113:  peakq(a__1, b__1, c__1, 0) >= float__first .
+H114:  peakq(a__1, b__1, c__1, 0) <= float__last .
+H115:  peakq(a__1, b__1, c__1, 0) >= a__1 * 0 ** 2 + b__1 * 0 + c__1 - 
+           (1/20) .
+H116:  peakq(a__1, b__1, c__1, 0) <= 10 .
+H117:  peakq(a__1, b__1, c__1, 0) >= float__first .
+H118:  peakq(a__1, b__1, c__1, 0) <= float__last .
+H119:  max(max(y1, y3), peakq(a__1, b__1, c__1, 0)) >= 
+           float__first .
+H120:  max(max(y1, y3), peakq(a__1, b__1, c__1, 0)) <= 
+           float__last .
+H121:  ((max(max(y1, y3), peakq(a__1, b__1, c__1, 0)) = max(
+           y1, y3)) and (max(y1, y3) >= peakq(a__1, b__1, c__1, 0))) or ((
+           max(max(y1, y3), peakq(a__1, b__1, c__1, 0)) = 
+           peakq(a__1, b__1, c__1, 0)) and (peakq(a__1, b__1, c__1, 0) >= 
+           max(y1, y3))) .
+H122:  max(max(y1, y3), peakq(a__1, b__1, c__1, 0)) >= 
+           float__first .
+H123:  max(max(y1, y3), peakq(a__1, b__1, c__1, 0)) <= 
+           float__last .
+H124:  max(max(y1, y3), peakq(a__1, b__1, c__1, 0)) >= 
+           float__first .
+H125:  max(max(y1, y3), peakq(a__1, b__1, c__1, 0)) <= 
+           float__last .
         ->
-C1:    r__4 >= y1 - (1/5) .
-C2:    r__4 >= y2 - (1/5) .
-C3:    r__4 >= y3 - (1/5) .
+C1:    max(max(y1, y3), peakq(a__1, b__1, c__1, 0)) >= y1 - (1/5) .
+C2:    max(max(y1, y3), peakq(a__1, b__1, c__1, 0)) >= y2 - (1/5) .
+C3:    max(max(y1, y3), peakq(a__1, b__1, c__1, 0)) >= y3 - (1/5) .
+C4:    max(max(y1, y3), peakq(a__1, b__1, c__1, 0)) >= 
+           float__first .
+C5:    max(max(y1, y3), peakq(a__1, b__1, c__1, 0)) <= 
+           float__last .
  
 
-procedure_peakunit_13.
+function_peakunit_12.
 H1:    y1 >= iy__first .
 H2:    y1 <= iy__last .
 H3:    y2 >= iy__first .
@@ -1036,12 +972,12 @@ H13:   y3 >= float__first .
 H14:   y3 <= float__last .
 H15:   y1 >= float__first .
 H16:   y1 <= float__last .
-H17:   ((m1__1 = y1) and (y1 >= y3)) or ((m1__1 = y3) and (
-           y3 >= y1)) .
-H18:   m1__1 >= float__first .
-H19:   m1__1 <= float__last .
-H20:   m1__1 >= float__first .
-H21:   m1__1 <= float__last .
+H17:   max(y1, y3) >= float__first .
+H18:   max(y1, y3) <= float__last .
+H19:   ((max(y1, y3) = y1) and (y1 >= y3)) or ((max(y1, y3) = 
+           y3) and (y3 >= y1)) .
+H20:   max(y1, y3) >= float__first .
+H21:   max(y1, y3) <= float__last .
 H22:   y3 >= float__first .
 H23:   y3 <= float__last .
 H24:   y2 >= float__first .
@@ -1054,59 +990,69 @@ H30:   y2 >= iy__first .
 H31:   y2 <= iy__last .
 H32:   y3 >= iy__first .
 H33:   y3 <= iy__last .
-H34:   a__2 - b__2 + c__2 - y1 >= ipad__first .
-H35:   a__2 - b__2 + c__2 - y1 <= ipad__last .
-H36:   c__2 = y2 .
-H37:   a__2 + b__2 + c__2 - y3 >= ipad__first .
-H38:   a__2 + b__2 + c__2 - y3 <= ipad__last .
-H39:   a__2 >= icoeff1__first .
-H40:   a__2 <= icoeff1__last .
-H41:   b__2 >= icoeff1__first .
-H42:   b__2 <= icoeff1__last .
-H43:   c__2 >= icoeff1__first .
-H44:   c__2 <= icoeff1__last .
-H45:   a__2 >= float__first .
-H46:   a__2 <= float__last .
-H47:   b__2 >= float__first .
-H48:   b__2 <= float__last .
-H49:   c__2 >= float__first .
-H50:   c__2 <= float__last .
-H51:   c__2 >= float__first .
-H52:   c__2 <= float__last .
-H53:   b__2 >= float__first .
-H54:   b__2 <= float__last .
-H55:   a__2 >= float__first .
-H56:   a__2 <= float__last .
-H57:   a__2 >= float__first .
-H58:   a__2 <= float__last .
-H59:   polypaver__floats__multiply(2, a__2) >= float__first .
-H60:   polypaver__floats__multiply(2, a__2) <= float__last .
-H61:   a__2 >= float__first .
-H62:   a__2 <= float__last .
+H34:   a__1 - b__1 + c__1 - y1 >= ipad__first .
+H35:   a__1 - b__1 + c__1 - y1 <= ipad__last .
+H36:   c__1 = y2 .
+H37:   a__1 + b__1 + c__1 - y3 >= ipad__first .
+H38:   a__1 + b__1 + c__1 - y3 <= ipad__last .
+H39:   a__1 >= icoeff1__first .
+H40:   a__1 <= icoeff1__last .
+H41:   b__1 >= icoeff1__first .
+H42:   b__1 <= icoeff1__last .
+H43:   c__1 >= icoeff1__first .
+H44:   c__1 <= icoeff1__last .
+H45:   a__1 >= float__first .
+H46:   a__1 <= float__last .
+H47:   b__1 >= float__first .
+H48:   b__1 <= float__last .
+H49:   c__1 >= float__first .
+H50:   c__1 <= float__last .
+H51:   c__1 >= float__first .
+H52:   c__1 <= float__last .
+H53:   b__1 >= float__first .
+H54:   b__1 <= float__last .
+H55:   a__1 >= float__first .
+H56:   a__1 <= float__last .
+H57:   a__1 >= float__first .
+H58:   a__1 <= float__last .
+H59:   polypaver__floats__multiply(2, a__1) >= float__first .
+H60:   polypaver__floats__multiply(2, a__1) <= float__last .
+H61:   a__1 >= float__first .
+H62:   a__1 <= float__last .
 H63:   2 >= float__first .
 H64:   2 <= float__last .
 H65:    -(1/20) >= universal_real__base__first .
 H66:    -(1/20) <= universal_real__base__last .
-H67:   polypaver__floats__multiply(2, a__2) >= float__first .
-H68:   polypaver__floats__multiply(2, a__2) <= float__last .
-H69:   a__2 >= float__first .
-H70:   a__2 <= float__last .
-H71:   b__2 >= float__first .
-H72:   b__2 <= float__last .
-H73:    -(2 * a__2) >= float__base__first .
-H74:    -(2 * a__2) <= float__base__last .
-H75:   2 * a__2 >= float__base__first .
-H76:   2 * a__2 <= float__base__last .
-H77:   not ((a__2 <  -(1/20)) and ((
-           polypaver__floats__multiply(2, a__2) <= b__2) and (b__2 <=  -(2 * 
-           a__2)))) .
-H78:   m1__1 >= float__first .
-H79:   m1__1 <= float__last .
-H80:   m1__1 >= float__first .
-H81:   m1__1 <= float__last .
+H67:   polypaver__floats__multiply(2, a__1) >= float__first .
+H68:   polypaver__floats__multiply(2, a__1) <= float__last .
+H69:   a__1 >= float__first .
+H70:   a__1 <= float__last .
+H71:   b__1 >= float__first .
+H72:   b__1 <= float__last .
+H73:   polypaver__floats__multiply( -2, a__1) >= float__first .
+H74:   polypaver__floats__multiply( -2, a__1) <= float__last .
+H75:   a__1 >= float__first .
+H76:   a__1 <= float__last .
+H77:    -2 >= float__first .
+H78:    -2 <= float__last .
+H79:    -2 >= float__base__first .
+H80:    -2 <= float__base__last .
+H81:   polypaver__floats__multiply( -2, a__1) >= float__first .
+H82:   polypaver__floats__multiply( -2, a__1) <= float__last .
+H83:   not ((a__1 <  -(1/20)) and ((
+           polypaver__floats__multiply(2, a__1) <= b__1) and (b__1 <= 
+           polypaver__floats__multiply( -2, a__1)))) .
+H84:   max(y1, y3) >= float__first .
+H85:   max(y1, y3) <= float__last .
+H86:   max(y1, y3) >= float__first .
+H87:   max(y1, y3) <= float__last .
+H88:   max(y1, y3) >= float__first .
+H89:   max(y1, y3) <= float__last .
         ->
-C1:    m1__1 >= y1 - (1/5) .
-C2:    m1__1 >= y2 - (1/5) .
-C3:    m1__1 >= y3 - (1/5) .
+C1:    max(y1, y3) >= y1 - (1/5) .
+C2:    max(y1, y3) >= y2 - (1/5) .
+C3:    max(y1, y3) >= y3 - (1/5) .
+C4:    max(y1, y3) >= float__first .
+C5:    max(y1, y3) <= float__last .
  
 
