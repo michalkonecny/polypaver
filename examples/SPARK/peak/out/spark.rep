@@ -5,7 +5,7 @@
            *******************************************************
 
 
-                        DATE : 09-MAY-2013 23:39:42.53
+                        DATE : 10-MAY-2013 00:12:39.82
 
 Options:
     noindex_file
@@ -125,10 +125,10 @@ Listing Filename:  /Users/jandur/FPbyContract/paver/examples/SPARK/peak/out/peak
    Unit type:  package body
    Unit has been analysed, any errors are listed below.
 
-4 error(s) or warning(s)
+5 error(s) or warning(s)
 
 Line
-  12  	end max;
+  13  	end Max;
 
 --- (  1)  Warning           :405: VCs for statements including real numbers are 
            approximate.
@@ -138,14 +138,15 @@ Line
 --- (  2)  Warning           :405: VCs for statements including real numbers are 
            approximate.
 
-  44  	end peakQ;
+  44  	end PeakQ;
 
 --- (  3)  Warning           :405: VCs for statements including real numbers are 
            approximate.
 
   61  	end PeakUnit;
 
---- (  4)  Warning           :405: VCs for statements including real numbers are 
+--- (  4)  Warning           :400: Variable M2 is declared but not used.
+--- (  5)  Warning           :405: VCs for statements including real numbers are 
            approximate.
 
 Note: Automatic flow analysis mode selected

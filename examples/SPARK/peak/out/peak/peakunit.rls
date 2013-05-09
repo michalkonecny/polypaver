@@ -5,9 +5,9 @@
            /*********************************************************/
 
 
-                        /*DATE : 09-MAY-2013 23:39:42.51*/
+                        /*DATE : 10-MAY-2013 00:12:39.79*/
 
-                          /*procedure Peak.PeakUnit*/
+                           /*function Peak.PeakUnit*/
 
 
 rule_family peakunit_rules:

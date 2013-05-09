@@ -1,54 +1,66 @@
 *****************************************************************************
                        Semantic Analysis of SPARK Text
-                              Examiner GPL 2011
-             Copyright (C) 2011 Altran Praxis Limited, Bath, U.K.
+                              Examiner GPL 2012
+             Copyright (C) 2012 Altran Praxis Limited, Bath, U.K.
 *****************************************************************************
 
 
-CREATED 07-SEP-2011, 17:22:08  SIMPLIFIED 07-SEP-2011, 17:22:10
+CREATED 10-MAY-2013, 00:12:39  SIMPLIFIED 10-MAY-2013, 00:12:42
 
-SPARK Simplifier GPL 2011
-Copyright (C) 2011 Altran Praxis Limited, Bath, U.K.
+SPARK Simplifier GPL 2012
+Copyright (C) 2012 Altran Praxis Limited, Bath, U.K.
 
-procedure peak.max
-
-
+function Peak.Max
 
 
 
 
-@@@@@@@@@@  VC: procedure_max_1.  @@@@@@@@@@
+
+
+@@@@@@@@@@  VC: function_max_1.  @@@@@@@@@@
 ***  Proved C1:  x >= float__first
-     using hypothesis H2.
+     using hypothesis H1.
 ***  Proved C2:  x <= float__last
-     using hypothesis H3.
+     using hypothesis H2.
 ***  PROVED VC.
 
 
-@@@@@@@@@@  VC: procedure_max_2.  @@@@@@@@@@
+@@@@@@@@@@  VC: function_max_2.  @@@@@@@@@@
 ***  Proved C1:  y >= float__first
-     using hypothesis H4.
+     using hypothesis H3.
 ***  Proved C2:  y <= float__last
-     using hypothesis H5.
+     using hypothesis H4.
 ***  PROVED VC.
 
 
-@@@@@@@@@@  VC: procedure_max_3.  @@@@@@@@@@
+@@@@@@@@@@  VC: function_max_3.  @@@@@@@@@@
+---  Hypothesis H6 has been replaced by "true".  (It is already present, as H1).
 ---  Hypothesis H7 has been replaced by "true".  (It is already present, as H2).
----  Hypothesis H8 has been replaced by "true".  (It is already present, as H3).
+---  Hypothesis H8 has been replaced by "true".  (It is already present, as H1).
+---  Hypothesis H9 has been replaced by "true".  (It is already present, as H2).
 %%%  Simplified C1 on reading formula in, to give:
      %%%  C1:  x >= y or x = y and y >= x
 ***  Proved C1:  x >= y or x = y and y >= x
-     using hypothesis H6.
+     using hypothesis H5.
+***  Proved C2:  x >= float__first
+     using hypothesis H1.
+***  Proved C3:  x <= float__last
+     using hypothesis H2.
 ***  PROVED VC.
 
 
-@@@@@@@@@@  VC: procedure_max_4.  @@@@@@@@@@
+@@@@@@@@@@  VC: function_max_4.  @@@@@@@@@@
+---  Hypothesis H6 has been replaced by "true".  (It is already present, as H3).
 ---  Hypothesis H7 has been replaced by "true".  (It is already present, as H4).
----  Hypothesis H8 has been replaced by "true".  (It is already present, as H5).
+---  Hypothesis H8 has been replaced by "true".  (It is already present, as H3).
+---  Hypothesis H9 has been replaced by "true".  (It is already present, as H4).
 %%%  Simplified C1 on reading formula in, to give:
      %%%  C1:  y = x and x >= y or y >= x
 ***  Proved C1:  y = x and x >= y or y >= x
-     using hypothesis H6.
+     using hypothesis H5.
+***  Proved C2:  y >= float__first
+     using hypothesis H3.
+***  Proved C3:  y <= float__last
+     using hypothesis H4.
 ***  PROVED VC.
 

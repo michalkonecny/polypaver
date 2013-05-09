@@ -5,12 +5,12 @@
            {*******************************************************}
 
 
-                        {DATE : 09-MAY-2013 23:39:42.51}
+                        {DATE : 10-MAY-2013 00:12:39.79}
 
-                          {procedure Peak.PeakUnit}
+                           {function Peak.PeakUnit}
 
 
-title procedure peakunit;
+title function peakunit;
 
   function round__(real) : integer;
   type universal_real = real;
@@ -51,18 +51,14 @@ title procedure peakunit;
   var y1 : real;
   var y2 : real;
   var y3 : real;
-  var r : real;
   var a : real;
   var b : real;
   var c : real;
-  var m1 : real;
-  var m2 : real;
   function polypaver__floats__multiply(real, real) : real;
-  var r__4 : real;
-  var m2__3 : real;
-  var c__2 : real;
-  var b__2 : real;
-  var a__2 : real;
-  var m1__1 : real;
+  function max(real, real) : real;
+  function peakq(real, real, real, real) : real;
+  var c__1 : real;
+  var b__1 : real;
+  var a__1 : real;
 
 end;

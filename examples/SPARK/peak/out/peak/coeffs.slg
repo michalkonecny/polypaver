@@ -1,16 +1,16 @@
 *****************************************************************************
                        Semantic Analysis of SPARK Text
-                              Examiner GPL 2011
-             Copyright (C) 2011 Altran Praxis Limited, Bath, U.K.
+                              Examiner GPL 2012
+             Copyright (C) 2012 Altran Praxis Limited, Bath, U.K.
 *****************************************************************************
 
 
-CREATED 07-SEP-2011, 17:22:08  SIMPLIFIED 07-SEP-2011, 17:22:08
+CREATED 10-MAY-2013, 00:12:39  SIMPLIFIED 10-MAY-2013, 00:12:42
 
-SPARK Simplifier GPL 2011
-Copyright (C) 2011 Altran Praxis Limited, Bath, U.K.
+SPARK Simplifier GPL 2012
+Copyright (C) 2012 Altran Praxis Limited, Bath, U.K.
 
-procedure peak.coeffs
+procedure Peak.Coeffs
 
 
 
@@ -19,9 +19,9 @@ procedure peak.coeffs
 
 @@@@@@@@@@  VC: procedure_coeffs_1.  @@@@@@@@@@
 %%%  Simplified C1 on reading formula in, to give:
-     %%%  C1:  numeric__times(- 2, y2) >= float__first
+     %%%  C1:  polypaver__floats__multiply(- 2, y2) >= float__first
 %%%  Simplified C2 on reading formula in, to give:
-     %%%  C2:  numeric__times(- 2, y2) <= float__last
+     %%%  C2:  polypaver__floats__multiply(- 2, y2) <= float__last
 %%%  Simplified C5 on reading formula in, to give:
      %%%  C5:  - 2 >= float__first
 %%%  Simplified C6 on reading formula in, to give:
@@ -44,7 +44,7 @@ procedure peak.coeffs
 <S>  New H7:  y1 >= - 340282000000000000000000000000000000000
 <S>  New H9:  y2 >= - 340282000000000000000000000000000000000
 <S>  New H11:  y3 >= - 340282000000000000000000000000000000000
-<S>  New C1:  numeric__times(- 2, y2) >= - 
+<S>  New C1:  polypaver__floats__multiply(- 2, y2) >= - 
           340282000000000000000000000000000000000
 <S>  New C5:  true
 <S>  New C11:  true
@@ -54,7 +54,8 @@ procedure peak.coeffs
 <S>  New H8:  y1 <= 340282000000000000000000000000000000000
 <S>  New H10:  y2 <= 340282000000000000000000000000000000000
 <S>  New H12:  y3 <= 340282000000000000000000000000000000000
-<S>  New C2:  numeric__times(- 2, y2) <= 340282000000000000000000000000000000000
+<S>  New C2:  polypaver__floats__multiply(- 2, y2) <= 
+          340282000000000000000000000000000000000
 <S>  New C6:  true
 <S>  New C12:  true
 -S-  Applied substitution rule coeffs_rules(4).
@@ -97,9 +98,9 @@ procedure peak.coeffs
 
 @@@@@@@@@@  VC: procedure_coeffs_2.  @@@@@@@@@@
 %%%  Simplified H13 on reading formula in, to give:
-     %%%  H13:  numeric__times(- 2, y2) >= float__first
+     %%%  H13:  polypaver__floats__multiply(- 2, y2) >= float__first
 %%%  Simplified H14 on reading formula in, to give:
-     %%%  H14:  numeric__times(- 2, y2) <= float__last
+     %%%  H14:  polypaver__floats__multiply(- 2, y2) <= float__last
 ---  Hypothesis H15 has been replaced by "true".  (It is already present, as H9)
           .
 ---  Hypothesis H16 has been replaced by "true".  (It is already present, as 
@@ -121,20 +122,22 @@ procedure peak.coeffs
 ---  Hypothesis H26 has been replaced by "true".  (It is already present, as 
           H14).
 %%%  Simplified C1 on reading formula in, to give:
-     %%%  C1:  numeric__plus(numeric__times(- 2, y2), y3) >= float__first
+     %%%  C1:  polypaver__floats__add(polypaver__floats__multiply(- 2, y2), y3) 
+          >= float__first
 %%%  Simplified C2 on reading formula in, to give:
-     %%%  C2:  numeric__plus(numeric__times(- 2, y2), y3) <= float__last
+     %%%  C2:  polypaver__floats__add(polypaver__floats__multiply(- 2, y2), y3) 
+          <= float__last
 %%%  Simplified C5 on reading formula in, to give:
-     %%%  C5:  numeric__times(- 2, y2) >= float__first
+     %%%  C5:  polypaver__floats__multiply(- 2, y2) >= float__first
 %%%  Simplified C6 on reading formula in, to give:
-     %%%  C6:  numeric__times(- 2, y2) <= float__last
+     %%%  C6:  polypaver__floats__multiply(- 2, y2) <= float__last
 ***  Proved C3:  y3 >= float__first
      using hypothesis H11.
 ***  Proved C4:  y3 <= float__last
      using hypothesis H12.
-***  Proved C5:  numeric__times(- 2, y2) >= float__first
+***  Proved C5:  polypaver__floats__multiply(- 2, y2) >= float__first
      using hypothesis H13.
-***  Proved C6:  numeric__times(- 2, y2) <= float__last
+***  Proved C6:  polypaver__floats__multiply(- 2, y2) <= float__last
      using hypothesis H14.
 -S-  Applied substitution rule coeffs_rules(2).
      This was achieved by replacing all occurrences of float__first by:
@@ -142,24 +145,24 @@ procedure peak.coeffs
 <S>  New H7:  y1 >= - 340282000000000000000000000000000000000
 <S>  New H9:  y2 >= - 340282000000000000000000000000000000000
 <S>  New H11:  y3 >= - 340282000000000000000000000000000000000
-<S>  New H13:  numeric__times(- 2, y2) >= - 
+<S>  New H13:  polypaver__floats__multiply(- 2, y2) >= - 
           340282000000000000000000000000000000000
 <S>  New H17:  true
 <S>  New H23:  true
-<S>  New C1:  numeric__plus(numeric__times(- 2, y2), y3) >= - 
-          340282000000000000000000000000000000000
+<S>  New C1:  polypaver__floats__add(polypaver__floats__multiply(- 2, y2), y3) 
+          >= - 340282000000000000000000000000000000000
 -S-  Applied substitution rule coeffs_rules(3).
      This was achieved by replacing all occurrences of float__last by:
           340282000000000000000000000000000000000.
 <S>  New H8:  y1 <= 340282000000000000000000000000000000000
 <S>  New H10:  y2 <= 340282000000000000000000000000000000000
 <S>  New H12:  y3 <= 340282000000000000000000000000000000000
-<S>  New H14:  numeric__times(- 2, y2) <= 
+<S>  New H14:  polypaver__floats__multiply(- 2, y2) <= 
           340282000000000000000000000000000000000
 <S>  New H18:  true
 <S>  New H24:  true
-<S>  New C2:  numeric__plus(numeric__times(- 2, y2), y3) <= 
-          340282000000000000000000000000000000000
+<S>  New C2:  polypaver__floats__add(polypaver__floats__multiply(- 2, y2), y3) 
+          <= 340282000000000000000000000000000000000
 -S-  Applied substitution rule coeffs_rules(4).
      This was achieved by replacing all occurrences of float__base__first by:
           - 340282000000000000000000000000000000000.
@@ -206,9 +209,9 @@ procedure peak.coeffs
 
 @@@@@@@@@@  VC: procedure_coeffs_3.  @@@@@@@@@@
 %%%  Simplified H13 on reading formula in, to give:
-     %%%  H13:  numeric__times(- 2, y2) >= float__first
+     %%%  H13:  polypaver__floats__multiply(- 2, y2) >= float__first
 %%%  Simplified H14 on reading formula in, to give:
-     %%%  H14:  numeric__times(- 2, y2) <= float__last
+     %%%  H14:  polypaver__floats__multiply(- 2, y2) <= float__last
 ---  Hypothesis H15 has been replaced by "true".  (It is already present, as H9)
           .
 ---  Hypothesis H16 has been replaced by "true".  (It is already present, as 
@@ -230,9 +233,11 @@ procedure peak.coeffs
 ---  Hypothesis H26 has been replaced by "true".  (It is already present, as 
           H14).
 %%%  Simplified H27 on reading formula in, to give:
-     %%%  H27:  numeric__plus(numeric__times(- 2, y2), y3) >= float__first
+     %%%  H27:  polypaver__floats__add(polypaver__floats__multiply(- 2, y2), y3)
+           >= float__first
 %%%  Simplified H28 on reading formula in, to give:
-     %%%  H28:  numeric__plus(numeric__times(- 2, y2), y3) <= float__last
+     %%%  H28:  polypaver__floats__add(polypaver__floats__multiply(- 2, y2), y3)
+           <= float__last
 ---  Hypothesis H29 has been replaced by "true".  (It is already present, as 
           H11).
 ---  Hypothesis H30 has been replaced by "true".  (It is already present, as 
@@ -246,18 +251,22 @@ procedure peak.coeffs
 ---  Hypothesis H34 has been replaced by "true".  (It is already present, as 
           H28).
 %%%  Simplified C1 on reading formula in, to give:
-     %%%  C1:  numeric__plus(y1, numeric__plus(numeric__times(- 2, y2), y3)) >= 
-          float__first
+     %%%  C1:  polypaver__floats__add(y1, polypaver__floats__add(
+          polypaver__floats__multiply(- 2, y2), y3)) >= float__first
 %%%  Simplified C2 on reading formula in, to give:
-     %%%  C2:  numeric__plus(y1, numeric__plus(numeric__times(- 2, y2), y3)) <= 
-          float__last
+     %%%  C2:  polypaver__floats__add(y1, polypaver__floats__add(
+          polypaver__floats__multiply(- 2, y2), y3)) <= float__last
 %%%  Simplified C3 on reading formula in, to give:
-     %%%  C3:  numeric__plus(numeric__times(- 2, y2), y3) >= float__first
+     %%%  C3:  polypaver__floats__add(polypaver__floats__multiply(- 2, y2), y3) 
+          >= float__first
 %%%  Simplified C4 on reading formula in, to give:
-     %%%  C4:  numeric__plus(numeric__times(- 2, y2), y3) <= float__last
-***  Proved C3:  numeric__plus(numeric__times(- 2, y2), y3) >= float__first
+     %%%  C4:  polypaver__floats__add(polypaver__floats__multiply(- 2, y2), y3) 
+          <= float__last
+***  Proved C3:  polypaver__floats__add(polypaver__floats__multiply(- 2, y2), 
+          y3) >= float__first
      using hypothesis H27.
-***  Proved C4:  numeric__plus(numeric__times(- 2, y2), y3) <= float__last
+***  Proved C4:  polypaver__floats__add(polypaver__floats__multiply(- 2, y2), 
+          y3) <= float__last
      using hypothesis H28.
 -S-  Applied substitution rule coeffs_rules(2).
      This was achieved by replacing all occurrences of float__first by:
@@ -265,27 +274,29 @@ procedure peak.coeffs
 <S>  New H7:  y1 >= - 340282000000000000000000000000000000000
 <S>  New H9:  y2 >= - 340282000000000000000000000000000000000
 <S>  New H11:  y3 >= - 340282000000000000000000000000000000000
-<S>  New H13:  numeric__times(- 2, y2) >= - 
+<S>  New H13:  polypaver__floats__multiply(- 2, y2) >= - 
           340282000000000000000000000000000000000
 <S>  New H17:  true
 <S>  New H23:  true
-<S>  New H27:  numeric__plus(numeric__times(- 2, y2), y3) >= - 
+<S>  New H27:  polypaver__floats__add(polypaver__floats__multiply(- 2, y2), y3) 
+          >= - 340282000000000000000000000000000000000
+<S>  New C1:  polypaver__floats__add(y1, polypaver__floats__add(
+          polypaver__floats__multiply(- 2, y2), y3)) >= - 
           340282000000000000000000000000000000000
-<S>  New C1:  numeric__plus(y1, numeric__plus(numeric__times(- 2, y2), y3)) >= 
-          - 340282000000000000000000000000000000000
 -S-  Applied substitution rule coeffs_rules(3).
      This was achieved by replacing all occurrences of float__last by:
           340282000000000000000000000000000000000.
 <S>  New H8:  y1 <= 340282000000000000000000000000000000000
 <S>  New H10:  y2 <= 340282000000000000000000000000000000000
 <S>  New H12:  y3 <= 340282000000000000000000000000000000000
-<S>  New H14:  numeric__times(- 2, y2) <= 
+<S>  New H14:  polypaver__floats__multiply(- 2, y2) <= 
           340282000000000000000000000000000000000
 <S>  New H18:  true
 <S>  New H24:  true
-<S>  New H28:  numeric__plus(numeric__times(- 2, y2), y3) <= 
-          340282000000000000000000000000000000000
-<S>  New C2:  numeric__plus(y1, numeric__plus(numeric__times(- 2, y2), y3)) <= 
+<S>  New H28:  polypaver__floats__add(polypaver__floats__multiply(- 2, y2), y3) 
+          <= 340282000000000000000000000000000000000
+<S>  New C2:  polypaver__floats__add(y1, polypaver__floats__add(
+          polypaver__floats__multiply(- 2, y2), y3)) <= 
           340282000000000000000000000000000000000
 -S-  Applied substitution rule coeffs_rules(4).
      This was achieved by replacing all occurrences of float__base__first by:
@@ -339,9 +350,9 @@ procedure peak.coeffs
 
 @@@@@@@@@@  VC: procedure_coeffs_4.  @@@@@@@@@@
 %%%  Simplified H13 on reading formula in, to give:
-     %%%  H13:  numeric__times(- 2, y2) >= float__first
+     %%%  H13:  polypaver__floats__multiply(- 2, y2) >= float__first
 %%%  Simplified H14 on reading formula in, to give:
-     %%%  H14:  numeric__times(- 2, y2) <= float__last
+     %%%  H14:  polypaver__floats__multiply(- 2, y2) <= float__last
 ---  Hypothesis H15 has been replaced by "true".  (It is already present, as H9)
           .
 ---  Hypothesis H16 has been replaced by "true".  (It is already present, as 
@@ -363,9 +374,11 @@ procedure peak.coeffs
 ---  Hypothesis H26 has been replaced by "true".  (It is already present, as 
           H14).
 %%%  Simplified H27 on reading formula in, to give:
-     %%%  H27:  numeric__plus(numeric__times(- 2, y2), y3) >= float__first
+     %%%  H27:  polypaver__floats__add(polypaver__floats__multiply(- 2, y2), y3)
+           >= float__first
 %%%  Simplified H28 on reading formula in, to give:
-     %%%  H28:  numeric__plus(numeric__times(- 2, y2), y3) <= float__last
+     %%%  H28:  polypaver__floats__add(polypaver__floats__multiply(- 2, y2), y3)
+           <= float__last
 ---  Hypothesis H29 has been replaced by "true".  (It is already present, as 
           H11).
 ---  Hypothesis H30 has been replaced by "true".  (It is already present, as 
@@ -379,11 +392,11 @@ procedure peak.coeffs
 ---  Hypothesis H34 has been replaced by "true".  (It is already present, as 
           H28).
 %%%  Simplified H35 on reading formula in, to give:
-     %%%  H35:  numeric__plus(y1, numeric__plus(numeric__times(- 2, y2), y3)) 
-          >= float__first
+     %%%  H35:  polypaver__floats__add(y1, polypaver__floats__add(
+          polypaver__floats__multiply(- 2, y2), y3)) >= float__first
 %%%  Simplified H36 on reading formula in, to give:
-     %%%  H36:  numeric__plus(y1, numeric__plus(numeric__times(- 2, y2), y3)) 
-          <= float__last
+     %%%  H36:  polypaver__floats__add(y1, polypaver__floats__add(
+          polypaver__floats__multiply(- 2, y2), y3)) <= float__last
 ---  Hypothesis H37 has been replaced by "true".  (It is already present, as 
           H27).
 ---  Hypothesis H38 has been replaced by "true".  (It is already present, as 
@@ -393,22 +406,24 @@ procedure peak.coeffs
 ---  Hypothesis H40 has been replaced by "true".  (It is already present, as 
           H36).
 %%%  Simplified C1 on reading formula in, to give:
-     %%%  C1:  numeric__times(1 / 2, numeric__plus(y1, numeric__plus(
-          numeric__times(- 2, y2), y3))) >= float__first
-%%%  Simplified C2 on reading formula in, to give:
-     %%%  C2:  numeric__times(1 / 2, numeric__plus(y1, numeric__plus(
-          numeric__times(- 2, y2), y3))) <= float__last
-%%%  Simplified C3 on reading formula in, to give:
-     %%%  C3:  numeric__plus(y1, numeric__plus(numeric__times(- 2, y2), y3)) >= 
+     %%%  C1:  polypaver__floats__multiply(1 / 2, polypaver__floats__add(y1, 
+          polypaver__floats__add(polypaver__floats__multiply(- 2, y2), y3))) >= 
           float__first
-%%%  Simplified C4 on reading formula in, to give:
-     %%%  C4:  numeric__plus(y1, numeric__plus(numeric__times(- 2, y2), y3)) <= 
+%%%  Simplified C2 on reading formula in, to give:
+     %%%  C2:  polypaver__floats__multiply(1 / 2, polypaver__floats__add(y1, 
+          polypaver__floats__add(polypaver__floats__multiply(- 2, y2), y3))) <= 
           float__last
-***  Proved C3:  numeric__plus(y1, numeric__plus(numeric__times(- 2, y2), y3)) 
-          >= float__first
+%%%  Simplified C3 on reading formula in, to give:
+     %%%  C3:  polypaver__floats__add(y1, polypaver__floats__add(
+          polypaver__floats__multiply(- 2, y2), y3)) >= float__first
+%%%  Simplified C4 on reading formula in, to give:
+     %%%  C4:  polypaver__floats__add(y1, polypaver__floats__add(
+          polypaver__floats__multiply(- 2, y2), y3)) <= float__last
+***  Proved C3:  polypaver__floats__add(y1, polypaver__floats__add(
+          polypaver__floats__multiply(- 2, y2), y3)) >= float__first
      using hypothesis H35.
-***  Proved C4:  numeric__plus(y1, numeric__plus(numeric__times(- 2, y2), y3)) 
-          <= float__last
+***  Proved C4:  polypaver__floats__add(y1, polypaver__floats__add(
+          polypaver__floats__multiply(- 2, y2), y3)) <= float__last
      using hypothesis H36.
 -S-  Applied substitution rule coeffs_rules(2).
      This was achieved by replacing all occurrences of float__first by:
@@ -416,33 +431,35 @@ procedure peak.coeffs
 <S>  New H7:  y1 >= - 340282000000000000000000000000000000000
 <S>  New H9:  y2 >= - 340282000000000000000000000000000000000
 <S>  New H11:  y3 >= - 340282000000000000000000000000000000000
-<S>  New H13:  numeric__times(- 2, y2) >= - 
+<S>  New H13:  polypaver__floats__multiply(- 2, y2) >= - 
           340282000000000000000000000000000000000
 <S>  New H17:  true
 <S>  New H23:  true
-<S>  New H27:  numeric__plus(numeric__times(- 2, y2), y3) >= - 
+<S>  New H27:  polypaver__floats__add(polypaver__floats__multiply(- 2, y2), y3) 
+          >= - 340282000000000000000000000000000000000
+<S>  New H35:  polypaver__floats__add(y1, polypaver__floats__add(
+          polypaver__floats__multiply(- 2, y2), y3)) >= - 
           340282000000000000000000000000000000000
-<S>  New H35:  numeric__plus(y1, numeric__plus(numeric__times(- 2, y2), y3)) >= 
+<S>  New C1:  polypaver__floats__multiply(1 / 2, polypaver__floats__add(y1, 
+          polypaver__floats__add(polypaver__floats__multiply(- 2, y2), y3))) >= 
           - 340282000000000000000000000000000000000
-<S>  New C1:  numeric__times(1 / 2, numeric__plus(y1, numeric__plus(
-          numeric__times(- 2, y2), y3))) >= - 
-          340282000000000000000000000000000000000
 -S-  Applied substitution rule coeffs_rules(3).
      This was achieved by replacing all occurrences of float__last by:
           340282000000000000000000000000000000000.
 <S>  New H8:  y1 <= 340282000000000000000000000000000000000
 <S>  New H10:  y2 <= 340282000000000000000000000000000000000
 <S>  New H12:  y3 <= 340282000000000000000000000000000000000
-<S>  New H14:  numeric__times(- 2, y2) <= 
+<S>  New H14:  polypaver__floats__multiply(- 2, y2) <= 
           340282000000000000000000000000000000000
 <S>  New H18:  true
 <S>  New H24:  true
-<S>  New H28:  numeric__plus(numeric__times(- 2, y2), y3) <= 
+<S>  New H28:  polypaver__floats__add(polypaver__floats__multiply(- 2, y2), y3) 
+          <= 340282000000000000000000000000000000000
+<S>  New H36:  polypaver__floats__add(y1, polypaver__floats__add(
+          polypaver__floats__multiply(- 2, y2), y3)) <= 
           340282000000000000000000000000000000000
-<S>  New H36:  numeric__plus(y1, numeric__plus(numeric__times(- 2, y2), y3)) <= 
-          340282000000000000000000000000000000000
-<S>  New C2:  numeric__times(1 / 2, numeric__plus(y1, numeric__plus(
-          numeric__times(- 2, y2), y3))) <= 
+<S>  New C2:  polypaver__floats__multiply(1 / 2, polypaver__floats__add(y1, 
+          polypaver__floats__add(polypaver__floats__multiply(- 2, y2), y3))) <= 
           340282000000000000000000000000000000000
 -S-  Applied substitution rule coeffs_rules(4).
      This was achieved by replacing all occurrences of float__base__first by:
@@ -500,9 +517,9 @@ procedure peak.coeffs
 
 @@@@@@@@@@  VC: procedure_coeffs_5.  @@@@@@@@@@
 %%%  Simplified H13 on reading formula in, to give:
-     %%%  H13:  numeric__times(- 2, y2) >= float__first
+     %%%  H13:  polypaver__floats__multiply(- 2, y2) >= float__first
 %%%  Simplified H14 on reading formula in, to give:
-     %%%  H14:  numeric__times(- 2, y2) <= float__last
+     %%%  H14:  polypaver__floats__multiply(- 2, y2) <= float__last
 ---  Hypothesis H15 has been replaced by "true".  (It is already present, as H9)
           .
 ---  Hypothesis H16 has been replaced by "true".  (It is already present, as 
@@ -524,9 +541,11 @@ procedure peak.coeffs
 ---  Hypothesis H26 has been replaced by "true".  (It is already present, as 
           H14).
 %%%  Simplified H27 on reading formula in, to give:
-     %%%  H27:  numeric__plus(numeric__times(- 2, y2), y3) >= float__first
+     %%%  H27:  polypaver__floats__add(polypaver__floats__multiply(- 2, y2), y3)
+           >= float__first
 %%%  Simplified H28 on reading formula in, to give:
-     %%%  H28:  numeric__plus(numeric__times(- 2, y2), y3) <= float__last
+     %%%  H28:  polypaver__floats__add(polypaver__floats__multiply(- 2, y2), y3)
+           <= float__last
 ---  Hypothesis H29 has been replaced by "true".  (It is already present, as 
           H11).
 ---  Hypothesis H30 has been replaced by "true".  (It is already present, as 
@@ -540,11 +559,11 @@ procedure peak.coeffs
 ---  Hypothesis H34 has been replaced by "true".  (It is already present, as 
           H28).
 %%%  Simplified H35 on reading formula in, to give:
-     %%%  H35:  numeric__plus(y1, numeric__plus(numeric__times(- 2, y2), y3)) 
-          >= float__first
+     %%%  H35:  polypaver__floats__add(y1, polypaver__floats__add(
+          polypaver__floats__multiply(- 2, y2), y3)) >= float__first
 %%%  Simplified H36 on reading formula in, to give:
-     %%%  H36:  numeric__plus(y1, numeric__plus(numeric__times(- 2, y2), y3)) 
-          <= float__last
+     %%%  H36:  polypaver__floats__add(y1, polypaver__floats__add(
+          polypaver__floats__multiply(- 2, y2), y3)) <= float__last
 ---  Hypothesis H37 has been replaced by "true".  (It is already present, as 
           H27).
 ---  Hypothesis H38 has been replaced by "true".  (It is already present, as 
@@ -554,11 +573,13 @@ procedure peak.coeffs
 ---  Hypothesis H40 has been replaced by "true".  (It is already present, as 
           H36).
 %%%  Simplified H41 on reading formula in, to give:
-     %%%  H41:  numeric__times(1 / 2, numeric__plus(y1, numeric__plus(
-          numeric__times(- 2, y2), y3))) >= float__first
+     %%%  H41:  polypaver__floats__multiply(1 / 2, polypaver__floats__add(y1, 
+          polypaver__floats__add(polypaver__floats__multiply(- 2, y2), y3))) >= 
+          float__first
 %%%  Simplified H42 on reading formula in, to give:
-     %%%  H42:  numeric__times(1 / 2, numeric__plus(y1, numeric__plus(
-          numeric__times(- 2, y2), y3))) <= float__last
+     %%%  H42:  polypaver__floats__multiply(1 / 2, polypaver__floats__add(y1, 
+          polypaver__floats__add(polypaver__floats__multiply(- 2, y2), y3))) <= 
+          float__last
 ---  Hypothesis H43 has been replaced by "true".  (It is already present, as 
           H35).
 ---  Hypothesis H44 has been replaced by "true".  (It is already present, as 
@@ -568,25 +589,29 @@ procedure peak.coeffs
 ---  Hypothesis H46 has been replaced by "true".  (It is already present, as 
           H42).
 %%%  Simplified C1 on reading formula in, to give:
-     %%%  C1:  numeric__times(1 / 2, numeric__plus(y1, numeric__plus(
-          numeric__times(- 2, y2), y3))) >= float__first
+     %%%  C1:  polypaver__floats__multiply(1 / 2, polypaver__floats__add(y1, 
+          polypaver__floats__add(polypaver__floats__multiply(- 2, y2), y3))) >= 
+          float__first
 %%%  Simplified C2 on reading formula in, to give:
-     %%%  C2:  numeric__times(1 / 2, numeric__plus(y1, numeric__plus(
-          numeric__times(- 2, y2), y3))) <= float__last
-***  Proved C1:  numeric__times(1 / 2, numeric__plus(y1, numeric__plus(
-          numeric__times(- 2, y2), y3))) >= float__first
+     %%%  C2:  polypaver__floats__multiply(1 / 2, polypaver__floats__add(y1, 
+          polypaver__floats__add(polypaver__floats__multiply(- 2, y2), y3))) <= 
+          float__last
+***  Proved C1:  polypaver__floats__multiply(1 / 2, polypaver__floats__add(y1, 
+          polypaver__floats__add(polypaver__floats__multiply(- 2, y2), y3))) >= 
+          float__first
      using hypothesis H41.
-***  Proved C2:  numeric__times(1 / 2, numeric__plus(y1, numeric__plus(
-          numeric__times(- 2, y2), y3))) <= float__last
+***  Proved C2:  polypaver__floats__multiply(1 / 2, polypaver__floats__add(y1, 
+          polypaver__floats__add(polypaver__floats__multiply(- 2, y2), y3))) <= 
+          float__last
      using hypothesis H42.
 ***  PROVED VC.
 
 
 @@@@@@@@@@  VC: procedure_coeffs_6.  @@@@@@@@@@
 %%%  Simplified H13 on reading formula in, to give:
-     %%%  H13:  numeric__times(- 2, y2) >= float__first
+     %%%  H13:  polypaver__floats__multiply(- 2, y2) >= float__first
 %%%  Simplified H14 on reading formula in, to give:
-     %%%  H14:  numeric__times(- 2, y2) <= float__last
+     %%%  H14:  polypaver__floats__multiply(- 2, y2) <= float__last
 ---  Hypothesis H15 has been replaced by "true".  (It is already present, as H9)
           .
 ---  Hypothesis H16 has been replaced by "true".  (It is already present, as 
@@ -608,9 +633,11 @@ procedure peak.coeffs
 ---  Hypothesis H26 has been replaced by "true".  (It is already present, as 
           H14).
 %%%  Simplified H27 on reading formula in, to give:
-     %%%  H27:  numeric__plus(numeric__times(- 2, y2), y3) >= float__first
+     %%%  H27:  polypaver__floats__add(polypaver__floats__multiply(- 2, y2), y3)
+           >= float__first
 %%%  Simplified H28 on reading formula in, to give:
-     %%%  H28:  numeric__plus(numeric__times(- 2, y2), y3) <= float__last
+     %%%  H28:  polypaver__floats__add(polypaver__floats__multiply(- 2, y2), y3)
+           <= float__last
 ---  Hypothesis H29 has been replaced by "true".  (It is already present, as 
           H11).
 ---  Hypothesis H30 has been replaced by "true".  (It is already present, as 
@@ -624,11 +651,11 @@ procedure peak.coeffs
 ---  Hypothesis H34 has been replaced by "true".  (It is already present, as 
           H28).
 %%%  Simplified H35 on reading formula in, to give:
-     %%%  H35:  numeric__plus(y1, numeric__plus(numeric__times(- 2, y2), y3)) 
-          >= float__first
+     %%%  H35:  polypaver__floats__add(y1, polypaver__floats__add(
+          polypaver__floats__multiply(- 2, y2), y3)) >= float__first
 %%%  Simplified H36 on reading formula in, to give:
-     %%%  H36:  numeric__plus(y1, numeric__plus(numeric__times(- 2, y2), y3)) 
-          <= float__last
+     %%%  H36:  polypaver__floats__add(y1, polypaver__floats__add(
+          polypaver__floats__multiply(- 2, y2), y3)) <= float__last
 ---  Hypothesis H37 has been replaced by "true".  (It is already present, as 
           H27).
 ---  Hypothesis H38 has been replaced by "true".  (It is already present, as 
@@ -638,11 +665,13 @@ procedure peak.coeffs
 ---  Hypothesis H40 has been replaced by "true".  (It is already present, as 
           H36).
 %%%  Simplified H41 on reading formula in, to give:
-     %%%  H41:  numeric__times(1 / 2, numeric__plus(y1, numeric__plus(
-          numeric__times(- 2, y2), y3))) >= float__first
+     %%%  H41:  polypaver__floats__multiply(1 / 2, polypaver__floats__add(y1, 
+          polypaver__floats__add(polypaver__floats__multiply(- 2, y2), y3))) >= 
+          float__first
 %%%  Simplified H42 on reading formula in, to give:
-     %%%  H42:  numeric__times(1 / 2, numeric__plus(y1, numeric__plus(
-          numeric__times(- 2, y2), y3))) <= float__last
+     %%%  H42:  polypaver__floats__multiply(1 / 2, polypaver__floats__add(y1, 
+          polypaver__floats__add(polypaver__floats__multiply(- 2, y2), y3))) <= 
+          float__last
 ---  Hypothesis H43 has been replaced by "true".  (It is already present, as 
           H35).
 ---  Hypothesis H44 has been replaced by "true".  (It is already present, as 
@@ -655,17 +684,13 @@ procedure peak.coeffs
           H41).
 ---  Hypothesis H48 has been replaced by "true".  (It is already present, as 
           H42).
-***  Proved C3:  y1 >= float__first
-     using hypothesis H7.
-***  Proved C4:  y1 <= float__last
-     using hypothesis H8.
-***  Proved C5:  y3 >= float__first
+***  Proved C7:  y3 >= float__first
      using hypothesis H11.
-***  Proved C6:  y3 <= float__last
+***  Proved C8:  y3 <= float__last
      using hypothesis H12.
-***  Proved C7:  1 / 2 >= float__first
+***  Proved C9:  1 / 2 >= float__first
      using hypothesis H23.
-***  Proved C8:  1 / 2 <= float__last
+***  Proved C10:  1 / 2 <= float__last
      using hypothesis H24.
 -S-  Applied substitution rule coeffs_rules(2).
      This was achieved by replacing all occurrences of float__first by:
@@ -673,45 +698,52 @@ procedure peak.coeffs
 <S>  New H7:  y1 >= - 340282000000000000000000000000000000000
 <S>  New H9:  y2 >= - 340282000000000000000000000000000000000
 <S>  New H11:  y3 >= - 340282000000000000000000000000000000000
-<S>  New H13:  numeric__times(- 2, y2) >= - 
+<S>  New H13:  polypaver__floats__multiply(- 2, y2) >= - 
           340282000000000000000000000000000000000
 <S>  New H17:  true
 <S>  New H23:  true
-<S>  New H27:  numeric__plus(numeric__times(- 2, y2), y3) >= - 
+<S>  New H27:  polypaver__floats__add(polypaver__floats__multiply(- 2, y2), y3) 
+          >= - 340282000000000000000000000000000000000
+<S>  New H35:  polypaver__floats__add(y1, polypaver__floats__add(
+          polypaver__floats__multiply(- 2, y2), y3)) >= - 
           340282000000000000000000000000000000000
-<S>  New H35:  numeric__plus(y1, numeric__plus(numeric__times(- 2, y2), y3)) >= 
+<S>  New H41:  polypaver__floats__multiply(1 / 2, polypaver__floats__add(y1, 
+          polypaver__floats__add(polypaver__floats__multiply(- 2, y2), y3))) >= 
           - 340282000000000000000000000000000000000
-<S>  New H41:  numeric__times(1 / 2, numeric__plus(y1, numeric__plus(
-          numeric__times(- 2, y2), y3))) >= - 
+<S>  New C1:  polypaver__floats__add(y3, - y1) >= - 
           340282000000000000000000000000000000000
-<S>  New C1:  numeric__minus(y3, y1) >= - 
-          340282000000000000000000000000000000000
+<S>  New C3:  - y1 >= - 340282000000000000000000000000000000000
 -S-  Applied substitution rule coeffs_rules(3).
      This was achieved by replacing all occurrences of float__last by:
           340282000000000000000000000000000000000.
 <S>  New H8:  y1 <= 340282000000000000000000000000000000000
 <S>  New H10:  y2 <= 340282000000000000000000000000000000000
 <S>  New H12:  y3 <= 340282000000000000000000000000000000000
-<S>  New H14:  numeric__times(- 2, y2) <= 
+<S>  New H14:  polypaver__floats__multiply(- 2, y2) <= 
           340282000000000000000000000000000000000
 <S>  New H18:  true
 <S>  New H24:  true
-<S>  New H28:  numeric__plus(numeric__times(- 2, y2), y3) <= 
+<S>  New H28:  polypaver__floats__add(polypaver__floats__multiply(- 2, y2), y3) 
+          <= 340282000000000000000000000000000000000
+<S>  New H36:  polypaver__floats__add(y1, polypaver__floats__add(
+          polypaver__floats__multiply(- 2, y2), y3)) <= 
           340282000000000000000000000000000000000
-<S>  New H36:  numeric__plus(y1, numeric__plus(numeric__times(- 2, y2), y3)) <= 
+<S>  New H42:  polypaver__floats__multiply(1 / 2, polypaver__floats__add(y1, 
+          polypaver__floats__add(polypaver__floats__multiply(- 2, y2), y3))) <= 
           340282000000000000000000000000000000000
-<S>  New H42:  numeric__times(1 / 2, numeric__plus(y1, numeric__plus(
-          numeric__times(- 2, y2), y3))) <= 
+<S>  New C2:  polypaver__floats__add(y3, - y1) <= 
           340282000000000000000000000000000000000
-<S>  New C2:  numeric__minus(y3, y1) <= 340282000000000000000000000000000000000
+<S>  New C4:  - y1 <= 340282000000000000000000000000000000000
 -S-  Applied substitution rule coeffs_rules(4).
      This was achieved by replacing all occurrences of float__base__first by:
           - 340282000000000000000000000000000000000.
 <S>  New H19:  true
+<S>  New C5:  - y1 >= - 340282000000000000000000000000000000000
 -S-  Applied substitution rule coeffs_rules(5).
      This was achieved by replacing all occurrences of float__base__last by:
           340282000000000000000000000000000000000.
 <S>  New H20:  true
+<S>  New C6:  - y1 <= 340282000000000000000000000000000000000
 -S-  Applied substitution rule coeffs_rules(7).
      This was achieved by replacing all occurrences of iy__first by:
           0.
@@ -724,10 +756,24 @@ procedure peak.coeffs
 <S>  New H2:  y1 <= 1
 <S>  New H4:  y2 <= 1
 <S>  New H6:  y3 <= 1
+***  Proved C3:  - y1 >= - 340282000000000000000000000000000000000
+     using hypothesis H8.
+***  Proved C4:  - y1 <= 340282000000000000000000000000000000000
+     via its standard form, which is:
+     Std.Fm C4:  y1 >= - 340282000000000000000000000000000000000
+     using hypothesis H7.
+***  Proved C5:  - y1 >= - 340282000000000000000000000000000000000
+     using hypothesis H8.
+***  Proved C6:  - y1 <= 340282000000000000000000000000000000000
+     via its standard form, which is:
+     Std.Fm C6:  y1 >= - 340282000000000000000000000000000000000
+     using hypothesis H7.
 ---  Eliminated hypothesis H15 (true-hypothesis).
 ---  Eliminated hypothesis H16 (true-hypothesis).
 ---  Eliminated hypothesis H17 (true-hypothesis).
 ---  Eliminated hypothesis H18 (true-hypothesis).
+---  Eliminated hypothesis H19 (true-hypothesis).
+---  Eliminated hypothesis H20 (true-hypothesis).
 ---  Eliminated hypothesis H21 (true-hypothesis).
 ---  Eliminated hypothesis H22 (true-hypothesis).
 ---  Eliminated hypothesis H23 (true-hypothesis).
@@ -750,8 +796,6 @@ procedure peak.coeffs
 ---  Eliminated hypothesis H46 (true-hypothesis).
 ---  Eliminated hypothesis H47 (true-hypothesis).
 ---  Eliminated hypothesis H48 (true-hypothesis).
----  Eliminated hypothesis H19 (true-hypothesis).
----  Eliminated hypothesis H20 (true-hypothesis).
 ---  Eliminated hypothesis H7 (redundant, given H1).
 ---  Eliminated hypothesis H8 (redundant, given H2).
 ---  Eliminated hypothesis H9 (redundant, given H3).
@@ -766,9 +810,9 @@ procedure peak.coeffs
 
 @@@@@@@@@@  VC: procedure_coeffs_7.  @@@@@@@@@@
 %%%  Simplified H13 on reading formula in, to give:
-     %%%  H13:  numeric__times(- 2, y2) >= float__first
+     %%%  H13:  polypaver__floats__multiply(- 2, y2) >= float__first
 %%%  Simplified H14 on reading formula in, to give:
-     %%%  H14:  numeric__times(- 2, y2) <= float__last
+     %%%  H14:  polypaver__floats__multiply(- 2, y2) <= float__last
 ---  Hypothesis H15 has been replaced by "true".  (It is already present, as H9)
           .
 ---  Hypothesis H16 has been replaced by "true".  (It is already present, as 
@@ -790,9 +834,11 @@ procedure peak.coeffs
 ---  Hypothesis H26 has been replaced by "true".  (It is already present, as 
           H14).
 %%%  Simplified H27 on reading formula in, to give:
-     %%%  H27:  numeric__plus(numeric__times(- 2, y2), y3) >= float__first
+     %%%  H27:  polypaver__floats__add(polypaver__floats__multiply(- 2, y2), y3)
+           >= float__first
 %%%  Simplified H28 on reading formula in, to give:
-     %%%  H28:  numeric__plus(numeric__times(- 2, y2), y3) <= float__last
+     %%%  H28:  polypaver__floats__add(polypaver__floats__multiply(- 2, y2), y3)
+           <= float__last
 ---  Hypothesis H29 has been replaced by "true".  (It is already present, as 
           H11).
 ---  Hypothesis H30 has been replaced by "true".  (It is already present, as 
@@ -806,11 +852,11 @@ procedure peak.coeffs
 ---  Hypothesis H34 has been replaced by "true".  (It is already present, as 
           H28).
 %%%  Simplified H35 on reading formula in, to give:
-     %%%  H35:  numeric__plus(y1, numeric__plus(numeric__times(- 2, y2), y3)) 
-          >= float__first
+     %%%  H35:  polypaver__floats__add(y1, polypaver__floats__add(
+          polypaver__floats__multiply(- 2, y2), y3)) >= float__first
 %%%  Simplified H36 on reading formula in, to give:
-     %%%  H36:  numeric__plus(y1, numeric__plus(numeric__times(- 2, y2), y3)) 
-          <= float__last
+     %%%  H36:  polypaver__floats__add(y1, polypaver__floats__add(
+          polypaver__floats__multiply(- 2, y2), y3)) <= float__last
 ---  Hypothesis H37 has been replaced by "true".  (It is already present, as 
           H27).
 ---  Hypothesis H38 has been replaced by "true".  (It is already present, as 
@@ -820,11 +866,13 @@ procedure peak.coeffs
 ---  Hypothesis H40 has been replaced by "true".  (It is already present, as 
           H36).
 %%%  Simplified H41 on reading formula in, to give:
-     %%%  H41:  numeric__times(1 / 2, numeric__plus(y1, numeric__plus(
-          numeric__times(- 2, y2), y3))) >= float__first
+     %%%  H41:  polypaver__floats__multiply(1 / 2, polypaver__floats__add(y1, 
+          polypaver__floats__add(polypaver__floats__multiply(- 2, y2), y3))) >= 
+          float__first
 %%%  Simplified H42 on reading formula in, to give:
-     %%%  H42:  numeric__times(1 / 2, numeric__plus(y1, numeric__plus(
-          numeric__times(- 2, y2), y3))) <= float__last
+     %%%  H42:  polypaver__floats__multiply(1 / 2, polypaver__floats__add(y1, 
+          polypaver__floats__add(polypaver__floats__multiply(- 2, y2), y3))) <= 
+          float__last
 ---  Hypothesis H43 has been replaced by "true".  (It is already present, as 
           H35).
 ---  Hypothesis H44 has been replaced by "true".  (It is already present, as 
@@ -837,25 +885,21 @@ procedure peak.coeffs
           H41).
 ---  Hypothesis H48 has been replaced by "true".  (It is already present, as 
           H42).
----  Hypothesis H51 has been replaced by "true".  (It is already present, as H7)
-          .
----  Hypothesis H52 has been replaced by "true".  (It is already present, as H8)
-          .
----  Hypothesis H53 has been replaced by "true".  (It is already present, as 
-          H11).
----  Hypothesis H54 has been replaced by "true".  (It is already present, as 
-          H12).
 ---  Hypothesis H55 has been replaced by "true".  (It is already present, as 
-          H23).
+          H11).
 ---  Hypothesis H56 has been replaced by "true".  (It is already present, as 
-          H24).
+          H12).
 ---  Hypothesis H57 has been replaced by "true".  (It is already present, as 
-          H49).
+          H23).
 ---  Hypothesis H58 has been replaced by "true".  (It is already present, as 
+          H24).
+---  Hypothesis H59 has been replaced by "true".  (It is already present, as 
+          H49).
+---  Hypothesis H60 has been replaced by "true".  (It is already present, as 
           H50).
-***  Proved C3:  numeric__minus(y3, y1) >= float__first
+***  Proved C3:  polypaver__floats__add(y3, - y1) >= float__first
      using hypothesis H49.
-***  Proved C4:  numeric__minus(y3, y1) <= float__last
+***  Proved C4:  polypaver__floats__add(y3, - y1) <= float__last
      using hypothesis H50.
 -S-  Applied substitution rule coeffs_rules(2).
      This was achieved by replacing all occurrences of float__first by:
@@ -863,49 +907,56 @@ procedure peak.coeffs
 <S>  New H7:  y1 >= - 340282000000000000000000000000000000000
 <S>  New H9:  y2 >= - 340282000000000000000000000000000000000
 <S>  New H11:  y3 >= - 340282000000000000000000000000000000000
-<S>  New H13:  numeric__times(- 2, y2) >= - 
+<S>  New H13:  polypaver__floats__multiply(- 2, y2) >= - 
           340282000000000000000000000000000000000
 <S>  New H17:  true
 <S>  New H23:  true
-<S>  New H27:  numeric__plus(numeric__times(- 2, y2), y3) >= - 
+<S>  New H27:  polypaver__floats__add(polypaver__floats__multiply(- 2, y2), y3) 
+          >= - 340282000000000000000000000000000000000
+<S>  New H35:  polypaver__floats__add(y1, polypaver__floats__add(
+          polypaver__floats__multiply(- 2, y2), y3)) >= - 
           340282000000000000000000000000000000000
-<S>  New H35:  numeric__plus(y1, numeric__plus(numeric__times(- 2, y2), y3)) >= 
+<S>  New H41:  polypaver__floats__multiply(1 / 2, polypaver__floats__add(y1, 
+          polypaver__floats__add(polypaver__floats__multiply(- 2, y2), y3))) >= 
           - 340282000000000000000000000000000000000
-<S>  New H41:  numeric__times(1 / 2, numeric__plus(y1, numeric__plus(
-          numeric__times(- 2, y2), y3))) >= - 
+<S>  New H49:  polypaver__floats__add(y3, - y1) >= - 
           340282000000000000000000000000000000000
-<S>  New H49:  numeric__minus(y3, y1) >= - 
-          340282000000000000000000000000000000000
-<S>  New C1:  numeric__times(1 / 2, numeric__minus(y3, y1)) >= - 
-          340282000000000000000000000000000000000
+<S>  New H51:  - y1 >= - 340282000000000000000000000000000000000
+<S>  New C1:  polypaver__floats__multiply(1 / 2, polypaver__floats__add(y3, - 
+          y1)) >= - 340282000000000000000000000000000000000
 -S-  Applied substitution rule coeffs_rules(3).
      This was achieved by replacing all occurrences of float__last by:
           340282000000000000000000000000000000000.
 <S>  New H8:  y1 <= 340282000000000000000000000000000000000
 <S>  New H10:  y2 <= 340282000000000000000000000000000000000
 <S>  New H12:  y3 <= 340282000000000000000000000000000000000
-<S>  New H14:  numeric__times(- 2, y2) <= 
+<S>  New H14:  polypaver__floats__multiply(- 2, y2) <= 
           340282000000000000000000000000000000000
 <S>  New H18:  true
 <S>  New H24:  true
-<S>  New H28:  numeric__plus(numeric__times(- 2, y2), y3) <= 
+<S>  New H28:  polypaver__floats__add(polypaver__floats__multiply(- 2, y2), y3) 
+          <= 340282000000000000000000000000000000000
+<S>  New H36:  polypaver__floats__add(y1, polypaver__floats__add(
+          polypaver__floats__multiply(- 2, y2), y3)) <= 
           340282000000000000000000000000000000000
-<S>  New H36:  numeric__plus(y1, numeric__plus(numeric__times(- 2, y2), y3)) <= 
+<S>  New H42:  polypaver__floats__multiply(1 / 2, polypaver__floats__add(y1, 
+          polypaver__floats__add(polypaver__floats__multiply(- 2, y2), y3))) <= 
           340282000000000000000000000000000000000
-<S>  New H42:  numeric__times(1 / 2, numeric__plus(y1, numeric__plus(
-          numeric__times(- 2, y2), y3))) <= 
+<S>  New H50:  polypaver__floats__add(y3, - y1) <= 
           340282000000000000000000000000000000000
-<S>  New H50:  numeric__minus(y3, y1) <= 340282000000000000000000000000000000000
-<S>  New C2:  numeric__times(1 / 2, numeric__minus(y3, y1)) <= 
-          340282000000000000000000000000000000000
+<S>  New H52:  - y1 <= 340282000000000000000000000000000000000
+<S>  New C2:  polypaver__floats__multiply(1 / 2, polypaver__floats__add(y3, - 
+          y1)) <= 340282000000000000000000000000000000000
 -S-  Applied substitution rule coeffs_rules(4).
      This was achieved by replacing all occurrences of float__base__first by:
           - 340282000000000000000000000000000000000.
 <S>  New H19:  true
+<S>  New H53:  - y1 >= - 340282000000000000000000000000000000000
 -S-  Applied substitution rule coeffs_rules(5).
      This was achieved by replacing all occurrences of float__base__last by:
           340282000000000000000000000000000000000.
 <S>  New H20:  true
+<S>  New H54:  - y1 <= 340282000000000000000000000000000000000
 -S-  Applied substitution rule coeffs_rules(7).
      This was achieved by replacing all occurrences of iy__first by:
           0.
@@ -944,33 +995,35 @@ procedure peak.coeffs
 ---  Eliminated hypothesis H46 (true-hypothesis).
 ---  Eliminated hypothesis H47 (true-hypothesis).
 ---  Eliminated hypothesis H48 (true-hypothesis).
----  Eliminated hypothesis H51 (true-hypothesis).
----  Eliminated hypothesis H52 (true-hypothesis).
----  Eliminated hypothesis H53 (true-hypothesis).
----  Eliminated hypothesis H54 (true-hypothesis).
 ---  Eliminated hypothesis H55 (true-hypothesis).
 ---  Eliminated hypothesis H56 (true-hypothesis).
 ---  Eliminated hypothesis H57 (true-hypothesis).
 ---  Eliminated hypothesis H58 (true-hypothesis).
+---  Eliminated hypothesis H59 (true-hypothesis).
+---  Eliminated hypothesis H60 (true-hypothesis).
 ---  Eliminated hypothesis H19 (true-hypothesis).
 ---  Eliminated hypothesis H20 (true-hypothesis).
+---  Eliminated hypothesis H52 (duplicate of H7).
+---  Eliminated hypothesis H54 (duplicate of H7).
+---  Eliminated hypothesis H53 (duplicate of H51).
+---  Eliminated hypothesis H51 (duplicate of H8).
 ---  Eliminated hypothesis H7 (redundant, given H1).
 ---  Eliminated hypothesis H8 (redundant, given H2).
 ---  Eliminated hypothesis H9 (redundant, given H3).
 ---  Eliminated hypothesis H10 (redundant, given H4).
 ---  Eliminated hypothesis H11 (redundant, given H5).
 ---  Eliminated hypothesis H12 (redundant, given H6).
-     +++  New H59:  float__size >= 0
-     +++  New H60:  iy__size >= 0
-     +++  New H61:  ipad__size >= 0
-     +++  New H62:  icoeff1__size >= 0
+     +++  New H61:  float__size >= 0
+     +++  New H62:  iy__size >= 0
+     +++  New H63:  ipad__size >= 0
+     +++  New H64:  icoeff1__size >= 0
 
 
 @@@@@@@@@@  VC: procedure_coeffs_8.  @@@@@@@@@@
 %%%  Simplified H13 on reading formula in, to give:
-     %%%  H13:  numeric__times(- 2, y2) >= float__first
+     %%%  H13:  polypaver__floats__multiply(- 2, y2) >= float__first
 %%%  Simplified H14 on reading formula in, to give:
-     %%%  H14:  numeric__times(- 2, y2) <= float__last
+     %%%  H14:  polypaver__floats__multiply(- 2, y2) <= float__last
 ---  Hypothesis H15 has been replaced by "true".  (It is already present, as H9)
           .
 ---  Hypothesis H16 has been replaced by "true".  (It is already present, as 
@@ -992,9 +1045,11 @@ procedure peak.coeffs
 ---  Hypothesis H26 has been replaced by "true".  (It is already present, as 
           H14).
 %%%  Simplified H27 on reading formula in, to give:
-     %%%  H27:  numeric__plus(numeric__times(- 2, y2), y3) >= float__first
+     %%%  H27:  polypaver__floats__add(polypaver__floats__multiply(- 2, y2), y3)
+           >= float__first
 %%%  Simplified H28 on reading formula in, to give:
-     %%%  H28:  numeric__plus(numeric__times(- 2, y2), y3) <= float__last
+     %%%  H28:  polypaver__floats__add(polypaver__floats__multiply(- 2, y2), y3)
+           <= float__last
 ---  Hypothesis H29 has been replaced by "true".  (It is already present, as 
           H11).
 ---  Hypothesis H30 has been replaced by "true".  (It is already present, as 
@@ -1008,11 +1063,11 @@ procedure peak.coeffs
 ---  Hypothesis H34 has been replaced by "true".  (It is already present, as 
           H28).
 %%%  Simplified H35 on reading formula in, to give:
-     %%%  H35:  numeric__plus(y1, numeric__plus(numeric__times(- 2, y2), y3)) 
-          >= float__first
+     %%%  H35:  polypaver__floats__add(y1, polypaver__floats__add(
+          polypaver__floats__multiply(- 2, y2), y3)) >= float__first
 %%%  Simplified H36 on reading formula in, to give:
-     %%%  H36:  numeric__plus(y1, numeric__plus(numeric__times(- 2, y2), y3)) 
-          <= float__last
+     %%%  H36:  polypaver__floats__add(y1, polypaver__floats__add(
+          polypaver__floats__multiply(- 2, y2), y3)) <= float__last
 ---  Hypothesis H37 has been replaced by "true".  (It is already present, as 
           H27).
 ---  Hypothesis H38 has been replaced by "true".  (It is already present, as 
@@ -1022,11 +1077,13 @@ procedure peak.coeffs
 ---  Hypothesis H40 has been replaced by "true".  (It is already present, as 
           H36).
 %%%  Simplified H41 on reading formula in, to give:
-     %%%  H41:  numeric__times(1 / 2, numeric__plus(y1, numeric__plus(
-          numeric__times(- 2, y2), y3))) >= float__first
+     %%%  H41:  polypaver__floats__multiply(1 / 2, polypaver__floats__add(y1, 
+          polypaver__floats__add(polypaver__floats__multiply(- 2, y2), y3))) >= 
+          float__first
 %%%  Simplified H42 on reading formula in, to give:
-     %%%  H42:  numeric__times(1 / 2, numeric__plus(y1, numeric__plus(
-          numeric__times(- 2, y2), y3))) <= float__last
+     %%%  H42:  polypaver__floats__multiply(1 / 2, polypaver__floats__add(y1, 
+          polypaver__floats__add(polypaver__floats__multiply(- 2, y2), y3))) <= 
+          float__last
 ---  Hypothesis H43 has been replaced by "true".  (It is already present, as 
           H35).
 ---  Hypothesis H44 has been replaced by "true".  (It is already present, as 
@@ -1039,42 +1096,40 @@ procedure peak.coeffs
           H41).
 ---  Hypothesis H48 has been replaced by "true".  (It is already present, as 
           H42).
----  Hypothesis H51 has been replaced by "true".  (It is already present, as H7)
-          .
----  Hypothesis H52 has been replaced by "true".  (It is already present, as H8)
-          .
----  Hypothesis H53 has been replaced by "true".  (It is already present, as 
-          H11).
----  Hypothesis H54 has been replaced by "true".  (It is already present, as 
-          H12).
 ---  Hypothesis H55 has been replaced by "true".  (It is already present, as 
-          H23).
+          H11).
 ---  Hypothesis H56 has been replaced by "true".  (It is already present, as 
-          H24).
+          H12).
 ---  Hypothesis H57 has been replaced by "true".  (It is already present, as 
-          H49).
+          H23).
 ---  Hypothesis H58 has been replaced by "true".  (It is already present, as 
-          H50).
----  Hypothesis H61 has been replaced by "true".  (It is already present, as 
+          H24).
+---  Hypothesis H59 has been replaced by "true".  (It is already present, as 
           H49).
----  Hypothesis H62 has been replaced by "true".  (It is already present, as 
+---  Hypothesis H60 has been replaced by "true".  (It is already present, as 
           H50).
 ---  Hypothesis H63 has been replaced by "true".  (It is already present, as 
-          H59).
+          H49).
 ---  Hypothesis H64 has been replaced by "true".  (It is already present, as 
-          H60).
-***  Proved C1:  numeric__times(1 / 2, numeric__minus(y3, y1)) >= float__first
-     using hypothesis H59.
-***  Proved C2:  numeric__times(1 / 2, numeric__minus(y3, y1)) <= float__last
-     using hypothesis H60.
+          H50).
+---  Hypothesis H65 has been replaced by "true".  (It is already present, as 
+          H61).
+---  Hypothesis H66 has been replaced by "true".  (It is already present, as 
+          H62).
+***  Proved C1:  polypaver__floats__multiply(1 / 2, polypaver__floats__add(y3, 
+          - y1)) >= float__first
+     using hypothesis H61.
+***  Proved C2:  polypaver__floats__multiply(1 / 2, polypaver__floats__add(y3, 
+          - y1)) <= float__last
+     using hypothesis H62.
 ***  PROVED VC.
 
 
 @@@@@@@@@@  VC: procedure_coeffs_9.  @@@@@@@@@@
 %%%  Simplified H13 on reading formula in, to give:
-     %%%  H13:  numeric__times(- 2, y2) >= float__first
+     %%%  H13:  polypaver__floats__multiply(- 2, y2) >= float__first
 %%%  Simplified H14 on reading formula in, to give:
-     %%%  H14:  numeric__times(- 2, y2) <= float__last
+     %%%  H14:  polypaver__floats__multiply(- 2, y2) <= float__last
 ---  Hypothesis H15 has been replaced by "true".  (It is already present, as H9)
           .
 ---  Hypothesis H16 has been replaced by "true".  (It is already present, as 
@@ -1096,9 +1151,11 @@ procedure peak.coeffs
 ---  Hypothesis H26 has been replaced by "true".  (It is already present, as 
           H14).
 %%%  Simplified H27 on reading formula in, to give:
-     %%%  H27:  numeric__plus(numeric__times(- 2, y2), y3) >= float__first
+     %%%  H27:  polypaver__floats__add(polypaver__floats__multiply(- 2, y2), y3)
+           >= float__first
 %%%  Simplified H28 on reading formula in, to give:
-     %%%  H28:  numeric__plus(numeric__times(- 2, y2), y3) <= float__last
+     %%%  H28:  polypaver__floats__add(polypaver__floats__multiply(- 2, y2), y3)
+           <= float__last
 ---  Hypothesis H29 has been replaced by "true".  (It is already present, as 
           H11).
 ---  Hypothesis H30 has been replaced by "true".  (It is already present, as 
@@ -1112,11 +1169,11 @@ procedure peak.coeffs
 ---  Hypothesis H34 has been replaced by "true".  (It is already present, as 
           H28).
 %%%  Simplified H35 on reading formula in, to give:
-     %%%  H35:  numeric__plus(y1, numeric__plus(numeric__times(- 2, y2), y3)) 
-          >= float__first
+     %%%  H35:  polypaver__floats__add(y1, polypaver__floats__add(
+          polypaver__floats__multiply(- 2, y2), y3)) >= float__first
 %%%  Simplified H36 on reading formula in, to give:
-     %%%  H36:  numeric__plus(y1, numeric__plus(numeric__times(- 2, y2), y3)) 
-          <= float__last
+     %%%  H36:  polypaver__floats__add(y1, polypaver__floats__add(
+          polypaver__floats__multiply(- 2, y2), y3)) <= float__last
 ---  Hypothesis H37 has been replaced by "true".  (It is already present, as 
           H27).
 ---  Hypothesis H38 has been replaced by "true".  (It is already present, as 
@@ -1126,11 +1183,13 @@ procedure peak.coeffs
 ---  Hypothesis H40 has been replaced by "true".  (It is already present, as 
           H36).
 %%%  Simplified H41 on reading formula in, to give:
-     %%%  H41:  numeric__times(1 / 2, numeric__plus(y1, numeric__plus(
-          numeric__times(- 2, y2), y3))) >= float__first
+     %%%  H41:  polypaver__floats__multiply(1 / 2, polypaver__floats__add(y1, 
+          polypaver__floats__add(polypaver__floats__multiply(- 2, y2), y3))) >= 
+          float__first
 %%%  Simplified H42 on reading formula in, to give:
-     %%%  H42:  numeric__times(1 / 2, numeric__plus(y1, numeric__plus(
-          numeric__times(- 2, y2), y3))) <= float__last
+     %%%  H42:  polypaver__floats__multiply(1 / 2, polypaver__floats__add(y1, 
+          polypaver__floats__add(polypaver__floats__multiply(- 2, y2), y3))) <= 
+          float__last
 ---  Hypothesis H43 has been replaced by "true".  (It is already present, as 
           H35).
 ---  Hypothesis H44 has been replaced by "true".  (It is already present, as 
@@ -1143,34 +1202,30 @@ procedure peak.coeffs
           H41).
 ---  Hypothesis H48 has been replaced by "true".  (It is already present, as 
           H42).
----  Hypothesis H51 has been replaced by "true".  (It is already present, as H7)
-          .
----  Hypothesis H52 has been replaced by "true".  (It is already present, as H8)
-          .
----  Hypothesis H53 has been replaced by "true".  (It is already present, as 
-          H11).
----  Hypothesis H54 has been replaced by "true".  (It is already present, as 
-          H12).
 ---  Hypothesis H55 has been replaced by "true".  (It is already present, as 
-          H23).
+          H11).
 ---  Hypothesis H56 has been replaced by "true".  (It is already present, as 
-          H24).
+          H12).
 ---  Hypothesis H57 has been replaced by "true".  (It is already present, as 
-          H49).
+          H23).
 ---  Hypothesis H58 has been replaced by "true".  (It is already present, as 
-          H50).
----  Hypothesis H61 has been replaced by "true".  (It is already present, as 
+          H24).
+---  Hypothesis H59 has been replaced by "true".  (It is already present, as 
           H49).
----  Hypothesis H62 has been replaced by "true".  (It is already present, as 
+---  Hypothesis H60 has been replaced by "true".  (It is already present, as 
           H50).
 ---  Hypothesis H63 has been replaced by "true".  (It is already present, as 
-          H59).
+          H49).
 ---  Hypothesis H64 has been replaced by "true".  (It is already present, as 
-          H60).
+          H50).
 ---  Hypothesis H65 has been replaced by "true".  (It is already present, as 
-          H59).
+          H61).
 ---  Hypothesis H66 has been replaced by "true".  (It is already present, as 
-          H60).
+          H62).
+---  Hypothesis H67 has been replaced by "true".  (It is already present, as 
+          H61).
+---  Hypothesis H68 has been replaced by "true".  (It is already present, as 
+          H62).
 ***  Proved C1:  y2 >= float__first
      using hypothesis H9.
 ***  Proved C2:  y2 <= float__last
@@ -1180,9 +1235,9 @@ procedure peak.coeffs
 
 @@@@@@@@@@  VC: procedure_coeffs_10.  @@@@@@@@@@
 %%%  Simplified H13 on reading formula in, to give:
-     %%%  H13:  numeric__times(- 2, y2) >= float__first
+     %%%  H13:  polypaver__floats__multiply(- 2, y2) >= float__first
 %%%  Simplified H14 on reading formula in, to give:
-     %%%  H14:  numeric__times(- 2, y2) <= float__last
+     %%%  H14:  polypaver__floats__multiply(- 2, y2) <= float__last
 ---  Hypothesis H15 has been replaced by "true".  (It is already present, as H9)
           .
 ---  Hypothesis H16 has been replaced by "true".  (It is already present, as 
@@ -1204,9 +1259,11 @@ procedure peak.coeffs
 ---  Hypothesis H26 has been replaced by "true".  (It is already present, as 
           H14).
 %%%  Simplified H27 on reading formula in, to give:
-     %%%  H27:  numeric__plus(numeric__times(- 2, y2), y3) >= float__first
+     %%%  H27:  polypaver__floats__add(polypaver__floats__multiply(- 2, y2), y3)
+           >= float__first
 %%%  Simplified H28 on reading formula in, to give:
-     %%%  H28:  numeric__plus(numeric__times(- 2, y2), y3) <= float__last
+     %%%  H28:  polypaver__floats__add(polypaver__floats__multiply(- 2, y2), y3)
+           <= float__last
 ---  Hypothesis H29 has been replaced by "true".  (It is already present, as 
           H11).
 ---  Hypothesis H30 has been replaced by "true".  (It is already present, as 
@@ -1220,11 +1277,11 @@ procedure peak.coeffs
 ---  Hypothesis H34 has been replaced by "true".  (It is already present, as 
           H28).
 %%%  Simplified H35 on reading formula in, to give:
-     %%%  H35:  numeric__plus(y1, numeric__plus(numeric__times(- 2, y2), y3)) 
-          >= float__first
+     %%%  H35:  polypaver__floats__add(y1, polypaver__floats__add(
+          polypaver__floats__multiply(- 2, y2), y3)) >= float__first
 %%%  Simplified H36 on reading formula in, to give:
-     %%%  H36:  numeric__plus(y1, numeric__plus(numeric__times(- 2, y2), y3)) 
-          <= float__last
+     %%%  H36:  polypaver__floats__add(y1, polypaver__floats__add(
+          polypaver__floats__multiply(- 2, y2), y3)) <= float__last
 ---  Hypothesis H37 has been replaced by "true".  (It is already present, as 
           H27).
 ---  Hypothesis H38 has been replaced by "true".  (It is already present, as 
@@ -1234,11 +1291,13 @@ procedure peak.coeffs
 ---  Hypothesis H40 has been replaced by "true".  (It is already present, as 
           H36).
 %%%  Simplified H41 on reading formula in, to give:
-     %%%  H41:  numeric__times(1 / 2, numeric__plus(y1, numeric__plus(
-          numeric__times(- 2, y2), y3))) >= float__first
+     %%%  H41:  polypaver__floats__multiply(1 / 2, polypaver__floats__add(y1, 
+          polypaver__floats__add(polypaver__floats__multiply(- 2, y2), y3))) >= 
+          float__first
 %%%  Simplified H42 on reading formula in, to give:
-     %%%  H42:  numeric__times(1 / 2, numeric__plus(y1, numeric__plus(
-          numeric__times(- 2, y2), y3))) <= float__last
+     %%%  H42:  polypaver__floats__multiply(1 / 2, polypaver__floats__add(y1, 
+          polypaver__floats__add(polypaver__floats__multiply(- 2, y2), y3))) <= 
+          float__last
 ---  Hypothesis H43 has been replaced by "true".  (It is already present, as 
           H35).
 ---  Hypothesis H44 has been replaced by "true".  (It is already present, as 
@@ -1251,94 +1310,104 @@ procedure peak.coeffs
           H41).
 ---  Hypothesis H48 has been replaced by "true".  (It is already present, as 
           H42).
----  Hypothesis H51 has been replaced by "true".  (It is already present, as H7)
-          .
----  Hypothesis H52 has been replaced by "true".  (It is already present, as H8)
-          .
----  Hypothesis H53 has been replaced by "true".  (It is already present, as 
-          H11).
----  Hypothesis H54 has been replaced by "true".  (It is already present, as 
-          H12).
 ---  Hypothesis H55 has been replaced by "true".  (It is already present, as 
-          H23).
+          H11).
 ---  Hypothesis H56 has been replaced by "true".  (It is already present, as 
-          H24).
+          H12).
 ---  Hypothesis H57 has been replaced by "true".  (It is already present, as 
-          H49).
+          H23).
 ---  Hypothesis H58 has been replaced by "true".  (It is already present, as 
-          H50).
----  Hypothesis H61 has been replaced by "true".  (It is already present, as 
+          H24).
+---  Hypothesis H59 has been replaced by "true".  (It is already present, as 
           H49).
----  Hypothesis H62 has been replaced by "true".  (It is already present, as 
+---  Hypothesis H60 has been replaced by "true".  (It is already present, as 
           H50).
 ---  Hypothesis H63 has been replaced by "true".  (It is already present, as 
-          H59).
+          H49).
 ---  Hypothesis H64 has been replaced by "true".  (It is already present, as 
-          H60).
+          H50).
 ---  Hypothesis H65 has been replaced by "true".  (It is already present, as 
-          H59).
+          H61).
 ---  Hypothesis H66 has been replaced by "true".  (It is already present, as 
-          H60).
----  Hypothesis H67 has been replaced by "true".  (It is already present, as H9)
-          .
+          H62).
+---  Hypothesis H67 has been replaced by "true".  (It is already present, as 
+          H61).
 ---  Hypothesis H68 has been replaced by "true".  (It is already present, as 
+          H62).
+---  Hypothesis H69 has been replaced by "true".  (It is already present, as H9)
+          .
+---  Hypothesis H70 has been replaced by "true".  (It is already present, as 
           H10).
 %%%  Simplified C1 on reading formula in, to give:
-     %%%  C1:  numeric__times(1 / 2, numeric__plus(y1, numeric__plus(
-          numeric__times(- 2, y2), y3))) - numeric__times(1 / 2, numeric__minus(
-          y3, y1)) + y2 - y1 >= ipad__first
+     %%%  C1:  polypaver__floats__multiply(1 / 2, polypaver__floats__add(y1, 
+          polypaver__floats__add(polypaver__floats__multiply(- 2, y2), y3))) - 
+          polypaver__floats__multiply(1 / 2, polypaver__floats__add(y3, - y1)) 
+          + y2 - y1 >= ipad__first
 %%%  Simplified C2 on reading formula in, to give:
-     %%%  C2:  numeric__times(1 / 2, numeric__plus(y1, numeric__plus(
-          numeric__times(- 2, y2), y3))) - numeric__times(1 / 2, numeric__minus(
-          y3, y1)) + y2 - y1 <= ipad__last
+     %%%  C2:  polypaver__floats__multiply(1 / 2, polypaver__floats__add(y1, 
+          polypaver__floats__add(polypaver__floats__multiply(- 2, y2), y3))) - 
+          polypaver__floats__multiply(1 / 2, polypaver__floats__add(y3, - y1)) 
+          + y2 - y1 <= ipad__last
 %%%  Simplified C3 on reading formula in, to give:
      %%%  C3:  true
 %%%  Simplified C4 on reading formula in, to give:
-     %%%  C4:  numeric__times(1 / 2, numeric__plus(y1, numeric__plus(
-          numeric__times(- 2, y2), y3))) + numeric__times(1 / 2, numeric__minus(
-          y3, y1)) + y2 - y3 >= ipad__first
+     %%%  C4:  polypaver__floats__multiply(1 / 2, polypaver__floats__add(y1, 
+          polypaver__floats__add(polypaver__floats__multiply(- 2, y2), y3))) + 
+          polypaver__floats__multiply(1 / 2, polypaver__floats__add(y3, - y1)) 
+          + y2 - y3 >= ipad__first
 %%%  Simplified C5 on reading formula in, to give:
-     %%%  C5:  numeric__times(1 / 2, numeric__plus(y1, numeric__plus(
-          numeric__times(- 2, y2), y3))) + numeric__times(1 / 2, numeric__minus(
-          y3, y1)) + y2 - y3 <= ipad__last
+     %%%  C5:  polypaver__floats__multiply(1 / 2, polypaver__floats__add(y1, 
+          polypaver__floats__add(polypaver__floats__multiply(- 2, y2), y3))) + 
+          polypaver__floats__multiply(1 / 2, polypaver__floats__add(y3, - y1)) 
+          + y2 - y3 <= ipad__last
 %%%  Simplified C6 on reading formula in, to give:
-     %%%  C6:  numeric__times(1 / 2, numeric__plus(y1, numeric__plus(
-          numeric__times(- 2, y2), y3))) >= icoeff1__first
+     %%%  C6:  polypaver__floats__multiply(1 / 2, polypaver__floats__add(y1, 
+          polypaver__floats__add(polypaver__floats__multiply(- 2, y2), y3))) >= 
+          icoeff1__first
 %%%  Simplified C7 on reading formula in, to give:
-     %%%  C7:  numeric__times(1 / 2, numeric__plus(y1, numeric__plus(
-          numeric__times(- 2, y2), y3))) <= icoeff1__last
+     %%%  C7:  polypaver__floats__multiply(1 / 2, polypaver__floats__add(y1, 
+          polypaver__floats__add(polypaver__floats__multiply(- 2, y2), y3))) <= 
+          icoeff1__last
 ***  Proved C3:  true
 -S-  Applied substitution rule coeffs_rules(12).
      This was achieved by replacing all occurrences of ipad__first by:
           - (1 / 1000000).
-<S>  New C1:  numeric__times(1 / 2, numeric__plus(y1, numeric__plus(
-          numeric__times(- 2, y2), y3))) - numeric__times(1 / 2, numeric__minus(
-          y3, y1)) + y2 - y1 >= - (1 / 1000000)
-<S>  New C4:  numeric__times(1 / 2, numeric__plus(y1, numeric__plus(
-          numeric__times(- 2, y2), y3))) + numeric__times(1 / 2, numeric__minus(
-          y3, y1)) + y2 - y3 >= - (1 / 1000000)
+<S>  New C1:  polypaver__floats__multiply(1 / 2, polypaver__floats__add(y1, 
+          polypaver__floats__add(polypaver__floats__multiply(- 2, y2), y3))) - 
+          polypaver__floats__multiply(1 / 2, polypaver__floats__add(y3, - y1)) 
+          + y2 - y1 >= - (1 / 1000000)
+<S>  New C4:  polypaver__floats__multiply(1 / 2, polypaver__floats__add(y1, 
+          polypaver__floats__add(polypaver__floats__multiply(- 2, y2), y3))) + 
+          polypaver__floats__multiply(1 / 2, polypaver__floats__add(y3, - y1)) 
+          + y2 - y3 >= - (1 / 1000000)
 -S-  Applied substitution rule coeffs_rules(13).
      This was achieved by replacing all occurrences of ipad__last by:
           1 / 1000000.
-<S>  New C2:  numeric__times(1 / 2, numeric__plus(y1, numeric__plus(
-          numeric__times(- 2, y2), y3))) - numeric__times(1 / 2, numeric__minus(
-          y3, y1)) + y2 - y1 <= 1 / 1000000
-<S>  New C5:  numeric__times(1 / 2, numeric__plus(y1, numeric__plus(
-          numeric__times(- 2, y2), y3))) + numeric__times(1 / 2, numeric__minus(
-          y3, y1)) + y2 - y3 <= 1 / 1000000
+<S>  New C2:  polypaver__floats__multiply(1 / 2, polypaver__floats__add(y1, 
+          polypaver__floats__add(polypaver__floats__multiply(- 2, y2), y3))) - 
+          polypaver__floats__multiply(1 / 2, polypaver__floats__add(y3, - y1)) 
+          + y2 - y1 <= 1 / 1000000
+<S>  New C5:  polypaver__floats__multiply(1 / 2, polypaver__floats__add(y1, 
+          polypaver__floats__add(polypaver__floats__multiply(- 2, y2), y3))) + 
+          polypaver__floats__multiply(1 / 2, polypaver__floats__add(y3, - y1)) 
+          + y2 - y3 <= 1 / 1000000
 -S-  Applied substitution rule coeffs_rules(17).
      This was achieved by replacing all occurrences of icoeff1__first by:
           - (11 / 10).
-<S>  New C6:  numeric__times(1 / 2, numeric__plus(y1, numeric__plus(
-          numeric__times(- 2, y2), y3))) >= - (11 / 10)
-<S>  New C8:  numeric__times(1 / 2, numeric__minus(y3, y1)) >= - (11 / 10)
+<S>  New C6:  polypaver__floats__multiply(1 / 2, polypaver__floats__add(y1, 
+          polypaver__floats__add(polypaver__floats__multiply(- 2, y2), y3))) >= 
+          - (11 / 10)
+<S>  New C8:  polypaver__floats__multiply(1 / 2, polypaver__floats__add(y3, - 
+          y1)) >= - (11 / 10)
 <S>  New C10:  y2 >= - (11 / 10)
 -S-  Applied substitution rule coeffs_rules(18).
      This was achieved by replacing all occurrences of icoeff1__last by:
           11 / 10.
-<S>  New C7:  numeric__times(1 / 2, numeric__plus(y1, numeric__plus(
-          numeric__times(- 2, y2), y3))) <= 11 / 10
-<S>  New C9:  numeric__times(1 / 2, numeric__minus(y3, y1)) <= 11 / 10
+<S>  New C7:  polypaver__floats__multiply(1 / 2, polypaver__floats__add(y1, 
+          polypaver__floats__add(polypaver__floats__multiply(- 2, y2), y3))) <= 
+          11 / 10
+<S>  New C9:  polypaver__floats__multiply(1 / 2, polypaver__floats__add(y3, - 
+          y1)) <= 11 / 10
 <S>  New C11:  y2 <= 11 / 10
 -S-  Applied substitution rule coeffs_rules(2).
      This was achieved by replacing all occurrences of float__first by:
@@ -1346,49 +1415,56 @@ procedure peak.coeffs
 <S>  New H7:  y1 >= - 340282000000000000000000000000000000000
 <S>  New H9:  y2 >= - 340282000000000000000000000000000000000
 <S>  New H11:  y3 >= - 340282000000000000000000000000000000000
-<S>  New H13:  numeric__times(- 2, y2) >= - 
+<S>  New H13:  polypaver__floats__multiply(- 2, y2) >= - 
           340282000000000000000000000000000000000
 <S>  New H17:  true
 <S>  New H23:  true
-<S>  New H27:  numeric__plus(numeric__times(- 2, y2), y3) >= - 
+<S>  New H27:  polypaver__floats__add(polypaver__floats__multiply(- 2, y2), y3) 
+          >= - 340282000000000000000000000000000000000
+<S>  New H35:  polypaver__floats__add(y1, polypaver__floats__add(
+          polypaver__floats__multiply(- 2, y2), y3)) >= - 
           340282000000000000000000000000000000000
-<S>  New H35:  numeric__plus(y1, numeric__plus(numeric__times(- 2, y2), y3)) >= 
+<S>  New H41:  polypaver__floats__multiply(1 / 2, polypaver__floats__add(y1, 
+          polypaver__floats__add(polypaver__floats__multiply(- 2, y2), y3))) >= 
           - 340282000000000000000000000000000000000
-<S>  New H41:  numeric__times(1 / 2, numeric__plus(y1, numeric__plus(
-          numeric__times(- 2, y2), y3))) >= - 
+<S>  New H49:  polypaver__floats__add(y3, - y1) >= - 
           340282000000000000000000000000000000000
-<S>  New H49:  numeric__minus(y3, y1) >= - 
-          340282000000000000000000000000000000000
-<S>  New H59:  numeric__times(1 / 2, numeric__minus(y3, y1)) >= - 
-          340282000000000000000000000000000000000
+<S>  New H51:  - y1 >= - 340282000000000000000000000000000000000
+<S>  New H61:  polypaver__floats__multiply(1 / 2, polypaver__floats__add(y3, - 
+          y1)) >= - 340282000000000000000000000000000000000
 -S-  Applied substitution rule coeffs_rules(3).
      This was achieved by replacing all occurrences of float__last by:
           340282000000000000000000000000000000000.
 <S>  New H8:  y1 <= 340282000000000000000000000000000000000
 <S>  New H10:  y2 <= 340282000000000000000000000000000000000
 <S>  New H12:  y3 <= 340282000000000000000000000000000000000
-<S>  New H14:  numeric__times(- 2, y2) <= 
+<S>  New H14:  polypaver__floats__multiply(- 2, y2) <= 
           340282000000000000000000000000000000000
 <S>  New H18:  true
 <S>  New H24:  true
-<S>  New H28:  numeric__plus(numeric__times(- 2, y2), y3) <= 
+<S>  New H28:  polypaver__floats__add(polypaver__floats__multiply(- 2, y2), y3) 
+          <= 340282000000000000000000000000000000000
+<S>  New H36:  polypaver__floats__add(y1, polypaver__floats__add(
+          polypaver__floats__multiply(- 2, y2), y3)) <= 
           340282000000000000000000000000000000000
-<S>  New H36:  numeric__plus(y1, numeric__plus(numeric__times(- 2, y2), y3)) <= 
+<S>  New H42:  polypaver__floats__multiply(1 / 2, polypaver__floats__add(y1, 
+          polypaver__floats__add(polypaver__floats__multiply(- 2, y2), y3))) <= 
           340282000000000000000000000000000000000
-<S>  New H42:  numeric__times(1 / 2, numeric__plus(y1, numeric__plus(
-          numeric__times(- 2, y2), y3))) <= 
+<S>  New H50:  polypaver__floats__add(y3, - y1) <= 
           340282000000000000000000000000000000000
-<S>  New H50:  numeric__minus(y3, y1) <= 340282000000000000000000000000000000000
-<S>  New H60:  numeric__times(1 / 2, numeric__minus(y3, y1)) <= 
-          340282000000000000000000000000000000000
+<S>  New H52:  - y1 <= 340282000000000000000000000000000000000
+<S>  New H62:  polypaver__floats__multiply(1 / 2, polypaver__floats__add(y3, - 
+          y1)) <= 340282000000000000000000000000000000000
 -S-  Applied substitution rule coeffs_rules(4).
      This was achieved by replacing all occurrences of float__base__first by:
           - 340282000000000000000000000000000000000.
 <S>  New H19:  true
+<S>  New H53:  - y1 >= - 340282000000000000000000000000000000000
 -S-  Applied substitution rule coeffs_rules(5).
      This was achieved by replacing all occurrences of float__base__last by:
           340282000000000000000000000000000000000.
 <S>  New H20:  true
+<S>  New H54:  - y1 <= 340282000000000000000000000000000000000
 -S-  Applied substitution rule coeffs_rules(7).
      This was achieved by replacing all occurrences of iy__first by:
           0.
@@ -1423,28 +1499,30 @@ procedure peak.coeffs
 ---  Eliminated hypothesis H46 (true-hypothesis).
 ---  Eliminated hypothesis H47 (true-hypothesis).
 ---  Eliminated hypothesis H48 (true-hypothesis).
----  Eliminated hypothesis H51 (true-hypothesis).
----  Eliminated hypothesis H52 (true-hypothesis).
----  Eliminated hypothesis H53 (true-hypothesis).
----  Eliminated hypothesis H54 (true-hypothesis).
 ---  Eliminated hypothesis H55 (true-hypothesis).
 ---  Eliminated hypothesis H56 (true-hypothesis).
 ---  Eliminated hypothesis H57 (true-hypothesis).
 ---  Eliminated hypothesis H58 (true-hypothesis).
----  Eliminated hypothesis H61 (true-hypothesis).
----  Eliminated hypothesis H62 (true-hypothesis).
+---  Eliminated hypothesis H59 (true-hypothesis).
+---  Eliminated hypothesis H60 (true-hypothesis).
 ---  Eliminated hypothesis H63 (true-hypothesis).
 ---  Eliminated hypothesis H64 (true-hypothesis).
 ---  Eliminated hypothesis H65 (true-hypothesis).
 ---  Eliminated hypothesis H66 (true-hypothesis).
 ---  Eliminated hypothesis H67 (true-hypothesis).
 ---  Eliminated hypothesis H68 (true-hypothesis).
+---  Eliminated hypothesis H69 (true-hypothesis).
+---  Eliminated hypothesis H70 (true-hypothesis).
 ---  Eliminated hypothesis H17 (true-hypothesis).
 ---  Eliminated hypothesis H23 (true-hypothesis).
 ---  Eliminated hypothesis H18 (true-hypothesis).
 ---  Eliminated hypothesis H24 (true-hypothesis).
 ---  Eliminated hypothesis H19 (true-hypothesis).
 ---  Eliminated hypothesis H20 (true-hypothesis).
+---  Eliminated hypothesis H52 (duplicate of H7).
+---  Eliminated hypothesis H54 (duplicate of H7).
+---  Eliminated hypothesis H53 (duplicate of H51).
+---  Eliminated hypothesis H51 (duplicate of H8).
 ---  Eliminated hypothesis H7 (redundant, given H1).
 ---  Eliminated hypothesis H8 (redundant, given H2).
 ---  Eliminated hypothesis H9 (redundant, given H3).
@@ -1455,8 +1533,8 @@ procedure peak.coeffs
      using hypothesis H3.
 ***  Proved C11:  y2 <= 11 / 10
      using hypothesis H4.
-     +++  New H69:  float__size >= 0
-     +++  New H70:  iy__size >= 0
-     +++  New H71:  ipad__size >= 0
-     +++  New H72:  icoeff1__size >= 0
+     +++  New H71:  float__size >= 0
+     +++  New H72:  iy__size >= 0
+     +++  New H73:  ipad__size >= 0
+     +++  New H74:  icoeff1__size >= 0
 
