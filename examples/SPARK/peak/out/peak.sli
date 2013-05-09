@@ -1,4 +1,4 @@
-V "SPARK 2011"
+V "SPARK 2012"
 A -noindex_file
 A -nowarning_file
 A -notarget_compiler_data
@@ -11,68 +11,72 @@ A -nohtml
 A -vcg
 A -nostatistics
 A -fdl_identifiers=accept
-A -flow_analysis=information
+A -flow_analysis=auto
 A -language=95
 A -profile=sequential
 A -annotation_character=#
-A -rules=none
+A -rules=lazy
 A -error_explanations=off
 A -justification_option=full
 A -output_directory=out
-A -output_directory (actual)=/home/mik/research/spark/floats/paver/examples/SPARK/peak/out/
+A -output_directory (actual)=/Users/jandur/FPbyContract/paver/examples/SPARK/peak/out/
 P
 R
 
-U peak%b peak.adb
-U peak%s peak.ads
-W exact%s exact.ads exact.sli
-W numeric%s numeric.ads numeric.sli
+U Peak%b peak.adb
+U Peak%s peak.ads
+W PolyPaver.Exact%s polypaver-exact.ads polypaver-exact.sli
+W PolyPaver.Floats%s polypaver-floats.ads polypaver-floats.sli
 
-D exact.ads 00000000000000 00000000
-D numeric.ads 00000000000000 00000000
+D polypaver-exact.ads 00000000000000 00000000
+D polypaver-floats.ads 00000000000000 00000000
 D peak.ads 00000000000000 00000000
 D peak.adb 00000000000000 00000000
 
-X 1 exact.ads
-1K9 exact 2|22r37 22r65 2w13
-3V16 sqrt 3>22 2|22r43 22r71
-5V16 cos 5>21
-X 2 numeric.ads
-3K9 numeric 3|2w13
-8f18 x 9r16
-8f20 y 9r18
-8V38 plus 9r11
-11f19 x 12r17
-11f21 y 12r19
-11V39 minus 12r11
-14f19 x 15r17
-14f21 y 15r19
-14V39 times 15r11
-17f20 x 18r18
-17f22 y 18r20
-17V40 divide 18r11
-20f23 x 21r12 22r48 22r76
-22f14 r 22r19
+X 1 polypaver-exact.ads
+1K9 Exact 2|1w23
+X 2 polypaver-floats.ads
+2K9 Floats 3|2w23
+12f19 X 13r16
+12f21 Y 13r18
+12V39 Add 13r12
+15f24 X 16r22
+15f26 Y 16r24
+15V44 Subtract 16r13
+18f24 X 19r22
+18f26 Y 19r24
+18V44 Multiply 19r13
+21f22 X 23r20
+21f24 Y 22r13 23r22
+21V42 Divide 23r13
+25f22 X 26r20
+25V40 Square 26r13
+28f20 X 29r18
+28V38 Cube 29r13
+31f20 X 32r13 33r18
+31V38 Sqrt 33r13
+35f19 X 36r17
+35V37 Exp 36r13
 X 3 peak.ads
-5f18 x 6r22 7r17 7r23 7r50
-5f20 y 6r24 7r28 7r39 7r45
-5f34 r 6m15 7r13 7r35
-12F11 Iy 27r18 27r31 27r44 42r17 42r30 42r43
-16F11 Ipad 28r26 30r26
-18F11 Icoeff1 31r17 31r34 31r51
-19F11 Icoeff2 37r17 37r34 37r51
-23f21 y1 24r22 25r22 27r12 28r20
-23f24 y2 24r25 26r22 27r25 29r20
-23f27 y3 24r28 25r25 27r38 30r20
-23f42 a 24m15 28r12 30r12 31r12
-23f44 b 25m15 28r14 30r14 31r29
-23f46 c 26m15 28r16 29r16 30r16 31r46
-33f20 a 34r22 36r12 37r12 38r17
-33f22 b 34r24 37r29 38r24
-33f24 c 34r26 37r46 38r28
-33f26 x 34r28 35r12 38r19 38r26
-33f40 r 34m15 38r12 38r39
-40f23 y1 41r22 42r11 43r17
-40f26 y2 41r25 42r24 43r35
-40f29 y3 41r28 42r37 43r53
-40f44 r 41m15 43r12 43r30 43r48
+5f17 X 6r21 7r16 7r22 7r49
+5f19 Y 6r23 7r27 7r38 7r44
+5f33 R 6m14 7r12 7r34
+12F10 Iy 26r17 26r30 26r43 41r16 41r29 41r42
+16F10 Ipad 27r25 29r25
+17F10 Icoeff1 30r16 30r33 30r50
+18F10 Icoeff2 36r16 36r33 36r50
+22f20 Y1 23r21 24r21 26r11 27r19
+22f23 Y2 23r24 25r21 26r24 28r19
+22f26 Y3 23r27 24r24 26r37 29r19
+22f41 A 23m14 27r11 29r11 30r11
+22f43 B 24m14 27r13 29r13 30r28
+22f45 C 25m14 27r15 28r15 29r15 30r45
+32f19 A 33r21 35r11 36r11 37r16
+32f21 B 33r23 36r28 37r23
+32f23 C 33r25 36r45 37r27
+32f25 X 33r27 34r11 37r18 37r25
+32f39 R 33m14 37r11 37r38
+39f22 Y1 40r21 41r10 42r16
+39f25 Y2 40r24 41r23 42r34
+39f28 Y3 40r27 41r36 42r52
+39f43 R 40m14 42r11 42r29 42r47
