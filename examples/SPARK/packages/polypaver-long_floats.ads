@@ -1,6 +1,6 @@
 package PolyPaver.Long_Floats is
 	
-    --# function Is_Long_Float_Range(Variable : Long_Float; Min : Long_Float; Max : Long_Float) return Boolean;
+    --# function Is_Range(Variable : Long_Float; Min : Long_Float; Max : Long_Float) return Boolean;
 
     function EpsAbs return Long_Float;
 
