@@ -1,19 +1,20 @@
-with numeric;
---# inherit exact, numeric;
+with PolyPaver.Floats;
+--# inherit PolyPaver.Exact, PolyPaver.Floats;
 --# main_program;
-procedure sqrt (x : in float; r : out float)
---# derives r from x;
---# pre  1.0 <= x and x <= 2.0;
---# post r in float and
---#      r <= (1.0+4.0*numeric.epsrel)*exact.sqrt(x);
+procedure Sqrt (X : in Float; R : out Float)
+--# derives R from X;
+--# pre  1.0 <= X and X <= 2.0;
+--# post R in Float and
+--#      R <= (1.0+4.0*PolyPaver.Floats.Eps_Rel)*PolyPaver.Exact.Sqrt(X);
 is
-   s : float;
+	S : Float;
 begin
-   s := x;
-   r := numeric.plus(numeric.times(0.5,x),0.5);
-   while r /= s loop
-      --# assert r in -0.25*x**2+x .. 0.25*x**2+1.0 ;
-      s := r;
-      r := numeric.times(0.5,numeric.plus(s,numeric.divide(x,s)));
+	S := x;
+	R := PolyPaver.Floats.Plus(PolyPaver.Floats.Times(0.5,X),0.5);
+	while R /= s loop
+		--# assert R in -0.25*X**2+X .. 0.25*X**2+1.0 ;
+		S := r;
+		R := PolyPaver.Floats.Times(0.5,
+			PolyPaver.Floats.Plus(S,PolyPaver.Floats.Divide(X,S)));
    end loop;
-end sqrt;
+end Sqrt;
