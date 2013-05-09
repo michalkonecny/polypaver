@@ -1,11 +1,11 @@
            *******************************************************
                          Report of SPARK Examination
-                              Examiner GPL 2011
-             Copyright (C) 2011 Altran Praxis Limited, Bath, U.K.
+                              Examiner GPL 2012
+             Copyright (C) 2012 Altran Praxis Limited, Bath, U.K.
            *******************************************************
 
 
-                        DATE : 06-SEP-2011 23:49:00.28
+                        DATE : 09-MAY-2013 22:57:10.30
 
 Options:
     noindex_file
@@ -20,15 +20,15 @@ Options:
     vcg
     nostatistics
     fdl_identifiers=accept
-    flow_analysis=information
+    flow_analysis=auto
     language=95
     profile=sequential
     annotation_character=#
-    rules=none
+    rules=lazy
     error_explanations=off
     justification_option=full
     output_directory=out
-    output_directory (actual)=/home/jan/FPbyContract/paver/examples/SPARK/sqrt/out/
+    output_directory (actual)=/Users/jandur/FPbyContract/paver/examples/SPARK/sqrt/out/
 
 Selected files:
    @sqrt.smf
@@ -39,9 +39,11 @@ No Index files were used
 
 Meta File(s) used were:
    sqrt.smf
-      /home/jan/FPbyContract/paver/examples/SPARK/sqrt/src/exact.ads
-      /home/jan/FPbyContract/paver/examples/SPARK/sqrt/src/numeric.ads
-      /home/jan/FPbyContract/paver/examples/SPARK/sqrt/src/sqrt.adb
+      /Users/jandur/FPbyContract/paver/examples/SPARK/packages/polypaver.ads
+      /Users/jandur/FPbyContract/paver/examples/SPARK/packages/polypaver-exact.ads
+      /Users/jandur/FPbyContract/paver/examples/SPARK/packages/polypaver-floats.ads
+      /Users/jandur/FPbyContract/paver/examples/SPARK/sqrt/src/sqrt.ads
+      /Users/jandur/FPbyContract/paver/examples/SPARK/sqrt/src/sqrt.adb
 
 
 Full warning reporting selected
@@ -68,50 +70,74 @@ Line
 
 
 Source Filename(s) used were:
-   /home/jan/FPbyContract/paver/examples/SPARK/sqrt/src/exact.ads
-   /home/jan/FPbyContract/paver/examples/SPARK/sqrt/src/numeric.ads
-   /home/jan/FPbyContract/paver/examples/SPARK/sqrt/src/sqrt.adb
+   /Users/jandur/FPbyContract/paver/examples/SPARK/packages/polypaver.ads
+   /Users/jandur/FPbyContract/paver/examples/SPARK/packages/polypaver-exact.ads
+   /Users/jandur/FPbyContract/paver/examples/SPARK/packages/polypaver-floats.ads
+   /Users/jandur/FPbyContract/paver/examples/SPARK/sqrt/src/sqrt.ads
+   /Users/jandur/FPbyContract/paver/examples/SPARK/sqrt/src/sqrt.adb
 
 
 
-Source Filename:   /home/jan/FPbyContract/paver/examples/SPARK/sqrt/src/exact.ads
-Listing Filename:  /home/jan/FPbyContract/paver/examples/SPARK/sqrt/out/exact.lst
+Source Filename:   /Users/jandur/FPbyContract/paver/examples/SPARK/packages/polypaver.ads
+Listing Filename:  /Users/jandur/FPbyContract/paver/examples/SPARK/sqrt/out/polypaver.lst
 
-   Unit name:  exact
+   Unit name:  PolyPaver
    Unit type:  package specification
    Unit has been analysed, any errors are listed below.
 
 No errors found
 
 
-Source Filename:   /home/jan/FPbyContract/paver/examples/SPARK/sqrt/src/numeric.ads
-Listing Filename:  /home/jan/FPbyContract/paver/examples/SPARK/sqrt/out/numeric.lst
+Source Filename:   /Users/jandur/FPbyContract/paver/examples/SPARK/packages/polypaver-exact.ads
+Listing Filename:  /Users/jandur/FPbyContract/paver/examples/SPARK/sqrt/out/polypaver-exact.lst
 
-   Unit name:  numeric
+   Unit name:  PolyPaver.Exact
    Unit type:  package specification
    Unit has been analysed, any errors are listed below.
 
 No errors found
 
 
-Source Filename:   /home/jan/FPbyContract/paver/examples/SPARK/sqrt/src/sqrt.adb
-Listing Filename:  /home/jan/FPbyContract/paver/examples/SPARK/sqrt/out/sqrt.lst
+Source Filename:   /Users/jandur/FPbyContract/paver/examples/SPARK/packages/polypaver-floats.ads
+Listing Filename:  /Users/jandur/FPbyContract/paver/examples/SPARK/sqrt/out/polypaver-floats.lst
 
-   Unit name:  sqrt
-   Unit type:  main program
+   Unit name:  PolyPaver.Floats
+   Unit type:  package specification
+   Unit has been analysed, any errors are listed below.
+
+No errors found
+
+
+Source Filename:   /Users/jandur/FPbyContract/paver/examples/SPARK/sqrt/src/sqrt.ads
+Listing Filename:  /Users/jandur/FPbyContract/paver/examples/SPARK/sqrt/out/sqrt.lst
+
+   Unit name:  Example
+   Unit type:  package specification
+   Unit has been analysed, any errors are listed below.
+
+No errors found
+
+
+Source Filename:   /Users/jandur/FPbyContract/paver/examples/SPARK/sqrt/src/sqrt.adb
+Listing Filename:  /Users/jandur/FPbyContract/paver/examples/SPARK/sqrt/out/sqrt.lst
+
+   Unit name:  Example
+   Unit type:  package body
    Unit has been analysed, any errors are listed below.
 
 2 error(s) or warning(s)
 
 Line
-  14     while r /= s loop
-                 ^1
+  10  		while R /= s loop
+      		        ^1
 --- (  1)  Warning           :308: Use of equality operator with floating point type.
 
-  19  end sqrt;
+  17  	end Sqrt;
 
 --- (  2)  Warning           :405: VCs for statements including real numbers are 
            approximate.
+
+Note: Automatic flow analysis mode selected
 
 
 --End of file--------------------------------------------------

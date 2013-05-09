@@ -1,13 +1,13 @@
            /*********************************************************/
                            /*Proof Rule Declarations*/
-                              /*Examiner GPL 2011*/
-             /*Copyright (C) 2011 Altran Praxis Limited, Bath, U.K.*/
+                              /*Examiner GPL 2012*/
+             /*Copyright (C) 2012 Altran Praxis Limited, Bath, U.K.*/
            /*********************************************************/
 
 
-                        /*DATE : 06-SEP-2011 23:49:00.25*/
+                        /*DATE : 09-MAY-2013 22:47:14.49*/
 
-                               /*procedure sqrt*/
+                               /*procedure Sqrt*/
 
 
 rule_family sqrt_rules:
@@ -15,8 +15,3 @@ rule_family sqrt_rules:
      X <= Y requires [X:ire, Y:ire] &
      X >= Y requires [X:ire, Y:ire].
 
-sqrt_rules(1): float__size >= 0 may_be_deduced.
-sqrt_rules(2): float__first may_be_replaced_by -340282000000000000000000000000000000000.
-sqrt_rules(3): float__last may_be_replaced_by 340282000000000000000000000000000000000.
-sqrt_rules(4): float__base__first may_be_replaced_by -340282000000000000000000000000000000000.
-sqrt_rules(5): float__base__last may_be_replaced_by 340282000000000000000000000000000000000.

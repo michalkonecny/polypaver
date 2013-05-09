@@ -1,3 +1,5 @@
-src/exact.ads
-src/numeric.ads
+../packages/polypaver.ads
+../packages/polypaver-exact.ads
+../packages/polypaver-floats.ads
+src/sqrt.ads
 src/sqrt.adb
