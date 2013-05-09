@@ -284,9 +284,11 @@ decodeFn "exact__integral" [arg1, arg2, arg3] = termOp3 (Integral ivNum ivName) 
 decodeFn "abs" [arg1] = abs arg1
 
 decodeFn fn args =
-    error $ 
-        "cannot decode function call " ++ fn ++ 
-        "(" ++ (intercalate "," $ map show args) ++ ")"
+    var $ 
+        fn ++ "(" ++ (intercalate "," $ map show args) ++ ")"
+--    error $ 
+--        "cannot decode function call " ++ fn ++ 
+--        "(" ++ (intercalate "," $ map show args) ++ ")"
 
 var "polypaver__floats__eps_abs" = fepsAbs
 var "polypaver__floats__eps_rel" = fepsRel
