@@ -1,7 +1,7 @@
 --# inherit PolyPaver.Exact;
 package PolyPaver.Floats is
 	
-    --# function Is_Float_Range(Variable : Float; Min : Float; Max : Float) return Boolean;
+    --# function Is_Range(Variable : Float; Min : Float; Max : Float) return Boolean;
 	
     function Eps_Abs return Float;
 
