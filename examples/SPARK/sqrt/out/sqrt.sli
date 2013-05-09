@@ -1,4 +1,4 @@
-V "SPARK 2011"
+V "SPARK 2012"
 A -noindex_file
 A -nowarning_file
 A -notarget_compiler_data
@@ -11,47 +11,56 @@ A -nohtml
 A -vcg
 A -nostatistics
 A -fdl_identifiers=accept
-A -flow_analysis=information
+A -flow_analysis=auto
 A -language=95
 A -profile=sequential
 A -annotation_character=#
-A -rules=none
+A -rules=lazy
 A -error_explanations=off
 A -justification_option=full
 A -output_directory=out
-A -output_directory (actual)=/home/jan/FPbyContract/paver/examples/SPARK/sqrt/out/
+A -output_directory (actual)=/Users/jandur/FPbyContract/paver/examples/SPARK/sqrt/out/
 P
 R
 
-U sqrt%b sqrt.adb
-W exact%s exact.ads exact.sli
-W numeric%s numeric.ads numeric.sli
+U Example%b sqrt.adb
+U Example%s sqrt.ads
+W PolyPaver.Exact%s polypaver-exact.ads polypaver-exact.sli
+W PolyPaver.Floats%s polypaver-floats.ads polypaver-floats.sli
 
-D exact.ads 00000000000000 00000000
-D numeric.ads 00000000000000 00000000
+D polypaver-exact.ads 00000000000000 00000000
+D polypaver-floats.ads 00000000000000 00000000
+D sqrt.ads 00000000000000 00000000
 D sqrt.adb 00000000000000 00000000
 
-X 1 exact.ads
-1K9 exact 2|2w13 3|8r40 2w13
-3V17 square 3>25
-4V17 sqrt 4>23 3|8r46
-5V17 exp 5>22
-8V17 integral 8>27 8>30 8>33
-X 2 numeric.ads
-3K9 numeric 3|8r24 2w20
-7V26 epsrel 3|8r32
-9f18 x 10r16
-9f20 y 10r18
-9V38 plus 10r11
-12f19 x 13r17
-12f21 y 13r19
-12V39 minus 13r11
-15f19 x 16r17
-15f21 y 16r19
-15V39 times 16r11
-18f20 x 19r18
-18f22 y 19r20
-18V40 divide 19r11
-X 3 sqrt.adb
-4f17 x 5r20 6r17 6r23 8r51 15r29 15r34 15r44
-4f31 r 5m13 7r10 8r10 15r18
+X 1 polypaver-exact.ads
+1K9 Exact 2|1w23 3|7r57 1w23
+4V18 Sqrt 3|7r63
+X 2 polypaver-floats.ads
+2K9 Floats 3|7r31 1w40
+8V29 Eps_Rel 3|7r38
+12f19 X 13r16
+12f21 Y 13r18
+12V39 Add 13r12
+15f24 X 16r22
+15f26 Y 16r24
+15V44 Subtract 16r13
+18f24 X 19r22
+18f26 Y 19r24
+18V44 Multiply 19r13
+21f22 X 23r20
+21f24 Y 22r13 23r22
+21V42 Divide 23r13
+25f22 X 26r20
+25V40 Square 26r13
+28f20 X 29r18
+28V38 Cube 29r13
+31f20 X 32r13 33r18
+31V38 Sqrt 33r13
+35f19 X 36r17
+35V37 Exp 36r13
+X 3 sqrt.ads
+4f17 X 5r18 5r24 7r68 4|11r26 11r31 11r41
+6f13 R 7r7
+X 4 sqrt.adb
+6f3 R 11r15

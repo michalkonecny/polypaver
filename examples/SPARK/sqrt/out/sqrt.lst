@@ -1,42 +1,44 @@
            *******************************************************
                             Listing of SPARK Text
-                              Examiner GPL 2011
-             Copyright (C) 2011 Altran Praxis Limited, Bath, U.K.
+                              Examiner GPL 2012
+             Copyright (C) 2012 Altran Praxis Limited, Bath, U.K.
            *******************************************************
 
 
-                        DATE : 06-SEP-2011 23:49:00.28
+                        DATE : 09-MAY-2013 22:57:10.30
 
 Line
-   1  with numeric;
-   2  --# inherit exact, numeric;
-   3  --# main_program;
-   4  procedure sqrt (x : in float; r : out float)
-   5  --# derives r from x;
-   6  --# pre  1.0 <= x and x <= 2.0;
-   7  --# post r in float and
-   8  --#      r <= (1.0+4.0*numeric.epsrel)*exact.sqrt(x);
-   9  is
-  10     s : float;
-  11  begin
-  12     s := x;
-  13     r := numeric.plus(numeric.times(0.5,x),0.5);
-  14     while r /= s loop
-                 ^1
+   1  with PolyPaver.Floats;
+   2  package body Example is
+   3  	
+   4  	function Sqrt (X : in Float) return Float
+   5  	is
+   6  		R,S : Float;
+   7  	begin
+   8  		S := X;
+   9  		R := PolyPaver.Floats.Add(PolyPaver.Floats.Multiply(0.5,X),0.5);
+  10  		while R /= s loop
+      		        ^1
 --- (  1)  Warning           :308: Use of equality operator with floating point 
            type.
 
-  15        --# assert r in -0.25*x**2+x .. 0.25*x**2+1.0 ;
-  16        s := r;
-  17        r := numeric.times(0.5,numeric.plus(s,numeric.divide(x,s)));
-  18     end loop;
-  19  end sqrt;
+  11  			--# assert R in -0.25*X**2+X .. 0.25*X**2+1.0 ;
+  12  			S := r;
+  13  			R := PolyPaver.Floats.Multiply(0.5,
+  14  				PolyPaver.Floats.Add(S,PolyPaver.Floats.Divide(X,S)));
+  15  	   end loop;
+  16  	   return R;
+  17  	end Sqrt;
 
-+++        Flow analysis of subprogram sqrt performed: no 
-           errors found.
++++        Flow analysis of subprogram Sqrt performed 
+           (information-flow mode): no errors found.
 --- (  2)  Warning           :405: VCs for statements including real numbers are 
            approximate.
 
+  18  
+  19  end Example;
+
+Note: Flow analysis mode is automatic
 
 
 --End of file--------------------------------------------------
