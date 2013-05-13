@@ -1,4 +1,5 @@
-# PolyPaver Roadmap and Log
+# PolyPaver Roadmap
+(Log is below)
 
 ## release 0.2
 
@@ -24,6 +25,17 @@
 
 ### SPARK preprocessor
 
+* debug Ada parser
+
+* pass 1: determine dependency order among the ads files
+
+* pass 2: extract exported types and function return types from ads files
+
+* pass 3: drill down to all expressions, chaning operators
+
+    * tracking scopes of variables and parameters
+
+    * tracking all locally visible types and functions
 
 ## release 0.5
 
