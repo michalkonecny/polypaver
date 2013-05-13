@@ -12,16 +12,15 @@
 -}
 module PolyPaver.Input.SPARK 
 (
+    parseVC,
     parseSivVC,
     parseSivAll
 )
 where
 
-import PolyPaver.GenerateMain
 import PolyPaver.Form
 import PolyPaver.Vars
 import PolyPaver.DeriveBounds
-import PolyPaver.PPBox
 
 import Numeric.ER.Misc
 
@@ -42,6 +41,16 @@ import Text.Parsec.Language
 --  let vcs = parseSiv inputPathS fileS
 --  let vcBoxes = map (addBox inputPathS) $ filter (notVerum . snd) vcs
 --  mapM_ (writePolyPaverMain outputFolder) $ vcBoxes
+  
+parseVC ::
+    String {-^ description of the source (eg file name) for error reporting -} ->
+    String {-^ the contents of the vc file -} -> 
+    (String, Form, [(Int, (Rational, Rational), Bool)])
+    {-^ the VC and the bounding box for its variables -}
+parseVC sourceDescription s =
+    case parse vc sourceDescription s of
+        Right (vcName, t) -> addBox (vcName, t)
+        Left err -> error $ "parse error in " ++ sourceDescription ++ ":" ++ show err 
   
 parseSivVC ::
     String {-^ description of the source (eg file name) for error reporting -} ->
@@ -115,6 +124,14 @@ sivVC vcName =
         (m_symbol $ "procedure_" ++ vcName)
         <|> 
         (m_symbol $ "function_" ++ vcName)
+
+vc =
+    do
+    m_whiteSpace
+    name <- m_identifier
+    m_dot
+    form <- vcWhole
+    return (name, form)
 
 vcHead =
     do

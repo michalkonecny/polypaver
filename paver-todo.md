@@ -7,7 +7,7 @@
 
 * numerical theorem examples
 
-    * accessible format based on siv formula format
+    * accessible format following usual math conventions - extend a subset of tptp?
 
 * SPARK examples
 
@@ -25,7 +25,9 @@
 
 ### SPARK preprocessor
 
-* debug Ada parser
+* speed-up Ada parser
+
+    * deal with the ambiguity in expression_or_discrete_range
 
 * pass 1: determine dependency order among the ads files
 
