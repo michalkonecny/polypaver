@@ -17,6 +17,7 @@ module Main where
 import PolyPaver.Form (splitConclusion)
 import PolyPaver.Invocation
 import PolyPaver.Input.SPARK
+import PolyPaver.Input.TPTP
 import PolyPaver.Input.Haskell
 import PolyPaver.DeriveBounds (getBox)
 import PolyPaver.Vars (substituteVarsForm,getFormVarNames)
