@@ -9,6 +9,8 @@
     Portability :  portable
 
     Parser of TPTP files as PolyPaver problems.
+    
+    Based on http://www.cs.miami.edu/~tptp/TPTP/SyntaxBNF.html. 
 -}
 
 module PolyPaver.Input.TPTP where

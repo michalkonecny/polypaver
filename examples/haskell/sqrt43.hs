@@ -9,7 +9,7 @@
 
     sqrt43 benchmark
     
-    For precision -r 10 proved with -d 3 -e 10.  
+    For precision -r 10 proved with -d 3 -e 10.
 -}
 
 module Main where
