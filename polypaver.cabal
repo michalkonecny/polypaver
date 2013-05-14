@@ -31,21 +31,23 @@ Description:
 
 Extra-Source-Files:
     CHANGES
+    examples/vc/integral.vc
+    examples/vc/sqrt43.vc
     examples/haskell/sqrtexp.hs
-    examples/haskell/integral.hs
     examples/form/true.form
+    examples/SPARK/packages/polypaver.ads
+    examples/SPARK/packages/polypaver-exact.ads
+    examples/SPARK/packages/polypaver-floats.ads
+    examples/SPARK/packages/polypaver-floats.adb
+    examples/SPARK/packages/polypaver-integers.ads
+    examples/SPARK/packages/polypaver-interval.ads
     examples/SPARK/peak/gnat.cfg
-    examples/SPARK/peak/src/exact.ads
     examples/SPARK/peak/src/peak.adb
     examples/SPARK/peak/src/peak.ads
-    examples/SPARK/peak/src/numeric.ads
     examples/SPARK/peak/spark.sw
     examples/SPARK/peak/out/peak.sli
-    examples/SPARK/peak/out/exact.sli
     examples/SPARK/peak/out/peak.lst
-    examples/SPARK/peak/out/exact.lst
     examples/SPARK/peak/out/spark.rep
-    examples/SPARK/peak/out/numeric.lst
     examples/SPARK/peak/out/peak/max.fdl
     examples/SPARK/peak/out/peak/peakunit.slg
     examples/SPARK/peak/out/peak/peakunit.rls
@@ -68,22 +70,16 @@ Extra-Source-Files:
     examples/SPARK/peak/out/peak/peakq.siv
     examples/SPARK/peak/peak.smf
     examples/SPARK/sqrt/gnat.cfg
-    examples/SPARK/sqrt/src/exact.ads
-    examples/SPARK/sqrt/src/num.adb
     examples/SPARK/sqrt/src/sqrt.adb
-    examples/SPARK/sqrt/src/numeric.ads
-    examples/SPARK/sqrt/src/num.ads
+    examples/SPARK/sqrt/src/sqrt.ads
     examples/SPARK/sqrt/spark.sw
     examples/SPARK/sqrt/out/sqrt.siv
-    examples/SPARK/sqrt/out/exact.sli
-    examples/SPARK/sqrt/out/exact.lst
     examples/SPARK/sqrt/out/sqrt.slg
     examples/SPARK/sqrt/out/sqrt.lst
     examples/SPARK/sqrt/out/sqrt.vcg
     examples/SPARK/sqrt/out/sqrt.sli
     examples/SPARK/sqrt/out/sqrt.rls
     examples/SPARK/sqrt/out/spark.rep
-    examples/SPARK/sqrt/out/numeric.lst
     examples/SPARK/sqrt/out/sqrt.fdl
     examples/SPARK/sqrt/sqrt.smf
 
@@ -107,7 +103,8 @@ Library
         parsec >= 3.1.1 && < 3.2,
         ghc >= 7.4 && < 7.5,
         ghc-paths >= 0.1 && < 0.2
-  Exposed-modules:PolyPaver
+  Exposed-modules:
+    PolyPaver
 
   Other-modules:
     PolyPaver.Invocation,
@@ -194,4 +191,3 @@ Executable polypaver
         parsec >= 3.1.1 && < 3.2,
         ghc >= 7.4 && < 7.5,
         ghc-paths >= 0.1 && < 0.2
-  other-modules:  PolyPaver.Input.TPTP
