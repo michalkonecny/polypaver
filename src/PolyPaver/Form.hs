@@ -4,6 +4,7 @@
 module PolyPaver.Form where
 
 import Numeric.ER.Real.DefaultRepr
+import System.Info
 
 import Data.Data
 import Data.Ratio
@@ -255,6 +256,11 @@ fround = termOp1 $ FRound 24 126
 (*:) = termOp2 $ FTimes 24 126
 (/:) = termOp2 $ FOver 24 126
 
+uniascii unicode ascii 
+    | useUnicode = unicode
+    | otherwise = ascii
+useUnicode = (os /= "mingw32")
+
 showForm :: Int -> Bool -> Form -> String
 showForm maxLength shouldShowRanges form = 
     shorten $ sf (Just 0) form
@@ -280,17 +286,17 @@ showForm maxLength shouldShowRanges form =
             Verum -> "T"
             Falsum -> "F"
             Predicate t -> st maybeIndentLevel t
-            Not f -> "¬" ++ (indentedBracketsF f)
-            Or f1 f2 -> showOpF "∨" f1 f2
-            And f1 f2 -> showOpF "∧" f1 f2
-            Implies f1 f2 -> showOpF "⇒" f1 f2
+            Not f -> (uniascii "¬" "~") ++ (indentedBracketsF f)
+            Or f1 f2 -> showOpF (uniascii "∨" "\\/") f1 f2
+            And f1 f2 -> showOpF (uniascii "∧" "/\\") f1 f2
+            Implies f1 f2 -> showOpF (uniascii "⇒" "==>") f1 f2
             Le lab t1 t2 -> showOpT "<" lab t1 t2
-            Leq lab t1 t2 -> showOpT "≤" lab t1 t2
+            Leq lab t1 t2 -> showOpT (uniascii "≤" "<=") lab t1 t2
             Ge lab t1 t2 -> showOpT ">" lab t1 t2
-            Geq lab t1 t2 -> showOpT "≥" lab t1 t2
+            Geq lab t1 t2 -> showOpT (uniascii "≥" ">=") lab t1 t2
             Eq lab t1 t2 -> showOpT "=" lab t1 t2
-            Neq lab t1 t2 -> showOpT "≠" lab t1 t2
-            ContainedIn lab t1 t2 -> showOpT "⊆" lab t1 t2
+            Neq lab t1 t2 -> showOpT (uniascii "≠" "!=") lab t1 t2
+            ContainedIn lab t1 t2 -> showOpT (uniascii "⊆" "subseteq") lab t1 t2
             IsRange lab t1 t2 t3 -> showPred lab "isrange" [t1, t2, t3]
             IsIntRange lab t1 t2 t3 -> showPred lab "isintrange" [t1, t2, t3]
             IsInt lab t -> showPred lab "isint" [t]
@@ -368,7 +374,7 @@ showTermIL shouldShowRanges = st
             Abs t -> indentedOpenCloseT "|" "|" False t
             Min t1 t2 -> showFnT "min" [t1, t2]
             Max t1 t2 -> showFnT "max" [t1, t2]
-            Pi -> maybeAddBounds "π"
+            Pi -> maybeAddBounds (uniascii "π" "pi")
             Sqrt t -> showFnT "sqrt" [t]
             Exp t -> showFnT "exp" [t]
             Sin t -> showFnT "sin" [t]
@@ -376,15 +382,15 @@ showTermIL shouldShowRanges = st
             Atan t -> showFnT "atan" [t]
             Integral ivarId ivarName lower upper integrand -> 
                 showFnT "∫" [lower, upper, Term (Var ivarId ivarName, Nothing), integrand]
-            FEpsAbs _ _ -> maybeAddBounds "εabs"
-            FEpsRel _ _ -> maybeAddBounds "εrel"
-            FEpsiAbs _ _ -> maybeAddBounds "εabsI"
-            FEpsiRel _ _ -> maybeAddBounds "εrelI"
+            FEpsAbs _ _ -> maybeAddBounds $ uniascii "εabs" "fepsAbs"
+            FEpsRel _ _ -> maybeAddBounds $ uniascii "εrel" "fepsRel"
+            FEpsiAbs _ _ -> maybeAddBounds $ uniascii "εabsI" "fepsiAbs"
+            FEpsiRel _ _ -> maybeAddBounds $ uniascii "εrelI" "fepsiRel"
             FRound _ _ t -> showFnT "rnd" [t]
-            FPlus _ _ t1 t2 -> showOpT "⊕" "sum" t1 t2
-            FMinus _ _ t1 t2 -> showOpT "⊖" "diff" t1 t2
-            FTimes _ _ t1 t2 -> showOpT "⊛" "prod" t1 t2
-            FOver _ _ t1 t2 -> showOpT "⊘" "div" t1 t2
+            FPlus _ _ t1 t2 -> showOpT (uniascii "⊕" "(+)") "sum" t1 t2
+            FMinus _ _ t1 t2 -> showOpT (uniascii "⊖" "(-)") "diff" t1 t2
+            FTimes _ _ t1 t2 -> showOpT (uniascii "⊛" "(*)") "prod" t1 t2
+            FOver _ _ t1 t2 -> showOpT (uniascii "⊘" "(/)") "div" t1 t2
             FSquare _ _ t -> showFnT "fsquare" [t]
             FSqrt _ _ t -> showFnT "fsqrt" [t]
             FExp _ _ t -> showFnT "fexp" [t]
@@ -427,7 +433,7 @@ showTermIL shouldShowRanges = st
                     _ -> ""
             rangeIfIndented =
                 case (shouldShowRanges, maybeRangeBounds) of
-                    (True, Just rangeBounds) -> "{" ++ opname ++ "∊" ++ show rangeBounds ++ "}"
+                    (True, Just rangeBounds) -> "{" ++ opname ++ (uniascii "∊" "<-") ++ show rangeBounds ++ "}"
                     _ -> ""
         showFnT fn ts =
             fn ++ rangeIfIndented ++ "("
@@ -438,11 +444,11 @@ showTermIL shouldShowRanges = st
             rangeIfIndented =
                 case (maybeNextIndentLevel, shouldShowRanges, maybeRangeBounds) of
                     (Just _, True, Just rangeBounds) ->
-                        "{res∊" ++ show rangeBounds ++ "}"
+                        "{res" ++ (uniascii "∊" "<-") ++ show rangeBounds ++ "}"
                     _ -> ""
             range =
                 case (shouldShowRanges, maybeRangeBounds) of
-                    (True, Just rangeBounds) -> "∊" ++ show rangeBounds
+                    (True, Just rangeBounds) -> (uniascii "∊" "<-") ++ show rangeBounds
                     _ -> ""
         padIfInline op = case maybeIndentLevel of Nothing -> " " ++ op ++ " "; _ -> op 
         indentedBracketsT = indentedOpenCloseT "(" ")" True
@@ -456,7 +462,7 @@ showTermIL shouldShowRanges = st
             rangeIfIndented =
                 case (maybeNextIndentLevel, shouldShowRanges, maybeRangeBounds) of
                     (Just _, True, Just rangeBounds) ->
-                        "{res∊" ++ show rangeBounds ++ "}"
+                        "{res" ++ (uniascii "∊" "<-") ++ show rangeBounds ++ "}"
                     _ -> ""
         maybeNextIndentLevel = fmap (+ 2) maybeIndentLevel
         isAtomicTerm :: Term -> Bool

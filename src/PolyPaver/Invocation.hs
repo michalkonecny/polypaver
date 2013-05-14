@@ -41,7 +41,6 @@ import System.Environment (getArgs, getProgName)
 import System.Console.CmdArgs
 import System.CPUTime
 import System.IO
-import System.Info
 
 data Problem = Problem
     {
@@ -155,7 +154,6 @@ getTightnessValues =
 
 defaultMain problem = 
     do
-    setEncodingByOS
     reportCmdLine
     argsPre <- cmdArgs paver
     let args = setDefaults argsPre
@@ -163,7 +161,6 @@ defaultMain problem =
 
 batchMain problemFactory =
     do
-    setEncodingByOS
     reportCmdLine
     argsPre <- cmdArgs paver
     let args = setDefaults argsPre
@@ -183,21 +180,6 @@ batchMain problemFactory =
         putStrLn banner
         runPaver problem args
     banner = replicate 100 '*'
-
-setEncodingByOS =
-    do
-    maybeCurrentEnc <- hGetEncoding stdout
-    putStrLn $ "default encoding of stdout: " ++ show maybeCurrentEnc
-    let newEnc = determineEncoding maybeCurrentEnc
-    hSetEncoding stdout newEnc
-    putStrLn $ "set new encoding of stdout: " ++ show newEnc
-    where
-    determineEncoding maybeCurrentEnc =
-        utf8
---        case (os, maybeCurrentEnc) of
---            ("linux", Just currentEnc) -> currentEnc
---            ("linux", Nothing) -> utf8
---            ("mingw32", _) -> utf16
     
 
 reportCmdLine
