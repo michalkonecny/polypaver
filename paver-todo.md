@@ -5,10 +5,6 @@
 
 ### core package release ASAP
 
-* numerical theorem examples
-
-    * accessible format following usual math conventions - extend a subset of tptp?
-
 * SPARK examples
 
 * tidy up options and their --help documenation

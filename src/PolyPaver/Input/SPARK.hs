@@ -12,7 +12,7 @@
 -}
 module PolyPaver.Input.SPARK 
 (
-    parseVC,
+    parseVCInFile,
     parseSivVC,
     parseSivAll
 )
@@ -42,13 +42,13 @@ import Text.Parsec.Language
 --  let vcBoxes = map (addBox inputPathS) $ filter (notVerum . snd) vcs
 --  mapM_ (writePolyPaverMain outputFolder) $ vcBoxes
   
-parseVC ::
+parseVCInFile ::
     String {-^ description of the source (eg file name) for error reporting -} ->
     String {-^ the contents of the vc file -} -> 
     (String, Form, [(Int, (Rational, Rational), Bool)])
     {-^ the VC and the bounding box for its variables -}
-parseVC sourceDescription s =
-    case parse vc sourceDescription s of
+parseVCInFile sourceDescription s =
+    case parse vcInFile sourceDescription s of
         Right (vcName, t) -> addBox (vcName, t)
         Left err -> error $ "parse error in " ++ sourceDescription ++ ":" ++ show err 
   
@@ -125,12 +125,14 @@ sivVC vcName =
         <|> 
         (m_symbol $ "function_" ++ vcName)
 
-vc =
+vcInFile =
     do
     m_whiteSpace
     name <- m_identifier
     m_dot
     form <- vcWhole
+    m_whiteSpace
+    eof
     return (name, form)
 
 vcHead =
@@ -153,11 +155,8 @@ vcBody =
     m_whiteSpace
     m_reservedOp "->"
     m_whiteSpace
-    cs <- many (try conclusion)
-    return $
-        case cs of
-            [] -> Verum
-            _ -> foldr (--->) (foldl1 (/\) cs) $ sortFormulasBySize hs 
+    cs <- many1 (try conclusion)
+    return $ foldr (--->) (foldl1 (/\) cs) $ sortFormulasBySize hs 
 
 vcEmptyBody :: Parser Form
 vcEmptyBody =
@@ -331,7 +330,7 @@ decodeFn _ "polypaver__exact__sqrt" [arg1] = sqrt arg1
 decodeFn _ "polypaver__exact__exp" [arg1] = exp arg1
 decodeFn _ "polypaver__exact__sin" [arg1] = sin arg1
 decodeFn _ "polypaver__exact__cos" [arg1] = cos arg1
-decodeFn _ "polypaver__exact__integral" [arg1, arg2, arg3] = termOp3 (Integral ivNum ivName) arg1 arg2 arg3
+decodeFn original "polypaver__exact__integral" args = decodeIntegral original args
 
 decodeFn _ "exact__hull" [arg1, arg2] = hull arg1 arg2
 decodeFn _ "exact__interval" [arg1, arg2] = hull arg1 arg2
@@ -339,7 +338,7 @@ decodeFn _ "exact__sqrt" [arg1] = sqrt arg1
 decodeFn _ "exact__exp" [arg1] = exp arg1
 decodeFn _ "exact__sin" [arg1] = sin arg1
 decodeFn _ "exact__cos" [arg1] = cos arg1
-decodeFn _ "exact__integral" [arg1, arg2, arg3] = termOp3 (Integral ivNum ivName) arg1 arg2 arg3
+decodeFn original "exact__integral" args = decodeIntegral original args
 decodeFn _ "abs" [arg1] = abs arg1
 
 decodeFn _ "Hull" [arg1, arg2] = hull arg1 arg2
@@ -348,7 +347,7 @@ decodeFn _ "Sqrt" [arg1] = sqrt arg1
 decodeFn _ "Exp" [arg1] = exp arg1
 decodeFn _ "Sin" [arg1] = sin arg1
 decodeFn _ "Cos" [arg1] = cos arg1
-decodeFn _ "Integral" [arg1, arg2, arg3] = termOp3 (Integral ivNum ivName) arg1 arg2 arg3
+decodeFn original "Integral" args = decodeIntegral original args
 
 decodeFn original fn args =
     unsafePrint
@@ -361,6 +360,17 @@ decodeFn original fn args =
 --    error $ 
 --        "cannot decode function call " ++ fn ++ 
 --        "(" ++ (intercalate "," $ map show args) ++ ")"
+
+decodeIntegral _ [arg1, arg2, arg3] = termOp3 (Integral ivNum ivName) arg1 arg2 arg3
+decodeIntegral original [arg1, arg2, arg3, arg4] =
+    case arg4 of
+        (Term (Var ivNum ivName, _)) -> 
+            termOp3 (Integral ivNum ivName) arg1 arg2 arg3
+        _ ->
+            error $
+                "\nInvalid integral: " ++ original ++ 
+                "\nThe fourth parameter must be the integration variable."
+
 
 var "polypaver__floats__eps_abs" = fepsAbs
 var "polypaver__floats__eps_rel" = fepsRel

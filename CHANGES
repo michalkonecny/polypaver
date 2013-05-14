@@ -1,7 +1,8 @@
 0.2: May 2013
-  * New ability to dynamically load and solve problems defined in Haskell modules.
-  * Added support for the integral operator.
-  * Added parameter "maximum queue length".  Its default value 
+  * Problems can be loaded from .vc files with human friendly syntax.
+  * Problems can be loaded from Haskell modules (only if ghc is installed).
+  * Support for the integral operator.
+  * New parameter "maximum queue length".  Its default value 
     depends on the selected search mode.
   * Variables can be declared to range over integers only.
   * By default PolyPaver now uses DFS and if this fails to decide, 
@@ -10,7 +11,8 @@
   * Fixed bugs in sine and cosine.
   * Proving each conclusion of a Spark VC separately.
   * Sorting hypotheses in Spark VCs from smallest to largest.
-  * Moved from ghc 6.12.3 to ghc 7.4.2
+  * Moved from ghc 6.12.3 to ghc 7.4.2.
+  * Tested on Mac OSX and Windows in addition to Linux 32bit.
   
 0.1: Sept 2011
   * initial release
