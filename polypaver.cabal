@@ -122,6 +122,8 @@ Library
     PolyPaver.Plot,
     PolyPaver.DeriveBounds,
     PolyPaver.Input.SPARK,
+    PolyPaver.Input.Haskell,
+    PolyPaver.Input.TPTP,
     Numeric.ER.ShowHTML,
     Numeric.ER.BasicTypes.PlusMinus,
     Numeric.ER.Misc,
@@ -171,8 +173,7 @@ Library
     Numeric.ER.RnToRm.UnitDom.ChebyshevBase.Polynom.Elementary,
     Numeric.ER.RnToRm.UnitDom.ChebyshevBase.Polynom.ElementaryInner,
     Numeric.ER.RnToRm.UnitDom.ChebyshevBase.Polynom,
-    Numeric.ER.RnToRm.DefaultRepr,
-    PolyPaver.Input.Haskell
+    Numeric.ER.RnToRm.DefaultRepr
 
 Executable polypaver
   hs-source-dirs: src
@@ -195,3 +196,4 @@ Executable polypaver
         parsec >= 3.1.1 && < 3.2,
         ghc >= 7.4 && < 7.5,
         ghc-paths >= 0.1 && < 0.2
+  other-modules:  PolyPaver.Input.TPTP
