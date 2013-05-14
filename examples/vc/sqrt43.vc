@@ -1,5 +1,13 @@
-// can be proved with -d ? -e ? -k 
+/* 
+    A hand-written version of a VC derived by SPARK for the sqrt program.
+
+   This can be proved with -d ? -e ? -k
+*/ 
 sqrt43.
+// version 1 using inequalities:
+// H1: 0.5 <= x /\ x <= 2.
+// H2: 0 <= r /\ r <= 3.
+// version 2 using intervals (equivalent to version 1):
 H1: x <- [0.5 .. 2].
 H2: r <- [0 .. 3].
 H3: r <- [-x^2/4+x .. x^2/4+1].

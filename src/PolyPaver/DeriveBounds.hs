@@ -97,6 +97,12 @@ scanHypothesis (Or h1 h2) intervals =
     minM _ _ = Nothing
     maxM (Just a) (Just b) = Just $ max a b
     maxM _ _ = Nothing
+    
+scanHypothesis (IsRange lab t lower upper) intervals = 
+    scanHypothesis ((Leq lab lower t) /\ (Leq lab t upper)) intervals
+scanHypothesis (IsIntRange lab t lower upper) intervals =
+    scanHypothesis (IsRange lab t lower upper) intervals
+    
 scanHypothesis (Eq _ t1@(Term (Var v1 _, _)) t2@(Term (Var v2 _, _))) intervals = 
     IMap.insert v1 val $
     IMap.insert v2 val $
@@ -115,6 +121,7 @@ scanHypothesis (Eq _ t (Term (Var v _, _))) intervals =
     IMap.insertWith updateLower v val intervals
     where
     val = evalT intervals t
+    
 scanHypothesis (Leq _ t1@(Term (Var v1 _, _)) t2@(Term (Var v2 _, _))) intervals = 
     IMap.insert v1 (updateUpper val2 val1) $
     IMap.insert v2 (updateLower val1 val2) $
@@ -130,10 +137,20 @@ scanHypothesis (Leq _ t (Term (Var v _, _))) intervals =
 scanHypothesis (Le lab t1 t2) intervals = scanHypothesis (Leq lab t1 t2) intervals 
 scanHypothesis (Geq lab t1 t2) intervals = scanHypothesis (Leq lab t2 t1) intervals
 scanHypothesis (Ge lab t1 t2) intervals = scanHypothesis (Leq lab t2 t1) intervals
-scanHypothesis (IsRange lab t lower upper) intervals = 
-    scanHypothesis ((Leq lab lower t) /\ (Leq lab t upper)) intervals
-scanHypothesis (IsIntRange lab t lower upper) intervals =
-    scanHypothesis (IsRange lab t lower upper) intervals
+
+scanHypothesis h@(ContainedIn lab (Term (Var v _, _)) t) intervals =
+--    unsafePrint
+--    (
+--        "scanHypothesis: " ++ showForm 100 False h
+--        ++ "\n valV = " ++ show valV 
+--        ++ "\n mvalTL = " ++ show mvalTL 
+--        ++ "\n mvalTU = " ++ show mvalTU 
+--    ) $
+    IMap.insert v (updateLower (mvalTL, mvalTU) $ updateUpper (mvalTL, mvalTU) valV) $
+    intervals
+    where
+    Just valV = IMap.lookup v intervals
+    (mvalTL, mvalTU) = evalT intervals t
 scanHypothesis _ intervals = intervals
     
 evalT ::
