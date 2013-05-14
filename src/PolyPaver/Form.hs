@@ -202,7 +202,8 @@ instance Ord Term
   where
   min = termOp2 Min
   max = termOp2 Max
-  compare = error "compare not implemented for datatype Term"
+  compare (Term (Lit r1,_)) (Term (Lit r2,_)) = compare r1 r2
+  compare _ _ = error "compare not implemented for datatype Term except for numeric literals"
   
 instance Num Term
   where
@@ -213,6 +214,18 @@ instance Num Term
   abs = termOp1 Abs
 
 square = termOp1 Square
+
+instance Real Term
+    where
+    toRational (Term (Lit r, _)) = r
+    toRational term = error $ "toRational undefined on term " ++ show term
+
+--instance Enum Term
+--    where    
+--    
+--instance Integral Term
+--    where
+    
 
 instance Fractional Term
   where

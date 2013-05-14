@@ -183,12 +183,19 @@ formula :: Label -> Parser Form
 formula lab = buildExpressionParser formTable (atomicFormula lab) <?> ("formula " ++ lab)
 formTable = 
     [ [Infix (m_reserved "and" >> return (And)) AssocLeft]
+    , [Infix (m_reservedOp "/\\" >> return (And)) AssocLeft]
+    , [Infix (m_reservedOp "&&" >> return (And)) AssocLeft]
+    , [Infix (m_reservedOp "&" >> return (And)) AssocLeft]
     , [Infix (m_reserved "or" >> return (Or)) AssocLeft]
+    , [Infix (m_reservedOp "\\/" >> return (Or)) AssocLeft]
+    , [Infix (m_reservedOp "||" >> return (Or)) AssocLeft]
+    , [Infix (m_reservedOp "|" >> return (Or)) AssocLeft]
+    , [Infix (m_reserved "implies" >> return (Implies)) AssocRight]
     , [Infix (m_reservedOp "->" >> return (Implies)) AssocRight]
     ]
 
 atomicFormula lab = 
-    (try $ m_parens (formula lab)) 
+    (try $ m_parens (formula lab)) -- TODO: try whether this line is really needed 
     <|> 
     (try (inequality lab)) 
     <|> 
@@ -202,7 +209,11 @@ inequality lab =
     return $ opF lab left right 
     where
     op =
-        choice $ map o [("<", Le), ("<=", Leq), (">", Ge), (">=", Geq), ("=", Eq), ("<>", Neq)]
+        choice $ map o 
+            [("<", Le), ("<=", Leq), (">", Ge), (">=", Geq), 
+             ("=", Eq), ("==", Eq),
+             ("<>", Neq), ("!=", Neq), ("/=", Neq),
+             ("<-", ContainedIn), ("|<-|", ContainedIn)]
     o (opS, opF) =
         try $
         do
@@ -236,73 +247,109 @@ decodePred lab pred args =
 term :: Parser Term
 term = buildExpressionParser termTable atomicTerm <?> "term"
 termTable = 
-    [ [Prefix (m_reservedOp "-" >> return (termOp1 Neg))]
-    , [Infix (m_reservedOp "/" >> return (termOp2 Over)) AssocLeft]
-    , [Infix (m_reservedOp "*" >> return (termOp2 Times)) AssocLeft]
-    , [Infix (m_reservedOp "-" >> return (termOp2 Minus)) AssocLeft]
-    , [Infix (m_reservedOp "+" >> return (termOp2 Plus)) AssocLeft]
+    [ [prefix "-" negate]
+    , [binary "^" integralPwr AssocLeft]
+    , [binary "/" (/) AssocLeft] ++ (binaryV ["(/)","/:"] (/:) AssocLeft)
+    , [binary "*" (*) AssocLeft] ++ (binaryV ["(*)","*:"] (*:) AssocLeft)
+    , [binary "-" (-) AssocLeft] ++ (binaryV ["(-)","-:"] (-:) AssocLeft)
+    , [binary "+" (+) AssocLeft] ++ (binaryV ["(+)","+:"] (+:) AssocLeft)
     ]
+    where
+    binaryV names fun assoc = map (\name -> binary name fun assoc) names
+    binary name fun assoc = Infix (do{ m_reservedOp name; return fun }) assoc
+    prefix name fun = Prefix (do{ m_reservedOp name; return fun })
+    integralPwr term (Term (Lit r , _)) | r == 2 = square term
+    integralPwr _ e = error $ "^ not supported for exponent: " ++ showTerm False e 
+    
 
-atomicTerm = m_parens term
-        <|> try fncall
-        <|> fmap fromInteger m_integer
-        <|> fmap var m_identifier
+atomicTerm 
+    = m_parens term
+    <|> try fncall
+    <|> (try $ fmap (fromRational . toRational) m_float)
+    <|> fmap (fromInteger) m_integer
+    <|> fmap var m_identifier
+    <|> interval_literal
+        
+interval_literal =
+    do
+    m_symbol "["
+    lb <- term
+    (m_symbol "," <|> m_symbol "..")
+    ub <- term
+    m_symbol "]"
+    return $ hull lb ub
         
 fncall =
     do
-    fname <- m_identifier
-    args <- m_parens $ sepBy term (m_symbol ",")
-    return $ decodeFn fname args
+    ((fname, args), original) <- withConsumed $
+        do
+        fname <- m_identifier
+        args <- m_parens $ sepBy term (m_symbol ",")
+        return (fname, args)
+    return $ decodeFn original fname args
 
 -- the following definition is incomplete, add cases as needed:
-decodeFn "numeric__divide" [arg1, arg2] = arg1 /: arg2
-decodeFn "numeric__times" [arg1, arg2] = arg1 *: arg2
-decodeFn "numeric__plus" [arg1, arg2] = arg1 +: arg2
-decodeFn "numeric__minus" [arg1, arg2] = arg1 -: arg2
-decodeFn "num__divide" [arg1, arg2] = arg1 /: arg2
-decodeFn "num__multiply" [arg1, arg2] = arg1 *: arg2
-decodeFn "num__add" [arg1, arg2] = arg1 +: arg2
-decodeFn "num__subtract" [arg1, arg2] = arg1 -: arg2
-decodeFn "num__square" [arg1] = termOp1 (FSquare 24 126) arg1
-decodeFn "num__sqrt" [arg1] = termOp1 (FSqrt 24 126) arg1
-decodeFn "num__exp" [arg1] = termOp1 (FExp 24 126) arg1
+decodeFn _ "numeric__divide" [arg1, arg2] = arg1 /: arg2
+decodeFn _ "numeric__times" [arg1, arg2] = arg1 *: arg2
+decodeFn _ "numeric__plus" [arg1, arg2] = arg1 +: arg2
+decodeFn _ "numeric__minus" [arg1, arg2] = arg1 -: arg2
+decodeFn _ "num__divide" [arg1, arg2] = arg1 /: arg2
+decodeFn _ "num__multiply" [arg1, arg2] = arg1 *: arg2
+decodeFn _ "num__add" [arg1, arg2] = arg1 +: arg2
+decodeFn _ "num__subtract" [arg1, arg2] = arg1 -: arg2
+decodeFn _ "num__square" [arg1] = termOp1 (FSquare 24 126) arg1
+decodeFn _ "num__sqrt" [arg1] = termOp1 (FSqrt 24 126) arg1
+decodeFn _ "num__exp" [arg1] = termOp1 (FExp 24 126) arg1
 
-decodeFn "polypaver__floats__divide" [arg1, arg2] = termOp2 (FOver 24 126) arg1 arg2
-decodeFn "polypaver__floats__multiply" [arg1, arg2] = termOp2 (FTimes 24 126) arg1 arg2
-decodeFn "polypaver__floats__add" [arg1, arg2] = termOp2 (FPlus 24 126) arg1 arg2
-decodeFn "polypaver__floats__subtract" [arg1, arg2] = termOp2 (FMinus 24 126) arg1 arg2
-decodeFn "polypaver__floats__square" [arg1] = termOp1 (FSquare 24 126) arg1
-decodeFn "polypaver__floats__sqrt" [arg1] = termOp1 (FSqrt 24 126) arg1
-decodeFn "polypaver__floats__exp" [arg1] = termOp1 (FExp 24 126) arg1
+decodeFn _ "polypaver__floats__divide" [arg1, arg2] = termOp2 (FOver 24 126) arg1 arg2
+decodeFn _ "polypaver__floats__multiply" [arg1, arg2] = termOp2 (FTimes 24 126) arg1 arg2
+decodeFn _ "polypaver__floats__add" [arg1, arg2] = termOp2 (FPlus 24 126) arg1 arg2
+decodeFn _ "polypaver__floats__subtract" [arg1, arg2] = termOp2 (FMinus 24 126) arg1 arg2
+decodeFn _ "polypaver__floats__square" [arg1] = termOp1 (FSquare 24 126) arg1
+decodeFn _ "polypaver__floats__sqrt" [arg1] = termOp1 (FSqrt 24 126) arg1
+decodeFn _ "polypaver__floats__exp" [arg1] = termOp1 (FExp 24 126) arg1
 
-decodeFn "polypaver__long_floats__divide" [arg1, arg2] = termOp2 (FOver 53 1022) arg1 arg2
-decodeFn "polypaver__long_floats__multiply" [arg1, arg2] = termOp2 (FTimes 53 1022) arg1 arg2
-decodeFn "polypaver__long_floats__add" [arg1, arg2] = termOp2 (FPlus 53 1022) arg1 arg2
-decodeFn "polypaver__long_floats__subtract" [arg1, arg2] = termOp2 (FMinus 53 1022) arg1 arg2
-decodeFn "polypaver__long_floats__square" [arg1] = termOp1 (FSquare 53 1022) arg1
-decodeFn "polypaver__long_floats__sqrt" [arg1] = termOp1 (FSqrt 53 1022) arg1
-decodeFn "polypaver__long_floats__exp" [arg1] = termOp1 (FExp 53 1022) arg1
+decodeFn _ "polypaver__long_floats__divide" [arg1, arg2] = termOp2 (FOver 53 1022) arg1 arg2
+decodeFn _ "polypaver__long_floats__multiply" [arg1, arg2] = termOp2 (FTimes 53 1022) arg1 arg2
+decodeFn _ "polypaver__long_floats__add" [arg1, arg2] = termOp2 (FPlus 53 1022) arg1 arg2
+decodeFn _ "polypaver__long_floats__subtract" [arg1, arg2] = termOp2 (FMinus 53 1022) arg1 arg2
+decodeFn _ "polypaver__long_floats__square" [arg1] = termOp1 (FSquare 53 1022) arg1
+decodeFn _ "polypaver__long_floats__sqrt" [arg1] = termOp1 (FSqrt 53 1022) arg1
+decodeFn _ "polypaver__long_floats__exp" [arg1] = termOp1 (FExp 53 1022) arg1
 
-decodeFn "polypaver__exact__hull" [arg1, arg2] = hull arg1 arg2
-decodeFn "polypaver__exact__interval" [arg1, arg2] = hull arg1 arg2
-decodeFn "polypaver__exact__sqrt" [arg1] = sqrt arg1
-decodeFn "polypaver__exact__exp" [arg1] = exp arg1
-decodeFn "polypaver__exact__sin" [arg1] = sin arg1
-decodeFn "polypaver__exact__cos" [arg1] = cos arg1
-decodeFn "polypaver__exact__integral" [arg1, arg2, arg3] = termOp3 (Integral ivNum ivName) arg1 arg2 arg3
+decodeFn _ "polypaver__exact__hull" [arg1, arg2] = hull arg1 arg2
+decodeFn _ "polypaver__exact__interval" [arg1, arg2] = hull arg1 arg2
+decodeFn _ "polypaver__exact__sqrt" [arg1] = sqrt arg1
+decodeFn _ "polypaver__exact__exp" [arg1] = exp arg1
+decodeFn _ "polypaver__exact__sin" [arg1] = sin arg1
+decodeFn _ "polypaver__exact__cos" [arg1] = cos arg1
+decodeFn _ "polypaver__exact__integral" [arg1, arg2, arg3] = termOp3 (Integral ivNum ivName) arg1 arg2 arg3
 
-decodeFn "exact__hull" [arg1, arg2] = hull arg1 arg2
-decodeFn "exact__interval" [arg1, arg2] = hull arg1 arg2
-decodeFn "exact__sqrt" [arg1] = sqrt arg1
-decodeFn "exact__exp" [arg1] = exp arg1
-decodeFn "exact__sin" [arg1] = sin arg1
-decodeFn "exact__cos" [arg1] = cos arg1
-decodeFn "exact__integral" [arg1, arg2, arg3] = termOp3 (Integral ivNum ivName) arg1 arg2 arg3
-decodeFn "abs" [arg1] = abs arg1
+decodeFn _ "exact__hull" [arg1, arg2] = hull arg1 arg2
+decodeFn _ "exact__interval" [arg1, arg2] = hull arg1 arg2
+decodeFn _ "exact__sqrt" [arg1] = sqrt arg1
+decodeFn _ "exact__exp" [arg1] = exp arg1
+decodeFn _ "exact__sin" [arg1] = sin arg1
+decodeFn _ "exact__cos" [arg1] = cos arg1
+decodeFn _ "exact__integral" [arg1, arg2, arg3] = termOp3 (Integral ivNum ivName) arg1 arg2 arg3
+decodeFn _ "abs" [arg1] = abs arg1
 
-decodeFn fn args =
-    var $ 
-        fn ++ "(" ++ (intercalate "," $ map show args) ++ ")"
+decodeFn _ "Hull" [arg1, arg2] = hull arg1 arg2
+decodeFn _ "Interval" [arg1, arg2] = hull arg1 arg2
+decodeFn _ "Sqrt" [arg1] = sqrt arg1
+decodeFn _ "Exp" [arg1] = exp arg1
+decodeFn _ "Sin" [arg1] = sin arg1
+decodeFn _ "Cos" [arg1] = cos arg1
+decodeFn _ "Integral" [arg1, arg2, arg3] = termOp3 (Integral ivNum ivName) arg1 arg2 arg3
+
+decodeFn original fn args =
+    unsafePrint
+    (
+        "\nWarning: treating the term " ++ show original ++ " as a variable\n" ++
+        "         because the function " ++ show fn ++ " is not recognised by PolyPaver." 
+    ) $
+    var original 
+--        fn ++ "(" ++ (intercalate "," $ map show args) ++ ")"
 --    error $ 
 --        "cannot decode function call " ++ fn ++ 
 --        "(" ++ (intercalate "," $ map show args) ++ ")"
@@ -315,6 +362,10 @@ var "num__eps_abs" = fepsAbs
 var "num__eps_rel" = fepsRel
 var "polypaver__exact__integration_variable" = termVar ivNum ivName
 var "exact__integration_variable" = termVar ivNum ivName
+var "fepsAbs" = fepsAbs
+var "fepsRel" = fepsRel
+var "fepsiAbs" = fepsiAbs
+var "fepsiRel" = fepsiRel
 var name =
     termVar n name
     where
@@ -323,16 +374,6 @@ var name =
 ivNum = -1 
 ivName = "<iv>"
 
-tokenDef = emptyDef{ commentStart = "/*"
-               , commentEnd = "*/"
-               , identStart = letter
-               , identLetter = alphaNum <|> (oneOf "_")
-               , opStart = oneOf "><=-+*/"
-               , opLetter = oneOf "=>"
-               , reservedOpNames = [">", "<", ">=", "<=", "=", "<>", "-", "+", "*", "/", "->"]
-               , reservedNames = ["and", "or", "implies"]
-               }
-
 TokenParser{ parens = m_parens
             , identifier = m_identifier
             , reservedOp = m_reservedOp
@@ -340,8 +381,71 @@ TokenParser{ parens = m_parens
             , symbol = m_symbol
             , dot = m_dot
             , integer = m_integer
+            , float = m_float
             , whiteSpace = m_whiteSpace } 
             = 
             makeTokenParser tokenDef
 
+tokenDef = emptyDef{ commentStart = "/*"
+               , commentEnd = "*/"
+               , commentLine = "//"
+               , identStart = letter
+               , identLetter = alphaNum <|> (oneOf "_")
+               , opStart = oneOf $ ">=-+*|&!\\/" ++ "<("
+               , opLetter = oneOf $ ">=-+*|&!\\/" ++ ":)"
+               , reservedOpNames = 
+                    [">", "<", ">=", "<=", "=", "==", "<>", "!=", "/=", 
+                     "<-", "|<-|", 
+                     "-", "+", "*", "/", "^",
+                     "(-)", "(+)", "(*)", "(/)", "-:", "+:", "*:", "/:", 
+                     "->", "&&", "&", "||", "|", "/\\", "\\/"]
+               , reservedNames = ["and", "or", "implies"]
+               }
+
+
+{-|
+    This function amends the result of a Parsec parser with
+    the precise portion of input consumed by the parser.
+-}
+withConsumed :: Parser a -> Parser (a, String)
+withConsumed parser =
+    do
+    input <- getInput
+    start <- getPosition
+    result <- parser
+    end <- getPosition
+    return (result, computeConsumed input start end)
+
+computeConsumed input start end =
+--    unsafePrint
+--    (
+--        "computeConsumed:"
+--        ++ "\n input = " ++ show input
+--        ++ "\n start = " ++ show start
+--        ++ "\n end   = " ++ show end
+--        ++ "\n relevantLines = " ++ show relevantLines
+--    )
+    intercalate "\n" $
+    dropLastSegment relevantLines
+    where
+    relevantLines = 
+        take (endLine - startLine + 1) $ unIntercalate '\n' input
+    startLine = sourceLine start
+    endLine = sourceLine end
+    dropLastSegment ls =
+        (take (l - 1) ls) ++ [take col $ last ls]
+        where
+        l = length ls
+        col | startLine == endLine = endCol - startCol
+            | otherwise = endCol - 1
+        startCol = sourceColumn start
+        endCol = sourceColumn end
+
+unIntercalate :: (Eq a) => a -> [a] -> [[a]]
+unIntercalate sep s = aux [] [] s
+    where
+    aux doneRev partNext [] = reverse (reverse partNext : doneRev)
+    aux doneRev partNext (e : es) 
+        | e == sep = aux (reverse partNext : doneRev) [] es
+        | otherwise = aux doneRev (e : partNext) es
     
