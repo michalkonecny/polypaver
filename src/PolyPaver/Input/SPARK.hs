@@ -195,7 +195,7 @@ formTable =
     ]
 
 atomicFormula lab = 
-    (try $ m_parens (formula lab)) -- TODO: try whether this line is really needed 
+    (try $ m_parens (formula lab)) 
     <|> 
     (try (inequality lab)) 
     <|> 
@@ -264,11 +264,19 @@ termTable =
 
 atomicTerm 
     = m_parens term
+    <|> absBrackets term
     <|> try fncall
     <|> (try $ fmap (fromRational . toRational) m_float)
     <|> fmap (fromInteger) m_integer
     <|> fmap var m_identifier
     <|> interval_literal
+        
+absBrackets p =
+    do
+    m_symbol "|"
+    res <- p
+    m_symbol "|"
+    return $ abs res
         
 interval_literal =
     do
