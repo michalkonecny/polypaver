@@ -7,7 +7,9 @@
 
 * SPARK examples
 
-* tidy up options and their --help documenation
+    * adapt and add erfriemann
+
+* tidy up options and their --help documentation
 
     * remove eps setting options
 
@@ -18,6 +20,10 @@
         * -I and -k
 
 * minimal update of public documentation
+
+* produce binaries for multiple platforms
+
+    * OSX, Windows 32 bit, Linux 32 and 64 bit
 
 ### SPARK preprocessor
 
