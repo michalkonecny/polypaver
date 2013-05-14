@@ -78,7 +78,7 @@ lookupForm [inputPath] =
 lookupVC [inputPath] =
     do
     fileContents <- readFile inputPath
-    let vc = parseVC inputPath fileContents
+    let vc = parseVCInFile inputPath fileContents
     return $ mkProblems vc
     
 lookupVC [inputPath, conclNumberS] =
@@ -86,7 +86,7 @@ lookupVC [inputPath, conclNumberS] =
         (conclNumber, _) : _ ->
             do
             fileContents <- readFile inputPath
-            let vc = parseVC inputPath fileContents
+            let vc = parseVCInFile inputPath fileContents
             return $ [mkProblems vc !! (conclNumber - 1)]
         _ -> vcArgsError
     
