@@ -51,14 +51,14 @@ evalForm ::
     EffortIndex {-^ effort index for regulating model error -} -> 
     IRA BM {-^ minIntegrationStepSize -} -> 
     PPBox BM {-^ domains of variables -} -> 
-    (Int,Int) {-^ precision of emulated FP operations -} -> 
+--    (Int,Int) {-^ precision of emulated FP operations -} -> 
     Form {-^ form to evaluate -} -> 
     (tv, 
      Form) {-^ form with added range bounds in all terms -}
-evalForm maxdeg maxsize ix minIntegrationStepSize ppb@(_, _, isIntVarMap, _) fptype form =
+evalForm maxdeg maxsize ix minIntegrationStepSize ppb@(_, _, isIntVarMap, _) form =
     evForm form
     where
-    evTerm = evalTerm sampleTV maxdeg maxsize ix minIntegrationStepSize ppb fptype
+    evTerm = evalTerm sampleTV maxdeg maxsize ix minIntegrationStepSize ppb 
     (sampleTV, _) = evForm Verum
     evForm form =
         case form of
@@ -129,11 +129,13 @@ evalTerm ::
     EffortIndex {-^ effort index for regulating model error -} -> 
     IRA BM {-^ minIntegrationStepSize -} -> 
     PPBox BM {-^ domains of variables -} -> 
-    (Int,Int) {-^ precision of emulated FP operations -} ->
+--    (Int,Int) {-^ precision of emulated FP operations -} ->
     Bool {-^ should compute ranges using inner rounding? -} -> 
     Term {-^ term to evaluate -} -> 
     (FAPUOI BM, Term)
-evalTerm sampleTV maxdeg maxsize ix minIntegrationStepSize ppbOrig fptype@(epsrelbits,epsabsbits) needInnerRounding term =
+evalTerm 
+        sampleTV maxdeg maxsize ix minIntegrationStepSize ppbOrig -- fptype@(epsrelbits,epsabsbits) 
+        needInnerRounding term =
     evTerm term
     where
     evTerm = evTermBox ppbOrig

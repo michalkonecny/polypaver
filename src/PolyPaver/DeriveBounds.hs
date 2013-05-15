@@ -180,7 +180,7 @@ evalT intervals term
     ((l,r),_) 
         = 
         RA.oiBounds $ fst $
-        evalTerm (TVMDecided [] True) 1 100 10 0 box (5,32) False term
+        evalTerm (TVMDecided [] True) 1 100 10 0 box False term
         where
         box = 
             ppBoxFromIntervals (IMap.map (const False) termVarNames) termVarNames $ 
