@@ -31,8 +31,10 @@ Description:
 
 Extra-Source-Files:
     CHANGES
-    examples/vc/integral.vc
+    examples/vc/mini.vc
+    examples/vc/power.vc
     examples/vc/sqrt43.vc
+    examples/vc/integral.vc
     examples/haskell/sqrtexp.hs
     examples/form/true.form
     examples/SPARK/packages/polypaver.ads
