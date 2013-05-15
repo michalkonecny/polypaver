@@ -14,7 +14,8 @@
 module PolyPaver.Eval 
 (
     evalForm,
-    evalTerm
+    evalTerm,
+    termIsIntegerType
 )
 where
 
@@ -85,7 +86,7 @@ evalForm maxdeg maxsize ix minIntegrationStepSize ppb@(_, _, isIntVarMap, _) for
                 evForm $  (Leq (lab ++ "LO") lower t) /\ (Leq (lab ++ "HI") t upper)
             IsIntRange lab t lower upper -> 
                 evForm $  (IsInt lab t) /\ (IsRange lab t lower upper)
-            IsInt lab t -> (L.fromBool lab ppb $ termIsIntegerType t, form)
+            IsInt lab t -> (L.fromBool lab ppb $ termIsIntegerType isIntVarMap t, form)
     evOp1 op opTV arg =
         (opTV argTV, op argWithRanges)
         where
@@ -104,21 +105,24 @@ evalForm maxdeg maxsize ix minIntegrationStepSize ppb@(_, _, isIntVarMap, _) for
         formWithRanges = op leftWithRanges rightWithRanges
         (leftVal, leftWithRanges) = evTerm False left 
         (rightVal, rightWithRanges) = evTerm rightNeedsInnerRounding right
-    termIsIntegerType (Term (t, _)) =
-        case t of
-            Lit val -> Q.denominator val == 1
-            Var varId _ -> case IMap.lookup varId isIntVarMap of Just res -> res; _ -> False
-            Plus left right -> termIsIntegerType2 left right
-            Minus left right -> termIsIntegerType2 left right
-            Neg arg -> termIsIntegerType arg
-            Abs arg -> termIsIntegerType arg
-            Min left right -> termIsIntegerType2 left right
-            Max left right -> termIsIntegerType2 left right
-            Times left right -> termIsIntegerType2 left right
-            Square arg -> termIsIntegerType arg
-            _ -> False
+
+termIsIntegerType :: (IMap.IntMap Bool) -> Term -> Bool
+termIsIntegerType isIntVarMap (Term (t, _)) =
+    case t of
+        Lit val -> Q.denominator val == 1
+        Var varId _ -> case IMap.lookup varId isIntVarMap of Just res -> res; _ -> False
+        Plus left right -> termIsIntegerType2 left right
+        Minus left right -> termIsIntegerType2 left right
+        Neg arg -> termIsIntegerType isIntVarMap arg
+        Abs arg -> termIsIntegerType isIntVarMap arg
+        Min left right -> termIsIntegerType2 left right
+        Max left right -> termIsIntegerType2 left right
+        Times left right -> termIsIntegerType2 left right
+        IntPower left right -> termIsIntegerType2 left right
+        _ -> False
+    where
     termIsIntegerType2 t1 t2 = 
-        termIsIntegerType t1 && termIsIntegerType t2
+        termIsIntegerType isIntVarMap t1 && termIsIntegerType isIntVarMap t2
             
      
 evalTerm ::
@@ -191,7 +195,7 @@ evalTerm
                 Min left right -> evOp2 Min min left right
                 Max left right -> evOp2 Max max left right
                 Times left right -> evOp2 Times (*) left right
-                Square arg -> evOp1 Square (\x -> x^2) arg
+                IntPower left right -> evOp2 IntPower intPowerOp left right
                 Recip arg -> evOp1 Recip recip arg
                 Over left right -> evOp2 Over divOp left right
                     where
@@ -272,6 +276,17 @@ evalTerm
             (leftFA, leftWithRanges) = evTermBox ppb left 
             (rightFA, rightWithRanges) = evTermBox ppb right
         
+        intPowerOp b e 
+            | eL <= eR =
+                (pwr eL) RA.\/ (pwr eR)
+            | otherwise =
+                error $ "Exponent of IntPower does not permit a non-negative integer value: " ++ show e
+            where
+            pwr n = b ^ n 
+            eL = max 0 eLP
+            (eLP, eR) = shrinkIntervalToIntegerBounds eRA
+            [eRA] = FA.getRangeApprox e
+            
         evIntegral ivarId ivarName lo hi integrand =
 --            unsafePrint
 --            (

@@ -70,7 +70,7 @@ getTermVarNames (Term (term, _)) =
         Minus left right -> getTermVarNames2 left right
         Neg arg -> getTermVarNames arg
         Times left right -> getTermVarNames2 left right
-        Square arg -> getTermVarNames arg
+        IntPower left right -> getTermVarNames2 left right
         Recip arg -> getTermVarNames arg
         Over left right -> getTermVarNames2 left right
         Abs arg -> getTermVarNames arg
@@ -131,7 +131,7 @@ getTermFreeVars (Term (term, _)) =
         Minus left right -> getTermFreeVars2 left right
         Neg arg -> getTermFreeVars arg
         Times left right -> getTermFreeVars2 left right
-        Square arg -> getTermFreeVars arg
+        IntPower left right -> getTermFreeVars2 left right
         Recip arg -> getTermFreeVars arg
         Over left right -> getTermFreeVars2 left right
         Abs arg -> getTermFreeVars arg
@@ -211,7 +211,7 @@ renameVarsTerm old2new = rnm
             Minus left right -> Minus (rnm left) (rnm right)
             Neg arg -> Neg $ rnm arg
             Times left right -> Times (rnm left) (rnm right)
-            Square arg -> Square $ rnm arg
+            IntPower left right -> IntPower (rnm left) (rnm right)
             Recip arg -> Recip $ rnm arg
             Over left right -> Over (rnm left) (rnm right)
             Abs arg -> Abs $ rnm arg
@@ -302,7 +302,7 @@ substituteVarsTerm old2new = subst
             Minus left right -> Minus (subst left) (subst right)
             Neg arg -> Neg $ subst arg
             Times left right -> Times (subst left) (subst right)
-            Square arg -> Square $ subst arg
+            IntPower left right -> IntPower (subst left) (subst right)
             Recip arg -> Recip $ subst arg
             Over left right -> Over (subst left) (subst right)
             Abs arg -> Abs $ subst arg
