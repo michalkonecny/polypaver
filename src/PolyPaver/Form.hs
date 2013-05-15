@@ -111,7 +111,7 @@ data Term'
   | Minus Term Term
   | Neg Term
   | Times Term Term
-  | Square Term
+  | IntPower Term Term
   | Recip Term
   | Over Term Term
   | Abs Term
@@ -159,7 +159,7 @@ getTermSize (Term (term, _)) =
         Minus t1 t2 -> 1 + (getTermSize t1) + (getTermSize t2)
         Neg t -> 1 + (getTermSize t)
         Times t1 t2 -> 1 + (getTermSize t1) + (getTermSize t2)
-        Square t -> 1 + (getTermSize t)
+        IntPower t1 t2 -> 1 + (getTermSize t1) + (getTermSize t2)
         Recip t -> 1 + (getTermSize t)
         Over t1 t2 -> 1 + (getTermSize t1) + (getTermSize t2)
         Abs t -> 1 + (getTermSize t)
@@ -214,7 +214,9 @@ instance Num Term
   (*) = termOp2 Times
   abs = termOp1 Abs
 
-square = termOp1 Square
+
+intPower = termOp2 $ IntPower
+square = \ t -> intPower t 2 
 
 instance Real Term
     where
@@ -368,7 +370,7 @@ showTermIL shouldShowRanges = st
             Minus t1 t2 -> showOpT "-" "diff" t1 t2
             Neg t -> showFnT "-" [t]
             Times t1 t2 -> showOpT "*" "prod" t1 t2
-            Square t -> indentedOpenCloseT "(" ")^2" False t
+            IntPower t1 t2 -> formatIntPower t1 t2
             Recip t -> st2 maybeIndentLevel $ Term (Over 1 t, maybeRangeBounds)
             Over t1 t2 -> showOpT "/" "div" t1 t2
             Abs t -> indentedOpenCloseT "|" "|" False t
@@ -395,6 +397,14 @@ showTermIL shouldShowRanges = st
             FSqrt _ _ t -> showFnT "fsqrt" [t]
             FExp _ _ t -> showFnT "fexp" [t]
         where
+        formatIntPower t1 t2 =
+            case t2 of
+                (Term (Lit n, _)) | denominator n == 1 -> 
+                    indentedOpenCloseT "(" (")^" ++ show (numerator n)) False t1 
+                _ ->
+                    (indentedOpenCloseT "(" ")^" False t1)
+                    ++
+                    (indentedOpenCloseT "(" ")" False t2)
         stNext = st maybeNextIndentLevel
         indent = 
             case maybeIndentLevel of 

@@ -237,6 +237,8 @@ decodePred lab "num__isfloatrange" [arg1, arg2, arg3] = IsRange lab arg1 arg2 ar
 decodePred lab "num__isdoublerange" [arg1, arg2, arg3] = IsRange lab arg1 arg2 arg3
 decodePred lab "exact__containedin" [arg1, arg2] = ContainedIn lab arg1 arg2
 
+decodePred lab "integer" [arg1] = IsInt lab arg1
+
 decodePred lab pred args =
     error $ 
         "in [" ++ lab ++ "], cannot decode predicate " ++ pred ++ 
@@ -247,7 +249,7 @@ term :: Parser Term
 term = buildExpressionParser termTable atomicTerm <?> "term"
 termTable = 
     [ [prefix "-" negate]
-    , [binary "^" integralPwr AssocLeft]
+    , [binary "^" (termOp2 IntPower) AssocLeft]
     , [binary "/" (/) AssocLeft] ++ (binaryV ["(/)","/:"] (/:) AssocLeft)
     , [binary "*" (*) AssocLeft] ++ (binaryV ["(*)","*:"] (*:) AssocLeft)
     , [binary "-" (-) AssocLeft] ++ (binaryV ["(-)","-:"] (-:) AssocLeft)
@@ -257,8 +259,6 @@ termTable =
     binaryV names fun assoc = map (\name -> binary name fun assoc) names
     binary name fun assoc = Infix (do{ m_reservedOp name; return fun }) assoc
     prefix name fun = Prefix (do{ m_reservedOp name; return fun })
-    integralPwr term (Term (Lit r , _)) | r == 2 = square term
-    integralPwr _ e = error $ "^ not supported for exponent: " ++ showTerm False e 
     
 
 atomicTerm 
