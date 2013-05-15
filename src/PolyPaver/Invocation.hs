@@ -68,8 +68,8 @@ data Paver = Paver
     ,order :: Order
     ,quiet :: Bool
     ,verbose :: Bool
-    ,epsrelbits :: Int
-    ,epsabsbits :: Int
+----    ,epsrelbits :: Int
+----    ,epsabsbits :: Int
     ,boxSkewing :: Bool
     ,splitGuessing :: Int
     ,plotWidth :: Int
@@ -97,8 +97,8 @@ paver =
     ,time = 7*24*3600 &= help "timeout in seconds (default = 7*24*3600 ie 1 week)"    
     ,boxSkewing = False &= name "k" &= help "allow parallelepiped boxes, by default only coaxial rectangles" &= groupname "Experimental"
     ,splitGuessing = -1 &= name "g" &= opt (20 :: Int) &= help "try guessing the best direction but do not allow a box in which a pair of edge lengths exceeds this ratio (default 20)"
-    ,epsrelbits = 23 &= name "r" &= help "n to compute machine epsilon using 2^-n (default = 24)" &= groupname "Floating point rounding interpretation in conjectures"
-    ,epsabsbits = 126 &= name "a" &= help "n to compute denormalised epsilon using 2^-n (default = 126)"
+--    ,epsrelbits = 23 &= name "r" &= help "n to compute machine epsilon using 2^-n (default = 24)" &= groupname "Floating point rounding interpretation in conjectures"
+--    ,epsabsbits = 126 &= name "a" &= help "n to compute denormalised epsilon using 2^-n (default = 126)"
     ,quiet = False &= help "suppress all output except the final result (default off)" &= groupname "Verbosity"
     ,verbose = False &= help "output extra details while paving (default off)"
     ,plotWidth = 0 &= name "w" &= help "plot width for 2D problems, 0 mean no plotting (default)" &= groupname "Plotting"
@@ -199,8 +199,8 @@ runPaver problem args =
         plotStepDelayMs
         ordr -- sub-problem processing order
         report -- level of verbosity
-        epsrelbitsOpt
-        epsabsbitsOpt 
+--        epsrelbitsOpt
+--        epsabsbitsOpt 
         boxSkewingOpt
         splitGuessingOpt
         splitIntFirstOpt
@@ -237,8 +237,8 @@ runPaver problem args =
     quietOpt = quiet args
     verboseOpt = verbose args
     report = if quietOpt then ReportNONE else if verboseOpt then ReportALL else ReportNORMAL
-    epsrelbitsOpt = epsrelbits args 
-    epsabsbitsOpt = epsabsbits args 
+--    epsrelbitsOpt = epsrelbits args 
+--    epsabsbitsOpt = epsabsbits args 
     splitGuessingOpt = case splitGuessing args of -1 -> Nothing; n -> Just n
     splitIntFirstOpt = splitIntFirst args
     boxSkewingOpt = boxSkewing args
