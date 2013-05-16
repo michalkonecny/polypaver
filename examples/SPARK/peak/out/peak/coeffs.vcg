@@ -5,7 +5,7 @@
            *******************************************************
 
 
-                        DATE : 10-MAY-2013 00:12:39.76
+                        DATE : 12-MAY-2013 23:31:18.96
 
                            procedure Peak.Coeffs
 
@@ -15,12 +15,12 @@
 For path(s) from start to precondition check associated with statement of line 17:
 
 procedure_coeffs_1.
-H1:    y1 >= iy__first .
-H2:    y1 <= iy__last .
-H3:    y2 >= iy__first .
-H4:    y2 <= iy__last .
-H5:    y3 >= iy__first .
-H6:    y3 <= iy__last .
+H1:    y1 >= 0 .
+H2:    y1 <= 1 .
+H3:    y2 >= 0 .
+H4:    y2 <= 1 .
+H5:    y3 >= 0 .
+H6:    y3 <= 1 .
 H7:    y1 >= float__first .
 H8:    y1 <= float__last .
 H9:    y2 >= float__first .
@@ -45,12 +45,12 @@ C12:   (1/2) <= float__last .
 For path(s) from start to precondition check associated with statement of line 17:
 
 procedure_coeffs_2.
-H1:    y1 >= iy__first .
-H2:    y1 <= iy__last .
-H3:    y2 >= iy__first .
-H4:    y2 <= iy__last .
-H5:    y3 >= iy__first .
-H6:    y3 <= iy__last .
+H1:    y1 >= 0 .
+H2:    y1 <= 1 .
+H3:    y2 >= 0 .
+H4:    y2 <= 1 .
+H5:    y3 >= 0 .
+H6:    y3 <= 1 .
 H7:    y1 >= float__first .
 H8:    y1 <= float__last .
 H9:    y2 >= float__first .
@@ -85,12 +85,12 @@ C6:    polypaver__floats__multiply( -2, y2) <= float__last .
 For path(s) from start to precondition check associated with statement of line 17:
 
 procedure_coeffs_3.
-H1:    y1 >= iy__first .
-H2:    y1 <= iy__last .
-H3:    y2 >= iy__first .
-H4:    y2 <= iy__last .
-H5:    y3 >= iy__first .
-H6:    y3 <= iy__last .
+H1:    y1 >= 0 .
+H2:    y1 <= 1 .
+H3:    y2 >= 0 .
+H4:    y2 <= 1 .
+H5:    y3 >= 0 .
+H6:    y3 <= 1 .
 H7:    y1 >= float__first .
 H8:    y1 <= float__last .
 H9:    y2 >= float__first .
@@ -139,12 +139,12 @@ C4:    polypaver__floats__add(polypaver__floats__multiply( -2,
 For path(s) from start to precondition check associated with statement of line 17:
 
 procedure_coeffs_4.
-H1:    y1 >= iy__first .
-H2:    y1 <= iy__last .
-H3:    y2 >= iy__first .
-H4:    y2 <= iy__last .
-H5:    y3 >= iy__first .
-H6:    y3 <= iy__last .
+H1:    y1 >= 0 .
+H2:    y1 <= 1 .
+H3:    y2 >= 0 .
+H4:    y2 <= 1 .
+H5:    y3 >= 0 .
+H6:    y3 <= 1 .
 H7:    y1 >= float__first .
 H8:    y1 <= float__last .
 H9:    y2 >= float__first .
@@ -213,12 +213,12 @@ C4:    polypaver__floats__add(y1, polypaver__floats__add(
 For path(s) from start to run-time check associated with statement of line 17:
 
 procedure_coeffs_5.
-H1:    y1 >= iy__first .
-H2:    y1 <= iy__last .
-H3:    y2 >= iy__first .
-H4:    y2 <= iy__last .
-H5:    y3 >= iy__first .
-H6:    y3 <= iy__last .
+H1:    y1 >= 0 .
+H2:    y1 <= 1 .
+H3:    y2 >= 0 .
+H4:    y2 <= 1 .
+H5:    y3 >= 0 .
+H6:    y3 <= 1 .
 H7:    y1 >= float__first .
 H8:    y1 <= float__last .
 H9:    y2 >= float__first .
@@ -303,12 +303,12 @@ C2:    polypaver__floats__multiply((1/2),
 For path(s) from start to precondition check associated with statement of line 25:
 
 procedure_coeffs_6.
-H1:    y1 >= iy__first .
-H2:    y1 <= iy__last .
-H3:    y2 >= iy__first .
-H4:    y2 <= iy__last .
-H5:    y3 >= iy__first .
-H6:    y3 <= iy__last .
+H1:    y1 >= 0 .
+H2:    y1 <= 1 .
+H3:    y2 >= 0 .
+H4:    y2 <= 1 .
+H5:    y3 >= 0 .
+H6:    y3 <= 1 .
 H7:    y1 >= float__first .
 H8:    y1 <= float__last .
 H9:    y2 >= float__first .
@@ -403,12 +403,12 @@ C10:   (1/2) <= float__last .
 For path(s) from start to precondition check associated with statement of line 25:
 
 procedure_coeffs_7.
-H1:    y1 >= iy__first .
-H2:    y1 <= iy__last .
-H3:    y2 >= iy__first .
-H4:    y2 <= iy__last .
-H5:    y3 >= iy__first .
-H6:    y3 <= iy__last .
+H1:    y1 >= 0 .
+H2:    y1 <= 1 .
+H3:    y2 >= 0 .
+H4:    y2 <= 1 .
+H5:    y3 >= 0 .
+H6:    y3 <= 1 .
 H7:    y1 >= float__first .
 H8:    y1 <= float__last .
 H9:    y2 >= float__first .
@@ -511,12 +511,12 @@ C4:    polypaver__floats__add(y3,  -y1) <= float__last .
 For path(s) from start to run-time check associated with statement of line 25:
 
 procedure_coeffs_8.
-H1:    y1 >= iy__first .
-H2:    y1 <= iy__last .
-H3:    y2 >= iy__first .
-H4:    y2 <= iy__last .
-H5:    y3 >= iy__first .
-H6:    y3 <= iy__last .
+H1:    y1 >= 0 .
+H2:    y1 <= 1 .
+H3:    y2 >= 0 .
+H4:    y2 <= 1 .
+H5:    y3 >= 0 .
+H6:    y3 <= 1 .
 H7:    y1 >= float__first .
 H8:    y1 <= float__last .
 H9:    y2 >= float__first .
@@ -627,12 +627,12 @@ C2:    polypaver__floats__multiply((1/2),
 For path(s) from start to run-time check associated with statement of line 27:
 
 procedure_coeffs_9.
-H1:    y1 >= iy__first .
-H2:    y1 <= iy__last .
-H3:    y2 >= iy__first .
-H4:    y2 <= iy__last .
-H5:    y3 >= iy__first .
-H6:    y3 <= iy__last .
+H1:    y1 >= 0 .
+H2:    y1 <= 1 .
+H3:    y2 >= 0 .
+H4:    y2 <= 1 .
+H5:    y3 >= 0 .
+H6:    y3 <= 1 .
 H7:    y1 >= float__first .
 H8:    y1 <= float__last .
 H9:    y2 >= float__first .
@@ -745,12 +745,12 @@ C2:    y2 <= float__last .
 For path(s) from start to finish:
 
 procedure_coeffs_10.
-H1:    y1 >= iy__first .
-H2:    y1 <= iy__last .
-H3:    y2 >= iy__first .
-H4:    y2 <= iy__last .
-H5:    y3 >= iy__first .
-H6:    y3 <= iy__last .
+H1:    y1 >= 0 .
+H2:    y1 <= 1 .
+H3:    y2 >= 0 .
+H4:    y2 <= 1 .
+H5:    y3 >= 0 .
+H6:    y3 <= 1 .
 H7:    y1 >= float__first .
 H8:    y1 <= float__last .
 H9:    y2 >= float__first .
@@ -862,40 +862,34 @@ C1:    polypaver__floats__multiply((1/2),
            polypaver__floats__add(y1, polypaver__floats__add(
            polypaver__floats__multiply( -2, y2), y3))) - 
            polypaver__floats__multiply((1/2), 
-           polypaver__floats__add(y3,  -y1)) + y2 - y1 >= 
-           ipad__first .
+           polypaver__floats__add(y3,  -y1)) + y2 - y1 >=  -(1/1000000) .
 C2:    polypaver__floats__multiply((1/2), 
            polypaver__floats__add(y1, polypaver__floats__add(
            polypaver__floats__multiply( -2, y2), y3))) - 
            polypaver__floats__multiply((1/2), 
-           polypaver__floats__add(y3,  -y1)) + y2 - y1 <= 
-           ipad__last .
+           polypaver__floats__add(y3,  -y1)) + y2 - y1 <= (1/1000000) .
 C3:    y2 = y2 .
 C4:    polypaver__floats__multiply((1/2), 
            polypaver__floats__add(y1, polypaver__floats__add(
            polypaver__floats__multiply( -2, y2), y3))) + 
            polypaver__floats__multiply((1/2), 
-           polypaver__floats__add(y3,  -y1)) + y2 - y3 >= 
-           ipad__first .
+           polypaver__floats__add(y3,  -y1)) + y2 - y3 >=  -(1/1000000) .
 C5:    polypaver__floats__multiply((1/2), 
            polypaver__floats__add(y1, polypaver__floats__add(
            polypaver__floats__multiply( -2, y2), y3))) + 
            polypaver__floats__multiply((1/2), 
-           polypaver__floats__add(y3,  -y1)) + y2 - y3 <= 
-           ipad__last .
+           polypaver__floats__add(y3,  -y1)) + y2 - y3 <= (1/1000000) .
 C6:    polypaver__floats__multiply((1/2), 
            polypaver__floats__add(y1, polypaver__floats__add(
-           polypaver__floats__multiply( -2, y2), y3))) >= 
-           icoeff1__first .
+           polypaver__floats__multiply( -2, y2), y3))) >=  -(11/10) .
 C7:    polypaver__floats__multiply((1/2), 
            polypaver__floats__add(y1, polypaver__floats__add(
-           polypaver__floats__multiply( -2, y2), y3))) <= 
-           icoeff1__last .
+           polypaver__floats__multiply( -2, y2), y3))) <= (11/10) .
 C8:    polypaver__floats__multiply((1/2), 
-           polypaver__floats__add(y3,  -y1)) >= icoeff1__first .
+           polypaver__floats__add(y3,  -y1)) >=  -(11/10) .
 C9:    polypaver__floats__multiply((1/2), 
-           polypaver__floats__add(y3,  -y1)) <= icoeff1__last .
-C10:   y2 >= icoeff1__first .
-C11:   y2 <= icoeff1__last .
+           polypaver__floats__add(y3,  -y1)) <= (11/10) .
+C10:   y2 >=  -(11/10) .
+C11:   y2 <= (11/10) .
  
 

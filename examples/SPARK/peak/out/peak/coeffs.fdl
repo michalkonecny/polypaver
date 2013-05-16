@@ -5,7 +5,7 @@
            {*******************************************************}
 
 
-                        {DATE : 10-MAY-2013 00:12:39.76}
+                        {DATE : 12-MAY-2013 23:31:18.96}
 
                            {procedure Peak.Coeffs}
 
@@ -13,26 +13,8 @@
 title procedure coeffs;
 
   function round__(real) : integer;
-  type iy = real;
-  type ipad = real;
-  type icoeff1 = real;
-  const icoeff1__base__first : real = pending; 
-  const icoeff1__base__last : real = pending; 
-  const ipad__base__first : real = pending; 
-  const ipad__base__last : real = pending; 
-  const iy__base__first : real = pending; 
-  const iy__base__last : real = pending; 
   const float__base__first : real = pending; 
   const float__base__last : real = pending; 
-  const icoeff1__first : real = pending; 
-  const icoeff1__last : real = pending; 
-  const icoeff1__size : integer = pending; 
-  const ipad__first : real = pending; 
-  const ipad__last : real = pending; 
-  const ipad__size : integer = pending; 
-  const iy__first : real = pending; 
-  const iy__last : real = pending; 
-  const iy__size : integer = pending; 
   const float__first : real = pending; 
   const float__last : real = pending; 
   const float__size : integer = pending; 

@@ -5,7 +5,7 @@
 *****************************************************************************
 
 
-CREATED 10-MAY-2013, 00:12:39  SIMPLIFIED 10-MAY-2013, 00:12:42
+CREATED 12-MAY-2013, 23:31:18  SIMPLIFIED 12-MAY-2013, 23:31:22
 
 SPARK Simplifier GPL 2012
 Copyright (C) 2012 Altran Praxis Limited, Bath, U.K.
@@ -34,6 +34,8 @@ procedure Peak.Coeffs
      using hypothesis H9.
 ***  Proved C4:  y2 <= float__last
      using hypothesis H10.
+***  Proved C6:  - 2 <= float__last
+     using hypotheses H1 & H8.
 ***  Proved C9:  y1 >= float__first
      using hypothesis H7.
 ***  Proved C10:  y1 <= float__last
@@ -56,7 +58,6 @@ procedure Peak.Coeffs
 <S>  New H12:  y3 <= 340282000000000000000000000000000000000
 <S>  New C2:  polypaver__floats__multiply(- 2, y2) <= 
           340282000000000000000000000000000000000
-<S>  New C6:  true
 <S>  New C12:  true
 -S-  Applied substitution rule coeffs_rules(4).
      This was achieved by replacing all occurrences of float__base__first by:
@@ -68,22 +69,9 @@ procedure Peak.Coeffs
 <S>  New C8:  true
 ***  Proved C5:  true
 ***  Proved C11:  true
-***  Proved C6:  true
 ***  Proved C12:  true
 ***  Proved C7:  true
 ***  Proved C8:  true
--S-  Applied substitution rule coeffs_rules(7).
-     This was achieved by replacing all occurrences of iy__first by:
-          0.
-<S>  New H1:  y1 >= 0
-<S>  New H3:  y2 >= 0
-<S>  New H5:  y3 >= 0
--S-  Applied substitution rule coeffs_rules(8).
-     This was achieved by replacing all occurrences of iy__last by:
-          1.
-<S>  New H2:  y1 <= 1
-<S>  New H4:  y2 <= 1
-<S>  New H6:  y3 <= 1
 ---  Eliminated hypothesis H7 (redundant, given H1).
 ---  Eliminated hypothesis H8 (redundant, given H2).
 ---  Eliminated hypothesis H9 (redundant, given H3).
@@ -91,9 +79,6 @@ procedure Peak.Coeffs
 ---  Eliminated hypothesis H11 (redundant, given H5).
 ---  Eliminated hypothesis H12 (redundant, given H6).
      +++  New H13:  float__size >= 0
-     +++  New H14:  iy__size >= 0
-     +++  New H15:  ipad__size >= 0
-     +++  New H16:  icoeff1__size >= 0
 
 
 @@@@@@@@@@  VC: procedure_coeffs_2.  @@@@@@@@@@
@@ -171,18 +156,6 @@ procedure Peak.Coeffs
      This was achieved by replacing all occurrences of float__base__last by:
           340282000000000000000000000000000000000.
 <S>  New H20:  true
--S-  Applied substitution rule coeffs_rules(7).
-     This was achieved by replacing all occurrences of iy__first by:
-          0.
-<S>  New H1:  y1 >= 0
-<S>  New H3:  y2 >= 0
-<S>  New H5:  y3 >= 0
--S-  Applied substitution rule coeffs_rules(8).
-     This was achieved by replacing all occurrences of iy__last by:
-          1.
-<S>  New H2:  y1 <= 1
-<S>  New H4:  y2 <= 1
-<S>  New H6:  y3 <= 1
 ---  Eliminated hypothesis H15 (true-hypothesis).
 ---  Eliminated hypothesis H16 (true-hypothesis).
 ---  Eliminated hypothesis H17 (true-hypothesis).
@@ -202,9 +175,6 @@ procedure Peak.Coeffs
 ---  Eliminated hypothesis H11 (redundant, given H5).
 ---  Eliminated hypothesis H12 (redundant, given H6).
      +++  New H27:  float__size >= 0
-     +++  New H28:  iy__size >= 0
-     +++  New H29:  ipad__size >= 0
-     +++  New H30:  icoeff1__size >= 0
 
 
 @@@@@@@@@@  VC: procedure_coeffs_3.  @@@@@@@@@@
@@ -306,18 +276,6 @@ procedure Peak.Coeffs
      This was achieved by replacing all occurrences of float__base__last by:
           340282000000000000000000000000000000000.
 <S>  New H20:  true
--S-  Applied substitution rule coeffs_rules(7).
-     This was achieved by replacing all occurrences of iy__first by:
-          0.
-<S>  New H1:  y1 >= 0
-<S>  New H3:  y2 >= 0
-<S>  New H5:  y3 >= 0
--S-  Applied substitution rule coeffs_rules(8).
-     This was achieved by replacing all occurrences of iy__last by:
-          1.
-<S>  New H2:  y1 <= 1
-<S>  New H4:  y2 <= 1
-<S>  New H6:  y3 <= 1
 ---  Eliminated hypothesis H15 (true-hypothesis).
 ---  Eliminated hypothesis H16 (true-hypothesis).
 ---  Eliminated hypothesis H17 (true-hypothesis).
@@ -343,9 +301,6 @@ procedure Peak.Coeffs
 ---  Eliminated hypothesis H11 (redundant, given H5).
 ---  Eliminated hypothesis H12 (redundant, given H6).
      +++  New H35:  float__size >= 0
-     +++  New H36:  iy__size >= 0
-     +++  New H37:  ipad__size >= 0
-     +++  New H38:  icoeff1__size >= 0
 
 
 @@@@@@@@@@  VC: procedure_coeffs_4.  @@@@@@@@@@
@@ -469,18 +424,6 @@ procedure Peak.Coeffs
      This was achieved by replacing all occurrences of float__base__last by:
           340282000000000000000000000000000000000.
 <S>  New H20:  true
--S-  Applied substitution rule coeffs_rules(7).
-     This was achieved by replacing all occurrences of iy__first by:
-          0.
-<S>  New H1:  y1 >= 0
-<S>  New H3:  y2 >= 0
-<S>  New H5:  y3 >= 0
--S-  Applied substitution rule coeffs_rules(8).
-     This was achieved by replacing all occurrences of iy__last by:
-          1.
-<S>  New H2:  y1 <= 1
-<S>  New H4:  y2 <= 1
-<S>  New H6:  y3 <= 1
 ---  Eliminated hypothesis H15 (true-hypothesis).
 ---  Eliminated hypothesis H16 (true-hypothesis).
 ---  Eliminated hypothesis H17 (true-hypothesis).
@@ -510,9 +453,6 @@ procedure Peak.Coeffs
 ---  Eliminated hypothesis H11 (redundant, given H5).
 ---  Eliminated hypothesis H12 (redundant, given H6).
      +++  New H41:  float__size >= 0
-     +++  New H42:  iy__size >= 0
-     +++  New H43:  ipad__size >= 0
-     +++  New H44:  icoeff1__size >= 0
 
 
 @@@@@@@@@@  VC: procedure_coeffs_5.  @@@@@@@@@@
@@ -744,18 +684,6 @@ procedure Peak.Coeffs
           340282000000000000000000000000000000000.
 <S>  New H20:  true
 <S>  New C6:  - y1 <= 340282000000000000000000000000000000000
--S-  Applied substitution rule coeffs_rules(7).
-     This was achieved by replacing all occurrences of iy__first by:
-          0.
-<S>  New H1:  y1 >= 0
-<S>  New H3:  y2 >= 0
-<S>  New H5:  y3 >= 0
--S-  Applied substitution rule coeffs_rules(8).
-     This was achieved by replacing all occurrences of iy__last by:
-          1.
-<S>  New H2:  y1 <= 1
-<S>  New H4:  y2 <= 1
-<S>  New H6:  y3 <= 1
 ***  Proved C3:  - y1 >= - 340282000000000000000000000000000000000
      using hypothesis H8.
 ***  Proved C4:  - y1 <= 340282000000000000000000000000000000000
@@ -803,9 +731,6 @@ procedure Peak.Coeffs
 ---  Eliminated hypothesis H11 (redundant, given H5).
 ---  Eliminated hypothesis H12 (redundant, given H6).
      +++  New H49:  float__size >= 0
-     +++  New H50:  iy__size >= 0
-     +++  New H51:  ipad__size >= 0
-     +++  New H52:  icoeff1__size >= 0
 
 
 @@@@@@@@@@  VC: procedure_coeffs_7.  @@@@@@@@@@
@@ -957,18 +882,6 @@ procedure Peak.Coeffs
           340282000000000000000000000000000000000.
 <S>  New H20:  true
 <S>  New H54:  - y1 <= 340282000000000000000000000000000000000
--S-  Applied substitution rule coeffs_rules(7).
-     This was achieved by replacing all occurrences of iy__first by:
-          0.
-<S>  New H1:  y1 >= 0
-<S>  New H3:  y2 >= 0
-<S>  New H5:  y3 >= 0
--S-  Applied substitution rule coeffs_rules(8).
-     This was achieved by replacing all occurrences of iy__last by:
-          1.
-<S>  New H2:  y1 <= 1
-<S>  New H4:  y2 <= 1
-<S>  New H6:  y3 <= 1
 ---  Eliminated hypothesis H15 (true-hypothesis).
 ---  Eliminated hypothesis H16 (true-hypothesis).
 ---  Eliminated hypothesis H17 (true-hypothesis).
@@ -1014,9 +927,6 @@ procedure Peak.Coeffs
 ---  Eliminated hypothesis H11 (redundant, given H5).
 ---  Eliminated hypothesis H12 (redundant, given H6).
      +++  New H61:  float__size >= 0
-     +++  New H62:  iy__size >= 0
-     +++  New H63:  ipad__size >= 0
-     +++  New H64:  icoeff1__size >= 0
 
 
 @@@@@@@@@@  VC: procedure_coeffs_8.  @@@@@@@@@@
@@ -1342,73 +1252,33 @@ procedure Peak.Coeffs
      %%%  C1:  polypaver__floats__multiply(1 / 2, polypaver__floats__add(y1, 
           polypaver__floats__add(polypaver__floats__multiply(- 2, y2), y3))) - 
           polypaver__floats__multiply(1 / 2, polypaver__floats__add(y3, - y1)) 
-          + y2 - y1 >= ipad__first
+          + y2 - y1 >= - (1 / 1000000)
 %%%  Simplified C2 on reading formula in, to give:
      %%%  C2:  polypaver__floats__multiply(1 / 2, polypaver__floats__add(y1, 
           polypaver__floats__add(polypaver__floats__multiply(- 2, y2), y3))) - 
           polypaver__floats__multiply(1 / 2, polypaver__floats__add(y3, - y1)) 
-          + y2 - y1 <= ipad__last
+          + y2 - y1 <= 1 / 1000000
 %%%  Simplified C3 on reading formula in, to give:
      %%%  C3:  true
 %%%  Simplified C4 on reading formula in, to give:
      %%%  C4:  polypaver__floats__multiply(1 / 2, polypaver__floats__add(y1, 
           polypaver__floats__add(polypaver__floats__multiply(- 2, y2), y3))) + 
           polypaver__floats__multiply(1 / 2, polypaver__floats__add(y3, - y1)) 
-          + y2 - y3 >= ipad__first
+          + y2 - y3 >= - (1 / 1000000)
 %%%  Simplified C5 on reading formula in, to give:
      %%%  C5:  polypaver__floats__multiply(1 / 2, polypaver__floats__add(y1, 
           polypaver__floats__add(polypaver__floats__multiply(- 2, y2), y3))) + 
           polypaver__floats__multiply(1 / 2, polypaver__floats__add(y3, - y1)) 
-          + y2 - y3 <= ipad__last
+          + y2 - y3 <= 1 / 1000000
 %%%  Simplified C6 on reading formula in, to give:
      %%%  C6:  polypaver__floats__multiply(1 / 2, polypaver__floats__add(y1, 
           polypaver__floats__add(polypaver__floats__multiply(- 2, y2), y3))) >= 
-          icoeff1__first
+          - (11 / 10)
 %%%  Simplified C7 on reading formula in, to give:
      %%%  C7:  polypaver__floats__multiply(1 / 2, polypaver__floats__add(y1, 
           polypaver__floats__add(polypaver__floats__multiply(- 2, y2), y3))) <= 
-          icoeff1__last
-***  Proved C3:  true
--S-  Applied substitution rule coeffs_rules(12).
-     This was achieved by replacing all occurrences of ipad__first by:
-          - (1 / 1000000).
-<S>  New C1:  polypaver__floats__multiply(1 / 2, polypaver__floats__add(y1, 
-          polypaver__floats__add(polypaver__floats__multiply(- 2, y2), y3))) - 
-          polypaver__floats__multiply(1 / 2, polypaver__floats__add(y3, - y1)) 
-          + y2 - y1 >= - (1 / 1000000)
-<S>  New C4:  polypaver__floats__multiply(1 / 2, polypaver__floats__add(y1, 
-          polypaver__floats__add(polypaver__floats__multiply(- 2, y2), y3))) + 
-          polypaver__floats__multiply(1 / 2, polypaver__floats__add(y3, - y1)) 
-          + y2 - y3 >= - (1 / 1000000)
--S-  Applied substitution rule coeffs_rules(13).
-     This was achieved by replacing all occurrences of ipad__last by:
-          1 / 1000000.
-<S>  New C2:  polypaver__floats__multiply(1 / 2, polypaver__floats__add(y1, 
-          polypaver__floats__add(polypaver__floats__multiply(- 2, y2), y3))) - 
-          polypaver__floats__multiply(1 / 2, polypaver__floats__add(y3, - y1)) 
-          + y2 - y1 <= 1 / 1000000
-<S>  New C5:  polypaver__floats__multiply(1 / 2, polypaver__floats__add(y1, 
-          polypaver__floats__add(polypaver__floats__multiply(- 2, y2), y3))) + 
-          polypaver__floats__multiply(1 / 2, polypaver__floats__add(y3, - y1)) 
-          + y2 - y3 <= 1 / 1000000
--S-  Applied substitution rule coeffs_rules(17).
-     This was achieved by replacing all occurrences of icoeff1__first by:
-          - (11 / 10).
-<S>  New C6:  polypaver__floats__multiply(1 / 2, polypaver__floats__add(y1, 
-          polypaver__floats__add(polypaver__floats__multiply(- 2, y2), y3))) >= 
-          - (11 / 10)
-<S>  New C8:  polypaver__floats__multiply(1 / 2, polypaver__floats__add(y3, - 
-          y1)) >= - (11 / 10)
-<S>  New C10:  y2 >= - (11 / 10)
--S-  Applied substitution rule coeffs_rules(18).
-     This was achieved by replacing all occurrences of icoeff1__last by:
-          11 / 10.
-<S>  New C7:  polypaver__floats__multiply(1 / 2, polypaver__floats__add(y1, 
-          polypaver__floats__add(polypaver__floats__multiply(- 2, y2), y3))) <= 
           11 / 10
-<S>  New C9:  polypaver__floats__multiply(1 / 2, polypaver__floats__add(y3, - 
-          y1)) <= 11 / 10
-<S>  New C11:  y2 <= 11 / 10
+***  Proved C3:  true
 -S-  Applied substitution rule coeffs_rules(2).
      This was achieved by replacing all occurrences of float__first by:
           - 340282000000000000000000000000000000000.
@@ -1465,18 +1335,6 @@ procedure Peak.Coeffs
           340282000000000000000000000000000000000.
 <S>  New H20:  true
 <S>  New H54:  - y1 <= 340282000000000000000000000000000000000
--S-  Applied substitution rule coeffs_rules(7).
-     This was achieved by replacing all occurrences of iy__first by:
-          0.
-<S>  New H1:  y1 >= 0
-<S>  New H3:  y2 >= 0
-<S>  New H5:  y3 >= 0
--S-  Applied substitution rule coeffs_rules(8).
-     This was achieved by replacing all occurrences of iy__last by:
-          1.
-<S>  New H2:  y1 <= 1
-<S>  New H4:  y2 <= 1
-<S>  New H6:  y3 <= 1
 ---  Eliminated hypothesis H15 (true-hypothesis).
 ---  Eliminated hypothesis H16 (true-hypothesis).
 ---  Eliminated hypothesis H21 (true-hypothesis).
@@ -1534,7 +1392,4 @@ procedure Peak.Coeffs
 ***  Proved C11:  y2 <= 11 / 10
      using hypothesis H4.
      +++  New H71:  float__size >= 0
-     +++  New H72:  iy__size >= 0
-     +++  New H73:  ipad__size >= 0
-     +++  New H74:  icoeff1__size >= 0
 

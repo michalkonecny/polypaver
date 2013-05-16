@@ -5,7 +5,7 @@
 *****************************************************************************
 
 
-CREATED 10-MAY-2013, 00:12:39  SIMPLIFIED 10-MAY-2013, 00:12:42
+CREATED 12-MAY-2013, 23:31:18  SIMPLIFIED 12-MAY-2013, 23:31:23
 
 SPARK Simplifier GPL 2012
 Copyright (C) 2012 Altran Praxis Limited, Bath, U.K.
@@ -70,17 +70,17 @@ function Peak.PeakUnit
      using hypothesis H7.
 ***  Proved C6:  y1 <= float__last
      using hypothesis H8.
-***  Proved C7:  y1 >= iy__first
+***  Proved C7:  y1 >= 0
      using hypothesis H1.
-***  Proved C8:  y1 <= iy__last
+***  Proved C8:  y1 <= 1
      using hypothesis H2.
-***  Proved C9:  y2 >= iy__first
+***  Proved C9:  y2 >= 0
      using hypothesis H3.
-***  Proved C10:  y2 <= iy__last
+***  Proved C10:  y2 <= 1
      using hypothesis H4.
-***  Proved C11:  y3 >= iy__first
+***  Proved C11:  y3 >= 0
      using hypothesis H5.
-***  Proved C12:  y3 <= iy__last
+***  Proved C12:  y3 <= 1
      using hypothesis H6.
 ***  PROVED VC.
 
@@ -194,6 +194,8 @@ function Peak.PeakUnit
      using hypothesis H45.
 ***  Proved C4:  a__1 <= float__last
      using hypothesis H46.
+***  Proved C5:  2 >= float__first
+     using hypotheses H2 & H7.
 -S-  Applied substitution rule peakunit_rules(7).
      This was achieved by replacing all occurrences of float__first by:
           - 340282000000000000000000000000000000000.
@@ -206,7 +208,6 @@ function Peak.PeakUnit
 <S>  New H49:  c__1 >= - 340282000000000000000000000000000000000
 <S>  New C1:  polypaver__floats__multiply(2, a__1) >= - 
           340282000000000000000000000000000000000
-<S>  New C5:  true
 -S-  Applied substitution rule peakunit_rules(8).
      This was achieved by replacing all occurrences of float__last by:
           340282000000000000000000000000000000000.
@@ -220,42 +221,7 @@ function Peak.PeakUnit
 <S>  New C2:  polypaver__floats__multiply(2, a__1) <= 
           340282000000000000000000000000000000000
 <S>  New C6:  true
-***  Proved C5:  true
 ***  Proved C6:  true
--S-  Applied substitution rule peakunit_rules(12).
-     This was achieved by replacing all occurrences of iy__first by:
-          0.
-<S>  New H1:  y1 >= 0
-<S>  New H3:  y2 >= 0
-<S>  New H5:  y3 >= 0
--S-  Applied substitution rule peakunit_rules(13).
-     This was achieved by replacing all occurrences of iy__last by:
-          1.
-<S>  New H2:  y1 <= 1
-<S>  New H4:  y2 <= 1
-<S>  New H6:  y3 <= 1
--S-  Applied substitution rule peakunit_rules(17).
-     This was achieved by replacing all occurrences of ipad__first by:
-          - (1 / 1000000).
-<S>  New H34:  a__1 - b__1 + c__1 - y1 >= - (1 / 1000000)
-<S>  New H37:  a__1 + b__1 + c__1 - y3 >= - (1 / 1000000)
--S-  Applied substitution rule peakunit_rules(18).
-     This was achieved by replacing all occurrences of ipad__last by:
-          1 / 1000000.
-<S>  New H35:  a__1 - b__1 + c__1 - y1 <= 1 / 1000000
-<S>  New H38:  a__1 + b__1 + c__1 - y3 <= 1 / 1000000
--S-  Applied substitution rule peakunit_rules(22).
-     This was achieved by replacing all occurrences of icoeff1__first by:
-          - (11 / 10).
-<S>  New H39:  a__1 >= - (11 / 10)
-<S>  New H41:  b__1 >= - (11 / 10)
-<S>  New H43:  c__1 >= - (11 / 10)
--S-  Applied substitution rule peakunit_rules(23).
-     This was achieved by replacing all occurrences of icoeff1__last by:
-          11 / 10.
-<S>  New H40:  a__1 <= 11 / 10
-<S>  New H42:  b__1 <= 11 / 10
-<S>  New H44:  c__1 <= 11 / 10
 ---  Eliminated hypothesis H13 (true-hypothesis).
 ---  Eliminated hypothesis H14 (true-hypothesis).
 ---  Eliminated hypothesis H15 (true-hypothesis).
@@ -294,8 +260,8 @@ function Peak.PeakUnit
      This was achieved by replacing all occurrences of c__1 by:
           y2.
 <S>  New H34:  a__1 - b__1 + y2 - y1 >= - (1 / 1000000)
-<S>  New H37:  a__1 + b__1 + y2 - y3 >= - (1 / 1000000)
 <S>  New H35:  a__1 - b__1 + y2 - y1 <= 1 / 1000000
+<S>  New H37:  a__1 + b__1 + y2 - y3 >= - (1 / 1000000)
 <S>  New H38:  a__1 + b__1 + y2 - y3 <= 1 / 1000000
 <S>  New H43:  y2 >= - (11 / 10)
 <S>  New H44:  y2 <= 11 / 10
@@ -305,10 +271,6 @@ function Peak.PeakUnit
      +++  New H62:  universal_real__base__first <= universal_real__first
      +++  New H63:  universal_real__base__last >= universal_real__last
      +++  New H64:  float__size >= 0
-     +++  New H65:  iy__size >= 0
-     +++  New H66:  ipad__size >= 0
-     +++  New H67:  icoeff1__size >= 0
-     +++  New H68:  icoeff2__size >= 0
 
 
 @@@@@@@@@@  VC: function_peakunit_6.  @@@@@@@@@@
@@ -440,40 +402,6 @@ function Peak.PeakUnit
 ***  Proved C5:  true
 ***  Proved C7:  true
 ***  Proved C8:  true
--S-  Applied substitution rule peakunit_rules(12).
-     This was achieved by replacing all occurrences of iy__first by:
-          0.
-<S>  New H1:  y1 >= 0
-<S>  New H3:  y2 >= 0
-<S>  New H5:  y3 >= 0
--S-  Applied substitution rule peakunit_rules(13).
-     This was achieved by replacing all occurrences of iy__last by:
-          1.
-<S>  New H2:  y1 <= 1
-<S>  New H4:  y2 <= 1
-<S>  New H6:  y3 <= 1
--S-  Applied substitution rule peakunit_rules(17).
-     This was achieved by replacing all occurrences of ipad__first by:
-          - (1 / 1000000).
-<S>  New H34:  a__1 - b__1 + c__1 - y1 >= - (1 / 1000000)
-<S>  New H37:  a__1 + b__1 + c__1 - y3 >= - (1 / 1000000)
--S-  Applied substitution rule peakunit_rules(18).
-     This was achieved by replacing all occurrences of ipad__last by:
-          1 / 1000000.
-<S>  New H35:  a__1 - b__1 + c__1 - y1 <= 1 / 1000000
-<S>  New H38:  a__1 + b__1 + c__1 - y3 <= 1 / 1000000
--S-  Applied substitution rule peakunit_rules(22).
-     This was achieved by replacing all occurrences of icoeff1__first by:
-          - (11 / 10).
-<S>  New H39:  a__1 >= - (11 / 10)
-<S>  New H41:  b__1 >= - (11 / 10)
-<S>  New H43:  c__1 >= - (11 / 10)
--S-  Applied substitution rule peakunit_rules(23).
-     This was achieved by replacing all occurrences of icoeff1__last by:
-          11 / 10.
-<S>  New H40:  a__1 <= 11 / 10
-<S>  New H42:  b__1 <= 11 / 10
-<S>  New H44:  c__1 <= 11 / 10
 ---  Eliminated hypothesis H13 (true-hypothesis).
 ---  Eliminated hypothesis H14 (true-hypothesis).
 ---  Eliminated hypothesis H15 (true-hypothesis).
@@ -522,8 +450,8 @@ function Peak.PeakUnit
      This was achieved by replacing all occurrences of c__1 by:
           y2.
 <S>  New H34:  a__1 - b__1 + y2 - y1 >= - (1 / 1000000)
-<S>  New H37:  a__1 + b__1 + y2 - y3 >= - (1 / 1000000)
 <S>  New H35:  a__1 - b__1 + y2 - y1 <= 1 / 1000000
+<S>  New H37:  a__1 + b__1 + y2 - y3 >= - (1 / 1000000)
 <S>  New H38:  a__1 + b__1 + y2 - y3 <= 1 / 1000000
 <S>  New H43:  y2 >= - (11 / 10)
 <S>  New H44:  y2 <= 11 / 10
@@ -533,10 +461,6 @@ function Peak.PeakUnit
      +++  New H76:  universal_real__base__first <= universal_real__first
      +++  New H77:  universal_real__base__last >= universal_real__last
      +++  New H78:  float__size >= 0
-     +++  New H79:  iy__size >= 0
-     +++  New H80:  ipad__size >= 0
-     +++  New H81:  icoeff1__size >= 0
-     +++  New H82:  icoeff2__size >= 0
 
 
 @@@@@@@@@@  VC: function_peakunit_7.  @@@@@@@@@@
@@ -654,6 +578,12 @@ function Peak.PeakUnit
 ***  Proved C2:  true
 ***  Proved C3:  a__1 < - (1 / 20)
      using hypothesis H83.
+***  Proved C5:  a__1 <= 6 / 5
+     using hypothesis H40.
+***  Proved C7:  b__1 <= 6 / 5
+     using hypothesis H42.
+***  Proved C9:  c__1 <= 6 / 5
+     using hypothesis H44.
 ***  Proved C10:  0 >= float__first
      using hypothesis H77.
 ***  Proved C11:  0 <= float__last
@@ -674,20 +604,6 @@ function Peak.PeakUnit
      using hypothesis H17.
 ***  Proved C19:  max(y1, y3) <= float__last
      using hypothesis H18.
--S-  Applied substitution rule peakunit_rules(27).
-     This was achieved by replacing all occurrences of icoeff2__first by:
-          - (6 / 5).
-<S>  New C4:  a__1 >= - (6 / 5)
-<S>  New C6:  b__1 >= - (6 / 5)
-<S>  New C8:  c__1 >= - (6 / 5)
--S-  Applied substitution rule peakunit_rules(28).
-     This was achieved by replacing all occurrences of icoeff2__last by:
-          6 / 5.
-<S>  New C5:  a__1 <= 6 / 5
-<S>  New C7:  b__1 <= 6 / 5
-<S>  New C9:  c__1 <= 6 / 5
-***  Proved C5:  a__1 <= 6 / 5
-     using hypothesis H83.
 -S-  Applied substitution rule peakunit_rules(7).
      This was achieved by replacing all occurrences of float__first by:
           - 340282000000000000000000000000000000000.
@@ -728,44 +644,6 @@ function Peak.PeakUnit
      This was achieved by replacing all occurrences of float__base__last by:
           340282000000000000000000000000000000000.
 <S>  New H80:  true
--S-  Applied substitution rule peakunit_rules(12).
-     This was achieved by replacing all occurrences of iy__first by:
-          0.
-<S>  New H1:  y1 >= 0
-<S>  New H3:  y2 >= 0
-<S>  New H5:  y3 >= 0
--S-  Applied substitution rule peakunit_rules(13).
-     This was achieved by replacing all occurrences of iy__last by:
-          1.
-<S>  New H2:  y1 <= 1
-<S>  New H4:  y2 <= 1
-<S>  New H6:  y3 <= 1
--S-  Applied substitution rule peakunit_rules(17).
-     This was achieved by replacing all occurrences of ipad__first by:
-          - (1 / 1000000).
-<S>  New H34:  a__1 - b__1 + c__1 - y1 >= - (1 / 1000000)
-<S>  New H37:  a__1 + b__1 + c__1 - y3 >= - (1 / 1000000)
--S-  Applied substitution rule peakunit_rules(18).
-     This was achieved by replacing all occurrences of ipad__last by:
-          1 / 1000000.
-<S>  New H35:  a__1 - b__1 + c__1 - y1 <= 1 / 1000000
-<S>  New H38:  a__1 + b__1 + c__1 - y3 <= 1 / 1000000
--S-  Applied substitution rule peakunit_rules(22).
-     This was achieved by replacing all occurrences of icoeff1__first by:
-          - (11 / 10).
-<S>  New H39:  a__1 >= - (11 / 10)
-<S>  New H41:  b__1 >= - (11 / 10)
-<S>  New H43:  c__1 >= - (11 / 10)
--S-  Applied substitution rule peakunit_rules(23).
-     This was achieved by replacing all occurrences of icoeff1__last by:
-          11 / 10.
-<S>  New H40:  a__1 <= 11 / 10
-<S>  New H42:  b__1 <= 11 / 10
-<S>  New H44:  c__1 <= 11 / 10
-***  Proved C7:  b__1 <= 6 / 5
-     using hypothesis H42.
-***  Proved C9:  c__1 <= 6 / 5
-     using hypothesis H44.
 ---  Eliminated hypothesis H13 (true-hypothesis).
 ---  Eliminated hypothesis H14 (true-hypothesis).
 ---  Eliminated hypothesis H15 (true-hypothesis).
@@ -830,8 +708,8 @@ function Peak.PeakUnit
      This was achieved by replacing all occurrences of c__1 by:
           y2.
 <S>  New H34:  a__1 - b__1 + y2 - y1 >= - (1 / 1000000)
-<S>  New H37:  a__1 + b__1 + y2 - y3 >= - (1 / 1000000)
 <S>  New H35:  a__1 - b__1 + y2 - y1 <= 1 / 1000000
+<S>  New H37:  a__1 + b__1 + y2 - y3 >= - (1 / 1000000)
 <S>  New H38:  a__1 + b__1 + y2 - y3 <= 1 / 1000000
 <S>  New H43:  y2 >= - (11 / 10)
 <S>  New H44:  y2 <= 11 / 10
@@ -1425,52 +1303,6 @@ function Peak.PeakUnit
      This was achieved by replacing all occurrences of float__base__last by:
           340282000000000000000000000000000000000.
 <S>  New H80:  true
--S-  Applied substitution rule peakunit_rules(12).
-     This was achieved by replacing all occurrences of iy__first by:
-          0.
-<S>  New H1:  y1 >= 0
-<S>  New H3:  y2 >= 0
-<S>  New H5:  y3 >= 0
--S-  Applied substitution rule peakunit_rules(13).
-     This was achieved by replacing all occurrences of iy__last by:
-          1.
-<S>  New H2:  y1 <= 1
-<S>  New H4:  y2 <= 1
-<S>  New H6:  y3 <= 1
--S-  Applied substitution rule peakunit_rules(17).
-     This was achieved by replacing all occurrences of ipad__first by:
-          - (1 / 1000000).
-<S>  New H34:  a__1 - b__1 + c__1 - y1 >= - (1 / 1000000)
-<S>  New H37:  a__1 + b__1 + c__1 - y3 >= - (1 / 1000000)
--S-  Applied substitution rule peakunit_rules(18).
-     This was achieved by replacing all occurrences of ipad__last by:
-          1 / 1000000.
-<S>  New H35:  a__1 - b__1 + c__1 - y1 <= 1 / 1000000
-<S>  New H38:  a__1 + b__1 + c__1 - y3 <= 1 / 1000000
--S-  Applied substitution rule peakunit_rules(22).
-     This was achieved by replacing all occurrences of icoeff1__first by:
-          - (11 / 10).
-<S>  New H39:  a__1 >= - (11 / 10)
-<S>  New H41:  b__1 >= - (11 / 10)
-<S>  New H43:  c__1 >= - (11 / 10)
--S-  Applied substitution rule peakunit_rules(23).
-     This was achieved by replacing all occurrences of icoeff1__last by:
-          11 / 10.
-<S>  New H40:  a__1 <= 11 / 10
-<S>  New H42:  b__1 <= 11 / 10
-<S>  New H44:  c__1 <= 11 / 10
--S-  Applied substitution rule peakunit_rules(27).
-     This was achieved by replacing all occurrences of icoeff2__first by:
-          - (6 / 5).
-<S>  New H97:  a__1 >= - (6 / 5)
-<S>  New H99:  b__1 >= - (6 / 5)
-<S>  New H101:  c__1 >= - (6 / 5)
--S-  Applied substitution rule peakunit_rules(28).
-     This was achieved by replacing all occurrences of icoeff2__last by:
-          6 / 5.
-<S>  New H98:  a__1 <= 6 / 5
-<S>  New H100:  b__1 <= 6 / 5
-<S>  New H102:  c__1 <= 6 / 5
 ---  Eliminated hypothesis H13 (true-hypothesis).
 ---  Eliminated hypothesis H14 (true-hypothesis).
 ---  Eliminated hypothesis H15 (true-hypothesis).
@@ -1554,6 +1386,14 @@ function Peak.PeakUnit
 -S-  Eliminated hypothesis H36.
      This was achieved by replacing all occurrences of c__1 by:
           y2.
+<S>  New H34:  a__1 - b__1 + y2 - y1 >= - (1 / 1000000)
+<S>  New H35:  a__1 - b__1 + y2 - y1 <= 1 / 1000000
+<S>  New H37:  a__1 + b__1 + y2 - y3 >= - (1 / 1000000)
+<S>  New H38:  a__1 + b__1 + y2 - y3 <= 1 / 1000000
+<S>  New H43:  y2 >= - (11 / 10)
+<S>  New H44:  y2 <= 11 / 10
+<S>  New H101:  y2 >= - (6 / 5)
+<S>  New H102:  y2 <= 6 / 5
 <S>  New H115:  peakq(a__1, b__1, y2, 0) >= y2 - 1 / 20
 <S>  New H116:  peakq(a__1, b__1, y2, 0) <= 10
 <S>  New H121:  max(max(y1, y3), peakq(a__1, b__1, y2, 0)) = max(y1, y3) and 
@@ -1566,14 +1406,6 @@ function Peak.PeakUnit
           340282000000000000000000000000000000000
 <S>  New H120:  max(max(y1, y3), peakq(a__1, b__1, y2, 0)) <= 
           340282000000000000000000000000000000000
-<S>  New H34:  a__1 - b__1 + y2 - y1 >= - (1 / 1000000)
-<S>  New H37:  a__1 + b__1 + y2 - y3 >= - (1 / 1000000)
-<S>  New H35:  a__1 - b__1 + y2 - y1 <= 1 / 1000000
-<S>  New H38:  a__1 + b__1 + y2 - y3 <= 1 / 1000000
-<S>  New H43:  y2 >= - (11 / 10)
-<S>  New H44:  y2 <= 11 / 10
-<S>  New H101:  y2 >= - (6 / 5)
-<S>  New H102:  y2 <= 6 / 5
 <S>  New C1:  max(max(y1, y3), peakq(a__1, b__1, y2, 0)) >= y1 - 1 / 5
 <S>  New C2:  max(max(y1, y3), peakq(a__1, b__1, y2, 0)) >= y2 - 1 / 5
 <S>  New C3:  max(max(y1, y3), peakq(a__1, b__1, y2, 0)) >= y3 - 1 / 5
@@ -1583,10 +1415,6 @@ function Peak.PeakUnit
      +++  New H129:  universal_real__base__first <= universal_real__first
      +++  New H130:  universal_real__base__last >= universal_real__last
      +++  New H131:  float__size >= 0
-     +++  New H132:  iy__size >= 0
-     +++  New H133:  ipad__size >= 0
-     +++  New H134:  icoeff1__size >= 0
-     +++  New H135:  icoeff2__size >= 0
 
 
 @@@@@@@@@@  VC: function_peakunit_12.  @@@@@@@@@@
@@ -1740,40 +1568,6 @@ function Peak.PeakUnit
      This was achieved by replacing all occurrences of float__base__last by:
           340282000000000000000000000000000000000.
 <S>  New H80:  true
--S-  Applied substitution rule peakunit_rules(12).
-     This was achieved by replacing all occurrences of iy__first by:
-          0.
-<S>  New H1:  y1 >= 0
-<S>  New H3:  y2 >= 0
-<S>  New H5:  y3 >= 0
--S-  Applied substitution rule peakunit_rules(13).
-     This was achieved by replacing all occurrences of iy__last by:
-          1.
-<S>  New H2:  y1 <= 1
-<S>  New H4:  y2 <= 1
-<S>  New H6:  y3 <= 1
--S-  Applied substitution rule peakunit_rules(17).
-     This was achieved by replacing all occurrences of ipad__first by:
-          - (1 / 1000000).
-<S>  New H34:  a__1 - b__1 + c__1 - y1 >= - (1 / 1000000)
-<S>  New H37:  a__1 + b__1 + c__1 - y3 >= - (1 / 1000000)
--S-  Applied substitution rule peakunit_rules(18).
-     This was achieved by replacing all occurrences of ipad__last by:
-          1 / 1000000.
-<S>  New H35:  a__1 - b__1 + c__1 - y1 <= 1 / 1000000
-<S>  New H38:  a__1 + b__1 + c__1 - y3 <= 1 / 1000000
--S-  Applied substitution rule peakunit_rules(22).
-     This was achieved by replacing all occurrences of icoeff1__first by:
-          - (11 / 10).
-<S>  New H39:  a__1 >= - (11 / 10)
-<S>  New H41:  b__1 >= - (11 / 10)
-<S>  New H43:  c__1 >= - (11 / 10)
--S-  Applied substitution rule peakunit_rules(23).
-     This was achieved by replacing all occurrences of icoeff1__last by:
-          11 / 10.
-<S>  New H40:  a__1 <= 11 / 10
-<S>  New H42:  b__1 <= 11 / 10
-<S>  New H44:  c__1 <= 11 / 10
 ---  Eliminated hypothesis H13 (true-hypothesis).
 ---  Eliminated hypothesis H14 (true-hypothesis).
 ---  Eliminated hypothesis H15 (true-hypothesis).
@@ -1836,8 +1630,8 @@ function Peak.PeakUnit
      This was achieved by replacing all occurrences of c__1 by:
           y2.
 <S>  New H34:  a__1 - b__1 + y2 - y1 >= - (1 / 1000000)
-<S>  New H37:  a__1 + b__1 + y2 - y3 >= - (1 / 1000000)
 <S>  New H35:  a__1 - b__1 + y2 - y1 <= 1 / 1000000
+<S>  New H37:  a__1 + b__1 + y2 - y3 >= - (1 / 1000000)
 <S>  New H38:  a__1 + b__1 + y2 - y3 <= 1 / 1000000
 <S>  New H43:  y2 >= - (11 / 10)
 <S>  New H44:  y2 <= 11 / 10
@@ -1847,8 +1641,4 @@ function Peak.PeakUnit
      +++  New H93:  universal_real__base__first <= universal_real__first
      +++  New H94:  universal_real__base__last >= universal_real__last
      +++  New H95:  float__size >= 0
-     +++  New H96:  iy__size >= 0
-     +++  New H97:  ipad__size >= 0
-     +++  New H98:  icoeff1__size >= 0
-     +++  New H99:  icoeff2__size >= 0
 

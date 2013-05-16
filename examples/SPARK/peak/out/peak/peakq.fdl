@@ -5,7 +5,7 @@
            {*******************************************************}
 
 
-                        {DATE : 10-MAY-2013 00:12:39.78}
+                        {DATE : 12-MAY-2013 23:31:18.98}
 
                             {function Peak.PeakQ}
 
@@ -13,14 +13,8 @@
 title function peakq;
 
   function round__(real) : integer;
-  type icoeff2 = real;
-  const icoeff2__base__first : real = pending; 
-  const icoeff2__base__last : real = pending; 
   const float__base__first : real = pending; 
   const float__base__last : real = pending; 
-  const icoeff2__first : real = pending; 
-  const icoeff2__last : real = pending; 
-  const icoeff2__size : integer = pending; 
   const float__first : real = pending; 
   const float__last : real = pending; 
   const float__size : integer = pending; 
