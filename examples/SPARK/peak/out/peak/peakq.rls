@@ -5,7 +5,7 @@
            /*********************************************************/
 
 
-                        /*DATE : 10-MAY-2013 00:12:39.78*/
+                        /*DATE : 12-MAY-2013 23:31:18.98*/
 
                             /*function Peak.PeakQ*/
 
@@ -20,8 +20,3 @@ peakq_rules(2): float__first may_be_replaced_by -3402820000000000000000000000000
 peakq_rules(3): float__last may_be_replaced_by 340282000000000000000000000000000000000.
 peakq_rules(4): float__base__first may_be_replaced_by -340282000000000000000000000000000000000.
 peakq_rules(5): float__base__last may_be_replaced_by 340282000000000000000000000000000000000.
-peakq_rules(6): icoeff2__size >= 0 may_be_deduced.
-peakq_rules(7): icoeff2__first may_be_replaced_by (-6/5).
-peakq_rules(8): icoeff2__last may_be_replaced_by (6/5).
-peakq_rules(9): icoeff2__base__first may_be_replaced_by -340282000000000000000000000000000000000.
-peakq_rules(10): icoeff2__base__last may_be_replaced_by 340282000000000000000000000000000000000.

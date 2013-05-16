@@ -5,7 +5,7 @@
 *****************************************************************************
 
 
-CREATED 10-MAY-2013, 00:12:39  SIMPLIFIED 10-MAY-2013, 00:12:42
+CREATED 12-MAY-2013, 23:31:18  SIMPLIFIED 12-MAY-2013, 23:31:22
 
 SPARK Simplifier GPL 2012
 Copyright (C) 2012 Altran Praxis Limited, Bath, U.K.
@@ -56,18 +56,6 @@ function Peak.PeakQ
      This was achieved by replacing all occurrences of float__base__last by:
           340282000000000000000000000000000000000.
 <S>  New C6:  - x <= 340282000000000000000000000000000000000
--S-  Applied substitution rule peakq_rules(7).
-     This was achieved by replacing all occurrences of icoeff2__first by:
-          - (6 / 5).
-<S>  New H4:  a >= - (6 / 5)
-<S>  New H6:  b >= - (6 / 5)
-<S>  New H8:  c >= - (6 / 5)
--S-  Applied substitution rule peakq_rules(8).
-     This was achieved by replacing all occurrences of icoeff2__last by:
-          6 / 5.
-<S>  New H5:  a <= 6 / 5
-<S>  New H7:  b <= 6 / 5
-<S>  New H9:  c <= 6 / 5
 ***  Proved C3:  - x >= - 340282000000000000000000000000000000000
      using hypothesis H17.
 ***  Proved C4:  - x <= 340282000000000000000000000000000000000
@@ -83,7 +71,6 @@ function Peak.PeakQ
 ---  Eliminated hypothesis H16 (redundant, given H1).
 ---  Eliminated hypothesis H17 (redundant, given H2).
      +++  New H18:  float__size >= 0
-     +++  New H19:  icoeff2__size >= 0
 
 
 @@@@@@@@@@  VC: function_peakq_2.  @@@@@@@@@@
@@ -137,18 +124,6 @@ function Peak.PeakQ
      This was achieved by replacing all occurrences of float__base__last by:
           340282000000000000000000000000000000000.
 <S>  New H23:  - x <= 340282000000000000000000000000000000000
--S-  Applied substitution rule peakq_rules(7).
-     This was achieved by replacing all occurrences of icoeff2__first by:
-          - (6 / 5).
-<S>  New H4:  a >= - (6 / 5)
-<S>  New H6:  b >= - (6 / 5)
-<S>  New H8:  c >= - (6 / 5)
--S-  Applied substitution rule peakq_rules(8).
-     This was achieved by replacing all occurrences of icoeff2__last by:
-          6 / 5.
-<S>  New H5:  a <= 6 / 5
-<S>  New H7:  b <= 6 / 5
-<S>  New H9:  c <= 6 / 5
 ---  Eliminated hypothesis H24 (true-hypothesis).
 ---  Eliminated hypothesis H25 (true-hypothesis).
 ---  Eliminated hypothesis H26 (true-hypothesis).
@@ -162,7 +137,6 @@ function Peak.PeakQ
 ---  Eliminated hypothesis H16 (redundant, given H1).
 ---  Eliminated hypothesis H17 (redundant, given H2).
      +++  New H30:  float__size >= 0
-     +++  New H31:  icoeff2__size >= 0
 
 
 @@@@@@@@@@  VC: function_peakq_3.  @@@@@@@@@@
@@ -272,18 +246,6 @@ function Peak.PeakQ
      This was achieved by replacing all occurrences of float__base__last by:
           340282000000000000000000000000000000000.
 <S>  New H23:  - x <= 340282000000000000000000000000000000000
--S-  Applied substitution rule peakq_rules(7).
-     This was achieved by replacing all occurrences of icoeff2__first by:
-          - (6 / 5).
-<S>  New H4:  a >= - (6 / 5)
-<S>  New H6:  b >= - (6 / 5)
-<S>  New H8:  c >= - (6 / 5)
--S-  Applied substitution rule peakq_rules(8).
-     This was achieved by replacing all occurrences of icoeff2__last by:
-          6 / 5.
-<S>  New H5:  a <= 6 / 5
-<S>  New H7:  b <= 6 / 5
-<S>  New H9:  c <= 6 / 5
 ---  Eliminated hypothesis H24 (true-hypothesis).
 ---  Eliminated hypothesis H25 (true-hypothesis).
 ---  Eliminated hypothesis H26 (true-hypothesis).
@@ -303,7 +265,6 @@ function Peak.PeakQ
 ---  Eliminated hypothesis H16 (redundant, given H1).
 ---  Eliminated hypothesis H17 (redundant, given H2).
      +++  New H38:  float__size >= 0
-     +++  New H39:  icoeff2__size >= 0
 
 
 @@@@@@@@@@  VC: function_peakq_5.  @@@@@@@@@@
@@ -360,7 +321,7 @@ function Peak.PeakQ
           float__last
      using hypothesis H31.
 ***  Proved C5:  4 >= float__first
-     using hypotheses H3 & H10.
+     using hypotheses H5 & H10.
 ***  Proved C7:  polypaver__floats__multiply(b, b) >= float__first
      using hypothesis H38.
 ***  Proved C8:  polypaver__floats__multiply(b, b) <= float__last
@@ -409,18 +370,6 @@ function Peak.PeakQ
      This was achieved by replacing all occurrences of float__base__last by:
           340282000000000000000000000000000000000.
 <S>  New H23:  - x <= 340282000000000000000000000000000000000
--S-  Applied substitution rule peakq_rules(7).
-     This was achieved by replacing all occurrences of icoeff2__first by:
-          - (6 / 5).
-<S>  New H4:  a >= - (6 / 5)
-<S>  New H6:  b >= - (6 / 5)
-<S>  New H8:  c >= - (6 / 5)
--S-  Applied substitution rule peakq_rules(8).
-     This was achieved by replacing all occurrences of icoeff2__last by:
-          6 / 5.
-<S>  New H5:  a <= 6 / 5
-<S>  New H7:  b <= 6 / 5
-<S>  New H9:  c <= 6 / 5
 ---  Eliminated hypothesis H24 (true-hypothesis).
 ---  Eliminated hypothesis H25 (true-hypothesis).
 ---  Eliminated hypothesis H26 (true-hypothesis).
@@ -450,7 +399,6 @@ function Peak.PeakQ
 ---  Eliminated hypothesis H16 (redundant, given H1).
 ---  Eliminated hypothesis H17 (redundant, given H2).
      +++  New H50:  float__size >= 0
-     +++  New H51:  icoeff2__size >= 0
 
 
 @@@@@@@@@@  VC: function_peakq_6.  @@@@@@@@@@
@@ -570,18 +518,6 @@ function Peak.PeakQ
      This was achieved by replacing all occurrences of float__base__last by:
           340282000000000000000000000000000000000.
 <S>  New H23:  - x <= 340282000000000000000000000000000000000
--S-  Applied substitution rule peakq_rules(7).
-     This was achieved by replacing all occurrences of icoeff2__first by:
-          - (6 / 5).
-<S>  New H4:  a >= - (6 / 5)
-<S>  New H6:  b >= - (6 / 5)
-<S>  New H8:  c >= - (6 / 5)
--S-  Applied substitution rule peakq_rules(8).
-     This was achieved by replacing all occurrences of icoeff2__last by:
-          6 / 5.
-<S>  New H5:  a <= 6 / 5
-<S>  New H7:  b <= 6 / 5
-<S>  New H9:  c <= 6 / 5
 ---  Eliminated hypothesis H24 (true-hypothesis).
 ---  Eliminated hypothesis H25 (true-hypothesis).
 ---  Eliminated hypothesis H26 (true-hypothesis).
@@ -619,7 +555,6 @@ function Peak.PeakQ
 ---  Eliminated hypothesis H16 (redundant, given H1).
 ---  Eliminated hypothesis H17 (redundant, given H2).
      +++  New H60:  float__size >= 0
-     +++  New H61:  icoeff2__size >= 0
 
 
 @@@@@@@@@@  VC: function_peakq_7.  @@@@@@@@@@
@@ -765,18 +700,6 @@ function Peak.PeakQ
           polypaver__floats__multiply(4, polypaver__floats__add(a, 
           polypaver__floats__add(x, - x)))) <= 
           340282000000000000000000000000000000000
--S-  Applied substitution rule peakq_rules(7).
-     This was achieved by replacing all occurrences of icoeff2__first by:
-          - (6 / 5).
-<S>  New H4:  a >= - (6 / 5)
-<S>  New H6:  b >= - (6 / 5)
-<S>  New H8:  c >= - (6 / 5)
--S-  Applied substitution rule peakq_rules(8).
-     This was achieved by replacing all occurrences of icoeff2__last by:
-          6 / 5.
-<S>  New H5:  a <= 6 / 5
-<S>  New H7:  b <= 6 / 5
-<S>  New H9:  c <= 6 / 5
 ***  Proved C3:  - polypaver__floats__divide(polypaver__floats__multiply(b, b), 
           polypaver__floats__multiply(4, polypaver__floats__add(a, 
           polypaver__floats__add(x, - x)))) >= - 
@@ -848,7 +771,6 @@ function Peak.PeakQ
 ---  Eliminated hypothesis H16 (redundant, given H1).
 ---  Eliminated hypothesis H17 (redundant, given H2).
      +++  New H67:  float__size >= 0
-     +++  New H68:  icoeff2__size >= 0
 
 
 @@@@@@@@@@  VC: function_peakq_8.  @@@@@@@@@@
@@ -1013,18 +935,6 @@ function Peak.PeakQ
           polypaver__floats__multiply(4, polypaver__floats__add(a, 
           polypaver__floats__add(x, - x)))) <= 
           340282000000000000000000000000000000000
--S-  Applied substitution rule peakq_rules(7).
-     This was achieved by replacing all occurrences of icoeff2__first by:
-          - (6 / 5).
-<S>  New H4:  a >= - (6 / 5)
-<S>  New H6:  b >= - (6 / 5)
-<S>  New H8:  c >= - (6 / 5)
--S-  Applied substitution rule peakq_rules(8).
-     This was achieved by replacing all occurrences of icoeff2__last by:
-          6 / 5.
-<S>  New H5:  a <= 6 / 5
-<S>  New H7:  b <= 6 / 5
-<S>  New H9:  c <= 6 / 5
 ---  Eliminated hypothesis H24 (true-hypothesis).
 ---  Eliminated hypothesis H25 (true-hypothesis).
 ---  Eliminated hypothesis H26 (true-hypothesis).
@@ -1072,5 +982,4 @@ function Peak.PeakQ
 ---  Eliminated hypothesis H16 (redundant, given H1).
 ---  Eliminated hypothesis H17 (redundant, given H2).
      +++  New H75:  float__size >= 0
-     +++  New H76:  icoeff2__size >= 0
 

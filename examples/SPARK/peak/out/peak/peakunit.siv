@@ -5,7 +5,7 @@
 *****************************************************************************
 
 
-CREATED 10-MAY-2013, 00:12:39  SIMPLIFIED 10-MAY-2013, 00:12:42
+CREATED 12-MAY-2013, 23:31:18  SIMPLIFIED 12-MAY-2013, 23:31:23
 
 SPARK Simplifier GPL 2012
 Copyright (C) 2012 Altran Praxis Limited, Bath, U.K.
@@ -73,10 +73,6 @@ H26:   universal_real__base__first <= universal_real__base__last .
 H27:   universal_real__base__first <= universal_real__first .
 H28:   universal_real__base__last >= universal_real__last .
 H29:   float__size >= 0 .
-H30:   iy__size >= 0 .
-H31:   ipad__size >= 0 .
-H32:   icoeff1__size >= 0 .
-H33:   icoeff2__size >= 0 .
        ->
 C1:    polypaver__floats__multiply(2, a__1) >= - 
           340282000000000000000000000000000000000 .
@@ -125,10 +121,6 @@ H30:   universal_real__base__first <= universal_real__base__last .
 H31:   universal_real__base__first <= universal_real__first .
 H32:   universal_real__base__last >= universal_real__last .
 H33:   float__size >= 0 .
-H34:   iy__size >= 0 .
-H35:   ipad__size >= 0 .
-H36:   icoeff1__size >= 0 .
-H37:   icoeff2__size >= 0 .
        ->
 C1:    polypaver__floats__multiply(- 2, a__1) >= - 
           340282000000000000000000000000000000000 .
@@ -223,10 +215,6 @@ H47:   universal_real__base__first <= universal_real__base__last .
 H48:   universal_real__base__first <= universal_real__first .
 H49:   universal_real__base__last >= universal_real__last .
 H50:   float__size >= 0 .
-H51:   iy__size >= 0 .
-H52:   ipad__size >= 0 .
-H53:   icoeff1__size >= 0 .
-H54:   icoeff2__size >= 0 .
        ->
 C1:    max(max(y1, y3), peakq(a__1, b__1, y2, 0)) >= y1 - 1 / 5 .
 C2:    max(max(y1, y3), peakq(a__1, b__1, y2, 0)) >= y2 - 1 / 5 .
@@ -275,10 +263,6 @@ H33:   universal_real__base__first <= universal_real__base__last .
 H34:   universal_real__base__first <= universal_real__first .
 H35:   universal_real__base__last >= universal_real__last .
 H36:   float__size >= 0 .
-H37:   iy__size >= 0 .
-H38:   ipad__size >= 0 .
-H39:   icoeff1__size >= 0 .
-H40:   icoeff2__size >= 0 .
        ->
 C1:    max(y1, y3) >= y1 - 1 / 5 .
 C2:    max(y1, y3) >= y2 - 1 / 5 .

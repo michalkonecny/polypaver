@@ -5,7 +5,7 @@
            /*********************************************************/
 
 
-                        /*DATE : 10-MAY-2013 00:12:39.76*/
+                        /*DATE : 12-MAY-2013 23:31:18.96*/
 
                            /*procedure Peak.Coeffs*/
 
@@ -20,18 +20,3 @@ coeffs_rules(2): float__first may_be_replaced_by -340282000000000000000000000000
 coeffs_rules(3): float__last may_be_replaced_by 340282000000000000000000000000000000000.
 coeffs_rules(4): float__base__first may_be_replaced_by -340282000000000000000000000000000000000.
 coeffs_rules(5): float__base__last may_be_replaced_by 340282000000000000000000000000000000000.
-coeffs_rules(6): iy__size >= 0 may_be_deduced.
-coeffs_rules(7): iy__first may_be_replaced_by 0.
-coeffs_rules(8): iy__last may_be_replaced_by 1.
-coeffs_rules(9): iy__base__first may_be_replaced_by -340282000000000000000000000000000000000.
-coeffs_rules(10): iy__base__last may_be_replaced_by 340282000000000000000000000000000000000.
-coeffs_rules(11): ipad__size >= 0 may_be_deduced.
-coeffs_rules(12): ipad__first may_be_replaced_by (-1/1000000).
-coeffs_rules(13): ipad__last may_be_replaced_by (1/1000000).
-coeffs_rules(14): ipad__base__first may_be_replaced_by -340282000000000000000000000000000000000.
-coeffs_rules(15): ipad__base__last may_be_replaced_by 340282000000000000000000000000000000000.
-coeffs_rules(16): icoeff1__size >= 0 may_be_deduced.
-coeffs_rules(17): icoeff1__first may_be_replaced_by (-11/10).
-coeffs_rules(18): icoeff1__last may_be_replaced_by (11/10).
-coeffs_rules(19): icoeff1__base__first may_be_replaced_by -340282000000000000000000000000000000000.
-coeffs_rules(20): icoeff1__base__last may_be_replaced_by 340282000000000000000000000000000000000.

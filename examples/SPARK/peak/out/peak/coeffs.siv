@@ -5,7 +5,7 @@
 *****************************************************************************
 
 
-CREATED 10-MAY-2013, 00:12:39  SIMPLIFIED 10-MAY-2013, 00:12:42
+CREATED 12-MAY-2013, 23:31:18  SIMPLIFIED 12-MAY-2013, 23:31:22
 
 SPARK Simplifier GPL 2012
 Copyright (C) 2012 Altran Praxis Limited, Bath, U.K.
@@ -26,9 +26,6 @@ H4:    y2 <= 1 .
 H5:    y3 >= 0 .
 H6:    y3 <= 1 .
 H7:    float__size >= 0 .
-H8:    iy__size >= 0 .
-H9:    ipad__size >= 0 .
-H10:   icoeff1__size >= 0 .
        ->
 C1:    polypaver__floats__multiply(- 2, y2) >= - 
           340282000000000000000000000000000000000 .
@@ -51,9 +48,6 @@ H7:    polypaver__floats__multiply(- 2, y2) >= -
 H8:    polypaver__floats__multiply(- 2, y2) <= 
           340282000000000000000000000000000000000 .
 H9:    float__size >= 0 .
-H10:   iy__size >= 0 .
-H11:   ipad__size >= 0 .
-H12:   icoeff1__size >= 0 .
        ->
 C1:    polypaver__floats__add(polypaver__floats__multiply(- 2, y2), y3) >= - 
           340282000000000000000000000000000000000 .
@@ -80,9 +74,6 @@ H9:    polypaver__floats__add(polypaver__floats__multiply(- 2, y2), y3) >= -
 H10:   polypaver__floats__add(polypaver__floats__multiply(- 2, y2), y3) <= 
           340282000000000000000000000000000000000 .
 H11:   float__size >= 0 .
-H12:   iy__size >= 0 .
-H13:   ipad__size >= 0 .
-H14:   icoeff1__size >= 0 .
        ->
 C1:    polypaver__floats__add(y1, polypaver__floats__add(
           polypaver__floats__multiply(- 2, y2), y3)) >= - 
@@ -117,9 +108,6 @@ H12:   polypaver__floats__add(y1, polypaver__floats__add(
           polypaver__floats__multiply(- 2, y2), y3)) <= 
           340282000000000000000000000000000000000 .
 H13:   float__size >= 0 .
-H14:   iy__size >= 0 .
-H15:   ipad__size >= 0 .
-H16:   icoeff1__size >= 0 .
        ->
 C1:    polypaver__floats__multiply(1 / 2, polypaver__floats__add(y1, 
           polypaver__floats__add(polypaver__floats__multiply(- 2, y2), y3))) >= 
@@ -166,9 +154,6 @@ H14:   polypaver__floats__multiply(1 / 2, polypaver__floats__add(y1,
           polypaver__floats__add(polypaver__floats__multiply(- 2, y2), y3))) <= 
           340282000000000000000000000000000000000 .
 H15:   float__size >= 0 .
-H16:   iy__size >= 0 .
-H17:   ipad__size >= 0 .
-H18:   icoeff1__size >= 0 .
        ->
 C1:    polypaver__floats__add(y3, - y1) >= - 
           340282000000000000000000000000000000000 .
@@ -211,9 +196,6 @@ H15:   polypaver__floats__add(y3, - y1) >= -
 H16:   polypaver__floats__add(y3, - y1) <= 
           340282000000000000000000000000000000000 .
 H17:   float__size >= 0 .
-H18:   iy__size >= 0 .
-H19:   ipad__size >= 0 .
-H20:   icoeff1__size >= 0 .
        ->
 C1:    polypaver__floats__multiply(1 / 2, polypaver__floats__add(y3, - y1)) >= 
           - 340282000000000000000000000000000000000 .
@@ -271,9 +253,6 @@ H17:   polypaver__floats__multiply(1 / 2, polypaver__floats__add(y3, - y1)) >=
 H18:   polypaver__floats__multiply(1 / 2, polypaver__floats__add(y3, - y1)) <= 
           340282000000000000000000000000000000000 .
 H19:   float__size >= 0 .
-H20:   iy__size >= 0 .
-H21:   ipad__size >= 0 .
-H22:   icoeff1__size >= 0 .
        ->
 C1:    polypaver__floats__multiply(1 / 2, polypaver__floats__add(y1, 
           polypaver__floats__add(polypaver__floats__multiply(- 2, y2), y3))) - 
