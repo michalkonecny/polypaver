@@ -365,30 +365,35 @@ insideBounds (aL,aR) (bL,bR)
             
 ppSkewAlongHyperPlane ::
     (B.ERRealBase b) => 
-    PPBox b -> BoxHyperPlane b -> (IRA b, Maybe Int, PPBox b)
-ppSkewAlongHyperPlane ppbox@(skewed, prebox, varIsInts, varNames) hp@(hp_const, hp_coeffs)
+    PPBox b -> 
+    BoxHyperPlane b -> 
+    (IRA b, Maybe Int, PPBox b)
+ppSkewAlongHyperPlane prebox@(skewed, preAffine, varIsInts, varNames) hp@(hp_const, hp_coeffs)
     | 0 `RA.refines` skewVar_stretch = 
 --        unsafePrint
 --        (
 --            "ppSkewAlongHyperPlane: hyperplane parallel to box"
+--            ++"\n hp = " ++ show hp 
 --            ++"\n maybeSkewVar = " ++ show maybeSkewVar 
 --        ) $
-        (1/0, maybeSkewVar, ppbox) -- zero skewing - hyperplane parallel to a side of prebox 
+        (1/0, maybeSkewVar, prebox) -- zero skewing - hyperplane parallel to a side of prebox 
     | otherwise 
         =
 --        unsafePrint
 --        (
 --            "ppSkewAlongHyperPlane: "
 --            ++"\n prebox = " ++ ppShow prebox 
---            ++"\n box = " ++ ppShow box
+--            ++"\n hp = " ++ show hp 
+--            ++"\n resbox = " ++ ppShow resbox
 --            ++"\n" 
 --        ) $
-        (isecPtDistance, maybeSkewVar, (True, box, varIsInts, varNames))
+        (isecPtDistance, maybeSkewVar, resbox)
     where
     isecPtDistance = abs $ hp_const / largest_hp_coeff
-    box = 
+    resbox = (True, affine, varIsInts, varNames)
+    affine = 
         -- apply skewing to each affine transformation:
-        IMap.map skewAffine prebox
+        IMap.map skewAffine preAffine
         where
         skewAffine (af_const, af_coeffs)
             -- skewing doew not change the constant, only the coeffs:
@@ -416,8 +421,13 @@ ppSkewAlongHyperPlane ppbox@(skewed, prebox, varIsInts, varNames) hp@(hp_const, 
         = case Map.lookup skewVar hp_coeffs of Just cf -> cf 
     hp_coeffs_noSkewVar 
         = Map.delete skewVar hp_coeffs
-    skewVar_stretch
-        = sum $ map absScale $ Map.elems hp_coeffs_noSkewVar
+    skewVar_stretch = 
+--        unsafePrint
+--        (
+--            "ppSkewAlongHyperPlane: skewVar_stretch:"
+--            ++"\n hp = " ++ show hp 
+--        ) $
+        sum $ map absScale $ Map.elems hp_coeffs_noSkewVar
         where
         absScale hp_coeff
             = abs (hp_coeff / hp_coeff_skewVar)

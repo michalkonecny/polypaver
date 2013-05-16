@@ -125,7 +125,7 @@ mkProblems (name, vc, box) =
     map mkProb $ zip [1..] subvcs
     where
     mkProb (conclusionNumber, subvc) = 
-        (name ++ " part " ++ show conclusionNumber, Problem box subvc)
+        (name ++ " conclusion " ++ show conclusionNumber, Problem box subvc)
     subvcs = splitConclusion vc 
     
 hasHsExtension path = ".hs" `isSuffixOf` path

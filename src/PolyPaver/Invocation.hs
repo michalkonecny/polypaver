@@ -35,6 +35,7 @@ import qualified Numeric.ER.Real.Approx as RA
 import qualified Data.Map as Map
 import qualified Data.IntMap as IMap
 import Data.List (intercalate)
+import Data.Maybe (catMaybes)
 
 import qualified Data.Sequence as Q
 import System.Environment (getArgs, getProgName)
@@ -55,23 +56,23 @@ data Problem = Problem
 data Paver = Paver 
     {problemId :: [String]
     ,tightnessValues :: String
-    ,degree :: Int
     ,startDegree :: Int
+    ,degree :: Int
     ,maxSize :: Int
+    ,effort :: Int
+    ,minIntegrExp :: Int
+    ,order :: Order
     ,splitIntFirst :: Bool
     ,minDepth :: Int
     ,maxDepth :: Int
     ,maxQueueLength :: Int
-    ,effort :: Int
-    ,minIntegrExp :: Int
     ,time :: Int
-    ,order :: Order
-    ,quiet :: Bool
-    ,verbose :: Bool
 ----    ,epsrelbits :: Int
 ----    ,epsabsbits :: Int
     ,boxSkewing :: Bool
     ,splitGuessing :: Int
+    ,quiet :: Bool
+    ,verbose :: Bool
     ,plotWidth :: Int
     ,plotHieght :: Int
     }
@@ -80,40 +81,51 @@ data Paver = Paver
 paver =
     Paver 
     {problemId = [] &= args &= typ "PROBLEM_ID" 
-    ,tightnessValues = "1" &= name "i" &= help "value(s) of T to try (if the formula has an unbound var T) (eg 2^0..10 or 1..10 or 1,10,100) (default = 1)"
-    ,degree = 0 &= help "maximum polynomial degree (default = 0)" &= groupname "Proving effort"
-    ,startDegree = -1 &= help "first polynomial degree to try on each box (default = degree)"
+    ,tightnessValues = "1" &= name "i" 
+        &= groupname "Problem parameters"
+        &= help "value(s) of T to try (if the formula has an unbound variable T) (eg \"2^0..10\" or \"1..10\" or \"1,10,100\") (default = 1)" 
+    ,startDegree = -1 &= name "s" &= help "first polynomial degree to try on each box (default = degree)"
+        &= groupname "Box solving effort"
+    ,degree = 0 &= name "d" &= help "maximum polynomial degree (default = 0)" 
     ,maxSize = 100 &= name "z" &= help "maximum polynomial term size (default = 100)"
-    ,order = DFSthenBFS &= help "sub-problem processing order, bfs for breadth-first or dfs for depth-first, (default = DFSthenBFS)"
-    ,splitIntFirst = False &= name "f" &= help "whether to split integer valued domains until they are thin before splitting the continuous domains"
+    ,effort = 10 &= help "for approximating point-wise sqrt and exp (default = 10)" 
+    ,minIntegrExp = 0 &= name "I" &= help "n to compute approximate integration step using 2^(-n)" 
+    ,order = DFSthenBFS 
+        &= groupname "Box subdivision strategy"
+        &= help "sub-problem processing order, bfs for breadth-first or dfs for depth-first, (default = DFSthenBFS)"
+    ,splitIntFirst = False &= name "f" 
+        &= help "whether to split integer valued domains until they are exact before splitting the continuous domains"
     ,minDepth = 0 &= help "minimum bisection depth (default = 0)"
     ,maxDepth = 1000 &= name "b" &= help "maximum bisection depth (default = 1000)"
     ,maxQueueLength = -1 &= name "u" 
         &= help ("maximum queue size (default = " 
                     ++ show maxQueueLengthDefaultDFS ++ " for depth-first and "
                     ++ show maxQueueLengthDefaultBFS ++ " for breadth-first order)")
-    ,effort = 10 &= help "approximation effort parameter (default = 10)" 
-    ,minIntegrExp = 0 &= name "I" &= help "n to compute approximate integration step using 2^(-n)" 
     ,time = 7*24*3600 &= help "timeout in seconds (default = 7*24*3600 ie 1 week)"    
-    ,boxSkewing = False &= name "k" &= help "allow parallelepiped boxes, by default only coaxial rectangles" &= groupname "Experimental"
+    ,boxSkewing = False &= name "k" &= help "allow parallelepiped boxes, by default only coaxial rectangles" 
+        &= groupname "Experimental"
     ,splitGuessing = -1 &= name "g" &= opt (20 :: Int) &= help "try guessing the best direction but do not allow a box in which a pair of edge lengths exceeds this ratio (default 20)"
 --    ,epsrelbits = 23 &= name "r" &= help "n to compute machine epsilon using 2^-n (default = 24)" &= groupname "Floating point rounding interpretation in conjectures"
 --    ,epsabsbits = 126 &= name "a" &= help "n to compute denormalised epsilon using 2^-n (default = 126)"
-    ,quiet = False &= help "suppress all output except the final result (default off)" &= groupname "Verbosity"
+    ,quiet = False &= help "suppress all output except the final result (default off)" 
+        &= groupname "Verbosity"
     ,verbose = False &= help "output extra details while paving (default off)"
-    ,plotWidth = 0 &= name "w" &= help "plot width for 2D problems, 0 mean no plotting (default)" &= groupname "Plotting"
+    ,plotWidth = 0 &= name "w" &= help "plot width for 2D problems, 0 mean no plotting (default)" 
+        &= groupname "Plotting"
     ,plotHieght = 0 &= name "h" &= help "plot height for 2D problems, 0 mean no plotting (default)"
     } 
     &= help (unlines 
-                ["Tries to decide conjectures using polynomial interval arithmetic.",
-                 "For the polypaver executable [PROBLEM_ID] is <file.form>",
-                 "or [PROBLEM_ID] is <file.siv> [<vc name> [<conclusion number>]].",
-                 "For problems defined in Haskell [PROBLEM_ID] should be blank."]) 
+                ["Tries to decide numerical conjectures using polynomial enclosures.",
+                 "[PROBLEM_ID] specifies one or more conjectures as follows:",
+                 "  <name>.vc [<conclusion number>]: like a VC in SPARK .siv",
+                 "  <name>.hs [<identifier name>]: Haskell constant of type Problem",
+                 "  <name>.siv [<vc name> [<conclusion number>]]: SPARK-generated VCs",
+                 "  <name>.form: using internal syntax (machine generated)"]) 
     &= summary "PolyPaver 0.2 (c) 2011, 2013 Jan Duracz and Michal Konecny (Aston University)"
     &= name "polypaver"
 
 setDefaults :: Paver -> Paver
-setDefaults = setMaxQLength
+setDefaults = setMaxQLength . setStartDegree
     where
     setMaxQLength args =
         case maxQueueLength args == -1 of
@@ -124,9 +136,29 @@ setDefaults = setMaxQLength
                     BFS -> args { maxQueueLength = maxQueueLengthDefaultBFS }
                     DFSthenBFS -> args { maxQueueLength = maxQueueLengthDefaultDFS }
                     BFSFalsifyOnly -> args { maxQueueLength = maxQueueLengthDefaultBFS }
+    setStartDegree args 
+        | startDegree args == -1 = args { startDegree = degree args }
+        | otherwise = args 
 
 maxQueueLengthDefaultDFS = 50
 maxQueueLengthDefaultBFS = 5000
+
+checkArgs args =
+    catMaybes $ [checkSplitGuessing, checkSkewing]
+    where
+    checkSkewing
+        | boxSkewing args && startDegree args == 0 =
+            Just $
+                 "Box skewing is not compatible with polynomial degree 0."
+                 ++ "\n  Raise starting polynomial degree to a positive value."
+        | otherwise = Nothing
+    checkSplitGuessing 
+        | splitGuessing args /= -1 && startDegree args == 0 =
+            Just $
+                 "Guessing split direction is not compatible with polynomial degree 0."
+                 ++ "\n  Raise starting polynomial degree to a positive value."
+        | otherwise = Nothing
+        
 
 getTightnessValues :: IO [Integer]
 getTightnessValues =
@@ -157,18 +189,30 @@ defaultMain problem =
     reportCmdLine
     argsPre <- cmdArgs paver
     let args = setDefaults argsPre
-    runPaver problem args
+    case checkArgs args of
+        [] -> runPaver problem args
+        msgs -> 
+            do
+            mapM_ putStrLn msgs
+            error $ "The above errors have been identified in the command-line arguments."
 
 batchMain problemFactory =
     do
     reportCmdLine
     argsPre <- cmdArgs paver
     let args = setDefaults argsPre
-    let problemIdOpt = problemId args
-    problems <- problemFactory problemIdOpt
-    results <- mapM (runProblem args) problems
-    putStrLn ">>>>>>>>>>> SUMMARY <<<<<<<<<<<"
-    mapM printSummaryLine $ zip problems results
+    case checkArgs args of
+        [] -> 
+            do
+            let problemIdOpt = problemId args
+            problems <- problemFactory problemIdOpt
+            results <- mapM (runProblem args) problems
+            putStrLn ">>>>>>>>>>> SUMMARY <<<<<<<<<<<"
+            mapM printSummaryLine $ zip problems results
+        msgs -> 
+            do
+            mapM_ putStrLn msgs
+            error $ "The above errors have been identified in the command-line arguments."
     where
     printSummaryLine ((name, _problem), result) =
         putStrLn $ name ++ ": " ++ show result
