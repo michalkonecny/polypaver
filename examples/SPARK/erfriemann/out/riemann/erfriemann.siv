@@ -1,0 +1,692 @@
+*****************************************************************************
+                       Semantic Analysis of SPARK Text
+                              Examiner GPL 2012
+             Copyright (C) 2012 Altran Praxis Limited, Bath, U.K.
+*****************************************************************************
+
+
+CREATED 17-MAY-2013, 00:59:21  SIMPLIFIED 17-MAY-2013, 00:59:24
+
+SPARK Simplifier GPL 2012
+Copyright (C) 2012 Altran Praxis Limited, Bath, U.K.
+
+function Riemann.erfRiemann
+
+
+
+
+For path(s) from start to precondition check associated with statement of line 
+          17:
+
+function_erfriemann_1.
+H1:    polypaver__floats__is_range(x, 0, 4) .
+H2:    polypaver__integers__is_range(n, 1, 100) .
+H3:    x >= - 340282000000000000000000000000000000000 .
+H4:    x <= 340282000000000000000000000000000000000 .
+H5:    n >= - 2147483648 .
+H6:    n <= 2147483647 .
+H7:    integer__size >= 0 .
+H8:    float__size >= 0 .
+       ->
+C1:    n <> 0 .
+C2:    polypaver__floats__divide(x, n) >= - 
+          340282000000000000000000000000000000000 .
+C3:    polypaver__floats__divide(x, n) <= 
+          340282000000000000000000000000000000000 .
+
+
+For path(s) from start to run-time check associated with statement of line 17:
+
+function_erfriemann_2.
+*** true .          /* all conclusions proved */
+
+
+For path(s) from start to run-time check associated with statement of line 18:
+
+function_erfriemann_3.
+*** true .          /* all conclusions proved */
+
+
+For path(s) from start to run-time check associated with statement of line 19:
+
+function_erfriemann_4.
+*** true .          /* all conclusions proved */
+
+
+For path(s) from start to precondition check associated with statement of line 
+          21:
+
+function_erfriemann_5.
+H1:    polypaver__floats__is_range(x, 0, 4) .
+H2:    polypaver__integers__is_range(n, 1, 100) .
+H3:    x >= - 340282000000000000000000000000000000000 .
+H4:    x <= 340282000000000000000000000000000000000 .
+H5:    n <= 2147483647 .
+H6:    polypaver__floats__divide(x, n) >= - 
+          340282000000000000000000000000000000000 .
+H7:    polypaver__floats__divide(x, n) <= 
+          340282000000000000000000000000000000000 .
+H8:    0 < n .
+H9:    integer__size >= 0 .
+H10:   float__size >= 0 .
+       ->
+C1:    polypaver__floats__multiply(polypaver__floats__divide(x, n), 0) >= - 
+          340282000000000000000000000000000000000 .
+C2:    polypaver__floats__multiply(polypaver__floats__divide(x, n), 0) <= 
+          340282000000000000000000000000000000000 .
+
+
+For path(s) from assertion of line 25 to precondition check associated with 
+          statement of line 21:
+
+function_erfriemann_6.
+H1:    polypaver__interval__contained_in(result - polypaver__exact__integral(0, 
+          polypaver__floats__multiply(polypaver__floats__divide(x, n), step), 
+          polypaver__exact__exp(- (polypaver__exact__integration_variable * 
+          polypaver__exact__integration_variable))), polypaver__interval__hull(
+          - (1 / 10 * (step + 1)), (1 - polypaver__exact__exp(- (x * step / n * 
+          (x * step / n)))) * x / n + 1 / 10 * (step + 1))) .
+H2:    polypaver__floats__is_range(result, - 10, 100) .
+H3:    polypaver__integers__is_range(n, 1, 100) .
+H4:    polypaver__integers__is_range(step, 0, n - 1) .
+H5:    x >= - 340282000000000000000000000000000000000 .
+H6:    x <= 340282000000000000000000000000000000000 .
+H7:    n <= 2147483647 .
+H8:    polypaver__floats__is_range(x, 0, 4) .
+H9:    polypaver__floats__multiply(polypaver__floats__divide(x, n), step) >= - 
+          340282000000000000000000000000000000000 .
+H10:   polypaver__floats__multiply(polypaver__floats__divide(x, n), step) <= 
+          340282000000000000000000000000000000000 .
+H11:   polypaver__floats__multiply(polypaver__floats__multiply(
+          polypaver__floats__divide(x, n), step), polypaver__floats__multiply(
+          polypaver__floats__divide(x, n), step)) >= - 
+          340282000000000000000000000000000000000 .
+H12:   polypaver__floats__multiply(polypaver__floats__multiply(
+          polypaver__floats__divide(x, n), step), polypaver__floats__multiply(
+          polypaver__floats__divide(x, n), step)) <= 
+          340282000000000000000000000000000000000 .
+H13:   polypaver__floats__exp(- polypaver__floats__multiply(
+          polypaver__floats__multiply(polypaver__floats__divide(x, n), step), 
+          polypaver__floats__multiply(polypaver__floats__divide(x, n), step))) 
+          >= - 340282000000000000000000000000000000000 .
+H14:   polypaver__floats__exp(- polypaver__floats__multiply(
+          polypaver__floats__multiply(polypaver__floats__divide(x, n), step), 
+          polypaver__floats__multiply(polypaver__floats__divide(x, n), step))) 
+          <= 340282000000000000000000000000000000000 .
+H15:   polypaver__floats__divide(x, n) >= - 
+          340282000000000000000000000000000000000 .
+H16:   polypaver__floats__divide(x, n) <= 
+          340282000000000000000000000000000000000 .
+H17:   result >= - 340282000000000000000000000000000000000 .
+H18:   result <= 340282000000000000000000000000000000000 .
+H19:   polypaver__floats__multiply(polypaver__floats__divide(x, n), 
+          polypaver__floats__exp(- polypaver__floats__multiply(
+          polypaver__floats__multiply(polypaver__floats__divide(x, n), step), 
+          polypaver__floats__multiply(polypaver__floats__divide(x, n), step)))) 
+          >= - 340282000000000000000000000000000000000 .
+H20:   polypaver__floats__multiply(polypaver__floats__divide(x, n), 
+          polypaver__floats__exp(- polypaver__floats__multiply(
+          polypaver__floats__multiply(polypaver__floats__divide(x, n), step), 
+          polypaver__floats__multiply(polypaver__floats__divide(x, n), step)))) 
+          <= 340282000000000000000000000000000000000 .
+H21:   polypaver__floats__add(result, polypaver__floats__multiply(
+          polypaver__floats__divide(x, n), polypaver__floats__exp(- 
+          polypaver__floats__multiply(polypaver__floats__multiply(
+          polypaver__floats__divide(x, n), step), polypaver__floats__multiply(
+          polypaver__floats__divide(x, n), step))))) >= - 
+          340282000000000000000000000000000000000 .
+H22:   polypaver__floats__add(result, polypaver__floats__multiply(
+          polypaver__floats__divide(x, n), polypaver__floats__exp(- 
+          polypaver__floats__multiply(polypaver__floats__multiply(
+          polypaver__floats__divide(x, n), step), polypaver__floats__multiply(
+          polypaver__floats__divide(x, n), step))))) <= 
+          340282000000000000000000000000000000000 .
+H23:   step >= - 2147483648 .
+H24:   step + 1 < n .
+H25:   integer__size >= 0 .
+H26:   float__size >= 0 .
+       ->
+C1:    polypaver__floats__multiply(polypaver__floats__divide(x, n), step + 1) 
+          >= - 340282000000000000000000000000000000000 .
+C2:    polypaver__floats__multiply(polypaver__floats__divide(x, n), step + 1) 
+          <= 340282000000000000000000000000000000000 .
+
+
+For path(s) from start to run-time check associated with statement of line 21:
+
+function_erfriemann_7.
+*** true .          /* all conclusions proved */
+
+
+For path(s) from assertion of line 25 to run-time check associated with 
+          statement of line 21:
+
+function_erfriemann_8.
+*** true .          /* all conclusions proved */
+
+
+For path(s) from start to assertion of line 25:
+
+function_erfriemann_9.
+H1:    polypaver__floats__is_range(x, 0, 4) .
+H2:    polypaver__integers__is_range(n, 1, 100) .
+H3:    x >= - 340282000000000000000000000000000000000 .
+H4:    x <= 340282000000000000000000000000000000000 .
+H5:    n <= 2147483647 .
+H6:    polypaver__floats__divide(x, n) >= - 
+          340282000000000000000000000000000000000 .
+H7:    polypaver__floats__divide(x, n) <= 
+          340282000000000000000000000000000000000 .
+H8:    0 < n .
+H9:    polypaver__floats__multiply(polypaver__floats__divide(x, n), 0) >= - 
+          340282000000000000000000000000000000000 .
+H10:   polypaver__floats__multiply(polypaver__floats__divide(x, n), 0) <= 
+          340282000000000000000000000000000000000 .
+H11:   integer__size >= 0 .
+H12:   float__size >= 0 .
+       ->
+C1:    polypaver__interval__contained_in(- polypaver__exact__integral(0, 
+          polypaver__floats__multiply(polypaver__floats__divide(x, n), 0), 
+          polypaver__exact__exp(- (polypaver__exact__integration_variable * 
+          polypaver__exact__integration_variable))), polypaver__interval__hull(
+          - (1 / 10), (1 - polypaver__exact__exp(- (0 / n * (0 / n)))) * x / n 
+          + 1 / 10)) .
+C2:    polypaver__floats__is_range(0, - 10, 100) .
+C3:    polypaver__integers__is_range(0, 0, n - 1) .
+
+
+For path(s) from assertion of line 25 to assertion of line 25:
+
+function_erfriemann_10.
+H1:    polypaver__interval__contained_in(result - polypaver__exact__integral(0, 
+          polypaver__floats__multiply(polypaver__floats__divide(x, n), step), 
+          polypaver__exact__exp(- (polypaver__exact__integration_variable * 
+          polypaver__exact__integration_variable))), polypaver__interval__hull(
+          - (1 / 10 * (step + 1)), (1 - polypaver__exact__exp(- (x * step / n * 
+          (x * step / n)))) * x / n + 1 / 10 * (step + 1))) .
+H2:    polypaver__floats__is_range(result, - 10, 100) .
+H3:    polypaver__integers__is_range(n, 1, 100) .
+H4:    polypaver__integers__is_range(step, 0, n - 1) .
+H5:    x >= - 340282000000000000000000000000000000000 .
+H6:    x <= 340282000000000000000000000000000000000 .
+H7:    n <= 2147483647 .
+H8:    polypaver__floats__is_range(x, 0, 4) .
+H9:    polypaver__floats__multiply(polypaver__floats__divide(x, n), step) >= - 
+          340282000000000000000000000000000000000 .
+H10:   polypaver__floats__multiply(polypaver__floats__divide(x, n), step) <= 
+          340282000000000000000000000000000000000 .
+H11:   polypaver__floats__multiply(polypaver__floats__multiply(
+          polypaver__floats__divide(x, n), step), polypaver__floats__multiply(
+          polypaver__floats__divide(x, n), step)) >= - 
+          340282000000000000000000000000000000000 .
+H12:   polypaver__floats__multiply(polypaver__floats__multiply(
+          polypaver__floats__divide(x, n), step), polypaver__floats__multiply(
+          polypaver__floats__divide(x, n), step)) <= 
+          340282000000000000000000000000000000000 .
+H13:   polypaver__floats__exp(- polypaver__floats__multiply(
+          polypaver__floats__multiply(polypaver__floats__divide(x, n), step), 
+          polypaver__floats__multiply(polypaver__floats__divide(x, n), step))) 
+          >= - 340282000000000000000000000000000000000 .
+H14:   polypaver__floats__exp(- polypaver__floats__multiply(
+          polypaver__floats__multiply(polypaver__floats__divide(x, n), step), 
+          polypaver__floats__multiply(polypaver__floats__divide(x, n), step))) 
+          <= 340282000000000000000000000000000000000 .
+H15:   polypaver__floats__divide(x, n) >= - 
+          340282000000000000000000000000000000000 .
+H16:   polypaver__floats__divide(x, n) <= 
+          340282000000000000000000000000000000000 .
+H17:   result >= - 340282000000000000000000000000000000000 .
+H18:   result <= 340282000000000000000000000000000000000 .
+H19:   polypaver__floats__multiply(polypaver__floats__divide(x, n), 
+          polypaver__floats__exp(- polypaver__floats__multiply(
+          polypaver__floats__multiply(polypaver__floats__divide(x, n), step), 
+          polypaver__floats__multiply(polypaver__floats__divide(x, n), step)))) 
+          >= - 340282000000000000000000000000000000000 .
+H20:   polypaver__floats__multiply(polypaver__floats__divide(x, n), 
+          polypaver__floats__exp(- polypaver__floats__multiply(
+          polypaver__floats__multiply(polypaver__floats__divide(x, n), step), 
+          polypaver__floats__multiply(polypaver__floats__divide(x, n), step)))) 
+          <= 340282000000000000000000000000000000000 .
+H21:   polypaver__floats__add(result, polypaver__floats__multiply(
+          polypaver__floats__divide(x, n), polypaver__floats__exp(- 
+          polypaver__floats__multiply(polypaver__floats__multiply(
+          polypaver__floats__divide(x, n), step), polypaver__floats__multiply(
+          polypaver__floats__divide(x, n), step))))) >= - 
+          340282000000000000000000000000000000000 .
+H22:   polypaver__floats__add(result, polypaver__floats__multiply(
+          polypaver__floats__divide(x, n), polypaver__floats__exp(- 
+          polypaver__floats__multiply(polypaver__floats__multiply(
+          polypaver__floats__divide(x, n), step), polypaver__floats__multiply(
+          polypaver__floats__divide(x, n), step))))) <= 
+          340282000000000000000000000000000000000 .
+H23:   step >= - 2147483648 .
+H24:   step + 1 < n .
+H25:   polypaver__floats__multiply(polypaver__floats__divide(x, n), step + 1) 
+          >= - 340282000000000000000000000000000000000 .
+H26:   polypaver__floats__multiply(polypaver__floats__divide(x, n), step + 1) 
+          <= 340282000000000000000000000000000000000 .
+H27:   integer__size >= 0 .
+H28:   float__size >= 0 .
+       ->
+C1:    polypaver__interval__contained_in(polypaver__floats__add(result, 
+          polypaver__floats__multiply(polypaver__floats__divide(x, n), 
+          polypaver__floats__exp(- polypaver__floats__multiply(
+          polypaver__floats__multiply(polypaver__floats__divide(x, n), step), 
+          polypaver__floats__multiply(polypaver__floats__divide(x, n), step)))))
+           - polypaver__exact__integral(0, polypaver__floats__multiply(
+          polypaver__floats__divide(x, n), step + 1), polypaver__exact__exp(- (
+          polypaver__exact__integration_variable * 
+          polypaver__exact__integration_variable))), polypaver__interval__hull(
+          - (1 / 10 * (step + 2)), (1 - polypaver__exact__exp(- (x * (step + 1) 
+          / n * (x * (step + 1) / n)))) * x / n + 1 / 10 * (step + 2))) .
+C2:    polypaver__floats__is_range(polypaver__floats__add(result, 
+          polypaver__floats__multiply(polypaver__floats__divide(x, n), 
+          polypaver__floats__exp(- polypaver__floats__multiply(
+          polypaver__floats__multiply(polypaver__floats__divide(x, n), step), 
+          polypaver__floats__multiply(polypaver__floats__divide(x, n), step)))))
+          , - 10, 100) .
+C3:    polypaver__integers__is_range(step + 1, 0, n - 1) .
+
+
+For path(s) from assertion of line 25 to precondition check associated with 
+          statement of line 41:
+
+function_erfriemann_11.
+H1:    polypaver__interval__contained_in(result - polypaver__exact__integral(0, 
+          polypaver__floats__multiply(polypaver__floats__divide(x, n), step), 
+          polypaver__exact__exp(- (polypaver__exact__integration_variable * 
+          polypaver__exact__integration_variable))), polypaver__interval__hull(
+          - (1 / 10 * (step + 1)), (1 - polypaver__exact__exp(- (x * step / n * 
+          (x * step / n)))) * x / n + 1 / 10 * (step + 1))) .
+H2:    polypaver__floats__is_range(result, - 10, 100) .
+H3:    polypaver__integers__is_range(n, 1, 100) .
+H4:    polypaver__integers__is_range(step, 0, n - 1) .
+H5:    x >= - 340282000000000000000000000000000000000 .
+H6:    x <= 340282000000000000000000000000000000000 .
+H7:    n >= - 2147483648 .
+H8:    n <= 2147483647 .
+H9:    polypaver__floats__is_range(x, 0, 4) .
+H10:   polypaver__floats__multiply(polypaver__floats__divide(x, n), step) >= - 
+          340282000000000000000000000000000000000 .
+H11:   polypaver__floats__multiply(polypaver__floats__divide(x, n), step) <= 
+          340282000000000000000000000000000000000 .
+H12:   integer__size >= 0 .
+H13:   float__size >= 0 .
+       ->
+C1:    polypaver__floats__multiply(polypaver__floats__multiply(
+          polypaver__floats__divide(x, n), step), polypaver__floats__multiply(
+          polypaver__floats__divide(x, n), step)) >= - 
+          340282000000000000000000000000000000000 .
+C2:    polypaver__floats__multiply(polypaver__floats__multiply(
+          polypaver__floats__divide(x, n), step), polypaver__floats__multiply(
+          polypaver__floats__divide(x, n), step)) <= 
+          340282000000000000000000000000000000000 .
+
+
+For path(s) from assertion of line 25 to precondition check associated with 
+          statement of line 41:
+
+function_erfriemann_12.
+H1:    polypaver__interval__contained_in(result - polypaver__exact__integral(0, 
+          polypaver__floats__multiply(polypaver__floats__divide(x, n), step), 
+          polypaver__exact__exp(- (polypaver__exact__integration_variable * 
+          polypaver__exact__integration_variable))), polypaver__interval__hull(
+          - (1 / 10 * (step + 1)), (1 - polypaver__exact__exp(- (x * step / n * 
+          (x * step / n)))) * x / n + 1 / 10 * (step + 1))) .
+H2:    polypaver__floats__is_range(result, - 10, 100) .
+H3:    polypaver__integers__is_range(n, 1, 100) .
+H4:    polypaver__integers__is_range(step, 0, n - 1) .
+H5:    x >= - 340282000000000000000000000000000000000 .
+H6:    x <= 340282000000000000000000000000000000000 .
+H7:    n >= - 2147483648 .
+H8:    n <= 2147483647 .
+H9:    polypaver__floats__is_range(x, 0, 4) .
+H10:   polypaver__floats__multiply(polypaver__floats__divide(x, n), step) >= - 
+          340282000000000000000000000000000000000 .
+H11:   polypaver__floats__multiply(polypaver__floats__divide(x, n), step) <= 
+          340282000000000000000000000000000000000 .
+H12:   polypaver__floats__multiply(polypaver__floats__multiply(
+          polypaver__floats__divide(x, n), step), polypaver__floats__multiply(
+          polypaver__floats__divide(x, n), step)) >= - 
+          340282000000000000000000000000000000000 .
+H13:   polypaver__floats__multiply(polypaver__floats__multiply(
+          polypaver__floats__divide(x, n), step), polypaver__floats__multiply(
+          polypaver__floats__divide(x, n), step)) <= 
+          340282000000000000000000000000000000000 .
+H14:   integer__size >= 0 .
+H15:   float__size >= 0 .
+       ->
+C1:    polypaver__floats__exp(- polypaver__floats__multiply(
+          polypaver__floats__multiply(polypaver__floats__divide(x, n), step), 
+          polypaver__floats__multiply(polypaver__floats__divide(x, n), step))) 
+          >= - 340282000000000000000000000000000000000 .
+C2:    polypaver__floats__exp(- polypaver__floats__multiply(
+          polypaver__floats__multiply(polypaver__floats__divide(x, n), step), 
+          polypaver__floats__multiply(polypaver__floats__divide(x, n), step))) 
+          <= 340282000000000000000000000000000000000 .
+
+
+For path(s) from assertion of line 25 to run-time check associated with 
+          statement of line 41:
+
+function_erfriemann_13.
+*** true .          /* all conclusions proved */
+
+
+For path(s) from assertion of line 25 to precondition check associated with 
+          statement of line 44:
+
+function_erfriemann_14.
+H1:    polypaver__interval__contained_in(result - polypaver__exact__integral(0, 
+          polypaver__floats__multiply(polypaver__floats__divide(x, n), step), 
+          polypaver__exact__exp(- (polypaver__exact__integration_variable * 
+          polypaver__exact__integration_variable))), polypaver__interval__hull(
+          - (1 / 10 * (step + 1)), (1 - polypaver__exact__exp(- (x * step / n * 
+          (x * step / n)))) * x / n + 1 / 10 * (step + 1))) .
+H2:    polypaver__floats__is_range(result, - 10, 100) .
+H3:    polypaver__integers__is_range(n, 1, 100) .
+H4:    polypaver__integers__is_range(step, 0, n - 1) .
+H5:    x >= - 340282000000000000000000000000000000000 .
+H6:    x <= 340282000000000000000000000000000000000 .
+H7:    n >= - 2147483648 .
+H8:    n <= 2147483647 .
+H9:    polypaver__floats__is_range(x, 0, 4) .
+H10:   polypaver__floats__multiply(polypaver__floats__divide(x, n), step) >= - 
+          340282000000000000000000000000000000000 .
+H11:   polypaver__floats__multiply(polypaver__floats__divide(x, n), step) <= 
+          340282000000000000000000000000000000000 .
+H12:   polypaver__floats__multiply(polypaver__floats__multiply(
+          polypaver__floats__divide(x, n), step), polypaver__floats__multiply(
+          polypaver__floats__divide(x, n), step)) >= - 
+          340282000000000000000000000000000000000 .
+H13:   polypaver__floats__multiply(polypaver__floats__multiply(
+          polypaver__floats__divide(x, n), step), polypaver__floats__multiply(
+          polypaver__floats__divide(x, n), step)) <= 
+          340282000000000000000000000000000000000 .
+H14:   polypaver__floats__exp(- polypaver__floats__multiply(
+          polypaver__floats__multiply(polypaver__floats__divide(x, n), step), 
+          polypaver__floats__multiply(polypaver__floats__divide(x, n), step))) 
+          >= - 340282000000000000000000000000000000000 .
+H15:   polypaver__floats__exp(- polypaver__floats__multiply(
+          polypaver__floats__multiply(polypaver__floats__divide(x, n), step), 
+          polypaver__floats__multiply(polypaver__floats__divide(x, n), step))) 
+          <= 340282000000000000000000000000000000000 .
+H16:   polypaver__floats__divide(x, n) >= - 
+          340282000000000000000000000000000000000 .
+H17:   polypaver__floats__divide(x, n) <= 
+          340282000000000000000000000000000000000 .
+H18:   result >= - 340282000000000000000000000000000000000 .
+H19:   result <= 340282000000000000000000000000000000000 .
+H20:   integer__size >= 0 .
+H21:   float__size >= 0 .
+       ->
+C1:    polypaver__floats__multiply(polypaver__floats__divide(x, n), 
+          polypaver__floats__exp(- polypaver__floats__multiply(
+          polypaver__floats__multiply(polypaver__floats__divide(x, n), step), 
+          polypaver__floats__multiply(polypaver__floats__divide(x, n), step)))) 
+          >= - 340282000000000000000000000000000000000 .
+C2:    polypaver__floats__multiply(polypaver__floats__divide(x, n), 
+          polypaver__floats__exp(- polypaver__floats__multiply(
+          polypaver__floats__multiply(polypaver__floats__divide(x, n), step), 
+          polypaver__floats__multiply(polypaver__floats__divide(x, n), step)))) 
+          <= 340282000000000000000000000000000000000 .
+
+
+For path(s) from assertion of line 25 to precondition check associated with 
+          statement of line 44:
+
+function_erfriemann_15.
+H1:    polypaver__interval__contained_in(result - polypaver__exact__integral(0, 
+          polypaver__floats__multiply(polypaver__floats__divide(x, n), step), 
+          polypaver__exact__exp(- (polypaver__exact__integration_variable * 
+          polypaver__exact__integration_variable))), polypaver__interval__hull(
+          - (1 / 10 * (step + 1)), (1 - polypaver__exact__exp(- (x * step / n * 
+          (x * step / n)))) * x / n + 1 / 10 * (step + 1))) .
+H2:    polypaver__floats__is_range(result, - 10, 100) .
+H3:    polypaver__integers__is_range(n, 1, 100) .
+H4:    polypaver__integers__is_range(step, 0, n - 1) .
+H5:    x >= - 340282000000000000000000000000000000000 .
+H6:    x <= 340282000000000000000000000000000000000 .
+H7:    n >= - 2147483648 .
+H8:    n <= 2147483647 .
+H9:    polypaver__floats__is_range(x, 0, 4) .
+H10:   polypaver__floats__multiply(polypaver__floats__divide(x, n), step) >= - 
+          340282000000000000000000000000000000000 .
+H11:   polypaver__floats__multiply(polypaver__floats__divide(x, n), step) <= 
+          340282000000000000000000000000000000000 .
+H12:   polypaver__floats__multiply(polypaver__floats__multiply(
+          polypaver__floats__divide(x, n), step), polypaver__floats__multiply(
+          polypaver__floats__divide(x, n), step)) >= - 
+          340282000000000000000000000000000000000 .
+H13:   polypaver__floats__multiply(polypaver__floats__multiply(
+          polypaver__floats__divide(x, n), step), polypaver__floats__multiply(
+          polypaver__floats__divide(x, n), step)) <= 
+          340282000000000000000000000000000000000 .
+H14:   polypaver__floats__exp(- polypaver__floats__multiply(
+          polypaver__floats__multiply(polypaver__floats__divide(x, n), step), 
+          polypaver__floats__multiply(polypaver__floats__divide(x, n), step))) 
+          >= - 340282000000000000000000000000000000000 .
+H15:   polypaver__floats__exp(- polypaver__floats__multiply(
+          polypaver__floats__multiply(polypaver__floats__divide(x, n), step), 
+          polypaver__floats__multiply(polypaver__floats__divide(x, n), step))) 
+          <= 340282000000000000000000000000000000000 .
+H16:   polypaver__floats__divide(x, n) >= - 
+          340282000000000000000000000000000000000 .
+H17:   polypaver__floats__divide(x, n) <= 
+          340282000000000000000000000000000000000 .
+H18:   result >= - 340282000000000000000000000000000000000 .
+H19:   result <= 340282000000000000000000000000000000000 .
+H20:   polypaver__floats__multiply(polypaver__floats__divide(x, n), 
+          polypaver__floats__exp(- polypaver__floats__multiply(
+          polypaver__floats__multiply(polypaver__floats__divide(x, n), step), 
+          polypaver__floats__multiply(polypaver__floats__divide(x, n), step)))) 
+          >= - 340282000000000000000000000000000000000 .
+H21:   polypaver__floats__multiply(polypaver__floats__divide(x, n), 
+          polypaver__floats__exp(- polypaver__floats__multiply(
+          polypaver__floats__multiply(polypaver__floats__divide(x, n), step), 
+          polypaver__floats__multiply(polypaver__floats__divide(x, n), step)))) 
+          <= 340282000000000000000000000000000000000 .
+H22:   integer__size >= 0 .
+H23:   float__size >= 0 .
+       ->
+C1:    polypaver__floats__add(result, polypaver__floats__multiply(
+          polypaver__floats__divide(x, n), polypaver__floats__exp(- 
+          polypaver__floats__multiply(polypaver__floats__multiply(
+          polypaver__floats__divide(x, n), step), polypaver__floats__multiply(
+          polypaver__floats__divide(x, n), step))))) >= - 
+          340282000000000000000000000000000000000 .
+C2:    polypaver__floats__add(result, polypaver__floats__multiply(
+          polypaver__floats__divide(x, n), polypaver__floats__exp(- 
+          polypaver__floats__multiply(polypaver__floats__multiply(
+          polypaver__floats__divide(x, n), step), polypaver__floats__multiply(
+          polypaver__floats__divide(x, n), step))))) <= 
+          340282000000000000000000000000000000000 .
+
+
+For path(s) from assertion of line 25 to run-time check associated with 
+          statement of line 44:
+
+function_erfriemann_16.
+*** true .          /* all conclusions proved */
+
+
+For path(s) from assertion of line 25 to run-time check associated with 
+          statement of line 47:
+
+function_erfriemann_17.
+H1:    polypaver__interval__contained_in(result - polypaver__exact__integral(0, 
+          polypaver__floats__multiply(polypaver__floats__divide(x, n), step), 
+          polypaver__exact__exp(- (polypaver__exact__integration_variable * 
+          polypaver__exact__integration_variable))), polypaver__interval__hull(
+          - (1 / 10 * (step + 1)), (1 - polypaver__exact__exp(- (x * step / n * 
+          (x * step / n)))) * x / n + 1 / 10 * (step + 1))) .
+H2:    polypaver__floats__is_range(result, - 10, 100) .
+H3:    polypaver__integers__is_range(n, 1, 100) .
+H4:    polypaver__integers__is_range(step, 0, n - 1) .
+H5:    x >= - 340282000000000000000000000000000000000 .
+H6:    x <= 340282000000000000000000000000000000000 .
+H7:    n >= - 2147483648 .
+H8:    n <= 2147483647 .
+H9:    polypaver__floats__is_range(x, 0, 4) .
+H10:   polypaver__floats__multiply(polypaver__floats__divide(x, n), step) >= - 
+          340282000000000000000000000000000000000 .
+H11:   polypaver__floats__multiply(polypaver__floats__divide(x, n), step) <= 
+          340282000000000000000000000000000000000 .
+H12:   polypaver__floats__multiply(polypaver__floats__multiply(
+          polypaver__floats__divide(x, n), step), polypaver__floats__multiply(
+          polypaver__floats__divide(x, n), step)) >= - 
+          340282000000000000000000000000000000000 .
+H13:   polypaver__floats__multiply(polypaver__floats__multiply(
+          polypaver__floats__divide(x, n), step), polypaver__floats__multiply(
+          polypaver__floats__divide(x, n), step)) <= 
+          340282000000000000000000000000000000000 .
+H14:   polypaver__floats__exp(- polypaver__floats__multiply(
+          polypaver__floats__multiply(polypaver__floats__divide(x, n), step), 
+          polypaver__floats__multiply(polypaver__floats__divide(x, n), step))) 
+          >= - 340282000000000000000000000000000000000 .
+H15:   polypaver__floats__exp(- polypaver__floats__multiply(
+          polypaver__floats__multiply(polypaver__floats__divide(x, n), step), 
+          polypaver__floats__multiply(polypaver__floats__divide(x, n), step))) 
+          <= 340282000000000000000000000000000000000 .
+H16:   polypaver__floats__divide(x, n) >= - 
+          340282000000000000000000000000000000000 .
+H17:   polypaver__floats__divide(x, n) <= 
+          340282000000000000000000000000000000000 .
+H18:   result >= - 340282000000000000000000000000000000000 .
+H19:   result <= 340282000000000000000000000000000000000 .
+H20:   polypaver__floats__multiply(polypaver__floats__divide(x, n), 
+          polypaver__floats__exp(- polypaver__floats__multiply(
+          polypaver__floats__multiply(polypaver__floats__divide(x, n), step), 
+          polypaver__floats__multiply(polypaver__floats__divide(x, n), step)))) 
+          >= - 340282000000000000000000000000000000000 .
+H21:   polypaver__floats__multiply(polypaver__floats__divide(x, n), 
+          polypaver__floats__exp(- polypaver__floats__multiply(
+          polypaver__floats__multiply(polypaver__floats__divide(x, n), step), 
+          polypaver__floats__multiply(polypaver__floats__divide(x, n), step)))) 
+          <= 340282000000000000000000000000000000000 .
+H22:   polypaver__floats__add(result, polypaver__floats__multiply(
+          polypaver__floats__divide(x, n), polypaver__floats__exp(- 
+          polypaver__floats__multiply(polypaver__floats__multiply(
+          polypaver__floats__divide(x, n), step), polypaver__floats__multiply(
+          polypaver__floats__divide(x, n), step))))) >= - 
+          340282000000000000000000000000000000000 .
+H23:   polypaver__floats__add(result, polypaver__floats__multiply(
+          polypaver__floats__divide(x, n), polypaver__floats__exp(- 
+          polypaver__floats__multiply(polypaver__floats__multiply(
+          polypaver__floats__divide(x, n), step), polypaver__floats__multiply(
+          polypaver__floats__divide(x, n), step))))) <= 
+          340282000000000000000000000000000000000 .
+H24:   step >= - 2147483648 .
+H25:   step <= 2147483647 .
+H26:   integer__size >= 0 .
+H27:   float__size >= 0 .
+       ->
+C1:    step <= 2147483646 .
+
+
+For path(s) from start to finish:
+
+function_erfriemann_18.
+H1:    polypaver__floats__is_range(x, 0, 4) .
+H2:    polypaver__integers__is_range(n, 1, 100) .
+H3:    x >= - 340282000000000000000000000000000000000 .
+H4:    x <= 340282000000000000000000000000000000000 .
+H5:    n >= - 2147483648 .
+H6:    polypaver__floats__divide(x, n) >= - 
+          340282000000000000000000000000000000000 .
+H7:    polypaver__floats__divide(x, n) <= 
+          340282000000000000000000000000000000000 .
+H8:    n < 0 .
+H9:    integer__size >= 0 .
+H10:   float__size >= 0 .
+       ->
+C1:    polypaver__interval__contained_in(- polypaver__exact__integral(0, x, 
+          polypaver__exact__exp(- (polypaver__exact__integration_variable * 
+          polypaver__exact__integration_variable))), polypaver__interval__hull(
+          - (1 / 10 * (n + 1)), (1 - polypaver__exact__exp(- (x * x))) * x / n 
+          + 1 / 10 * (n + 1))) .
+
+
+For path(s) from assertion of line 25 to finish:
+
+function_erfriemann_19.
+H1:    polypaver__interval__contained_in(result - polypaver__exact__integral(0, 
+          polypaver__floats__multiply(polypaver__floats__divide(x, n), step), 
+          polypaver__exact__exp(- (polypaver__exact__integration_variable * 
+          polypaver__exact__integration_variable))), polypaver__interval__hull(
+          - (1 / 10 * (step + 1)), (1 - polypaver__exact__exp(- (x * step / n * 
+          (x * step / n)))) * x / n + 1 / 10 * (step + 1))) .
+H2:    polypaver__floats__is_range(result, - 10, 100) .
+H3:    polypaver__integers__is_range(n, 1, 100) .
+H4:    polypaver__integers__is_range(step, 0, n - 1) .
+H5:    x >= - 340282000000000000000000000000000000000 .
+H6:    x <= 340282000000000000000000000000000000000 .
+H7:    n >= - 2147483648 .
+H8:    n <= 2147483647 .
+H9:    polypaver__floats__is_range(x, 0, 4) .
+H10:   polypaver__floats__multiply(polypaver__floats__divide(x, n), step) >= - 
+          340282000000000000000000000000000000000 .
+H11:   polypaver__floats__multiply(polypaver__floats__divide(x, n), step) <= 
+          340282000000000000000000000000000000000 .
+H12:   polypaver__floats__multiply(polypaver__floats__multiply(
+          polypaver__floats__divide(x, n), step), polypaver__floats__multiply(
+          polypaver__floats__divide(x, n), step)) >= - 
+          340282000000000000000000000000000000000 .
+H13:   polypaver__floats__multiply(polypaver__floats__multiply(
+          polypaver__floats__divide(x, n), step), polypaver__floats__multiply(
+          polypaver__floats__divide(x, n), step)) <= 
+          340282000000000000000000000000000000000 .
+H14:   polypaver__floats__exp(- polypaver__floats__multiply(
+          polypaver__floats__multiply(polypaver__floats__divide(x, n), step), 
+          polypaver__floats__multiply(polypaver__floats__divide(x, n), step))) 
+          >= - 340282000000000000000000000000000000000 .
+H15:   polypaver__floats__exp(- polypaver__floats__multiply(
+          polypaver__floats__multiply(polypaver__floats__divide(x, n), step), 
+          polypaver__floats__multiply(polypaver__floats__divide(x, n), step))) 
+          <= 340282000000000000000000000000000000000 .
+H16:   polypaver__floats__divide(x, n) >= - 
+          340282000000000000000000000000000000000 .
+H17:   polypaver__floats__divide(x, n) <= 
+          340282000000000000000000000000000000000 .
+H18:   result >= - 340282000000000000000000000000000000000 .
+H19:   result <= 340282000000000000000000000000000000000 .
+H20:   polypaver__floats__multiply(polypaver__floats__divide(x, n), 
+          polypaver__floats__exp(- polypaver__floats__multiply(
+          polypaver__floats__multiply(polypaver__floats__divide(x, n), step), 
+          polypaver__floats__multiply(polypaver__floats__divide(x, n), step)))) 
+          >= - 340282000000000000000000000000000000000 .
+H21:   polypaver__floats__multiply(polypaver__floats__divide(x, n), 
+          polypaver__floats__exp(- polypaver__floats__multiply(
+          polypaver__floats__multiply(polypaver__floats__divide(x, n), step), 
+          polypaver__floats__multiply(polypaver__floats__divide(x, n), step)))) 
+          <= 340282000000000000000000000000000000000 .
+H22:   polypaver__floats__add(result, polypaver__floats__multiply(
+          polypaver__floats__divide(x, n), polypaver__floats__exp(- 
+          polypaver__floats__multiply(polypaver__floats__multiply(
+          polypaver__floats__divide(x, n), step), polypaver__floats__multiply(
+          polypaver__floats__divide(x, n), step))))) >= - 
+          340282000000000000000000000000000000000 .
+H23:   polypaver__floats__add(result, polypaver__floats__multiply(
+          polypaver__floats__divide(x, n), polypaver__floats__exp(- 
+          polypaver__floats__multiply(polypaver__floats__multiply(
+          polypaver__floats__divide(x, n), step), polypaver__floats__multiply(
+          polypaver__floats__divide(x, n), step))))) <= 
+          340282000000000000000000000000000000000 .
+H24:   step >= - 2147483648 .
+H25:   step <= 2147483646 .
+H26:   n <= step + 1 .
+H27:   integer__size >= 0 .
+H28:   float__size >= 0 .
+       ->
+C1:    polypaver__interval__contained_in(polypaver__floats__add(result, 
+          polypaver__floats__multiply(polypaver__floats__divide(x, n), 
+          polypaver__floats__exp(- polypaver__floats__multiply(
+          polypaver__floats__multiply(polypaver__floats__divide(x, n), step), 
+          polypaver__floats__multiply(polypaver__floats__divide(x, n), step)))))
+           - polypaver__exact__integral(0, x, polypaver__exact__exp(- (
+          polypaver__exact__integration_variable * 
+          polypaver__exact__integration_variable))), polypaver__interval__hull(
+          - (1 / 10 * (n + 1)), (1 - polypaver__exact__exp(- (x * x))) * x / n 
+          + 1 / 10 * (n + 1))) .
+
+

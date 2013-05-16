@@ -1,0 +1,27 @@
+           /*********************************************************/
+                           /*Proof Rule Declarations*/
+                              /*Examiner GPL 2012*/
+             /*Copyright (C) 2012 Altran Praxis Limited, Bath, U.K.*/
+           /*********************************************************/
+
+
+                        /*DATE : 17-MAY-2013 00:59:21.38*/
+
+                        /*function Riemann.erfRiemann*/
+
+
+rule_family erfriemann_rules:
+     X      requires [X:any] &
+     X <= Y requires [X:ire, Y:ire] &
+     X >= Y requires [X:ire, Y:ire].
+
+erfriemann_rules(1): integer__size >= 0 may_be_deduced.
+erfriemann_rules(2): integer__first may_be_replaced_by -2147483648.
+erfriemann_rules(3): integer__last may_be_replaced_by 2147483647.
+erfriemann_rules(4): integer__base__first may_be_replaced_by -2147483648.
+erfriemann_rules(5): integer__base__last may_be_replaced_by 2147483647.
+erfriemann_rules(6): float__size >= 0 may_be_deduced.
+erfriemann_rules(7): float__first may_be_replaced_by -340282000000000000000000000000000000000.
+erfriemann_rules(8): float__last may_be_replaced_by 340282000000000000000000000000000000000.
+erfriemann_rules(9): float__base__first may_be_replaced_by -340282000000000000000000000000000000000.
+erfriemann_rules(10): float__base__last may_be_replaced_by 340282000000000000000000000000000000000.

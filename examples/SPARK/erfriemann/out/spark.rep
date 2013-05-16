@@ -1,0 +1,168 @@
+           *******************************************************
+                         Report of SPARK Examination
+                              Examiner GPL 2012
+             Copyright (C) 2012 Altran Praxis Limited, Bath, U.K.
+           *******************************************************
+
+
+                        DATE : 17-MAY-2013 00:59:21.40
+
+Options:
+    noindex_file
+    nowarning_file
+    notarget_compiler_data
+    config_file=gnat.cfg
+    source_extension=ada
+    listing_extension=lst
+    nodictionary_file
+    report_file=spark.rep
+    nohtml
+    vcg
+    nostatistics
+    fdl_identifiers=accept
+    flow_analysis=auto
+    language=95
+    profile=sequential
+    annotation_character=#
+    rules=lazy
+    error_explanations=off
+    justification_option=full
+    output_directory=out
+    output_directory (actual)=/Users/jandur/FPbyContract/paver/examples/SPARK/erfriemann/out/
+
+Selected files:
+   @riemann.smf
+
+
+No Index files were used
+
+
+Meta File(s) used were:
+   riemann.smf
+      /Users/jandur/FPbyContract/paver/examples/SPARK/packages/polypaver.ads
+      /Users/jandur/FPbyContract/paver/examples/SPARK/packages/polypaver-exact.ads
+      /Users/jandur/FPbyContract/paver/examples/SPARK/packages/polypaver-interval.ads
+      /Users/jandur/FPbyContract/paver/examples/SPARK/packages/polypaver-integers.ads
+      /Users/jandur/FPbyContract/paver/examples/SPARK/packages/polypaver-floats.ads
+      /Users/jandur/FPbyContract/paver/examples/SPARK/erfriemann/src/riemann.ads
+      /Users/jandur/FPbyContract/paver/examples/SPARK/erfriemann/src/riemann.adb
+
+
+Full warning reporting selected
+
+
+Target configuration file:
+Line
+   1  -- Auto-generated SPARK target configuration file
+   2  -- Target claims to be 'SYSTEM_NAME_GNAT'
+   3  
+   4  -- This package Standard is used for Examiner self-analysis,
+   5  -- following CFR 1018.  It is valid for both GNAT 3.14a1 and later
+   6  -- on SPARC/Solaris and IA32/Win32
+   7  
+   8  package Standard is
+   9     type Integer is range -2147483648 ..  2147483647;
+  10     type Float is digits  6 range -3.40282E+38 ..  3.40282E+38;
+  11     type Short_Short_Integer is range -128 ..  127;
+  12     type Short_Integer is range -32768 ..  32767;
+  13     type Long_Integer is range -2147483648 ..  2147483647;
+  14     type Short_Float is digits  6 range -3.40282E+38 ..  3.40282E+38;
+  15     type Long_Float is digits  15 range -1.79769313486232E+308 ..  1.79769313486232E+308;
+  16  end Standard;
+
+
+Source Filename(s) used were:
+   /Users/jandur/FPbyContract/paver/examples/SPARK/packages/polypaver.ads
+   /Users/jandur/FPbyContract/paver/examples/SPARK/packages/polypaver-exact.ads
+   /Users/jandur/FPbyContract/paver/examples/SPARK/packages/polypaver-interval.ads
+   /Users/jandur/FPbyContract/paver/examples/SPARK/packages/polypaver-integers.ads
+   /Users/jandur/FPbyContract/paver/examples/SPARK/packages/polypaver-floats.ads
+   /Users/jandur/FPbyContract/paver/examples/SPARK/erfriemann/src/riemann.ads
+   /Users/jandur/FPbyContract/paver/examples/SPARK/erfriemann/src/riemann.adb
+
+
+
+Source Filename:   /Users/jandur/FPbyContract/paver/examples/SPARK/packages/polypaver.ads
+Listing Filename:  /Users/jandur/FPbyContract/paver/examples/SPARK/erfriemann/out/polypaver.lst
+
+   Unit name:  PolyPaver
+   Unit type:  package specification
+   Unit has been analysed, any errors are listed below.
+
+No errors found
+
+
+Source Filename:   /Users/jandur/FPbyContract/paver/examples/SPARK/packages/polypaver-exact.ads
+Listing Filename:  /Users/jandur/FPbyContract/paver/examples/SPARK/erfriemann/out/polypaver-exact.lst
+
+   Unit name:  PolyPaver.Exact
+   Unit type:  package specification
+   Unit has been analysed, any errors are listed below.
+
+No errors found
+
+
+Source Filename:   /Users/jandur/FPbyContract/paver/examples/SPARK/packages/polypaver-interval.ads
+Listing Filename:  /Users/jandur/FPbyContract/paver/examples/SPARK/erfriemann/out/polypaver-interval.lst
+
+   Unit name:  PolyPaver.Interval
+   Unit type:  package specification
+   Unit has been analysed, any errors are listed below.
+
+No errors found
+
+
+Source Filename:   /Users/jandur/FPbyContract/paver/examples/SPARK/packages/polypaver-integers.ads
+Listing Filename:  /Users/jandur/FPbyContract/paver/examples/SPARK/erfriemann/out/polypaver-integers.lst
+
+   Unit name:  PolyPaver.Integers
+   Unit type:  package specification
+   Unit has been analysed, any errors are listed below.
+
+No errors found
+
+
+Source Filename:   /Users/jandur/FPbyContract/paver/examples/SPARK/packages/polypaver-floats.ads
+Listing Filename:  /Users/jandur/FPbyContract/paver/examples/SPARK/erfriemann/out/polypaver-floats.lst
+
+   Unit name:  PolyPaver.Floats
+   Unit type:  package specification
+   Unit has been analysed, any errors are listed below.
+
+No errors found
+
+
+Source Filename:   /Users/jandur/FPbyContract/paver/examples/SPARK/erfriemann/src/riemann.ads
+Listing Filename:  /Users/jandur/FPbyContract/paver/examples/SPARK/erfriemann/out/riemann.lst
+
+   Unit name:  Riemann
+   Unit type:  package specification
+   Unit has been analysed, any errors are listed below.
+
+No errors found
+
+
+Source Filename:   /Users/jandur/FPbyContract/paver/examples/SPARK/erfriemann/src/riemann.adb
+Listing Filename:  /Users/jandur/FPbyContract/paver/examples/SPARK/erfriemann/out/riemann.lst
+
+   Unit name:  Riemann
+   Unit type:  package body
+   Unit has been analysed, any errors are listed below.
+
+2 error(s) or warning(s)
+
+Line
+   7  end expMinusSquare;
+
+--- (  1)  Warning           :405: VCs for statements including real numbers are 
+           approximate.
+
+  50  end erfRiemann;
+
+--- (  2)  Warning           :405: VCs for statements including real numbers are 
+           approximate.
+
+Note: Automatic flow analysis mode selected
+
+
+--End of file--------------------------------------------------

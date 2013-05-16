@@ -1,0 +1,72 @@
+*****************************************************************************
+                       Semantic Analysis of SPARK Text
+                              Examiner GPL 2012
+             Copyright (C) 2012 Altran Praxis Limited, Bath, U.K.
+*****************************************************************************
+
+
+CREATED 17-MAY-2013, 00:59:21  SIMPLIFIED 17-MAY-2013, 00:59:25
+
+SPARK Simplifier GPL 2012
+Copyright (C) 2012 Altran Praxis Limited, Bath, U.K.
+
+function Riemann.expMinusSquare
+
+
+
+
+For path(s) from start to precondition check associated with statement of line 
+          6:
+
+function_expminussquare_1.
+H1:    polypaver__floats__is_range(x, - 1, 5) .
+H2:    x >= - 340282000000000000000000000000000000000 .
+H3:    x <= 340282000000000000000000000000000000000 .
+H4:    float__size >= 0 .
+       ->
+C1:    polypaver__floats__multiply(x, x) >= - 
+          340282000000000000000000000000000000000 .
+C2:    polypaver__floats__multiply(x, x) <= 
+          340282000000000000000000000000000000000 .
+
+
+For path(s) from start to precondition check associated with statement of line 
+          6:
+
+function_expminussquare_2.
+H1:    polypaver__floats__is_range(x, - 1, 5) .
+H2:    x >= - 340282000000000000000000000000000000000 .
+H3:    x <= 340282000000000000000000000000000000000 .
+H4:    polypaver__floats__multiply(x, x) >= - 
+          340282000000000000000000000000000000000 .
+H5:    polypaver__floats__multiply(x, x) <= 
+          340282000000000000000000000000000000000 .
+H6:    float__size >= 0 .
+       ->
+C1:    polypaver__floats__exp(- polypaver__floats__multiply(x, x)) >= - 
+          340282000000000000000000000000000000000 .
+C2:    polypaver__floats__exp(- polypaver__floats__multiply(x, x)) <= 
+          340282000000000000000000000000000000000 .
+
+
+For path(s) from start to finish:
+
+function_expminussquare_3.
+H1:    polypaver__floats__is_range(x, - 1, 5) .
+H2:    x >= - 340282000000000000000000000000000000000 .
+H3:    x <= 340282000000000000000000000000000000000 .
+H4:    polypaver__floats__multiply(x, x) >= - 
+          340282000000000000000000000000000000000 .
+H5:    polypaver__floats__multiply(x, x) <= 
+          340282000000000000000000000000000000000 .
+H6:    polypaver__floats__exp(- polypaver__floats__multiply(x, x)) >= - 
+          340282000000000000000000000000000000000 .
+H7:    polypaver__floats__exp(- polypaver__floats__multiply(x, x)) <= 
+          340282000000000000000000000000000000000 .
+H8:    float__size >= 0 .
+       ->
+C1:    polypaver__interval__contained_in(polypaver__floats__exp(- 
+          polypaver__floats__multiply(x, x)), polypaver__exact__exp(- (x * x)) 
+          + polypaver__interval__hull(- (1 / 1000000), 1 / 1000000)) .
+
+

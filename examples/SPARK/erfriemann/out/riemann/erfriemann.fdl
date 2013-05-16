@@ -1,0 +1,45 @@
+           {*******************************************************}
+                               {FDL Declarations}
+                              {Examiner GPL 2012}
+             {Copyright (C) 2012 Altran Praxis Limited, Bath, U.K.}
+           {*******************************************************}
+
+
+                        {DATE : 17-MAY-2013 00:59:21.38}
+
+                        {function Riemann.erfRiemann}
+
+
+title function erfriemann;
+
+  function round__(real) : integer;
+  const float__base__first : real = pending; 
+  const float__base__last : real = pending; 
+  const integer__base__first : integer = pending; 
+  const integer__base__last : integer = pending; 
+  const float__first : real = pending; 
+  const float__last : real = pending; 
+  const float__size : integer = pending; 
+  const integer__first : integer = pending; 
+  const integer__last : integer = pending; 
+  const integer__size : integer = pending; 
+  var x : real;
+  var n : integer;
+  var stepsize : real;
+  var stepstart : real;
+  var result : real;
+  var step : integer;
+  function polypaver__exact__exp(real) : real;
+  function polypaver__exact__integral(real, real, real) : real;
+  function polypaver__exact__integration_variable : real;
+  function polypaver__interval__hull(real, real) : real;
+  function polypaver__interval__contained_in(real, real) : boolean;
+  function polypaver__integers__is_range(integer, integer, 
+     integer) : boolean;
+  function polypaver__floats__is_range(real, real, real) : boolean;
+  function polypaver__floats__add(real, real) : real;
+  function polypaver__floats__multiply(real, real) : real;
+  function polypaver__floats__divide(real, real) : real;
+  function polypaver__floats__exp(real) : real;
+
+end;
