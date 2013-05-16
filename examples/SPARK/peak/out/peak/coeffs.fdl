@@ -1,0 +1,27 @@
+           {*******************************************************}
+                               {FDL Declarations}
+                              {Examiner GPL 2012}
+             {Copyright (C) 2012 Altran Praxis Limited, Bath, U.K.}
+           {*******************************************************}
+
+
+                        {DATE : 17-MAY-2013 00:54:49.08}
+
+                           {procedure Peak.Coeffs}
+
+
+title procedure coeffs;
+
+  function round__(real) : integer;
+  const float__base__first : real = pending; 
+  const float__base__last : real = pending; 
+  const float__first : real = pending; 
+  const float__last : real = pending; 
+  const float__size : integer = pending; 
+  var y1 : real;
+  var y2 : real;
+  var y3 : real;
+  function polypaver__floats__add(real, real) : real;
+  function polypaver__floats__multiply(real, real) : real;
+
+end;

@@ -1,0 +1,284 @@
+*****************************************************************************
+                       Semantic Analysis of SPARK Text
+                              Examiner GPL 2012
+             Copyright (C) 2012 Altran Praxis Limited, Bath, U.K.
+*****************************************************************************
+
+
+CREATED 17-MAY-2013, 00:54:49  SIMPLIFIED 17-MAY-2013, 00:54:51
+
+SPARK Simplifier GPL 2012
+Copyright (C) 2012 Altran Praxis Limited, Bath, U.K.
+
+procedure Peak.Coeffs
+
+
+
+
+For path(s) from start to precondition check associated with statement of line 
+          17:
+
+procedure_coeffs_1.
+H1:    y1 >= 0 .
+H2:    y1 <= 1 .
+H3:    y2 >= 0 .
+H4:    y2 <= 1 .
+H5:    y3 >= 0 .
+H6:    y3 <= 1 .
+H7:    float__size >= 0 .
+       ->
+C1:    polypaver__floats__multiply(- 2, y2) >= - 
+          340282000000000000000000000000000000000 .
+C2:    polypaver__floats__multiply(- 2, y2) <= 
+          340282000000000000000000000000000000000 .
+
+
+For path(s) from start to precondition check associated with statement of line 
+          17:
+
+procedure_coeffs_2.
+H1:    y1 >= 0 .
+H2:    y1 <= 1 .
+H3:    y2 >= 0 .
+H4:    y2 <= 1 .
+H5:    y3 >= 0 .
+H6:    y3 <= 1 .
+H7:    polypaver__floats__multiply(- 2, y2) >= - 
+          340282000000000000000000000000000000000 .
+H8:    polypaver__floats__multiply(- 2, y2) <= 
+          340282000000000000000000000000000000000 .
+H9:    float__size >= 0 .
+       ->
+C1:    polypaver__floats__add(polypaver__floats__multiply(- 2, y2), y3) >= - 
+          340282000000000000000000000000000000000 .
+C2:    polypaver__floats__add(polypaver__floats__multiply(- 2, y2), y3) <= 
+          340282000000000000000000000000000000000 .
+
+
+For path(s) from start to precondition check associated with statement of line 
+          17:
+
+procedure_coeffs_3.
+H1:    y1 >= 0 .
+H2:    y1 <= 1 .
+H3:    y2 >= 0 .
+H4:    y2 <= 1 .
+H5:    y3 >= 0 .
+H6:    y3 <= 1 .
+H7:    polypaver__floats__multiply(- 2, y2) >= - 
+          340282000000000000000000000000000000000 .
+H8:    polypaver__floats__multiply(- 2, y2) <= 
+          340282000000000000000000000000000000000 .
+H9:    polypaver__floats__add(polypaver__floats__multiply(- 2, y2), y3) >= - 
+          340282000000000000000000000000000000000 .
+H10:   polypaver__floats__add(polypaver__floats__multiply(- 2, y2), y3) <= 
+          340282000000000000000000000000000000000 .
+H11:   float__size >= 0 .
+       ->
+C1:    polypaver__floats__add(y1, polypaver__floats__add(
+          polypaver__floats__multiply(- 2, y2), y3)) >= - 
+          340282000000000000000000000000000000000 .
+C2:    polypaver__floats__add(y1, polypaver__floats__add(
+          polypaver__floats__multiply(- 2, y2), y3)) <= 
+          340282000000000000000000000000000000000 .
+
+
+For path(s) from start to precondition check associated with statement of line 
+          17:
+
+procedure_coeffs_4.
+H1:    y1 >= 0 .
+H2:    y1 <= 1 .
+H3:    y2 >= 0 .
+H4:    y2 <= 1 .
+H5:    y3 >= 0 .
+H6:    y3 <= 1 .
+H7:    polypaver__floats__multiply(- 2, y2) >= - 
+          340282000000000000000000000000000000000 .
+H8:    polypaver__floats__multiply(- 2, y2) <= 
+          340282000000000000000000000000000000000 .
+H9:    polypaver__floats__add(polypaver__floats__multiply(- 2, y2), y3) >= - 
+          340282000000000000000000000000000000000 .
+H10:   polypaver__floats__add(polypaver__floats__multiply(- 2, y2), y3) <= 
+          340282000000000000000000000000000000000 .
+H11:   polypaver__floats__add(y1, polypaver__floats__add(
+          polypaver__floats__multiply(- 2, y2), y3)) >= - 
+          340282000000000000000000000000000000000 .
+H12:   polypaver__floats__add(y1, polypaver__floats__add(
+          polypaver__floats__multiply(- 2, y2), y3)) <= 
+          340282000000000000000000000000000000000 .
+H13:   float__size >= 0 .
+       ->
+C1:    polypaver__floats__multiply(1 / 2, polypaver__floats__add(y1, 
+          polypaver__floats__add(polypaver__floats__multiply(- 2, y2), y3))) >= 
+          - 340282000000000000000000000000000000000 .
+C2:    polypaver__floats__multiply(1 / 2, polypaver__floats__add(y1, 
+          polypaver__floats__add(polypaver__floats__multiply(- 2, y2), y3))) <= 
+          340282000000000000000000000000000000000 .
+
+
+For path(s) from start to run-time check associated with statement of line 17:
+
+procedure_coeffs_5.
+*** true .          /* all conclusions proved */
+
+
+For path(s) from start to precondition check associated with statement of line 
+          25:
+
+procedure_coeffs_6.
+H1:    y1 >= 0 .
+H2:    y1 <= 1 .
+H3:    y2 >= 0 .
+H4:    y2 <= 1 .
+H5:    y3 >= 0 .
+H6:    y3 <= 1 .
+H7:    polypaver__floats__multiply(- 2, y2) >= - 
+          340282000000000000000000000000000000000 .
+H8:    polypaver__floats__multiply(- 2, y2) <= 
+          340282000000000000000000000000000000000 .
+H9:    polypaver__floats__add(polypaver__floats__multiply(- 2, y2), y3) >= - 
+          340282000000000000000000000000000000000 .
+H10:   polypaver__floats__add(polypaver__floats__multiply(- 2, y2), y3) <= 
+          340282000000000000000000000000000000000 .
+H11:   polypaver__floats__add(y1, polypaver__floats__add(
+          polypaver__floats__multiply(- 2, y2), y3)) >= - 
+          340282000000000000000000000000000000000 .
+H12:   polypaver__floats__add(y1, polypaver__floats__add(
+          polypaver__floats__multiply(- 2, y2), y3)) <= 
+          340282000000000000000000000000000000000 .
+H13:   polypaver__floats__multiply(1 / 2, polypaver__floats__add(y1, 
+          polypaver__floats__add(polypaver__floats__multiply(- 2, y2), y3))) >= 
+          - 340282000000000000000000000000000000000 .
+H14:   polypaver__floats__multiply(1 / 2, polypaver__floats__add(y1, 
+          polypaver__floats__add(polypaver__floats__multiply(- 2, y2), y3))) <= 
+          340282000000000000000000000000000000000 .
+H15:   float__size >= 0 .
+       ->
+C1:    polypaver__floats__add(y3, - y1) >= - 
+          340282000000000000000000000000000000000 .
+C2:    polypaver__floats__add(y3, - y1) <= 
+          340282000000000000000000000000000000000 .
+
+
+For path(s) from start to precondition check associated with statement of line 
+          25:
+
+procedure_coeffs_7.
+H1:    y1 >= 0 .
+H2:    y1 <= 1 .
+H3:    y2 >= 0 .
+H4:    y2 <= 1 .
+H5:    y3 >= 0 .
+H6:    y3 <= 1 .
+H7:    polypaver__floats__multiply(- 2, y2) >= - 
+          340282000000000000000000000000000000000 .
+H8:    polypaver__floats__multiply(- 2, y2) <= 
+          340282000000000000000000000000000000000 .
+H9:    polypaver__floats__add(polypaver__floats__multiply(- 2, y2), y3) >= - 
+          340282000000000000000000000000000000000 .
+H10:   polypaver__floats__add(polypaver__floats__multiply(- 2, y2), y3) <= 
+          340282000000000000000000000000000000000 .
+H11:   polypaver__floats__add(y1, polypaver__floats__add(
+          polypaver__floats__multiply(- 2, y2), y3)) >= - 
+          340282000000000000000000000000000000000 .
+H12:   polypaver__floats__add(y1, polypaver__floats__add(
+          polypaver__floats__multiply(- 2, y2), y3)) <= 
+          340282000000000000000000000000000000000 .
+H13:   polypaver__floats__multiply(1 / 2, polypaver__floats__add(y1, 
+          polypaver__floats__add(polypaver__floats__multiply(- 2, y2), y3))) >= 
+          - 340282000000000000000000000000000000000 .
+H14:   polypaver__floats__multiply(1 / 2, polypaver__floats__add(y1, 
+          polypaver__floats__add(polypaver__floats__multiply(- 2, y2), y3))) <= 
+          340282000000000000000000000000000000000 .
+H15:   polypaver__floats__add(y3, - y1) >= - 
+          340282000000000000000000000000000000000 .
+H16:   polypaver__floats__add(y3, - y1) <= 
+          340282000000000000000000000000000000000 .
+H17:   float__size >= 0 .
+       ->
+C1:    polypaver__floats__multiply(1 / 2, polypaver__floats__add(y3, - y1)) >= 
+          - 340282000000000000000000000000000000000 .
+C2:    polypaver__floats__multiply(1 / 2, polypaver__floats__add(y3, - y1)) <= 
+          340282000000000000000000000000000000000 .
+
+
+For path(s) from start to run-time check associated with statement of line 25:
+
+procedure_coeffs_8.
+*** true .          /* all conclusions proved */
+
+
+For path(s) from start to run-time check associated with statement of line 27:
+
+procedure_coeffs_9.
+*** true .          /* all conclusions proved */
+
+
+For path(s) from start to finish:
+
+procedure_coeffs_10.
+H1:    y1 >= 0 .
+H2:    y1 <= 1 .
+H3:    y2 >= 0 .
+H4:    y2 <= 1 .
+H5:    y3 >= 0 .
+H6:    y3 <= 1 .
+H7:    polypaver__floats__multiply(- 2, y2) >= - 
+          340282000000000000000000000000000000000 .
+H8:    polypaver__floats__multiply(- 2, y2) <= 
+          340282000000000000000000000000000000000 .
+H9:    polypaver__floats__add(polypaver__floats__multiply(- 2, y2), y3) >= - 
+          340282000000000000000000000000000000000 .
+H10:   polypaver__floats__add(polypaver__floats__multiply(- 2, y2), y3) <= 
+          340282000000000000000000000000000000000 .
+H11:   polypaver__floats__add(y1, polypaver__floats__add(
+          polypaver__floats__multiply(- 2, y2), y3)) >= - 
+          340282000000000000000000000000000000000 .
+H12:   polypaver__floats__add(y1, polypaver__floats__add(
+          polypaver__floats__multiply(- 2, y2), y3)) <= 
+          340282000000000000000000000000000000000 .
+H13:   polypaver__floats__multiply(1 / 2, polypaver__floats__add(y1, 
+          polypaver__floats__add(polypaver__floats__multiply(- 2, y2), y3))) >= 
+          - 340282000000000000000000000000000000000 .
+H14:   polypaver__floats__multiply(1 / 2, polypaver__floats__add(y1, 
+          polypaver__floats__add(polypaver__floats__multiply(- 2, y2), y3))) <= 
+          340282000000000000000000000000000000000 .
+H15:   polypaver__floats__add(y3, - y1) >= - 
+          340282000000000000000000000000000000000 .
+H16:   polypaver__floats__add(y3, - y1) <= 
+          340282000000000000000000000000000000000 .
+H17:   polypaver__floats__multiply(1 / 2, polypaver__floats__add(y3, - y1)) >= 
+          - 340282000000000000000000000000000000000 .
+H18:   polypaver__floats__multiply(1 / 2, polypaver__floats__add(y3, - y1)) <= 
+          340282000000000000000000000000000000000 .
+H19:   float__size >= 0 .
+       ->
+C1:    polypaver__floats__multiply(1 / 2, polypaver__floats__add(y1, 
+          polypaver__floats__add(polypaver__floats__multiply(- 2, y2), y3))) - 
+          polypaver__floats__multiply(1 / 2, polypaver__floats__add(y3, - y1)) 
+          + y2 - y1 >= - (1 / 1000000) .
+C2:    polypaver__floats__multiply(1 / 2, polypaver__floats__add(y1, 
+          polypaver__floats__add(polypaver__floats__multiply(- 2, y2), y3))) - 
+          polypaver__floats__multiply(1 / 2, polypaver__floats__add(y3, - y1)) 
+          + y2 - y1 <= 1 / 1000000 .
+C3:    polypaver__floats__multiply(1 / 2, polypaver__floats__add(y1, 
+          polypaver__floats__add(polypaver__floats__multiply(- 2, y2), y3))) + 
+          polypaver__floats__multiply(1 / 2, polypaver__floats__add(y3, - y1)) 
+          + y2 - y3 >= - (1 / 1000000) .
+C4:    polypaver__floats__multiply(1 / 2, polypaver__floats__add(y1, 
+          polypaver__floats__add(polypaver__floats__multiply(- 2, y2), y3))) + 
+          polypaver__floats__multiply(1 / 2, polypaver__floats__add(y3, - y1)) 
+          + y2 - y3 <= 1 / 1000000 .
+C5:    polypaver__floats__multiply(1 / 2, polypaver__floats__add(y1, 
+          polypaver__floats__add(polypaver__floats__multiply(- 2, y2), y3))) >= 
+          - (11 / 10) .
+C6:    polypaver__floats__multiply(1 / 2, polypaver__floats__add(y1, 
+          polypaver__floats__add(polypaver__floats__multiply(- 2, y2), y3))) <= 
+          11 / 10 .
+C7:    polypaver__floats__multiply(1 / 2, polypaver__floats__add(y3, - y1)) >= 
+          - (11 / 10) .
+C8:    polypaver__floats__multiply(1 / 2, polypaver__floats__add(y3, - y1)) <= 
+          11 / 10 .
+
+

@@ -1,0 +1,39 @@
+*****************************************************************************
+                       Semantic Analysis of SPARK Text
+                              Examiner GPL 2012
+             Copyright (C) 2012 Altran Praxis Limited, Bath, U.K.
+*****************************************************************************
+
+
+CREATED 17-MAY-2013, 00:54:49  SIMPLIFIED 17-MAY-2013, 00:54:51
+
+SPARK Simplifier GPL 2012
+Copyright (C) 2012 Altran Praxis Limited, Bath, U.K.
+
+function Peak.Max
+
+
+
+
+For path(s) from start to run-time check associated with statement of line 8:
+
+function_max_1.
+*** true .          /* all conclusions proved */
+
+
+For path(s) from start to run-time check associated with statement of line 10:
+
+function_max_2.
+*** true .          /* all conclusions proved */
+
+
+For path(s) from start to finish:
+
+function_max_3.
+*** true .          /* all conclusions proved */
+
+
+function_max_4.
+*** true .          /* all conclusions proved */
+
+

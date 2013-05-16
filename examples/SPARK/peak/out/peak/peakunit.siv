@@ -1,0 +1,271 @@
+*****************************************************************************
+                       Semantic Analysis of SPARK Text
+                              Examiner GPL 2012
+             Copyright (C) 2012 Altran Praxis Limited, Bath, U.K.
+*****************************************************************************
+
+
+CREATED 17-MAY-2013, 00:54:49  SIMPLIFIED 17-MAY-2013, 00:54:52
+
+SPARK Simplifier GPL 2012
+Copyright (C) 2012 Altran Praxis Limited, Bath, U.K.
+
+function Peak.PeakUnit
+
+
+
+
+For path(s) from start to run-time check associated with statement of line 50:
+
+function_peakunit_1.
+*** true .          /* all conclusions proved */
+
+
+For path(s) from start to run-time check associated with statement of line 50:
+
+function_peakunit_2.
+*** true .          /* all conclusions proved */
+
+
+For path(s) from start to precondition check associated with statement of line 
+          51:
+
+function_peakunit_3.
+*** true .          /* all conclusions proved */
+
+
+For path(s) from start to run-time check associated with statement of line 51:
+
+function_peakunit_4.
+*** true .          /* all conclusions proved */
+
+
+For path(s) from start to precondition check associated with statement of line 
+          52:
+
+function_peakunit_5.
+H1:    y1 >= 0 .
+H2:    y1 <= 1 .
+H3:    y2 >= 0 .
+H4:    y2 <= 1 .
+H5:    y3 >= 0 .
+H6:    y3 <= 1 .
+H7:    max(y1, y3) >= - 340282000000000000000000000000000000000 .
+H8:    max(y1, y3) <= 340282000000000000000000000000000000000 .
+H9:    max(y1, y3) = y1 and y1 >= y3 or max(y1, y3) = y3 and y3 >= y1 .
+H10:   a__1 - b__1 + y2 - y1 >= - (1 / 1000000) .
+H11:   a__1 - b__1 + y2 - y1 <= 1 / 1000000 .
+H12:   a__1 + b__1 + y2 - y3 >= - (1 / 1000000) .
+H13:   a__1 + b__1 + y2 - y3 <= 1 / 1000000 .
+H14:   a__1 >= - (11 / 10) .
+H15:   a__1 <= 11 / 10 .
+H16:   b__1 >= - (11 / 10) .
+H17:   b__1 <= 11 / 10 .
+H18:   y2 >= - (11 / 10) .
+H19:   y2 <= 11 / 10 .
+H20:   a__1 >= - 340282000000000000000000000000000000000 .
+H21:   a__1 <= 340282000000000000000000000000000000000 .
+H22:   b__1 >= - 340282000000000000000000000000000000000 .
+H23:   b__1 <= 340282000000000000000000000000000000000 .
+H24:   universal_real__size >= 0 .
+H25:   universal_real__first <= universal_real__last .
+H26:   universal_real__base__first <= universal_real__base__last .
+H27:   universal_real__base__first <= universal_real__first .
+H28:   universal_real__base__last >= universal_real__last .
+H29:   float__size >= 0 .
+       ->
+C1:    polypaver__floats__multiply(2, a__1) >= - 
+          340282000000000000000000000000000000000 .
+C2:    polypaver__floats__multiply(2, a__1) <= 
+          340282000000000000000000000000000000000 .
+C3:    - (1 / 20) >= universal_real__base__first .
+C4:    - (1 / 20) <= universal_real__base__last .
+
+
+For path(s) from start to precondition check associated with statement of line 
+          52:
+
+function_peakunit_6.
+H1:    y1 >= 0 .
+H2:    y1 <= 1 .
+H3:    y2 >= 0 .
+H4:    y2 <= 1 .
+H5:    y3 >= 0 .
+H6:    y3 <= 1 .
+H7:    max(y1, y3) >= - 340282000000000000000000000000000000000 .
+H8:    max(y1, y3) <= 340282000000000000000000000000000000000 .
+H9:    max(y1, y3) = y1 and y1 >= y3 or max(y1, y3) = y3 and y3 >= y1 .
+H10:   a__1 - b__1 + y2 - y1 >= - (1 / 1000000) .
+H11:   a__1 - b__1 + y2 - y1 <= 1 / 1000000 .
+H12:   a__1 + b__1 + y2 - y3 >= - (1 / 1000000) .
+H13:   a__1 + b__1 + y2 - y3 <= 1 / 1000000 .
+H14:   a__1 >= - (11 / 10) .
+H15:   a__1 <= 11 / 10 .
+H16:   b__1 >= - (11 / 10) .
+H17:   b__1 <= 11 / 10 .
+H18:   y2 >= - (11 / 10) .
+H19:   y2 <= 11 / 10 .
+H20:   a__1 >= - 340282000000000000000000000000000000000 .
+H21:   a__1 <= 340282000000000000000000000000000000000 .
+H22:   b__1 >= - 340282000000000000000000000000000000000 .
+H23:   b__1 <= 340282000000000000000000000000000000000 .
+H24:   polypaver__floats__multiply(2, a__1) >= - 
+          340282000000000000000000000000000000000 .
+H25:   polypaver__floats__multiply(2, a__1) <= 
+          340282000000000000000000000000000000000 .
+H26:   - (1 / 20) >= universal_real__base__first .
+H27:   - (1 / 20) <= universal_real__base__last .
+H28:   universal_real__size >= 0 .
+H29:   universal_real__first <= universal_real__last .
+H30:   universal_real__base__first <= universal_real__base__last .
+H31:   universal_real__base__first <= universal_real__first .
+H32:   universal_real__base__last >= universal_real__last .
+H33:   float__size >= 0 .
+       ->
+C1:    polypaver__floats__multiply(- 2, a__1) >= - 
+          340282000000000000000000000000000000000 .
+C2:    polypaver__floats__multiply(- 2, a__1) <= 
+          340282000000000000000000000000000000000 .
+
+
+For path(s) from start to precondition check associated with statement of line 
+          56:
+
+function_peakunit_7.
+*** true .          /* all conclusions proved */
+
+
+For path(s) from start to run-time check associated with statement of line 56:
+
+function_peakunit_8.
+*** true .          /* all conclusions proved */
+
+
+For path(s) from start to run-time check associated with statement of line 56:
+
+function_peakunit_9.
+*** true .          /* all conclusions proved */
+
+
+For path(s) from start to run-time check associated with statement of line 58:
+
+function_peakunit_10.
+*** true .          /* all conclusions proved */
+
+
+For path(s) from start to finish:
+
+function_peakunit_11.
+H1:    y1 >= 0 .
+H2:    y1 <= 1 .
+H3:    y2 >= 0 .
+H4:    y2 <= 1 .
+H5:    y3 >= 0 .
+H6:    y3 <= 1 .
+H7:    max(y1, y3) >= - 340282000000000000000000000000000000000 .
+H8:    max(y1, y3) <= 340282000000000000000000000000000000000 .
+H9:    max(y1, y3) = y1 and y1 >= y3 or max(y1, y3) = y3 and y3 >= y1 .
+H10:   a__1 - b__1 + y2 - y1 >= - (1 / 1000000) .
+H11:   a__1 - b__1 + y2 - y1 <= 1 / 1000000 .
+H12:   a__1 + b__1 + y2 - y3 >= - (1 / 1000000) .
+H13:   a__1 + b__1 + y2 - y3 <= 1 / 1000000 .
+H14:   a__1 >= - (11 / 10) .
+H15:   a__1 <= 11 / 10 .
+H16:   b__1 >= - (11 / 10) .
+H17:   b__1 <= 11 / 10 .
+H18:   y2 >= - (11 / 10) .
+H19:   y2 <= 11 / 10 .
+H20:   a__1 >= - 340282000000000000000000000000000000000 .
+H21:   a__1 <= 340282000000000000000000000000000000000 .
+H22:   b__1 >= - 340282000000000000000000000000000000000 .
+H23:   b__1 <= 340282000000000000000000000000000000000 .
+H24:   polypaver__floats__multiply(2, a__1) >= - 
+          340282000000000000000000000000000000000 .
+H25:   polypaver__floats__multiply(2, a__1) <= 
+          340282000000000000000000000000000000000 .
+H26:   - (1 / 20) >= universal_real__base__first .
+H27:   - (1 / 20) <= universal_real__base__last .
+H28:   polypaver__floats__multiply(- 2, a__1) >= - 
+          340282000000000000000000000000000000000 .
+H29:   polypaver__floats__multiply(- 2, a__1) <= 
+          340282000000000000000000000000000000000 .
+H30:   a__1 < - (1 / 20) .
+H31:   polypaver__floats__multiply(2, a__1) <= b__1 .
+H32:   b__1 <= polypaver__floats__multiply(- 2, a__1) .
+H33:   a__1 >= - (6 / 5) .
+H34:   a__1 <= 6 / 5 .
+H35:   b__1 >= - (6 / 5) .
+H36:   b__1 <= 6 / 5 .
+H37:   y2 >= - (6 / 5) .
+H38:   y2 <= 6 / 5 .
+H39:   peakq(a__1, b__1, y2, 0) >= - 340282000000000000000000000000000000000 .
+H40:   peakq(a__1, b__1, y2, 0) >= y2 - 1 / 20 .
+H41:   peakq(a__1, b__1, y2, 0) <= 10 .
+H42:   max(max(y1, y3), peakq(a__1, b__1, y2, 0)) >= - 
+          340282000000000000000000000000000000000 .
+H43:   max(max(y1, y3), peakq(a__1, b__1, y2, 0)) <= 
+          340282000000000000000000000000000000000 .
+H44:   max(max(y1, y3), peakq(a__1, b__1, y2, 0)) = max(y1, y3) and max(y1, y3) 
+          >= peakq(a__1, b__1, y2, 0) or max(max(y1, y3), peakq(a__1, b__1, y2, 
+          0)) = peakq(a__1, b__1, y2, 0) and peakq(a__1, b__1, y2, 0) >= max(
+          y1, y3) .
+H45:   universal_real__size >= 0 .
+H46:   universal_real__first <= universal_real__last .
+H47:   universal_real__base__first <= universal_real__base__last .
+H48:   universal_real__base__first <= universal_real__first .
+H49:   universal_real__base__last >= universal_real__last .
+H50:   float__size >= 0 .
+       ->
+C1:    max(max(y1, y3), peakq(a__1, b__1, y2, 0)) >= y1 - 1 / 5 .
+C2:    max(max(y1, y3), peakq(a__1, b__1, y2, 0)) >= y2 - 1 / 5 .
+C3:    max(max(y1, y3), peakq(a__1, b__1, y2, 0)) >= y3 - 1 / 5 .
+
+
+function_peakunit_12.
+H1:    y1 >= 0 .
+H2:    y1 <= 1 .
+H3:    y2 >= 0 .
+H4:    y2 <= 1 .
+H5:    y3 >= 0 .
+H6:    y3 <= 1 .
+H7:    max(y1, y3) >= - 340282000000000000000000000000000000000 .
+H8:    max(y1, y3) <= 340282000000000000000000000000000000000 .
+H9:    max(y1, y3) = y1 and y1 >= y3 or max(y1, y3) = y3 and y3 >= y1 .
+H10:   a__1 - b__1 + y2 - y1 >= - (1 / 1000000) .
+H11:   a__1 - b__1 + y2 - y1 <= 1 / 1000000 .
+H12:   a__1 + b__1 + y2 - y3 >= - (1 / 1000000) .
+H13:   a__1 + b__1 + y2 - y3 <= 1 / 1000000 .
+H14:   a__1 >= - (11 / 10) .
+H15:   a__1 <= 11 / 10 .
+H16:   b__1 >= - (11 / 10) .
+H17:   b__1 <= 11 / 10 .
+H18:   y2 >= - (11 / 10) .
+H19:   y2 <= 11 / 10 .
+H20:   a__1 >= - 340282000000000000000000000000000000000 .
+H21:   a__1 <= 340282000000000000000000000000000000000 .
+H22:   b__1 >= - 340282000000000000000000000000000000000 .
+H23:   b__1 <= 340282000000000000000000000000000000000 .
+H24:   polypaver__floats__multiply(2, a__1) >= - 
+          340282000000000000000000000000000000000 .
+H25:   polypaver__floats__multiply(2, a__1) <= 
+          340282000000000000000000000000000000000 .
+H26:   - (1 / 20) >= universal_real__base__first .
+H27:   - (1 / 20) <= universal_real__base__last .
+H28:   polypaver__floats__multiply(- 2, a__1) >= - 
+          340282000000000000000000000000000000000 .
+H29:   polypaver__floats__multiply(- 2, a__1) <= 
+          340282000000000000000000000000000000000 .
+H30:   - (1 / 20) <= a__1 or (b__1 < polypaver__floats__multiply(2, a__1) or 
+          polypaver__floats__multiply(- 2, a__1) < b__1) .
+H31:   universal_real__size >= 0 .
+H32:   universal_real__first <= universal_real__last .
+H33:   universal_real__base__first <= universal_real__base__last .
+H34:   universal_real__base__first <= universal_real__first .
+H35:   universal_real__base__last >= universal_real__last .
+H36:   float__size >= 0 .
+       ->
+C1:    max(y1, y3) >= y1 - 1 / 5 .
+C2:    max(y1, y3) >= y2 - 1 / 5 .
+C3:    max(y1, y3) >= y3 - 1 / 5 .
+
+

@@ -1,0 +1,53 @@
+           *******************************************************
+                            Listing of SPARK Text
+                              Examiner GPL 2012
+             Copyright (C) 2012 Altran Praxis Limited, Bath, U.K.
+           *******************************************************
+
+
+                        DATE : 17-MAY-2013 00:54:49.08
+
+Line
+   1  --# inherit PolyPaver.Exact;
+   2  package PolyPaver.Floats is
+   3  	
+   4      --# function Is_Range(Variable : Float; Min : Float; Max : Float) return Boolean;
+   5  	
+   6      function Eps_Abs return Float;
+   7  
+   8      function Eps_Rel return Float;
+   9  
+  10      function Pi return Float;
+  11  
+  12      function Add (X,Y : Float) return Float;
+  13     --# pre Add(X,Y) in Float;
+  14  
+  15      function Subtract (X,Y : Float) return Float;
+  16      --# pre Subtract(X,Y) in Float;
+  17  
+  18      function Multiply (X,Y : Float) return Float;
+  19      --# pre Multiply(X,Y) in Float;
+  20  
+  21      function Divide (X,Y : Float) return Float;
+  22      --# pre Y /= 0.0 and
+  23      --#     Divide(X,Y) in Float;
+  24  
+  25      function Square (X : Float) return Float;
+  26      --# pre Square(X) in Float;
+  27  
+  28      function Cube (X : Float) return Float;
+  29      --# pre Cube(X) in Float;
+  30  
+  31      function Sqrt (X : Float) return Float;
+  32      --# pre X >= 0.0 and
+  33      --#     Sqrt(X) in Float;
+  34  
+  35      function Exp (X : Float) return Float;
+  36      --# pre Exp(X) in Float;
+  37  	
+  38  end PolyPaver.Floats;
+
+Note: Flow analysis mode is automatic
+
+
+--End of file--------------------------------------------------
