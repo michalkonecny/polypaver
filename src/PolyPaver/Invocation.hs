@@ -53,7 +53,7 @@ data Problem = Problem
     }
     deriving (Show,Read,Typeable)
 
-data Paver = Paver 
+data PolyPaver = PolyPaver 
     {problemId :: [String]
     ,tightnessValues :: String
     ,startDegree :: Int
@@ -79,7 +79,7 @@ data Paver = Paver
     deriving (Show,Data,Typeable)
 
 paver =
-    Paver 
+    PolyPaver 
     {problemId = [] &= args &= typ "PROBLEM_ID" 
     ,tightnessValues = "1" &= name "i" 
         &= groupname "Problem parameters"
@@ -115,16 +115,16 @@ paver =
     ,plotHieght = 0 &= name "h" &= help "plot height for 2D problems, 0 mean no plotting (default)"
     } 
     &= help (unlines 
-                ["Tries to decide numerical conjectures using polynomial enclosures.",
-                 "[PROBLEM_ID] specifies one or more conjectures as follows:",
-                 "  <name>.vc [<conclusion number>]: like a VC in SPARK .siv",
-                 "  <name>.hs [<identifier name>]: Haskell constant of type Problem",
-                 "  <name>.siv [<vc name> [<conclusion number>]]: SPARK-generated VCs",
-                 "  <name>.form: using internal syntax (machine generated)"]) 
+                ["Tries to decide numerical conjectures (problems) using polynomial enclosures.",
+                 "[PROBLEM_ID] specifies one or more conjectures as follows:                   ",
+                 "  <name>.vc [<conclusion number>]: like a VC in SPARK .siv                   ",
+                 "  <name>.siv [<vc name> [<conclusion number>]]: SPARK-generated VCs          ",
+                 "  <name>.form: using internal syntax (machine generated)                     ", 
+                 "  <name>.hs [<identifier name>]: Haskell constant of type Problem            "])
     &= summary "PolyPaver 0.2 (c) 2011, 2013 Jan Duracz and Michal Konecny (Aston University)"
     &= name "polypaver"
 
-setDefaults :: Paver -> Paver
+setDefaults :: PolyPaver -> PolyPaver
 setDefaults = setMaxQLength . setStartDegree
     where
     setMaxQLength args =
