@@ -1,0 +1,86 @@
+V "SPARK 2012"
+A -noindex_file
+A -nowarning_file
+A -notarget_compiler_data
+A -config_file=gnat.cfg
+A -source_extension=ada
+A -listing_extension=lst
+A -nodictionary_file
+A -report_file=spark.rep
+A -nohtml
+A -vcg
+A -nostatistics
+A -fdl_identifiers=accept
+A -flow_analysis=auto
+A -language=95
+A -profile=sequential
+A -annotation_character=#
+A -rules=lazy
+A -error_explanations=off
+A -justification_option=full
+A -output_directory=out
+A -output_directory (actual)=/Users/jandur/FPbyContract/paver/examples/SPARK/erfriemann/out/
+P
+R
+
+U Riemann%b riemann.adb
+U Riemann%s riemann.ads
+W PolyPaver.Exact%s polypaver-exact.ads polypaver-exact.sli
+W PolyPaver.Interval%s polypaver-interval.ads polypaver-interval.sli
+W PolyPaver.Integers%s polypaver-integers.ads polypaver-integers.sli
+W PolyPaver.Floats%s polypaver-floats.ads polypaver-floats.sli
+
+D polypaver-exact.ads 00000000000000 00000000
+D polypaver-interval.ads 00000000000000 00000000
+D polypaver-integers.ads 00000000000000 00000000
+D polypaver-floats.ads 00000000000000 00000000
+D riemann.ads 00000000000000 00000000
+D riemann.adb 00000000000000 00000000
+
+X 1 polypaver-exact.ads
+1K9 Exact 4|1w23 5|8r58 15r32 15r63 15r84 20r33 2w23 6|26r35 26r74
+. 26r95 31r36
+5V18 Exp 5|8r64 15r69 20r39 6|26r80 31r42
+8V18 Integral 5|15r38 6|26r41
+9V18 Integration_Variable 5|15r90 6|26r101
+X 2 polypaver-interval.ads
+1K9 Interval 5|8r18 8r86 14r19 17r23 2w40 6|25r22 28r26
+3V18 Hull 5|8r95 17r32 6|28r35
+4V18 Contained_In 5|8r27 14r28 6|25r31
+X 3 polypaver-integers.ads
+1K9 Integers 5|12r23 2w60 6|36r26 36r69
+4V18 Is_Range 5|12r32 6|36r35 36r78
+X 4 polypaver-floats.ads
+2K9 Floats 5|6r19 11r19 2w80 6|35r26 37r38 38r37
+4V18 Is_Range 5|6r26 11r26 6|35r33
+12f19 X 13r16
+12f21 Y 13r18
+12V39 Add 13r12
+15f24 X 16r22
+15f26 Y 16r24
+15V44 Subtract 16r13
+18f24 X 19r22
+18f26 Y 19r24
+18V44 Multiply 19r13 6|37r45
+21f22 X 23r20
+21f24 Y 22r13 23r22
+21V42 Divide 23r13 6|38r44
+25f22 X 26r20
+25V40 Square 26r13
+28f20 X 29r18
+28V38 Cube 29r13
+31f20 X 32r13 33r18
+31V38 Sqrt 33r13
+35f19 X 36r17
+35V37 Exp 36r13
+X 5 riemann.ads
+5f25 x 6r35 8r69 8r71
+7f12 result 8r40
+10f21 x 11r35 15r51 20r44 20r51 6|31r48 31r79 38r51
+10i32 n 12r41 18r30 20r59 21r30 6|31r70 31r87 36r44 36r96 38r59
+13f12 result 15r13
+X 6 riemann.adb
+11f2 stepSize 37r54 38r16
+12f2 stepStart 26r54 37r16
+14f2 result 26r16 35r42
+15i2 step 29r33 31r58 32r33 36r87 37r70

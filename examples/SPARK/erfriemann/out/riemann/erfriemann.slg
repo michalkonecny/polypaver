@@ -1,0 +1,2687 @@
+*****************************************************************************
+                       Semantic Analysis of SPARK Text
+                              Examiner GPL 2012
+             Copyright (C) 2012 Altran Praxis Limited, Bath, U.K.
+*****************************************************************************
+
+
+CREATED 17-MAY-2013, 00:59:21  SIMPLIFIED 17-MAY-2013, 00:59:24
+
+SPARK Simplifier GPL 2012
+Copyright (C) 2012 Altran Praxis Limited, Bath, U.K.
+
+function Riemann.erfRiemann
+
+
+
+
+
+
+@@@@@@@@@@  VC: function_erfriemann_1.  @@@@@@@@@@
+***  Proved C8:  x >= float__first
+     using hypothesis H3.
+***  Proved C9:  x <= float__last
+     using hypothesis H4.
+-S-  Applied substitution rule erfriemann_rules(7).
+     This was achieved by replacing all occurrences of float__first by:
+          - 340282000000000000000000000000000000000.
+<S>  New H3:  x >= - 340282000000000000000000000000000000000
+<S>  New C2:  polypaver__floats__divide(x, n) >= - 
+          340282000000000000000000000000000000000
+<S>  New C4:  n >= - 340282000000000000000000000000000000000
+<S>  New C6:  n >= - 340282000000000000000000000000000000000
+-S-  Applied substitution rule erfriemann_rules(8).
+     This was achieved by replacing all occurrences of float__last by:
+          340282000000000000000000000000000000000.
+<S>  New H4:  x <= 340282000000000000000000000000000000000
+<S>  New C3:  polypaver__floats__divide(x, n) <= 
+          340282000000000000000000000000000000000
+<S>  New C5:  n <= 340282000000000000000000000000000000000
+<S>  New C7:  n <= 340282000000000000000000000000000000000
+-S-  Applied substitution rule erfriemann_rules(2).
+     This was achieved by replacing all occurrences of integer__first by:
+          - 2147483648.
+<S>  New H5:  n >= - 2147483648
+-S-  Applied substitution rule erfriemann_rules(3).
+     This was achieved by replacing all occurrences of integer__last by:
+          2147483647.
+<S>  New H6:  n <= 2147483647
+***  Proved C4:  n >= - 340282000000000000000000000000000000000
+     using hypothesis H5.
+***  Proved C6:  n >= - 340282000000000000000000000000000000000
+     using hypothesis H5.
+***  Proved C5:  n <= 340282000000000000000000000000000000000
+     using hypothesis H6.
+***  Proved C7:  n <= 340282000000000000000000000000000000000
+     using hypothesis H6.
+     +++  New H7:  integer__size >= 0
+     +++  New H8:  float__size >= 0
+
+
+@@@@@@@@@@  VC: function_erfriemann_2.  @@@@@@@@@@
+---  Hypothesis H12 has been replaced by "true".  (It is already present, as 
+          H10).
+---  Hypothesis H13 has been replaced by "true".  (It is already present, as 
+          H11).
+---  Hypothesis H14 has been replaced by "true".  (It is already present, as H3)
+          .
+---  Hypothesis H15 has been replaced by "true".  (It is already present, as H4)
+          .
+---  Hypothesis H16 has been replaced by "true".  (It is already present, as H8)
+          .
+---  Hypothesis H17 has been replaced by "true".  (It is already present, as H9)
+          .
+***  Proved C1:  polypaver__floats__divide(x, n) >= float__first
+     using hypothesis H8.
+***  Proved C2:  polypaver__floats__divide(x, n) <= float__last
+     using hypothesis H9.
+***  PROVED VC.
+
+
+@@@@@@@@@@  VC: function_erfriemann_3.  @@@@@@@@@@
+---  Hypothesis H12 has been replaced by "true".  (It is already present, as 
+          H10).
+---  Hypothesis H13 has been replaced by "true".  (It is already present, as 
+          H11).
+---  Hypothesis H14 has been replaced by "true".  (It is already present, as H3)
+          .
+---  Hypothesis H15 has been replaced by "true".  (It is already present, as H4)
+          .
+---  Hypothesis H16 has been replaced by "true".  (It is already present, as H8)
+          .
+---  Hypothesis H17 has been replaced by "true".  (It is already present, as H9)
+          .
+---  Hypothesis H18 has been replaced by "true".  (It is already present, as H8)
+          .
+---  Hypothesis H19 has been replaced by "true".  (It is already present, as H9)
+          .
+-S-  Applied substitution rule erfriemann_rules(7).
+     This was achieved by replacing all occurrences of float__first by:
+          - 340282000000000000000000000000000000000.
+<S>  New H3:  x >= - 340282000000000000000000000000000000000
+<S>  New H8:  polypaver__floats__divide(x, n) >= - 
+          340282000000000000000000000000000000000
+<S>  New H10:  n >= - 340282000000000000000000000000000000000
+<S>  New C1:  true
+-S-  Applied substitution rule erfriemann_rules(8).
+     This was achieved by replacing all occurrences of float__last by:
+          340282000000000000000000000000000000000.
+<S>  New H4:  x <= 340282000000000000000000000000000000000
+<S>  New H9:  polypaver__floats__divide(x, n) <= 
+          340282000000000000000000000000000000000
+<S>  New H11:  n <= 340282000000000000000000000000000000000
+<S>  New C2:  true
+***  Proved C1:  true
+***  Proved C2:  true
+***  PROVED VC.
+
+
+@@@@@@@@@@  VC: function_erfriemann_4.  @@@@@@@@@@
+---  Hypothesis H12 has been replaced by "true".  (It is already present, as 
+          H10).
+---  Hypothesis H13 has been replaced by "true".  (It is already present, as 
+          H11).
+---  Hypothesis H14 has been replaced by "true".  (It is already present, as H3)
+          .
+---  Hypothesis H15 has been replaced by "true".  (It is already present, as H4)
+          .
+---  Hypothesis H16 has been replaced by "true".  (It is already present, as H8)
+          .
+---  Hypothesis H17 has been replaced by "true".  (It is already present, as H9)
+          .
+---  Hypothesis H18 has been replaced by "true".  (It is already present, as H8)
+          .
+---  Hypothesis H19 has been replaced by "true".  (It is already present, as H9)
+          .
+-S-  Applied substitution rule erfriemann_rules(2).
+     This was achieved by replacing all occurrences of integer__first by:
+          - 2147483648.
+<S>  New H5:  n >= - 2147483648
+<S>  New C1:  true
+-S-  Applied substitution rule erfriemann_rules(3).
+     This was achieved by replacing all occurrences of integer__last by:
+          2147483647.
+<S>  New H6:  n <= 2147483647
+<S>  New C2:  true
+***  Proved C1:  true
+***  Proved C2:  true
+***  PROVED VC.
+
+
+@@@@@@@@@@  VC: function_erfriemann_5.  @@@@@@@@@@
+---  Hypothesis H12 has been replaced by "true".  (It is already present, as 
+          H10).
+---  Hypothesis H13 has been replaced by "true".  (It is already present, as 
+          H11).
+---  Hypothesis H14 has been replaced by "true".  (It is already present, as H3)
+          .
+---  Hypothesis H15 has been replaced by "true".  (It is already present, as H4)
+          .
+---  Hypothesis H16 has been replaced by "true".  (It is already present, as H8)
+          .
+---  Hypothesis H17 has been replaced by "true".  (It is already present, as H9)
+          .
+---  Hypothesis H18 has been replaced by "true".  (It is already present, as H8)
+          .
+---  Hypothesis H19 has been replaced by "true".  (It is already present, as H9)
+          .
+---  Hypothesis H24 has been replaced by "true".  (It is already present, as 
+          H22).
+---  Hypothesis H25 has been replaced by "true".  (It is already present, as 
+          H23).
+---  Hypothesis H27 has been replaced by "true".  (It is already present, as H8)
+          .
+---  Hypothesis H28 has been replaced by "true".  (It is already present, as H9)
+          .
+---  Hypothesis H29 has been replaced by "true".  (It is already present, as 
+          H22).
+---  Hypothesis H30 has been replaced by "true".  (It is already present, as 
+          H23).
+***  Proved C3:  0 >= float__first
+     using hypothesis H20.
+***  Proved C4:  0 <= float__last
+     using hypothesis H21.
+***  Proved C5:  0 >= float__first
+     using hypothesis H20.
+***  Proved C6:  0 <= float__last
+     using hypothesis H21.
+***  Proved C7:  polypaver__floats__divide(x, n) >= float__first
+     using hypothesis H8.
+***  Proved C8:  polypaver__floats__divide(x, n) <= float__last
+     using hypothesis H9.
+-S-  Applied substitution rule erfriemann_rules(7).
+     This was achieved by replacing all occurrences of float__first by:
+          - 340282000000000000000000000000000000000.
+<S>  New H3:  x >= - 340282000000000000000000000000000000000
+<S>  New H8:  polypaver__floats__divide(x, n) >= - 
+          340282000000000000000000000000000000000
+<S>  New H10:  n >= - 340282000000000000000000000000000000000
+<S>  New H20:  true
+<S>  New C1:  polypaver__floats__multiply(polypaver__floats__divide(x, n), 0) 
+          >= - 340282000000000000000000000000000000000
+-S-  Applied substitution rule erfriemann_rules(8).
+     This was achieved by replacing all occurrences of float__last by:
+          340282000000000000000000000000000000000.
+<S>  New H4:  x <= 340282000000000000000000000000000000000
+<S>  New H9:  polypaver__floats__divide(x, n) <= 
+          340282000000000000000000000000000000000
+<S>  New H11:  n <= 340282000000000000000000000000000000000
+<S>  New H21:  true
+<S>  New C2:  polypaver__floats__multiply(polypaver__floats__divide(x, n), 0) 
+          <= 340282000000000000000000000000000000000
+-S-  Applied substitution rule erfriemann_rules(2).
+     This was achieved by replacing all occurrences of integer__first by:
+          - 2147483648.
+<S>  New H5:  n >= - 2147483648
+<S>  New H22:  true
+-S-  Applied substitution rule erfriemann_rules(3).
+     This was achieved by replacing all occurrences of integer__last by:
+          2147483647.
+<S>  New H6:  n <= 2147483647
+<S>  New H23:  true
+---  Eliminated hypothesis H12 (true-hypothesis).
+---  Eliminated hypothesis H13 (true-hypothesis).
+---  Eliminated hypothesis H14 (true-hypothesis).
+---  Eliminated hypothesis H15 (true-hypothesis).
+---  Eliminated hypothesis H16 (true-hypothesis).
+---  Eliminated hypothesis H17 (true-hypothesis).
+---  Eliminated hypothesis H18 (true-hypothesis).
+---  Eliminated hypothesis H19 (true-hypothesis).
+---  Eliminated hypothesis H20 (true-hypothesis).
+---  Eliminated hypothesis H21 (true-hypothesis).
+---  Eliminated hypothesis H24 (true-hypothesis).
+---  Eliminated hypothesis H25 (true-hypothesis).
+---  Eliminated hypothesis H27 (true-hypothesis).
+---  Eliminated hypothesis H28 (true-hypothesis).
+---  Eliminated hypothesis H29 (true-hypothesis).
+---  Eliminated hypothesis H30 (true-hypothesis).
+---  Eliminated hypothesis H22 (true-hypothesis).
+---  Eliminated hypothesis H23 (true-hypothesis).
+---  Eliminated hypothesis H5 (redundant, given H26).
+---  Eliminated hypothesis H7 (redundant, given H26).
+---  Eliminated hypothesis H10 (redundant, given H26).
+---  Eliminated hypothesis H11 (redundant, given H6).
+     +++  New H31:  integer__size >= 0
+     +++  New H32:  float__size >= 0
+
+
+@@@@@@@@@@  VC: function_erfriemann_6.  @@@@@@@@@@
+%%%  Simplified H1 on reading formula in, to give:
+     %%%  H1:  polypaver__interval__contained_in(result - 
+          polypaver__exact__integral(0, stepstart, polypaver__exact__exp(- (
+          polypaver__exact__integration_variable * 
+          polypaver__exact__integration_variable))), polypaver__interval__hull(
+          - (1 / 10 * (step + 1)), (1 - polypaver__exact__exp(- (x * step / n * 
+          (x * step / n)))) * x / n + 1 / 10 * (step + 1)))
+%%%  Simplified H2 on reading formula in, to give:
+     %%%  H2:  polypaver__floats__is_range(result, - 10, 100)
+---  Hypothesis H12 has been replaced by "true".  (It is already present, as H3)
+          .
+---  Hypothesis H17 has been replaced by "true".  (It is already present, as 
+          H13).
+---  Hypothesis H18 has been replaced by "true".  (It is already present, as 
+          H14).
+---  Hypothesis H19 has been replaced by "true".  (It is already present, as 
+          H13).
+---  Hypothesis H20 has been replaced by "true".  (It is already present, as 
+          H14).
+---  Hypothesis H21 has been replaced by "true".  (It is already present, as 
+          H15).
+---  Hypothesis H22 has been replaced by "true".  (It is already present, as 
+          H16).
+---  Hypothesis H29 has been replaced by "true".  (It is already present, as 
+          H23).
+---  Hypothesis H30 has been replaced by "true".  (It is already present, as 
+          H24).
+---  Hypothesis H31 has been replaced by "true".  (It is already present, as 
+          H23).
+---  Hypothesis H32 has been replaced by "true".  (It is already present, as 
+          H24).
+---  Hypothesis H35 has been replaced by "true".  (It is already present, as 
+          H23).
+---  Hypothesis H36 has been replaced by "true".  (It is already present, as 
+          H24).
+---  Hypothesis H41 has been replaced by "true".  (It is already present, as 
+          H23).
+---  Hypothesis H42 has been replaced by "true".  (It is already present, as 
+          H24).
+---  Hypothesis H43 has been replaced by "true".  (It is already present, as 
+          H33).
+---  Hypothesis H44 has been replaced by "true".  (It is already present, as 
+          H34).
+---  Hypothesis H45 has been replaced by "true".  (It is already present, as 
+          H37).
+---  Hypothesis H46 has been replaced by "true".  (It is already present, as 
+          H38).
+---  Hypothesis H47 has been replaced by "true".  (It is already present, as 
+          H39).
+---  Hypothesis H48 has been replaced by "true".  (It is already present, as 
+          H40).
+---  Hypothesis H51 has been replaced by "true".  (It is already present, as 
+          H39).
+---  Hypothesis H52 has been replaced by "true".  (It is already present, as 
+          H40).
+---  Hypothesis H53 has been replaced by "true".  (It is already present, as 
+          H49).
+---  Hypothesis H54 has been replaced by "true".  (It is already present, as 
+          H50).
+---  Hypothesis H55 has been replaced by "true".  (It is already present, as 
+          H49).
+---  Hypothesis H56 has been replaced by "true".  (It is already present, as 
+          H50).
+---  Hypothesis H61 has been replaced by "true".  (It is already present, as 
+          H59).
+---  Hypothesis H62 has been replaced by "true".  (It is already present, as 
+          H60).
+---  Hypothesis H64 has been replaced by "true".  (It is already present, as 
+          H33).
+---  Hypothesis H65 has been replaced by "true".  (It is already present, as 
+          H34).
+---  Hypothesis H66 has been replaced by "true".  (It is already present, as 
+          H59).
+---  Hypothesis H67 has been replaced by "true".  (It is already present, as 
+          H60).
+***  Proved C7:  stepsize >= float__first
+     using hypothesis H33.
+***  Proved C8:  stepsize <= float__last
+     using hypothesis H34.
+-S-  Applied substitution rule erfriemann_rules(7).
+     This was achieved by replacing all occurrences of float__first by:
+          - 340282000000000000000000000000000000000.
+<S>  New H7:  x >= - 340282000000000000000000000000000000000
+<S>  New H13:  stepstart >= - 340282000000000000000000000000000000000
+<S>  New H15:  polypaver__floats__multiply(stepstart, stepstart) >= - 
+          340282000000000000000000000000000000000
+<S>  New H23:  polypaver__floats__exp(- polypaver__floats__multiply(stepstart, 
+          stepstart)) >= - 340282000000000000000000000000000000000
+<S>  New H25:  - polypaver__floats__multiply(stepstart, stepstart) >= - 
+          340282000000000000000000000000000000000
+<S>  New H33:  stepsize >= - 340282000000000000000000000000000000000
+<S>  New H37:  result >= - 340282000000000000000000000000000000000
+<S>  New H39:  polypaver__floats__multiply(stepsize, polypaver__floats__exp(- 
+          polypaver__floats__multiply(stepstart, stepstart))) >= - 
+          340282000000000000000000000000000000000
+<S>  New H49:  polypaver__floats__add(result, polypaver__floats__multiply(
+          stepsize, polypaver__floats__exp(- polypaver__floats__multiply(
+          stepstart, stepstart)))) >= - 340282000000000000000000000000000000000
+<S>  New C1:  polypaver__floats__multiply(stepsize, step + 1) >= - 
+          340282000000000000000000000000000000000
+<S>  New C3:  step >= - 340282000000000000000000000000000000001
+<S>  New C5:  step >= - 340282000000000000000000000000000000001
+-S-  Applied substitution rule erfriemann_rules(8).
+     This was achieved by replacing all occurrences of float__last by:
+          340282000000000000000000000000000000000.
+<S>  New H8:  x <= 340282000000000000000000000000000000000
+<S>  New H14:  stepstart <= 340282000000000000000000000000000000000
+<S>  New H16:  polypaver__floats__multiply(stepstart, stepstart) <= 
+          340282000000000000000000000000000000000
+<S>  New H24:  polypaver__floats__exp(- polypaver__floats__multiply(stepstart, 
+          stepstart)) <= 340282000000000000000000000000000000000
+<S>  New H26:  - polypaver__floats__multiply(stepstart, stepstart) <= 
+          340282000000000000000000000000000000000
+<S>  New H34:  stepsize <= 340282000000000000000000000000000000000
+<S>  New H38:  result <= 340282000000000000000000000000000000000
+<S>  New H40:  polypaver__floats__multiply(stepsize, polypaver__floats__exp(- 
+          polypaver__floats__multiply(stepstart, stepstart))) <= 
+          340282000000000000000000000000000000000
+<S>  New H50:  polypaver__floats__add(result, polypaver__floats__multiply(
+          stepsize, polypaver__floats__exp(- polypaver__floats__multiply(
+          stepstart, stepstart)))) <= 340282000000000000000000000000000000000
+<S>  New C2:  polypaver__floats__multiply(stepsize, step + 1) <= 
+          340282000000000000000000000000000000000
+<S>  New C4:  step <= 340281999999999999999999999999999999999
+<S>  New C6:  step <= 340281999999999999999999999999999999999
+-S-  Applied substitution rule erfriemann_rules(2).
+     This was achieved by replacing all occurrences of integer__first by:
+          - 2147483648.
+<S>  New H9:  n >= - 2147483648
+<S>  New H57:  step >= - 2147483648
+<S>  New H59:  step >= - 2147483649
+-S-  Applied substitution rule erfriemann_rules(3).
+     This was achieved by replacing all occurrences of integer__last by:
+          2147483647.
+<S>  New H10:  n <= 2147483647
+<S>  New H58:  step <= 2147483647
+<S>  New H60:  step <= 2147483646
+-S-  Applied substitution rule erfriemann_rules(9).
+     This was achieved by replacing all occurrences of float__base__first by:
+          - 340282000000000000000000000000000000000.
+<S>  New H27:  - polypaver__floats__multiply(stepstart, stepstart) >= - 
+          340282000000000000000000000000000000000
+-S-  Applied substitution rule erfriemann_rules(10).
+     This was achieved by replacing all occurrences of float__base__last by:
+          340282000000000000000000000000000000000.
+<S>  New H28:  - polypaver__floats__multiply(stepstart, stepstart) <= 
+          340282000000000000000000000000000000000
+***  Proved C3:  step >= - 340282000000000000000000000000000000001
+     using hypothesis H57.
+***  Proved C5:  step >= - 340282000000000000000000000000000000001
+     using hypothesis H57.
+***  Proved C4:  step <= 340281999999999999999999999999999999999
+     using hypothesis H58.
+***  Proved C6:  step <= 340281999999999999999999999999999999999
+     using hypothesis H58.
+---  Eliminated hypothesis H12 (true-hypothesis).
+---  Eliminated hypothesis H17 (true-hypothesis).
+---  Eliminated hypothesis H18 (true-hypothesis).
+---  Eliminated hypothesis H19 (true-hypothesis).
+---  Eliminated hypothesis H20 (true-hypothesis).
+---  Eliminated hypothesis H21 (true-hypothesis).
+---  Eliminated hypothesis H22 (true-hypothesis).
+---  Eliminated hypothesis H29 (true-hypothesis).
+---  Eliminated hypothesis H30 (true-hypothesis).
+---  Eliminated hypothesis H31 (true-hypothesis).
+---  Eliminated hypothesis H32 (true-hypothesis).
+---  Eliminated hypothesis H35 (true-hypothesis).
+---  Eliminated hypothesis H36 (true-hypothesis).
+---  Eliminated hypothesis H41 (true-hypothesis).
+---  Eliminated hypothesis H42 (true-hypothesis).
+---  Eliminated hypothesis H43 (true-hypothesis).
+---  Eliminated hypothesis H44 (true-hypothesis).
+---  Eliminated hypothesis H45 (true-hypothesis).
+---  Eliminated hypothesis H46 (true-hypothesis).
+---  Eliminated hypothesis H47 (true-hypothesis).
+---  Eliminated hypothesis H48 (true-hypothesis).
+---  Eliminated hypothesis H51 (true-hypothesis).
+---  Eliminated hypothesis H52 (true-hypothesis).
+---  Eliminated hypothesis H53 (true-hypothesis).
+---  Eliminated hypothesis H54 (true-hypothesis).
+---  Eliminated hypothesis H55 (true-hypothesis).
+---  Eliminated hypothesis H56 (true-hypothesis).
+---  Eliminated hypothesis H61 (true-hypothesis).
+---  Eliminated hypothesis H62 (true-hypothesis).
+---  Eliminated hypothesis H64 (true-hypothesis).
+---  Eliminated hypothesis H65 (true-hypothesis).
+---  Eliminated hypothesis H66 (true-hypothesis).
+---  Eliminated hypothesis H67 (true-hypothesis).
+---  Eliminated hypothesis H26 (duplicate of H15).
+---  Eliminated hypothesis H28 (duplicate of H15).
+---  Eliminated hypothesis H27 (duplicate of H25).
+---  Eliminated hypothesis H25 (duplicate of H16).
+---  Eliminated hypothesis H9 (redundant, given H57 & H63).
+---  Eliminated hypothesis H58 (redundant, given H60).
+---  Eliminated hypothesis H59 (redundant, given H57).
+---  Eliminated hypothesis H60 (redundant, given H10 & H63).
+-S-  Eliminated hypothesis H5.
+     This was achieved by replacing all occurrences of stepstart by:
+          polypaver__floats__multiply(stepsize, step).
+<S>  New H1:  polypaver__interval__contained_in(result - 
+          polypaver__exact__integral(0, polypaver__floats__multiply(stepsize, 
+          step), polypaver__exact__exp(- (
+          polypaver__exact__integration_variable * 
+          polypaver__exact__integration_variable))), polypaver__interval__hull(
+          - (1 / 10 * (step + 1)), (1 - polypaver__exact__exp(- (x * step / n * 
+          (x * step / n)))) * x / n + 1 / 10 * (step + 1)))
+<S>  New H13:  polypaver__floats__multiply(stepsize, step) >= - 
+          340282000000000000000000000000000000000
+<S>  New H14:  polypaver__floats__multiply(stepsize, step) <= 
+          340282000000000000000000000000000000000
+<S>  New H15:  polypaver__floats__multiply(polypaver__floats__multiply(
+          stepsize, step), polypaver__floats__multiply(stepsize, step)) >= - 
+          340282000000000000000000000000000000000
+<S>  New H16:  polypaver__floats__multiply(polypaver__floats__multiply(
+          stepsize, step), polypaver__floats__multiply(stepsize, step)) <= 
+          340282000000000000000000000000000000000
+<S>  New H23:  polypaver__floats__exp(- polypaver__floats__multiply(
+          polypaver__floats__multiply(stepsize, step), 
+          polypaver__floats__multiply(stepsize, step))) >= - 
+          340282000000000000000000000000000000000
+<S>  New H24:  polypaver__floats__exp(- polypaver__floats__multiply(
+          polypaver__floats__multiply(stepsize, step), 
+          polypaver__floats__multiply(stepsize, step))) <= 
+          340282000000000000000000000000000000000
+<S>  New H39:  polypaver__floats__multiply(stepsize, polypaver__floats__exp(- 
+          polypaver__floats__multiply(polypaver__floats__multiply(stepsize, 
+          step), polypaver__floats__multiply(stepsize, step)))) >= - 
+          340282000000000000000000000000000000000
+<S>  New H40:  polypaver__floats__multiply(stepsize, polypaver__floats__exp(- 
+          polypaver__floats__multiply(polypaver__floats__multiply(stepsize, 
+          step), polypaver__floats__multiply(stepsize, step)))) <= 
+          340282000000000000000000000000000000000
+<S>  New H49:  polypaver__floats__add(result, polypaver__floats__multiply(
+          stepsize, polypaver__floats__exp(- polypaver__floats__multiply(
+          polypaver__floats__multiply(stepsize, step), 
+          polypaver__floats__multiply(stepsize, step))))) >= - 
+          340282000000000000000000000000000000000
+<S>  New H50:  polypaver__floats__add(result, polypaver__floats__multiply(
+          stepsize, polypaver__floats__exp(- polypaver__floats__multiply(
+          polypaver__floats__multiply(stepsize, step), 
+          polypaver__floats__multiply(stepsize, step))))) <= 
+          340282000000000000000000000000000000000
+-S-  Eliminated hypothesis H6.
+     This was achieved by replacing all occurrences of stepsize by:
+          polypaver__floats__divide(x, n).
+<S>  New H33:  polypaver__floats__divide(x, n) >= - 
+          340282000000000000000000000000000000000
+<S>  New H34:  polypaver__floats__divide(x, n) <= 
+          340282000000000000000000000000000000000
+<S>  New H1:  polypaver__interval__contained_in(result - 
+          polypaver__exact__integral(0, polypaver__floats__multiply(
+          polypaver__floats__divide(x, n), step), polypaver__exact__exp(- (
+          polypaver__exact__integration_variable * 
+          polypaver__exact__integration_variable))), polypaver__interval__hull(
+          - (1 / 10 * (step + 1)), (1 - polypaver__exact__exp(- (x * step / n * 
+          (x * step / n)))) * x / n + 1 / 10 * (step + 1)))
+<S>  New H13:  polypaver__floats__multiply(polypaver__floats__divide(x, n), 
+          step) >= - 340282000000000000000000000000000000000
+<S>  New H14:  polypaver__floats__multiply(polypaver__floats__divide(x, n), 
+          step) <= 340282000000000000000000000000000000000
+<S>  New H15:  polypaver__floats__multiply(polypaver__floats__multiply(
+          polypaver__floats__divide(x, n), step), polypaver__floats__multiply(
+          polypaver__floats__divide(x, n), step)) >= - 
+          340282000000000000000000000000000000000
+<S>  New H16:  polypaver__floats__multiply(polypaver__floats__multiply(
+          polypaver__floats__divide(x, n), step), polypaver__floats__multiply(
+          polypaver__floats__divide(x, n), step)) <= 
+          340282000000000000000000000000000000000
+<S>  New H23:  polypaver__floats__exp(- polypaver__floats__multiply(
+          polypaver__floats__multiply(polypaver__floats__divide(x, n), step), 
+          polypaver__floats__multiply(polypaver__floats__divide(x, n), step))) 
+          >= - 340282000000000000000000000000000000000
+<S>  New H24:  polypaver__floats__exp(- polypaver__floats__multiply(
+          polypaver__floats__multiply(polypaver__floats__divide(x, n), step), 
+          polypaver__floats__multiply(polypaver__floats__divide(x, n), step))) 
+          <= 340282000000000000000000000000000000000
+<S>  New H39:  polypaver__floats__multiply(polypaver__floats__divide(x, n), 
+          polypaver__floats__exp(- polypaver__floats__multiply(
+          polypaver__floats__multiply(polypaver__floats__divide(x, n), step), 
+          polypaver__floats__multiply(polypaver__floats__divide(x, n), step)))) 
+          >= - 340282000000000000000000000000000000000
+<S>  New H40:  polypaver__floats__multiply(polypaver__floats__divide(x, n), 
+          polypaver__floats__exp(- polypaver__floats__multiply(
+          polypaver__floats__multiply(polypaver__floats__divide(x, n), step), 
+          polypaver__floats__multiply(polypaver__floats__divide(x, n), step)))) 
+          <= 340282000000000000000000000000000000000
+<S>  New H49:  polypaver__floats__add(result, polypaver__floats__multiply(
+          polypaver__floats__divide(x, n), polypaver__floats__exp(- 
+          polypaver__floats__multiply(polypaver__floats__multiply(
+          polypaver__floats__divide(x, n), step), polypaver__floats__multiply(
+          polypaver__floats__divide(x, n), step))))) >= - 
+          340282000000000000000000000000000000000
+<S>  New H50:  polypaver__floats__add(result, polypaver__floats__multiply(
+          polypaver__floats__divide(x, n), polypaver__floats__exp(- 
+          polypaver__floats__multiply(polypaver__floats__multiply(
+          polypaver__floats__divide(x, n), step), polypaver__floats__multiply(
+          polypaver__floats__divide(x, n), step))))) <= 
+          340282000000000000000000000000000000000
+<S>  New C1:  polypaver__floats__multiply(polypaver__floats__divide(x, n), step 
+          + 1) >= - 340282000000000000000000000000000000000
+<S>  New C2:  polypaver__floats__multiply(polypaver__floats__divide(x, n), step 
+          + 1) <= 340282000000000000000000000000000000000
+     +++  New H68:  integer__size >= 0
+     +++  New H69:  float__size >= 0
+
+
+@@@@@@@@@@  VC: function_erfriemann_7.  @@@@@@@@@@
+---  Hypothesis H12 has been replaced by "true".  (It is already present, as 
+          H10).
+---  Hypothesis H13 has been replaced by "true".  (It is already present, as 
+          H11).
+---  Hypothesis H14 has been replaced by "true".  (It is already present, as H3)
+          .
+---  Hypothesis H15 has been replaced by "true".  (It is already present, as H4)
+          .
+---  Hypothesis H16 has been replaced by "true".  (It is already present, as H8)
+          .
+---  Hypothesis H17 has been replaced by "true".  (It is already present, as H9)
+          .
+---  Hypothesis H18 has been replaced by "true".  (It is already present, as H8)
+          .
+---  Hypothesis H19 has been replaced by "true".  (It is already present, as H9)
+          .
+---  Hypothesis H24 has been replaced by "true".  (It is already present, as 
+          H22).
+---  Hypothesis H25 has been replaced by "true".  (It is already present, as 
+          H23).
+---  Hypothesis H27 has been replaced by "true".  (It is already present, as H8)
+          .
+---  Hypothesis H28 has been replaced by "true".  (It is already present, as H9)
+          .
+---  Hypothesis H29 has been replaced by "true".  (It is already present, as 
+          H22).
+---  Hypothesis H30 has been replaced by "true".  (It is already present, as 
+          H23).
+---  Hypothesis H33 has been replaced by "true".  (It is already present, as 
+          H20).
+---  Hypothesis H34 has been replaced by "true".  (It is already present, as 
+          H21).
+---  Hypothesis H35 has been replaced by "true".  (It is already present, as 
+          H20).
+---  Hypothesis H36 has been replaced by "true".  (It is already present, as 
+          H21).
+---  Hypothesis H37 has been replaced by "true".  (It is already present, as H8)
+          .
+---  Hypothesis H38 has been replaced by "true".  (It is already present, as H9)
+          .
+---  Hypothesis H39 has been replaced by "true".  (It is already present, as 
+          H31).
+---  Hypothesis H40 has been replaced by "true".  (It is already present, as 
+          H32).
+***  Proved C1:  polypaver__floats__multiply(polypaver__floats__divide(x, n), 0)
+           >= float__first
+     using hypothesis H31.
+***  Proved C2:  polypaver__floats__multiply(polypaver__floats__divide(x, n), 0)
+           <= float__last
+     using hypothesis H32.
+***  PROVED VC.
+
+
+@@@@@@@@@@  VC: function_erfriemann_8.  @@@@@@@@@@
+%%%  Simplified H1 on reading formula in, to give:
+     %%%  H1:  polypaver__interval__contained_in(result - 
+          polypaver__exact__integral(0, stepstart, polypaver__exact__exp(- (
+          polypaver__exact__integration_variable * 
+          polypaver__exact__integration_variable))), polypaver__interval__hull(
+          - (1 / 10 * (step + 1)), (1 - polypaver__exact__exp(- (x * step / n * 
+          (x * step / n)))) * x / n + 1 / 10 * (step + 1)))
+%%%  Simplified H2 on reading formula in, to give:
+     %%%  H2:  polypaver__floats__is_range(result, - 10, 100)
+---  Hypothesis H12 has been replaced by "true".  (It is already present, as H3)
+          .
+---  Hypothesis H17 has been replaced by "true".  (It is already present, as 
+          H13).
+---  Hypothesis H18 has been replaced by "true".  (It is already present, as 
+          H14).
+---  Hypothesis H19 has been replaced by "true".  (It is already present, as 
+          H13).
+---  Hypothesis H20 has been replaced by "true".  (It is already present, as 
+          H14).
+---  Hypothesis H21 has been replaced by "true".  (It is already present, as 
+          H15).
+---  Hypothesis H22 has been replaced by "true".  (It is already present, as 
+          H16).
+---  Hypothesis H29 has been replaced by "true".  (It is already present, as 
+          H23).
+---  Hypothesis H30 has been replaced by "true".  (It is already present, as 
+          H24).
+---  Hypothesis H31 has been replaced by "true".  (It is already present, as 
+          H23).
+---  Hypothesis H32 has been replaced by "true".  (It is already present, as 
+          H24).
+---  Hypothesis H35 has been replaced by "true".  (It is already present, as 
+          H23).
+---  Hypothesis H36 has been replaced by "true".  (It is already present, as 
+          H24).
+---  Hypothesis H41 has been replaced by "true".  (It is already present, as 
+          H23).
+---  Hypothesis H42 has been replaced by "true".  (It is already present, as 
+          H24).
+---  Hypothesis H43 has been replaced by "true".  (It is already present, as 
+          H33).
+---  Hypothesis H44 has been replaced by "true".  (It is already present, as 
+          H34).
+---  Hypothesis H45 has been replaced by "true".  (It is already present, as 
+          H37).
+---  Hypothesis H46 has been replaced by "true".  (It is already present, as 
+          H38).
+---  Hypothesis H47 has been replaced by "true".  (It is already present, as 
+          H39).
+---  Hypothesis H48 has been replaced by "true".  (It is already present, as 
+          H40).
+---  Hypothesis H51 has been replaced by "true".  (It is already present, as 
+          H39).
+---  Hypothesis H52 has been replaced by "true".  (It is already present, as 
+          H40).
+---  Hypothesis H53 has been replaced by "true".  (It is already present, as 
+          H49).
+---  Hypothesis H54 has been replaced by "true".  (It is already present, as 
+          H50).
+---  Hypothesis H55 has been replaced by "true".  (It is already present, as 
+          H49).
+---  Hypothesis H56 has been replaced by "true".  (It is already present, as 
+          H50).
+---  Hypothesis H61 has been replaced by "true".  (It is already present, as 
+          H59).
+---  Hypothesis H62 has been replaced by "true".  (It is already present, as 
+          H60).
+---  Hypothesis H64 has been replaced by "true".  (It is already present, as 
+          H33).
+---  Hypothesis H65 has been replaced by "true".  (It is already present, as 
+          H34).
+---  Hypothesis H66 has been replaced by "true".  (It is already present, as 
+          H59).
+---  Hypothesis H67 has been replaced by "true".  (It is already present, as 
+          H60).
+---  Hypothesis H72 has been replaced by "true".  (It is already present, as 
+          H70).
+---  Hypothesis H73 has been replaced by "true".  (It is already present, as 
+          H71).
+---  Hypothesis H74 has been replaced by "true".  (It is already present, as 
+          H33).
+---  Hypothesis H75 has been replaced by "true".  (It is already present, as 
+          H34).
+---  Hypothesis H76 has been replaced by "true".  (It is already present, as 
+          H68).
+---  Hypothesis H77 has been replaced by "true".  (It is already present, as 
+          H69).
+***  Proved C1:  polypaver__floats__multiply(stepsize, step + 1) >= float__first
+     using hypothesis H68.
+***  Proved C2:  polypaver__floats__multiply(stepsize, step + 1) <= float__last
+     using hypothesis H69.
+***  PROVED VC.
+
+
+@@@@@@@@@@  VC: function_erfriemann_9.  @@@@@@@@@@
+---  Hypothesis H12 has been replaced by "true".  (It is already present, as 
+          H10).
+---  Hypothesis H13 has been replaced by "true".  (It is already present, as 
+          H11).
+---  Hypothesis H14 has been replaced by "true".  (It is already present, as H3)
+          .
+---  Hypothesis H15 has been replaced by "true".  (It is already present, as H4)
+          .
+---  Hypothesis H16 has been replaced by "true".  (It is already present, as H8)
+          .
+---  Hypothesis H17 has been replaced by "true".  (It is already present, as H9)
+          .
+---  Hypothesis H18 has been replaced by "true".  (It is already present, as H8)
+          .
+---  Hypothesis H19 has been replaced by "true".  (It is already present, as H9)
+          .
+---  Hypothesis H24 has been replaced by "true".  (It is already present, as 
+          H22).
+---  Hypothesis H25 has been replaced by "true".  (It is already present, as 
+          H23).
+---  Hypothesis H27 has been replaced by "true".  (It is already present, as H8)
+          .
+---  Hypothesis H28 has been replaced by "true".  (It is already present, as H9)
+          .
+---  Hypothesis H29 has been replaced by "true".  (It is already present, as 
+          H22).
+---  Hypothesis H30 has been replaced by "true".  (It is already present, as 
+          H23).
+---  Hypothesis H33 has been replaced by "true".  (It is already present, as 
+          H20).
+---  Hypothesis H34 has been replaced by "true".  (It is already present, as 
+          H21).
+---  Hypothesis H35 has been replaced by "true".  (It is already present, as 
+          H20).
+---  Hypothesis H36 has been replaced by "true".  (It is already present, as 
+          H21).
+---  Hypothesis H37 has been replaced by "true".  (It is already present, as H8)
+          .
+---  Hypothesis H38 has been replaced by "true".  (It is already present, as H9)
+          .
+---  Hypothesis H39 has been replaced by "true".  (It is already present, as 
+          H31).
+---  Hypothesis H40 has been replaced by "true".  (It is already present, as 
+          H32).
+---  Hypothesis H41 has been replaced by "true".  (It is already present, as 
+          H31).
+---  Hypothesis H42 has been replaced by "true".  (It is already present, as 
+          H32).
+%%%  Simplified C1 on reading formula in, to give:
+     %%%  C1:  polypaver__interval__contained_in(- polypaver__exact__integral(
+          0, polypaver__floats__multiply(polypaver__floats__divide(x, n), 0), 
+          polypaver__exact__exp(- (polypaver__exact__integration_variable * 
+          polypaver__exact__integration_variable))), polypaver__interval__hull(
+          - (1 / 10), (1 - polypaver__exact__exp(- (0 / n * (0 / n)))) * x / n 
+          + 1 / 10))
+%%%  Simplified C2 on reading formula in, to give:
+     %%%  C2:  polypaver__floats__is_range(0, - 10, 100)
+%%%  Simplified C5 on reading formula in, to give:
+     %%%  C5:  true
+%%%  Simplified C6 on reading formula in, to give:
+     %%%  C6:  true
+***  Proved C3:  polypaver__integers__is_range(n, 1, 100)
+     using hypothesis H2.
+***  Proved C5:  true
+***  Proved C6:  true
+***  Proved C7:  x >= float__first
+     using hypothesis H3.
+***  Proved C8:  x <= float__last
+     using hypothesis H4.
+***  Proved C9:  n >= integer__first
+     using hypothesis H5.
+***  Proved C10:  n <= integer__last
+     using hypothesis H6.
+***  Proved C11:  polypaver__floats__is_range(x, 0, 4)
+     using hypothesis H1.
+***  Proved C12:  polypaver__integers__is_range(n, 1, 100)
+     using hypothesis H2.
+-S-  Applied substitution rule erfriemann_rules(2).
+     This was achieved by replacing all occurrences of integer__first by:
+          - 2147483648.
+<S>  New H5:  n >= - 2147483648
+<S>  New H22:  true
+-S-  Applied substitution rule erfriemann_rules(3).
+     This was achieved by replacing all occurrences of integer__last by:
+          2147483647.
+<S>  New H6:  n <= 2147483647
+<S>  New H23:  true
+-S-  Applied substitution rule erfriemann_rules(7).
+     This was achieved by replacing all occurrences of float__first by:
+          - 340282000000000000000000000000000000000.
+<S>  New H3:  x >= - 340282000000000000000000000000000000000
+<S>  New H8:  polypaver__floats__divide(x, n) >= - 
+          340282000000000000000000000000000000000
+<S>  New H10:  n >= - 340282000000000000000000000000000000000
+<S>  New H20:  true
+<S>  New H31:  polypaver__floats__multiply(polypaver__floats__divide(x, n), 0) 
+          >= - 340282000000000000000000000000000000000
+-S-  Applied substitution rule erfriemann_rules(8).
+     This was achieved by replacing all occurrences of float__last by:
+          340282000000000000000000000000000000000.
+<S>  New H4:  x <= 340282000000000000000000000000000000000
+<S>  New H9:  polypaver__floats__divide(x, n) <= 
+          340282000000000000000000000000000000000
+<S>  New H11:  n <= 340282000000000000000000000000000000000
+<S>  New H21:  true
+<S>  New H32:  polypaver__floats__multiply(polypaver__floats__divide(x, n), 0) 
+          <= 340282000000000000000000000000000000000
+---  Eliminated hypothesis H12 (true-hypothesis).
+---  Eliminated hypothesis H13 (true-hypothesis).
+---  Eliminated hypothesis H14 (true-hypothesis).
+---  Eliminated hypothesis H15 (true-hypothesis).
+---  Eliminated hypothesis H16 (true-hypothesis).
+---  Eliminated hypothesis H17 (true-hypothesis).
+---  Eliminated hypothesis H18 (true-hypothesis).
+---  Eliminated hypothesis H19 (true-hypothesis).
+---  Eliminated hypothesis H24 (true-hypothesis).
+---  Eliminated hypothesis H25 (true-hypothesis).
+---  Eliminated hypothesis H27 (true-hypothesis).
+---  Eliminated hypothesis H28 (true-hypothesis).
+---  Eliminated hypothesis H29 (true-hypothesis).
+---  Eliminated hypothesis H30 (true-hypothesis).
+---  Eliminated hypothesis H33 (true-hypothesis).
+---  Eliminated hypothesis H34 (true-hypothesis).
+---  Eliminated hypothesis H35 (true-hypothesis).
+---  Eliminated hypothesis H36 (true-hypothesis).
+---  Eliminated hypothesis H37 (true-hypothesis).
+---  Eliminated hypothesis H38 (true-hypothesis).
+---  Eliminated hypothesis H39 (true-hypothesis).
+---  Eliminated hypothesis H40 (true-hypothesis).
+---  Eliminated hypothesis H41 (true-hypothesis).
+---  Eliminated hypothesis H42 (true-hypothesis).
+---  Eliminated hypothesis H22 (true-hypothesis).
+---  Eliminated hypothesis H23 (true-hypothesis).
+---  Eliminated hypothesis H20 (true-hypothesis).
+---  Eliminated hypothesis H21 (true-hypothesis).
+---  Eliminated hypothesis H5 (redundant, given H26).
+---  Eliminated hypothesis H7 (redundant, given H26).
+---  Eliminated hypothesis H10 (redundant, given H26).
+---  Eliminated hypothesis H11 (redundant, given H6).
+     +++  New H43:  integer__size >= 0
+     +++  New H44:  float__size >= 0
+
+
+@@@@@@@@@@  VC: function_erfriemann_10.  @@@@@@@@@@
+%%%  Simplified H1 on reading formula in, to give:
+     %%%  H1:  polypaver__interval__contained_in(result - 
+          polypaver__exact__integral(0, stepstart, polypaver__exact__exp(- (
+          polypaver__exact__integration_variable * 
+          polypaver__exact__integration_variable))), polypaver__interval__hull(
+          - (1 / 10 * (step + 1)), (1 - polypaver__exact__exp(- (x * step / n * 
+          (x * step / n)))) * x / n + 1 / 10 * (step + 1)))
+%%%  Simplified H2 on reading formula in, to give:
+     %%%  H2:  polypaver__floats__is_range(result, - 10, 100)
+---  Hypothesis H12 has been replaced by "true".  (It is already present, as H3)
+          .
+---  Hypothesis H17 has been replaced by "true".  (It is already present, as 
+          H13).
+---  Hypothesis H18 has been replaced by "true".  (It is already present, as 
+          H14).
+---  Hypothesis H19 has been replaced by "true".  (It is already present, as 
+          H13).
+---  Hypothesis H20 has been replaced by "true".  (It is already present, as 
+          H14).
+---  Hypothesis H21 has been replaced by "true".  (It is already present, as 
+          H15).
+---  Hypothesis H22 has been replaced by "true".  (It is already present, as 
+          H16).
+---  Hypothesis H29 has been replaced by "true".  (It is already present, as 
+          H23).
+---  Hypothesis H30 has been replaced by "true".  (It is already present, as 
+          H24).
+---  Hypothesis H31 has been replaced by "true".  (It is already present, as 
+          H23).
+---  Hypothesis H32 has been replaced by "true".  (It is already present, as 
+          H24).
+---  Hypothesis H35 has been replaced by "true".  (It is already present, as 
+          H23).
+---  Hypothesis H36 has been replaced by "true".  (It is already present, as 
+          H24).
+---  Hypothesis H41 has been replaced by "true".  (It is already present, as 
+          H23).
+---  Hypothesis H42 has been replaced by "true".  (It is already present, as 
+          H24).
+---  Hypothesis H43 has been replaced by "true".  (It is already present, as 
+          H33).
+---  Hypothesis H44 has been replaced by "true".  (It is already present, as 
+          H34).
+---  Hypothesis H45 has been replaced by "true".  (It is already present, as 
+          H37).
+---  Hypothesis H46 has been replaced by "true".  (It is already present, as 
+          H38).
+---  Hypothesis H47 has been replaced by "true".  (It is already present, as 
+          H39).
+---  Hypothesis H48 has been replaced by "true".  (It is already present, as 
+          H40).
+---  Hypothesis H51 has been replaced by "true".  (It is already present, as 
+          H39).
+---  Hypothesis H52 has been replaced by "true".  (It is already present, as 
+          H40).
+---  Hypothesis H53 has been replaced by "true".  (It is already present, as 
+          H49).
+---  Hypothesis H54 has been replaced by "true".  (It is already present, as 
+          H50).
+---  Hypothesis H55 has been replaced by "true".  (It is already present, as 
+          H49).
+---  Hypothesis H56 has been replaced by "true".  (It is already present, as 
+          H50).
+---  Hypothesis H61 has been replaced by "true".  (It is already present, as 
+          H59).
+---  Hypothesis H62 has been replaced by "true".  (It is already present, as 
+          H60).
+---  Hypothesis H64 has been replaced by "true".  (It is already present, as 
+          H33).
+---  Hypothesis H65 has been replaced by "true".  (It is already present, as 
+          H34).
+---  Hypothesis H66 has been replaced by "true".  (It is already present, as 
+          H59).
+---  Hypothesis H67 has been replaced by "true".  (It is already present, as 
+          H60).
+---  Hypothesis H72 has been replaced by "true".  (It is already present, as 
+          H70).
+---  Hypothesis H73 has been replaced by "true".  (It is already present, as 
+          H71).
+---  Hypothesis H74 has been replaced by "true".  (It is already present, as 
+          H33).
+---  Hypothesis H75 has been replaced by "true".  (It is already present, as 
+          H34).
+---  Hypothesis H76 has been replaced by "true".  (It is already present, as 
+          H68).
+---  Hypothesis H77 has been replaced by "true".  (It is already present, as 
+          H69).
+---  Hypothesis H78 has been replaced by "true".  (It is already present, as 
+          H68).
+---  Hypothesis H79 has been replaced by "true".  (It is already present, as 
+          H69).
+%%%  Simplified C1 on reading formula in, to give:
+     %%%  C1:  polypaver__interval__contained_in(polypaver__floats__add(result, 
+          polypaver__floats__multiply(stepsize, polypaver__floats__exp(- 
+          polypaver__floats__multiply(stepstart, stepstart)))) - 
+          polypaver__exact__integral(0, polypaver__floats__multiply(stepsize, 
+          step + 1), polypaver__exact__exp(- (
+          polypaver__exact__integration_variable * 
+          polypaver__exact__integration_variable))), polypaver__interval__hull(
+          - (1 / 10 * (step + 2)), (1 - polypaver__exact__exp(- (x * (step + 1) 
+          / n * (x * (step + 1) / n)))) * x / n + 1 / 10 * (step + 2)))
+%%%  Simplified C2 on reading formula in, to give:
+     %%%  C2:  polypaver__floats__is_range(polypaver__floats__add(result, 
+          polypaver__floats__multiply(stepsize, polypaver__floats__exp(- 
+          polypaver__floats__multiply(stepstart, stepstart)))), - 10, 100)
+%%%  Simplified C5 on reading formula in, to give:
+     %%%  C5:  true
+***  Proved C3:  polypaver__integers__is_range(n, 1, 100)
+     using hypothesis H3.
+***  Proved C5:  true
+***  Proved C6:  stepsize = polypaver__floats__divide(x, n)
+     using hypothesis H6.
+***  Proved C7:  x >= float__first
+     using hypothesis H7.
+***  Proved C8:  x <= float__last
+     using hypothesis H8.
+***  Proved C9:  n >= integer__first
+     using hypothesis H9.
+***  Proved C10:  n <= integer__last
+     using hypothesis H10.
+***  Proved C11:  polypaver__floats__is_range(x, 0, 4)
+     using hypothesis H11.
+***  Proved C12:  polypaver__integers__is_range(n, 1, 100)
+     using hypothesis H3.
+-S-  Applied substitution rule erfriemann_rules(2).
+     This was achieved by replacing all occurrences of integer__first by:
+          - 2147483648.
+<S>  New H9:  n >= - 2147483648
+<S>  New H57:  step >= - 2147483648
+<S>  New H59:  step >= - 2147483649
+-S-  Applied substitution rule erfriemann_rules(3).
+     This was achieved by replacing all occurrences of integer__last by:
+          2147483647.
+<S>  New H10:  n <= 2147483647
+<S>  New H58:  step <= 2147483647
+<S>  New H60:  step <= 2147483646
+-S-  Applied substitution rule erfriemann_rules(7).
+     This was achieved by replacing all occurrences of float__first by:
+          - 340282000000000000000000000000000000000.
+<S>  New H7:  x >= - 340282000000000000000000000000000000000
+<S>  New H13:  stepstart >= - 340282000000000000000000000000000000000
+<S>  New H15:  polypaver__floats__multiply(stepstart, stepstart) >= - 
+          340282000000000000000000000000000000000
+<S>  New H23:  polypaver__floats__exp(- polypaver__floats__multiply(stepstart, 
+          stepstart)) >= - 340282000000000000000000000000000000000
+<S>  New H25:  - polypaver__floats__multiply(stepstart, stepstart) >= - 
+          340282000000000000000000000000000000000
+<S>  New H33:  stepsize >= - 340282000000000000000000000000000000000
+<S>  New H37:  result >= - 340282000000000000000000000000000000000
+<S>  New H39:  polypaver__floats__multiply(stepsize, polypaver__floats__exp(- 
+          polypaver__floats__multiply(stepstart, stepstart))) >= - 
+          340282000000000000000000000000000000000
+<S>  New H49:  polypaver__floats__add(result, polypaver__floats__multiply(
+          stepsize, polypaver__floats__exp(- polypaver__floats__multiply(
+          stepstart, stepstart)))) >= - 340282000000000000000000000000000000000
+<S>  New H68:  polypaver__floats__multiply(stepsize, step + 1) >= - 
+          340282000000000000000000000000000000000
+<S>  New H70:  step >= - 340282000000000000000000000000000000001
+-S-  Applied substitution rule erfriemann_rules(8).
+     This was achieved by replacing all occurrences of float__last by:
+          340282000000000000000000000000000000000.
+<S>  New H8:  x <= 340282000000000000000000000000000000000
+<S>  New H14:  stepstart <= 340282000000000000000000000000000000000
+<S>  New H16:  polypaver__floats__multiply(stepstart, stepstart) <= 
+          340282000000000000000000000000000000000
+<S>  New H24:  polypaver__floats__exp(- polypaver__floats__multiply(stepstart, 
+          stepstart)) <= 340282000000000000000000000000000000000
+<S>  New H26:  - polypaver__floats__multiply(stepstart, stepstart) <= 
+          340282000000000000000000000000000000000
+<S>  New H34:  stepsize <= 340282000000000000000000000000000000000
+<S>  New H38:  result <= 340282000000000000000000000000000000000
+<S>  New H40:  polypaver__floats__multiply(stepsize, polypaver__floats__exp(- 
+          polypaver__floats__multiply(stepstart, stepstart))) <= 
+          340282000000000000000000000000000000000
+<S>  New H50:  polypaver__floats__add(result, polypaver__floats__multiply(
+          stepsize, polypaver__floats__exp(- polypaver__floats__multiply(
+          stepstart, stepstart)))) <= 340282000000000000000000000000000000000
+<S>  New H69:  polypaver__floats__multiply(stepsize, step + 1) <= 
+          340282000000000000000000000000000000000
+<S>  New H71:  step <= 340281999999999999999999999999999999999
+-S-  Applied substitution rule erfriemann_rules(9).
+     This was achieved by replacing all occurrences of float__base__first by:
+          - 340282000000000000000000000000000000000.
+<S>  New H27:  - polypaver__floats__multiply(stepstart, stepstart) >= - 
+          340282000000000000000000000000000000000
+-S-  Applied substitution rule erfriemann_rules(10).
+     This was achieved by replacing all occurrences of float__base__last by:
+          340282000000000000000000000000000000000.
+<S>  New H28:  - polypaver__floats__multiply(stepstart, stepstart) <= 
+          340282000000000000000000000000000000000
+---  Eliminated hypothesis H12 (true-hypothesis).
+---  Eliminated hypothesis H17 (true-hypothesis).
+---  Eliminated hypothesis H18 (true-hypothesis).
+---  Eliminated hypothesis H19 (true-hypothesis).
+---  Eliminated hypothesis H20 (true-hypothesis).
+---  Eliminated hypothesis H21 (true-hypothesis).
+---  Eliminated hypothesis H22 (true-hypothesis).
+---  Eliminated hypothesis H29 (true-hypothesis).
+---  Eliminated hypothesis H30 (true-hypothesis).
+---  Eliminated hypothesis H31 (true-hypothesis).
+---  Eliminated hypothesis H32 (true-hypothesis).
+---  Eliminated hypothesis H35 (true-hypothesis).
+---  Eliminated hypothesis H36 (true-hypothesis).
+---  Eliminated hypothesis H41 (true-hypothesis).
+---  Eliminated hypothesis H42 (true-hypothesis).
+---  Eliminated hypothesis H43 (true-hypothesis).
+---  Eliminated hypothesis H44 (true-hypothesis).
+---  Eliminated hypothesis H45 (true-hypothesis).
+---  Eliminated hypothesis H46 (true-hypothesis).
+---  Eliminated hypothesis H47 (true-hypothesis).
+---  Eliminated hypothesis H48 (true-hypothesis).
+---  Eliminated hypothesis H51 (true-hypothesis).
+---  Eliminated hypothesis H52 (true-hypothesis).
+---  Eliminated hypothesis H53 (true-hypothesis).
+---  Eliminated hypothesis H54 (true-hypothesis).
+---  Eliminated hypothesis H55 (true-hypothesis).
+---  Eliminated hypothesis H56 (true-hypothesis).
+---  Eliminated hypothesis H61 (true-hypothesis).
+---  Eliminated hypothesis H62 (true-hypothesis).
+---  Eliminated hypothesis H64 (true-hypothesis).
+---  Eliminated hypothesis H65 (true-hypothesis).
+---  Eliminated hypothesis H66 (true-hypothesis).
+---  Eliminated hypothesis H67 (true-hypothesis).
+---  Eliminated hypothesis H72 (true-hypothesis).
+---  Eliminated hypothesis H73 (true-hypothesis).
+---  Eliminated hypothesis H74 (true-hypothesis).
+---  Eliminated hypothesis H75 (true-hypothesis).
+---  Eliminated hypothesis H76 (true-hypothesis).
+---  Eliminated hypothesis H77 (true-hypothesis).
+---  Eliminated hypothesis H78 (true-hypothesis).
+---  Eliminated hypothesis H79 (true-hypothesis).
+---  Eliminated hypothesis H26 (duplicate of H15).
+---  Eliminated hypothesis H28 (duplicate of H15).
+---  Eliminated hypothesis H27 (duplicate of H25).
+---  Eliminated hypothesis H25 (duplicate of H16).
+---  Eliminated hypothesis H9 (redundant, given H57 & H63).
+---  Eliminated hypothesis H58 (redundant, given H60).
+---  Eliminated hypothesis H59 (redundant, given H57).
+---  Eliminated hypothesis H60 (redundant, given H10 & H63).
+---  Eliminated hypothesis H70 (redundant, given H57).
+---  Eliminated hypothesis H71 (redundant, given H10 & H63).
+-S-  Eliminated hypothesis H5.
+     This was achieved by replacing all occurrences of stepstart by:
+          polypaver__floats__multiply(stepsize, step).
+<S>  New H1:  polypaver__interval__contained_in(result - 
+          polypaver__exact__integral(0, polypaver__floats__multiply(stepsize, 
+          step), polypaver__exact__exp(- (
+          polypaver__exact__integration_variable * 
+          polypaver__exact__integration_variable))), polypaver__interval__hull(
+          - (1 / 10 * (step + 1)), (1 - polypaver__exact__exp(- (x * step / n * 
+          (x * step / n)))) * x / n + 1 / 10 * (step + 1)))
+<S>  New H13:  polypaver__floats__multiply(stepsize, step) >= - 
+          340282000000000000000000000000000000000
+<S>  New H15:  polypaver__floats__multiply(polypaver__floats__multiply(
+          stepsize, step), polypaver__floats__multiply(stepsize, step)) >= - 
+          340282000000000000000000000000000000000
+<S>  New H23:  polypaver__floats__exp(- polypaver__floats__multiply(
+          polypaver__floats__multiply(stepsize, step), 
+          polypaver__floats__multiply(stepsize, step))) >= - 
+          340282000000000000000000000000000000000
+<S>  New H39:  polypaver__floats__multiply(stepsize, polypaver__floats__exp(- 
+          polypaver__floats__multiply(polypaver__floats__multiply(stepsize, 
+          step), polypaver__floats__multiply(stepsize, step)))) >= - 
+          340282000000000000000000000000000000000
+<S>  New H49:  polypaver__floats__add(result, polypaver__floats__multiply(
+          stepsize, polypaver__floats__exp(- polypaver__floats__multiply(
+          polypaver__floats__multiply(stepsize, step), 
+          polypaver__floats__multiply(stepsize, step))))) >= - 
+          340282000000000000000000000000000000000
+<S>  New H14:  polypaver__floats__multiply(stepsize, step) <= 
+          340282000000000000000000000000000000000
+<S>  New H16:  polypaver__floats__multiply(polypaver__floats__multiply(
+          stepsize, step), polypaver__floats__multiply(stepsize, step)) <= 
+          340282000000000000000000000000000000000
+<S>  New H24:  polypaver__floats__exp(- polypaver__floats__multiply(
+          polypaver__floats__multiply(stepsize, step), 
+          polypaver__floats__multiply(stepsize, step))) <= 
+          340282000000000000000000000000000000000
+<S>  New H40:  polypaver__floats__multiply(stepsize, polypaver__floats__exp(- 
+          polypaver__floats__multiply(polypaver__floats__multiply(stepsize, 
+          step), polypaver__floats__multiply(stepsize, step)))) <= 
+          340282000000000000000000000000000000000
+<S>  New H50:  polypaver__floats__add(result, polypaver__floats__multiply(
+          stepsize, polypaver__floats__exp(- polypaver__floats__multiply(
+          polypaver__floats__multiply(stepsize, step), 
+          polypaver__floats__multiply(stepsize, step))))) <= 
+          340282000000000000000000000000000000000
+<S>  New C1:  polypaver__interval__contained_in(polypaver__floats__add(result, 
+          polypaver__floats__multiply(stepsize, polypaver__floats__exp(- 
+          polypaver__floats__multiply(polypaver__floats__multiply(stepsize, 
+          step), polypaver__floats__multiply(stepsize, step))))) - 
+          polypaver__exact__integral(0, polypaver__floats__multiply(stepsize, 
+          step + 1), polypaver__exact__exp(- (
+          polypaver__exact__integration_variable * 
+          polypaver__exact__integration_variable))), polypaver__interval__hull(
+          - (1 / 10 * (step + 2)), (1 - polypaver__exact__exp(- (x * (step + 1) 
+          / n * (x * (step + 1) / n)))) * x / n + 1 / 10 * (step + 2)))
+<S>  New C2:  polypaver__floats__is_range(polypaver__floats__add(result, 
+          polypaver__floats__multiply(stepsize, polypaver__floats__exp(- 
+          polypaver__floats__multiply(polypaver__floats__multiply(stepsize, 
+          step), polypaver__floats__multiply(stepsize, step))))), - 10, 100)
+-S-  Eliminated hypothesis H6.
+     This was achieved by replacing all occurrences of stepsize by:
+          polypaver__floats__divide(x, n).
+<S>  New H33:  polypaver__floats__divide(x, n) >= - 
+          340282000000000000000000000000000000000
+<S>  New H68:  polypaver__floats__multiply(polypaver__floats__divide(x, n), 
+          step + 1) >= - 340282000000000000000000000000000000000
+<S>  New H34:  polypaver__floats__divide(x, n) <= 
+          340282000000000000000000000000000000000
+<S>  New H69:  polypaver__floats__multiply(polypaver__floats__divide(x, n), 
+          step + 1) <= 340282000000000000000000000000000000000
+<S>  New H1:  polypaver__interval__contained_in(result - 
+          polypaver__exact__integral(0, polypaver__floats__multiply(
+          polypaver__floats__divide(x, n), step), polypaver__exact__exp(- (
+          polypaver__exact__integration_variable * 
+          polypaver__exact__integration_variable))), polypaver__interval__hull(
+          - (1 / 10 * (step + 1)), (1 - polypaver__exact__exp(- (x * step / n * 
+          (x * step / n)))) * x / n + 1 / 10 * (step + 1)))
+<S>  New H13:  polypaver__floats__multiply(polypaver__floats__divide(x, n), 
+          step) >= - 340282000000000000000000000000000000000
+<S>  New H15:  polypaver__floats__multiply(polypaver__floats__multiply(
+          polypaver__floats__divide(x, n), step), polypaver__floats__multiply(
+          polypaver__floats__divide(x, n), step)) >= - 
+          340282000000000000000000000000000000000
+<S>  New H23:  polypaver__floats__exp(- polypaver__floats__multiply(
+          polypaver__floats__multiply(polypaver__floats__divide(x, n), step), 
+          polypaver__floats__multiply(polypaver__floats__divide(x, n), step))) 
+          >= - 340282000000000000000000000000000000000
+<S>  New H39:  polypaver__floats__multiply(polypaver__floats__divide(x, n), 
+          polypaver__floats__exp(- polypaver__floats__multiply(
+          polypaver__floats__multiply(polypaver__floats__divide(x, n), step), 
+          polypaver__floats__multiply(polypaver__floats__divide(x, n), step)))) 
+          >= - 340282000000000000000000000000000000000
+<S>  New H49:  polypaver__floats__add(result, polypaver__floats__multiply(
+          polypaver__floats__divide(x, n), polypaver__floats__exp(- 
+          polypaver__floats__multiply(polypaver__floats__multiply(
+          polypaver__floats__divide(x, n), step), polypaver__floats__multiply(
+          polypaver__floats__divide(x, n), step))))) >= - 
+          340282000000000000000000000000000000000
+<S>  New H14:  polypaver__floats__multiply(polypaver__floats__divide(x, n), 
+          step) <= 340282000000000000000000000000000000000
+<S>  New H16:  polypaver__floats__multiply(polypaver__floats__multiply(
+          polypaver__floats__divide(x, n), step), polypaver__floats__multiply(
+          polypaver__floats__divide(x, n), step)) <= 
+          340282000000000000000000000000000000000
+<S>  New H24:  polypaver__floats__exp(- polypaver__floats__multiply(
+          polypaver__floats__multiply(polypaver__floats__divide(x, n), step), 
+          polypaver__floats__multiply(polypaver__floats__divide(x, n), step))) 
+          <= 340282000000000000000000000000000000000
+<S>  New H40:  polypaver__floats__multiply(polypaver__floats__divide(x, n), 
+          polypaver__floats__exp(- polypaver__floats__multiply(
+          polypaver__floats__multiply(polypaver__floats__divide(x, n), step), 
+          polypaver__floats__multiply(polypaver__floats__divide(x, n), step)))) 
+          <= 340282000000000000000000000000000000000
+<S>  New H50:  polypaver__floats__add(result, polypaver__floats__multiply(
+          polypaver__floats__divide(x, n), polypaver__floats__exp(- 
+          polypaver__floats__multiply(polypaver__floats__multiply(
+          polypaver__floats__divide(x, n), step), polypaver__floats__multiply(
+          polypaver__floats__divide(x, n), step))))) <= 
+          340282000000000000000000000000000000000
+<S>  New C1:  polypaver__interval__contained_in(polypaver__floats__add(result, 
+          polypaver__floats__multiply(polypaver__floats__divide(x, n), 
+          polypaver__floats__exp(- polypaver__floats__multiply(
+          polypaver__floats__multiply(polypaver__floats__divide(x, n), step), 
+          polypaver__floats__multiply(polypaver__floats__divide(x, n), step)))))
+           - polypaver__exact__integral(0, polypaver__floats__multiply(
+          polypaver__floats__divide(x, n), step + 1), polypaver__exact__exp(- (
+          polypaver__exact__integration_variable * 
+          polypaver__exact__integration_variable))), polypaver__interval__hull(
+          - (1 / 10 * (step + 2)), (1 - polypaver__exact__exp(- (x * (step + 1) 
+          / n * (x * (step + 1) / n)))) * x / n + 1 / 10 * (step + 2)))
+<S>  New C2:  polypaver__floats__is_range(polypaver__floats__add(result, 
+          polypaver__floats__multiply(polypaver__floats__divide(x, n), 
+          polypaver__floats__exp(- polypaver__floats__multiply(
+          polypaver__floats__multiply(polypaver__floats__divide(x, n), step), 
+          polypaver__floats__multiply(polypaver__floats__divide(x, n), step)))))
+          , - 10, 100)
+     +++  New H80:  integer__size >= 0
+     +++  New H81:  float__size >= 0
+
+
+@@@@@@@@@@  VC: function_erfriemann_11.  @@@@@@@@@@
+%%%  Simplified H1 on reading formula in, to give:
+     %%%  H1:  polypaver__interval__contained_in(result - 
+          polypaver__exact__integral(0, stepstart, polypaver__exact__exp(- (
+          polypaver__exact__integration_variable * 
+          polypaver__exact__integration_variable))), polypaver__interval__hull(
+          - (1 / 10 * (step + 1)), (1 - polypaver__exact__exp(- (x * step / n * 
+          (x * step / n)))) * x / n + 1 / 10 * (step + 1)))
+%%%  Simplified H2 on reading formula in, to give:
+     %%%  H2:  polypaver__floats__is_range(result, - 10, 100)
+---  Hypothesis H12 has been replaced by "true".  (It is already present, as H3)
+          .
+***  Proved C3:  stepstart >= float__first
+     using hypothesis H13.
+***  Proved C4:  stepstart <= float__last
+     using hypothesis H14.
+***  Proved C5:  stepstart >= float__first
+     using hypothesis H13.
+***  Proved C6:  stepstart <= float__last
+     using hypothesis H14.
+-S-  Applied substitution rule erfriemann_rules(7).
+     This was achieved by replacing all occurrences of float__first by:
+          - 340282000000000000000000000000000000000.
+<S>  New H7:  x >= - 340282000000000000000000000000000000000
+<S>  New H13:  stepstart >= - 340282000000000000000000000000000000000
+<S>  New C1:  polypaver__floats__multiply(stepstart, stepstart) >= - 
+          340282000000000000000000000000000000000
+-S-  Applied substitution rule erfriemann_rules(8).
+     This was achieved by replacing all occurrences of float__last by:
+          340282000000000000000000000000000000000.
+<S>  New H8:  x <= 340282000000000000000000000000000000000
+<S>  New H14:  stepstart <= 340282000000000000000000000000000000000
+<S>  New C2:  polypaver__floats__multiply(stepstart, stepstart) <= 
+          340282000000000000000000000000000000000
+-S-  Applied substitution rule erfriemann_rules(2).
+     This was achieved by replacing all occurrences of integer__first by:
+          - 2147483648.
+<S>  New H9:  n >= - 2147483648
+-S-  Applied substitution rule erfriemann_rules(3).
+     This was achieved by replacing all occurrences of integer__last by:
+          2147483647.
+<S>  New H10:  n <= 2147483647
+---  Eliminated hypothesis H12 (true-hypothesis).
+-S-  Eliminated hypothesis H5.
+     This was achieved by replacing all occurrences of stepstart by:
+          polypaver__floats__multiply(stepsize, step).
+<S>  New H1:  polypaver__interval__contained_in(result - 
+          polypaver__exact__integral(0, polypaver__floats__multiply(stepsize, 
+          step), polypaver__exact__exp(- (
+          polypaver__exact__integration_variable * 
+          polypaver__exact__integration_variable))), polypaver__interval__hull(
+          - (1 / 10 * (step + 1)), (1 - polypaver__exact__exp(- (x * step / n * 
+          (x * step / n)))) * x / n + 1 / 10 * (step + 1)))
+<S>  New H13:  polypaver__floats__multiply(stepsize, step) >= - 
+          340282000000000000000000000000000000000
+<S>  New H14:  polypaver__floats__multiply(stepsize, step) <= 
+          340282000000000000000000000000000000000
+<S>  New C1:  polypaver__floats__multiply(polypaver__floats__multiply(stepsize, 
+          step), polypaver__floats__multiply(stepsize, step)) >= - 
+          340282000000000000000000000000000000000
+<S>  New C2:  polypaver__floats__multiply(polypaver__floats__multiply(stepsize, 
+          step), polypaver__floats__multiply(stepsize, step)) <= 
+          340282000000000000000000000000000000000
+-S-  Eliminated hypothesis H6.
+     This was achieved by replacing all occurrences of stepsize by:
+          polypaver__floats__divide(x, n).
+<S>  New H1:  polypaver__interval__contained_in(result - 
+          polypaver__exact__integral(0, polypaver__floats__multiply(
+          polypaver__floats__divide(x, n), step), polypaver__exact__exp(- (
+          polypaver__exact__integration_variable * 
+          polypaver__exact__integration_variable))), polypaver__interval__hull(
+          - (1 / 10 * (step + 1)), (1 - polypaver__exact__exp(- (x * step / n * 
+          (x * step / n)))) * x / n + 1 / 10 * (step + 1)))
+<S>  New H13:  polypaver__floats__multiply(polypaver__floats__divide(x, n), 
+          step) >= - 340282000000000000000000000000000000000
+<S>  New H14:  polypaver__floats__multiply(polypaver__floats__divide(x, n), 
+          step) <= 340282000000000000000000000000000000000
+<S>  New C1:  polypaver__floats__multiply(polypaver__floats__multiply(
+          polypaver__floats__divide(x, n), step), polypaver__floats__multiply(
+          polypaver__floats__divide(x, n), step)) >= - 
+          340282000000000000000000000000000000000
+<S>  New C2:  polypaver__floats__multiply(polypaver__floats__multiply(
+          polypaver__floats__divide(x, n), step), polypaver__floats__multiply(
+          polypaver__floats__divide(x, n), step)) <= 
+          340282000000000000000000000000000000000
+     +++  New H15:  integer__size >= 0
+     +++  New H16:  float__size >= 0
+
+
+@@@@@@@@@@  VC: function_erfriemann_12.  @@@@@@@@@@
+%%%  Simplified H1 on reading formula in, to give:
+     %%%  H1:  polypaver__interval__contained_in(result - 
+          polypaver__exact__integral(0, stepstart, polypaver__exact__exp(- (
+          polypaver__exact__integration_variable * 
+          polypaver__exact__integration_variable))), polypaver__interval__hull(
+          - (1 / 10 * (step + 1)), (1 - polypaver__exact__exp(- (x * step / n * 
+          (x * step / n)))) * x / n + 1 / 10 * (step + 1)))
+%%%  Simplified H2 on reading formula in, to give:
+     %%%  H2:  polypaver__floats__is_range(result, - 10, 100)
+---  Hypothesis H12 has been replaced by "true".  (It is already present, as H3)
+          .
+---  Hypothesis H17 has been replaced by "true".  (It is already present, as 
+          H13).
+---  Hypothesis H18 has been replaced by "true".  (It is already present, as 
+          H14).
+---  Hypothesis H19 has been replaced by "true".  (It is already present, as 
+          H13).
+---  Hypothesis H20 has been replaced by "true".  (It is already present, as 
+          H14).
+---  Hypothesis H21 has been replaced by "true".  (It is already present, as 
+          H15).
+---  Hypothesis H22 has been replaced by "true".  (It is already present, as 
+          H16).
+-S-  Applied substitution rule erfriemann_rules(7).
+     This was achieved by replacing all occurrences of float__first by:
+          - 340282000000000000000000000000000000000.
+<S>  New H7:  x >= - 340282000000000000000000000000000000000
+<S>  New H13:  stepstart >= - 340282000000000000000000000000000000000
+<S>  New H15:  polypaver__floats__multiply(stepstart, stepstart) >= - 
+          340282000000000000000000000000000000000
+<S>  New C1:  polypaver__floats__exp(- polypaver__floats__multiply(stepstart, 
+          stepstart)) >= - 340282000000000000000000000000000000000
+<S>  New C3:  - polypaver__floats__multiply(stepstart, stepstart) >= - 
+          340282000000000000000000000000000000000
+-S-  Applied substitution rule erfriemann_rules(8).
+     This was achieved by replacing all occurrences of float__last by:
+          340282000000000000000000000000000000000.
+<S>  New H8:  x <= 340282000000000000000000000000000000000
+<S>  New H14:  stepstart <= 340282000000000000000000000000000000000
+<S>  New H16:  polypaver__floats__multiply(stepstart, stepstart) <= 
+          340282000000000000000000000000000000000
+<S>  New C2:  polypaver__floats__exp(- polypaver__floats__multiply(stepstart, 
+          stepstart)) <= 340282000000000000000000000000000000000
+<S>  New C4:  - polypaver__floats__multiply(stepstart, stepstart) <= 
+          340282000000000000000000000000000000000
+-S-  Applied substitution rule erfriemann_rules(9).
+     This was achieved by replacing all occurrences of float__base__first by:
+          - 340282000000000000000000000000000000000.
+<S>  New C5:  - polypaver__floats__multiply(stepstart, stepstart) >= - 
+          340282000000000000000000000000000000000
+-S-  Applied substitution rule erfriemann_rules(10).
+     This was achieved by replacing all occurrences of float__base__last by:
+          340282000000000000000000000000000000000.
+<S>  New C6:  - polypaver__floats__multiply(stepstart, stepstart) <= 
+          340282000000000000000000000000000000000
+-S-  Applied substitution rule erfriemann_rules(2).
+     This was achieved by replacing all occurrences of integer__first by:
+          - 2147483648.
+<S>  New H9:  n >= - 2147483648
+-S-  Applied substitution rule erfriemann_rules(3).
+     This was achieved by replacing all occurrences of integer__last by:
+          2147483647.
+<S>  New H10:  n <= 2147483647
+***  Proved C3:  - polypaver__floats__multiply(stepstart, stepstart) >= - 
+          340282000000000000000000000000000000000
+     using hypothesis H16.
+***  Proved C4:  - polypaver__floats__multiply(stepstart, stepstart) <= 
+          340282000000000000000000000000000000000
+     via its standard form, which is:
+     Std.Fm C4:  polypaver__floats__multiply(stepstart, stepstart) >= - 
+          340282000000000000000000000000000000000
+     using hypothesis H15.
+***  Proved C5:  - polypaver__floats__multiply(stepstart, stepstart) >= - 
+          340282000000000000000000000000000000000
+     using hypothesis H16.
+***  Proved C6:  - polypaver__floats__multiply(stepstart, stepstart) <= 
+          340282000000000000000000000000000000000
+     via its standard form, which is:
+     Std.Fm C6:  polypaver__floats__multiply(stepstart, stepstart) >= - 
+          340282000000000000000000000000000000000
+     using hypothesis H15.
+---  Eliminated hypothesis H12 (true-hypothesis).
+---  Eliminated hypothesis H17 (true-hypothesis).
+---  Eliminated hypothesis H18 (true-hypothesis).
+---  Eliminated hypothesis H19 (true-hypothesis).
+---  Eliminated hypothesis H20 (true-hypothesis).
+---  Eliminated hypothesis H21 (true-hypothesis).
+---  Eliminated hypothesis H22 (true-hypothesis).
+-S-  Eliminated hypothesis H5.
+     This was achieved by replacing all occurrences of stepstart by:
+          polypaver__floats__multiply(stepsize, step).
+<S>  New H1:  polypaver__interval__contained_in(result - 
+          polypaver__exact__integral(0, polypaver__floats__multiply(stepsize, 
+          step), polypaver__exact__exp(- (
+          polypaver__exact__integration_variable * 
+          polypaver__exact__integration_variable))), polypaver__interval__hull(
+          - (1 / 10 * (step + 1)), (1 - polypaver__exact__exp(- (x * step / n * 
+          (x * step / n)))) * x / n + 1 / 10 * (step + 1)))
+<S>  New H13:  polypaver__floats__multiply(stepsize, step) >= - 
+          340282000000000000000000000000000000000
+<S>  New H14:  polypaver__floats__multiply(stepsize, step) <= 
+          340282000000000000000000000000000000000
+<S>  New H15:  polypaver__floats__multiply(polypaver__floats__multiply(
+          stepsize, step), polypaver__floats__multiply(stepsize, step)) >= - 
+          340282000000000000000000000000000000000
+<S>  New H16:  polypaver__floats__multiply(polypaver__floats__multiply(
+          stepsize, step), polypaver__floats__multiply(stepsize, step)) <= 
+          340282000000000000000000000000000000000
+<S>  New C1:  polypaver__floats__exp(- polypaver__floats__multiply(
+          polypaver__floats__multiply(stepsize, step), 
+          polypaver__floats__multiply(stepsize, step))) >= - 
+          340282000000000000000000000000000000000
+<S>  New C2:  polypaver__floats__exp(- polypaver__floats__multiply(
+          polypaver__floats__multiply(stepsize, step), 
+          polypaver__floats__multiply(stepsize, step))) <= 
+          340282000000000000000000000000000000000
+-S-  Eliminated hypothesis H6.
+     This was achieved by replacing all occurrences of stepsize by:
+          polypaver__floats__divide(x, n).
+<S>  New H1:  polypaver__interval__contained_in(result - 
+          polypaver__exact__integral(0, polypaver__floats__multiply(
+          polypaver__floats__divide(x, n), step), polypaver__exact__exp(- (
+          polypaver__exact__integration_variable * 
+          polypaver__exact__integration_variable))), polypaver__interval__hull(
+          - (1 / 10 * (step + 1)), (1 - polypaver__exact__exp(- (x * step / n * 
+          (x * step / n)))) * x / n + 1 / 10 * (step + 1)))
+<S>  New H13:  polypaver__floats__multiply(polypaver__floats__divide(x, n), 
+          step) >= - 340282000000000000000000000000000000000
+<S>  New H14:  polypaver__floats__multiply(polypaver__floats__divide(x, n), 
+          step) <= 340282000000000000000000000000000000000
+<S>  New H15:  polypaver__floats__multiply(polypaver__floats__multiply(
+          polypaver__floats__divide(x, n), step), polypaver__floats__multiply(
+          polypaver__floats__divide(x, n), step)) >= - 
+          340282000000000000000000000000000000000
+<S>  New H16:  polypaver__floats__multiply(polypaver__floats__multiply(
+          polypaver__floats__divide(x, n), step), polypaver__floats__multiply(
+          polypaver__floats__divide(x, n), step)) <= 
+          340282000000000000000000000000000000000
+<S>  New C1:  polypaver__floats__exp(- polypaver__floats__multiply(
+          polypaver__floats__multiply(polypaver__floats__divide(x, n), step), 
+          polypaver__floats__multiply(polypaver__floats__divide(x, n), step))) 
+          >= - 340282000000000000000000000000000000000
+<S>  New C2:  polypaver__floats__exp(- polypaver__floats__multiply(
+          polypaver__floats__multiply(polypaver__floats__divide(x, n), step), 
+          polypaver__floats__multiply(polypaver__floats__divide(x, n), step))) 
+          <= 340282000000000000000000000000000000000
+     +++  New H23:  integer__size >= 0
+     +++  New H24:  float__size >= 0
+
+
+@@@@@@@@@@  VC: function_erfriemann_13.  @@@@@@@@@@
+%%%  Simplified H1 on reading formula in, to give:
+     %%%  H1:  polypaver__interval__contained_in(result - 
+          polypaver__exact__integral(0, stepstart, polypaver__exact__exp(- (
+          polypaver__exact__integration_variable * 
+          polypaver__exact__integration_variable))), polypaver__interval__hull(
+          - (1 / 10 * (step + 1)), (1 - polypaver__exact__exp(- (x * step / n * 
+          (x * step / n)))) * x / n + 1 / 10 * (step + 1)))
+%%%  Simplified H2 on reading formula in, to give:
+     %%%  H2:  polypaver__floats__is_range(result, - 10, 100)
+---  Hypothesis H12 has been replaced by "true".  (It is already present, as H3)
+          .
+---  Hypothesis H17 has been replaced by "true".  (It is already present, as 
+          H13).
+---  Hypothesis H18 has been replaced by "true".  (It is already present, as 
+          H14).
+---  Hypothesis H19 has been replaced by "true".  (It is already present, as 
+          H13).
+---  Hypothesis H20 has been replaced by "true".  (It is already present, as 
+          H14).
+---  Hypothesis H21 has been replaced by "true".  (It is already present, as 
+          H15).
+---  Hypothesis H22 has been replaced by "true".  (It is already present, as 
+          H16).
+---  Hypothesis H29 has been replaced by "true".  (It is already present, as 
+          H23).
+---  Hypothesis H30 has been replaced by "true".  (It is already present, as 
+          H24).
+***  Proved C1:  polypaver__floats__exp(- polypaver__floats__multiply(
+          stepstart, stepstart)) >= float__first
+     using hypothesis H23.
+***  Proved C2:  polypaver__floats__exp(- polypaver__floats__multiply(
+          stepstart, stepstart)) <= float__last
+     using hypothesis H24.
+***  PROVED VC.
+
+
+@@@@@@@@@@  VC: function_erfriemann_14.  @@@@@@@@@@
+%%%  Simplified H1 on reading formula in, to give:
+     %%%  H1:  polypaver__interval__contained_in(result - 
+          polypaver__exact__integral(0, stepstart, polypaver__exact__exp(- (
+          polypaver__exact__integration_variable * 
+          polypaver__exact__integration_variable))), polypaver__interval__hull(
+          - (1 / 10 * (step + 1)), (1 - polypaver__exact__exp(- (x * step / n * 
+          (x * step / n)))) * x / n + 1 / 10 * (step + 1)))
+%%%  Simplified H2 on reading formula in, to give:
+     %%%  H2:  polypaver__floats__is_range(result, - 10, 100)
+---  Hypothesis H12 has been replaced by "true".  (It is already present, as H3)
+          .
+---  Hypothesis H17 has been replaced by "true".  (It is already present, as 
+          H13).
+---  Hypothesis H18 has been replaced by "true".  (It is already present, as 
+          H14).
+---  Hypothesis H19 has been replaced by "true".  (It is already present, as 
+          H13).
+---  Hypothesis H20 has been replaced by "true".  (It is already present, as 
+          H14).
+---  Hypothesis H21 has been replaced by "true".  (It is already present, as 
+          H15).
+---  Hypothesis H22 has been replaced by "true".  (It is already present, as 
+          H16).
+---  Hypothesis H29 has been replaced by "true".  (It is already present, as 
+          H23).
+---  Hypothesis H30 has been replaced by "true".  (It is already present, as 
+          H24).
+---  Hypothesis H31 has been replaced by "true".  (It is already present, as 
+          H23).
+---  Hypothesis H32 has been replaced by "true".  (It is already present, as 
+          H24).
+---  Hypothesis H35 has been replaced by "true".  (It is already present, as 
+          H23).
+---  Hypothesis H36 has been replaced by "true".  (It is already present, as 
+          H24).
+***  Proved C3:  polypaver__floats__exp(- polypaver__floats__multiply(
+          stepstart, stepstart)) >= float__first
+     using hypothesis H23.
+***  Proved C4:  polypaver__floats__exp(- polypaver__floats__multiply(
+          stepstart, stepstart)) <= float__last
+     using hypothesis H24.
+***  Proved C5:  stepsize >= float__first
+     using hypothesis H33.
+***  Proved C6:  stepsize <= float__last
+     using hypothesis H34.
+***  Proved C7:  result >= float__first
+     using hypothesis H37.
+***  Proved C8:  result <= float__last
+     using hypothesis H38.
+-S-  Applied substitution rule erfriemann_rules(7).
+     This was achieved by replacing all occurrences of float__first by:
+          - 340282000000000000000000000000000000000.
+<S>  New H7:  x >= - 340282000000000000000000000000000000000
+<S>  New H13:  stepstart >= - 340282000000000000000000000000000000000
+<S>  New H15:  polypaver__floats__multiply(stepstart, stepstart) >= - 
+          340282000000000000000000000000000000000
+<S>  New H23:  polypaver__floats__exp(- polypaver__floats__multiply(stepstart, 
+          stepstart)) >= - 340282000000000000000000000000000000000
+<S>  New H25:  - polypaver__floats__multiply(stepstart, stepstart) >= - 
+          340282000000000000000000000000000000000
+<S>  New H33:  stepsize >= - 340282000000000000000000000000000000000
+<S>  New H37:  result >= - 340282000000000000000000000000000000000
+<S>  New C1:  polypaver__floats__multiply(stepsize, polypaver__floats__exp(- 
+          polypaver__floats__multiply(stepstart, stepstart))) >= - 
+          340282000000000000000000000000000000000
+-S-  Applied substitution rule erfriemann_rules(8).
+     This was achieved by replacing all occurrences of float__last by:
+          340282000000000000000000000000000000000.
+<S>  New H8:  x <= 340282000000000000000000000000000000000
+<S>  New H14:  stepstart <= 340282000000000000000000000000000000000
+<S>  New H16:  polypaver__floats__multiply(stepstart, stepstart) <= 
+          340282000000000000000000000000000000000
+<S>  New H24:  polypaver__floats__exp(- polypaver__floats__multiply(stepstart, 
+          stepstart)) <= 340282000000000000000000000000000000000
+<S>  New H26:  - polypaver__floats__multiply(stepstart, stepstart) <= 
+          340282000000000000000000000000000000000
+<S>  New H34:  stepsize <= 340282000000000000000000000000000000000
+<S>  New H38:  result <= 340282000000000000000000000000000000000
+<S>  New C2:  polypaver__floats__multiply(stepsize, polypaver__floats__exp(- 
+          polypaver__floats__multiply(stepstart, stepstart))) <= 
+          340282000000000000000000000000000000000
+-S-  Applied substitution rule erfriemann_rules(2).
+     This was achieved by replacing all occurrences of integer__first by:
+          - 2147483648.
+<S>  New H9:  n >= - 2147483648
+-S-  Applied substitution rule erfriemann_rules(3).
+     This was achieved by replacing all occurrences of integer__last by:
+          2147483647.
+<S>  New H10:  n <= 2147483647
+-S-  Applied substitution rule erfriemann_rules(9).
+     This was achieved by replacing all occurrences of float__base__first by:
+          - 340282000000000000000000000000000000000.
+<S>  New H27:  - polypaver__floats__multiply(stepstart, stepstart) >= - 
+          340282000000000000000000000000000000000
+-S-  Applied substitution rule erfriemann_rules(10).
+     This was achieved by replacing all occurrences of float__base__last by:
+          340282000000000000000000000000000000000.
+<S>  New H28:  - polypaver__floats__multiply(stepstart, stepstart) <= 
+          340282000000000000000000000000000000000
+---  Eliminated hypothesis H12 (true-hypothesis).
+---  Eliminated hypothesis H17 (true-hypothesis).
+---  Eliminated hypothesis H18 (true-hypothesis).
+---  Eliminated hypothesis H19 (true-hypothesis).
+---  Eliminated hypothesis H20 (true-hypothesis).
+---  Eliminated hypothesis H21 (true-hypothesis).
+---  Eliminated hypothesis H22 (true-hypothesis).
+---  Eliminated hypothesis H29 (true-hypothesis).
+---  Eliminated hypothesis H30 (true-hypothesis).
+---  Eliminated hypothesis H31 (true-hypothesis).
+---  Eliminated hypothesis H32 (true-hypothesis).
+---  Eliminated hypothesis H35 (true-hypothesis).
+---  Eliminated hypothesis H36 (true-hypothesis).
+---  Eliminated hypothesis H26 (duplicate of H15).
+---  Eliminated hypothesis H28 (duplicate of H15).
+---  Eliminated hypothesis H27 (duplicate of H25).
+---  Eliminated hypothesis H25 (duplicate of H16).
+-S-  Eliminated hypothesis H5.
+     This was achieved by replacing all occurrences of stepstart by:
+          polypaver__floats__multiply(stepsize, step).
+<S>  New H1:  polypaver__interval__contained_in(result - 
+          polypaver__exact__integral(0, polypaver__floats__multiply(stepsize, 
+          step), polypaver__exact__exp(- (
+          polypaver__exact__integration_variable * 
+          polypaver__exact__integration_variable))), polypaver__interval__hull(
+          - (1 / 10 * (step + 1)), (1 - polypaver__exact__exp(- (x * step / n * 
+          (x * step / n)))) * x / n + 1 / 10 * (step + 1)))
+<S>  New H13:  polypaver__floats__multiply(stepsize, step) >= - 
+          340282000000000000000000000000000000000
+<S>  New H14:  polypaver__floats__multiply(stepsize, step) <= 
+          340282000000000000000000000000000000000
+<S>  New H15:  polypaver__floats__multiply(polypaver__floats__multiply(
+          stepsize, step), polypaver__floats__multiply(stepsize, step)) >= - 
+          340282000000000000000000000000000000000
+<S>  New H16:  polypaver__floats__multiply(polypaver__floats__multiply(
+          stepsize, step), polypaver__floats__multiply(stepsize, step)) <= 
+          340282000000000000000000000000000000000
+<S>  New H23:  polypaver__floats__exp(- polypaver__floats__multiply(
+          polypaver__floats__multiply(stepsize, step), 
+          polypaver__floats__multiply(stepsize, step))) >= - 
+          340282000000000000000000000000000000000
+<S>  New H24:  polypaver__floats__exp(- polypaver__floats__multiply(
+          polypaver__floats__multiply(stepsize, step), 
+          polypaver__floats__multiply(stepsize, step))) <= 
+          340282000000000000000000000000000000000
+<S>  New C1:  polypaver__floats__multiply(stepsize, polypaver__floats__exp(- 
+          polypaver__floats__multiply(polypaver__floats__multiply(stepsize, 
+          step), polypaver__floats__multiply(stepsize, step)))) >= - 
+          340282000000000000000000000000000000000
+<S>  New C2:  polypaver__floats__multiply(stepsize, polypaver__floats__exp(- 
+          polypaver__floats__multiply(polypaver__floats__multiply(stepsize, 
+          step), polypaver__floats__multiply(stepsize, step)))) <= 
+          340282000000000000000000000000000000000
+-S-  Eliminated hypothesis H6.
+     This was achieved by replacing all occurrences of stepsize by:
+          polypaver__floats__divide(x, n).
+<S>  New H33:  polypaver__floats__divide(x, n) >= - 
+          340282000000000000000000000000000000000
+<S>  New H34:  polypaver__floats__divide(x, n) <= 
+          340282000000000000000000000000000000000
+<S>  New H1:  polypaver__interval__contained_in(result - 
+          polypaver__exact__integral(0, polypaver__floats__multiply(
+          polypaver__floats__divide(x, n), step), polypaver__exact__exp(- (
+          polypaver__exact__integration_variable * 
+          polypaver__exact__integration_variable))), polypaver__interval__hull(
+          - (1 / 10 * (step + 1)), (1 - polypaver__exact__exp(- (x * step / n * 
+          (x * step / n)))) * x / n + 1 / 10 * (step + 1)))
+<S>  New H13:  polypaver__floats__multiply(polypaver__floats__divide(x, n), 
+          step) >= - 340282000000000000000000000000000000000
+<S>  New H14:  polypaver__floats__multiply(polypaver__floats__divide(x, n), 
+          step) <= 340282000000000000000000000000000000000
+<S>  New H15:  polypaver__floats__multiply(polypaver__floats__multiply(
+          polypaver__floats__divide(x, n), step), polypaver__floats__multiply(
+          polypaver__floats__divide(x, n), step)) >= - 
+          340282000000000000000000000000000000000
+<S>  New H16:  polypaver__floats__multiply(polypaver__floats__multiply(
+          polypaver__floats__divide(x, n), step), polypaver__floats__multiply(
+          polypaver__floats__divide(x, n), step)) <= 
+          340282000000000000000000000000000000000
+<S>  New H23:  polypaver__floats__exp(- polypaver__floats__multiply(
+          polypaver__floats__multiply(polypaver__floats__divide(x, n), step), 
+          polypaver__floats__multiply(polypaver__floats__divide(x, n), step))) 
+          >= - 340282000000000000000000000000000000000
+<S>  New H24:  polypaver__floats__exp(- polypaver__floats__multiply(
+          polypaver__floats__multiply(polypaver__floats__divide(x, n), step), 
+          polypaver__floats__multiply(polypaver__floats__divide(x, n), step))) 
+          <= 340282000000000000000000000000000000000
+<S>  New C1:  polypaver__floats__multiply(polypaver__floats__divide(x, n), 
+          polypaver__floats__exp(- polypaver__floats__multiply(
+          polypaver__floats__multiply(polypaver__floats__divide(x, n), step), 
+          polypaver__floats__multiply(polypaver__floats__divide(x, n), step)))) 
+          >= - 340282000000000000000000000000000000000
+<S>  New C2:  polypaver__floats__multiply(polypaver__floats__divide(x, n), 
+          polypaver__floats__exp(- polypaver__floats__multiply(
+          polypaver__floats__multiply(polypaver__floats__divide(x, n), step), 
+          polypaver__floats__multiply(polypaver__floats__divide(x, n), step)))) 
+          <= 340282000000000000000000000000000000000
+     +++  New H39:  integer__size >= 0
+     +++  New H40:  float__size >= 0
+
+
+@@@@@@@@@@  VC: function_erfriemann_15.  @@@@@@@@@@
+%%%  Simplified H1 on reading formula in, to give:
+     %%%  H1:  polypaver__interval__contained_in(result - 
+          polypaver__exact__integral(0, stepstart, polypaver__exact__exp(- (
+          polypaver__exact__integration_variable * 
+          polypaver__exact__integration_variable))), polypaver__interval__hull(
+          - (1 / 10 * (step + 1)), (1 - polypaver__exact__exp(- (x * step / n * 
+          (x * step / n)))) * x / n + 1 / 10 * (step + 1)))
+%%%  Simplified H2 on reading formula in, to give:
+     %%%  H2:  polypaver__floats__is_range(result, - 10, 100)
+---  Hypothesis H12 has been replaced by "true".  (It is already present, as H3)
+          .
+---  Hypothesis H17 has been replaced by "true".  (It is already present, as 
+          H13).
+---  Hypothesis H18 has been replaced by "true".  (It is already present, as 
+          H14).
+---  Hypothesis H19 has been replaced by "true".  (It is already present, as 
+          H13).
+---  Hypothesis H20 has been replaced by "true".  (It is already present, as 
+          H14).
+---  Hypothesis H21 has been replaced by "true".  (It is already present, as 
+          H15).
+---  Hypothesis H22 has been replaced by "true".  (It is already present, as 
+          H16).
+---  Hypothesis H29 has been replaced by "true".  (It is already present, as 
+          H23).
+---  Hypothesis H30 has been replaced by "true".  (It is already present, as 
+          H24).
+---  Hypothesis H31 has been replaced by "true".  (It is already present, as 
+          H23).
+---  Hypothesis H32 has been replaced by "true".  (It is already present, as 
+          H24).
+---  Hypothesis H35 has been replaced by "true".  (It is already present, as 
+          H23).
+---  Hypothesis H36 has been replaced by "true".  (It is already present, as 
+          H24).
+---  Hypothesis H41 has been replaced by "true".  (It is already present, as 
+          H23).
+---  Hypothesis H42 has been replaced by "true".  (It is already present, as 
+          H24).
+---  Hypothesis H43 has been replaced by "true".  (It is already present, as 
+          H33).
+---  Hypothesis H44 has been replaced by "true".  (It is already present, as 
+          H34).
+---  Hypothesis H45 has been replaced by "true".  (It is already present, as 
+          H37).
+---  Hypothesis H46 has been replaced by "true".  (It is already present, as 
+          H38).
+---  Hypothesis H47 has been replaced by "true".  (It is already present, as 
+          H39).
+---  Hypothesis H48 has been replaced by "true".  (It is already present, as 
+          H40).
+***  Proved C3:  polypaver__floats__multiply(stepsize, polypaver__floats__exp(- 
+          polypaver__floats__multiply(stepstart, stepstart))) >= float__first
+     using hypothesis H39.
+***  Proved C4:  polypaver__floats__multiply(stepsize, polypaver__floats__exp(- 
+          polypaver__floats__multiply(stepstart, stepstart))) <= float__last
+     using hypothesis H40.
+-S-  Applied substitution rule erfriemann_rules(7).
+     This was achieved by replacing all occurrences of float__first by:
+          - 340282000000000000000000000000000000000.
+<S>  New H7:  x >= - 340282000000000000000000000000000000000
+<S>  New H13:  stepstart >= - 340282000000000000000000000000000000000
+<S>  New H15:  polypaver__floats__multiply(stepstart, stepstart) >= - 
+          340282000000000000000000000000000000000
+<S>  New H23:  polypaver__floats__exp(- polypaver__floats__multiply(stepstart, 
+          stepstart)) >= - 340282000000000000000000000000000000000
+<S>  New H25:  - polypaver__floats__multiply(stepstart, stepstart) >= - 
+          340282000000000000000000000000000000000
+<S>  New H33:  stepsize >= - 340282000000000000000000000000000000000
+<S>  New H37:  result >= - 340282000000000000000000000000000000000
+<S>  New H39:  polypaver__floats__multiply(stepsize, polypaver__floats__exp(- 
+          polypaver__floats__multiply(stepstart, stepstart))) >= - 
+          340282000000000000000000000000000000000
+<S>  New C1:  polypaver__floats__add(result, polypaver__floats__multiply(
+          stepsize, polypaver__floats__exp(- polypaver__floats__multiply(
+          stepstart, stepstart)))) >= - 340282000000000000000000000000000000000
+-S-  Applied substitution rule erfriemann_rules(8).
+     This was achieved by replacing all occurrences of float__last by:
+          340282000000000000000000000000000000000.
+<S>  New H8:  x <= 340282000000000000000000000000000000000
+<S>  New H14:  stepstart <= 340282000000000000000000000000000000000
+<S>  New H16:  polypaver__floats__multiply(stepstart, stepstart) <= 
+          340282000000000000000000000000000000000
+<S>  New H24:  polypaver__floats__exp(- polypaver__floats__multiply(stepstart, 
+          stepstart)) <= 340282000000000000000000000000000000000
+<S>  New H26:  - polypaver__floats__multiply(stepstart, stepstart) <= 
+          340282000000000000000000000000000000000
+<S>  New H34:  stepsize <= 340282000000000000000000000000000000000
+<S>  New H38:  result <= 340282000000000000000000000000000000000
+<S>  New H40:  polypaver__floats__multiply(stepsize, polypaver__floats__exp(- 
+          polypaver__floats__multiply(stepstart, stepstart))) <= 
+          340282000000000000000000000000000000000
+<S>  New C2:  polypaver__floats__add(result, polypaver__floats__multiply(
+          stepsize, polypaver__floats__exp(- polypaver__floats__multiply(
+          stepstart, stepstart)))) <= 340282000000000000000000000000000000000
+-S-  Applied substitution rule erfriemann_rules(2).
+     This was achieved by replacing all occurrences of integer__first by:
+          - 2147483648.
+<S>  New H9:  n >= - 2147483648
+-S-  Applied substitution rule erfriemann_rules(3).
+     This was achieved by replacing all occurrences of integer__last by:
+          2147483647.
+<S>  New H10:  n <= 2147483647
+-S-  Applied substitution rule erfriemann_rules(9).
+     This was achieved by replacing all occurrences of float__base__first by:
+          - 340282000000000000000000000000000000000.
+<S>  New H27:  - polypaver__floats__multiply(stepstart, stepstart) >= - 
+          340282000000000000000000000000000000000
+-S-  Applied substitution rule erfriemann_rules(10).
+     This was achieved by replacing all occurrences of float__base__last by:
+          340282000000000000000000000000000000000.
+<S>  New H28:  - polypaver__floats__multiply(stepstart, stepstart) <= 
+          340282000000000000000000000000000000000
+---  Eliminated hypothesis H12 (true-hypothesis).
+---  Eliminated hypothesis H17 (true-hypothesis).
+---  Eliminated hypothesis H18 (true-hypothesis).
+---  Eliminated hypothesis H19 (true-hypothesis).
+---  Eliminated hypothesis H20 (true-hypothesis).
+---  Eliminated hypothesis H21 (true-hypothesis).
+---  Eliminated hypothesis H22 (true-hypothesis).
+---  Eliminated hypothesis H29 (true-hypothesis).
+---  Eliminated hypothesis H30 (true-hypothesis).
+---  Eliminated hypothesis H31 (true-hypothesis).
+---  Eliminated hypothesis H32 (true-hypothesis).
+---  Eliminated hypothesis H35 (true-hypothesis).
+---  Eliminated hypothesis H36 (true-hypothesis).
+---  Eliminated hypothesis H41 (true-hypothesis).
+---  Eliminated hypothesis H42 (true-hypothesis).
+---  Eliminated hypothesis H43 (true-hypothesis).
+---  Eliminated hypothesis H44 (true-hypothesis).
+---  Eliminated hypothesis H45 (true-hypothesis).
+---  Eliminated hypothesis H46 (true-hypothesis).
+---  Eliminated hypothesis H47 (true-hypothesis).
+---  Eliminated hypothesis H48 (true-hypothesis).
+---  Eliminated hypothesis H26 (duplicate of H15).
+---  Eliminated hypothesis H28 (duplicate of H15).
+---  Eliminated hypothesis H27 (duplicate of H25).
+---  Eliminated hypothesis H25 (duplicate of H16).
+-S-  Eliminated hypothesis H5.
+     This was achieved by replacing all occurrences of stepstart by:
+          polypaver__floats__multiply(stepsize, step).
+<S>  New H1:  polypaver__interval__contained_in(result - 
+          polypaver__exact__integral(0, polypaver__floats__multiply(stepsize, 
+          step), polypaver__exact__exp(- (
+          polypaver__exact__integration_variable * 
+          polypaver__exact__integration_variable))), polypaver__interval__hull(
+          - (1 / 10 * (step + 1)), (1 - polypaver__exact__exp(- (x * step / n * 
+          (x * step / n)))) * x / n + 1 / 10 * (step + 1)))
+<S>  New H13:  polypaver__floats__multiply(stepsize, step) >= - 
+          340282000000000000000000000000000000000
+<S>  New H14:  polypaver__floats__multiply(stepsize, step) <= 
+          340282000000000000000000000000000000000
+<S>  New H15:  polypaver__floats__multiply(polypaver__floats__multiply(
+          stepsize, step), polypaver__floats__multiply(stepsize, step)) >= - 
+          340282000000000000000000000000000000000
+<S>  New H16:  polypaver__floats__multiply(polypaver__floats__multiply(
+          stepsize, step), polypaver__floats__multiply(stepsize, step)) <= 
+          340282000000000000000000000000000000000
+<S>  New H23:  polypaver__floats__exp(- polypaver__floats__multiply(
+          polypaver__floats__multiply(stepsize, step), 
+          polypaver__floats__multiply(stepsize, step))) >= - 
+          340282000000000000000000000000000000000
+<S>  New H24:  polypaver__floats__exp(- polypaver__floats__multiply(
+          polypaver__floats__multiply(stepsize, step), 
+          polypaver__floats__multiply(stepsize, step))) <= 
+          340282000000000000000000000000000000000
+<S>  New H39:  polypaver__floats__multiply(stepsize, polypaver__floats__exp(- 
+          polypaver__floats__multiply(polypaver__floats__multiply(stepsize, 
+          step), polypaver__floats__multiply(stepsize, step)))) >= - 
+          340282000000000000000000000000000000000
+<S>  New H40:  polypaver__floats__multiply(stepsize, polypaver__floats__exp(- 
+          polypaver__floats__multiply(polypaver__floats__multiply(stepsize, 
+          step), polypaver__floats__multiply(stepsize, step)))) <= 
+          340282000000000000000000000000000000000
+<S>  New C1:  polypaver__floats__add(result, polypaver__floats__multiply(
+          stepsize, polypaver__floats__exp(- polypaver__floats__multiply(
+          polypaver__floats__multiply(stepsize, step), 
+          polypaver__floats__multiply(stepsize, step))))) >= - 
+          340282000000000000000000000000000000000
+<S>  New C2:  polypaver__floats__add(result, polypaver__floats__multiply(
+          stepsize, polypaver__floats__exp(- polypaver__floats__multiply(
+          polypaver__floats__multiply(stepsize, step), 
+          polypaver__floats__multiply(stepsize, step))))) <= 
+          340282000000000000000000000000000000000
+-S-  Eliminated hypothesis H6.
+     This was achieved by replacing all occurrences of stepsize by:
+          polypaver__floats__divide(x, n).
+<S>  New H33:  polypaver__floats__divide(x, n) >= - 
+          340282000000000000000000000000000000000
+<S>  New H34:  polypaver__floats__divide(x, n) <= 
+          340282000000000000000000000000000000000
+<S>  New H1:  polypaver__interval__contained_in(result - 
+          polypaver__exact__integral(0, polypaver__floats__multiply(
+          polypaver__floats__divide(x, n), step), polypaver__exact__exp(- (
+          polypaver__exact__integration_variable * 
+          polypaver__exact__integration_variable))), polypaver__interval__hull(
+          - (1 / 10 * (step + 1)), (1 - polypaver__exact__exp(- (x * step / n * 
+          (x * step / n)))) * x / n + 1 / 10 * (step + 1)))
+<S>  New H13:  polypaver__floats__multiply(polypaver__floats__divide(x, n), 
+          step) >= - 340282000000000000000000000000000000000
+<S>  New H14:  polypaver__floats__multiply(polypaver__floats__divide(x, n), 
+          step) <= 340282000000000000000000000000000000000
+<S>  New H15:  polypaver__floats__multiply(polypaver__floats__multiply(
+          polypaver__floats__divide(x, n), step), polypaver__floats__multiply(
+          polypaver__floats__divide(x, n), step)) >= - 
+          340282000000000000000000000000000000000
+<S>  New H16:  polypaver__floats__multiply(polypaver__floats__multiply(
+          polypaver__floats__divide(x, n), step), polypaver__floats__multiply(
+          polypaver__floats__divide(x, n), step)) <= 
+          340282000000000000000000000000000000000
+<S>  New H23:  polypaver__floats__exp(- polypaver__floats__multiply(
+          polypaver__floats__multiply(polypaver__floats__divide(x, n), step), 
+          polypaver__floats__multiply(polypaver__floats__divide(x, n), step))) 
+          >= - 340282000000000000000000000000000000000
+<S>  New H24:  polypaver__floats__exp(- polypaver__floats__multiply(
+          polypaver__floats__multiply(polypaver__floats__divide(x, n), step), 
+          polypaver__floats__multiply(polypaver__floats__divide(x, n), step))) 
+          <= 340282000000000000000000000000000000000
+<S>  New H39:  polypaver__floats__multiply(polypaver__floats__divide(x, n), 
+          polypaver__floats__exp(- polypaver__floats__multiply(
+          polypaver__floats__multiply(polypaver__floats__divide(x, n), step), 
+          polypaver__floats__multiply(polypaver__floats__divide(x, n), step)))) 
+          >= - 340282000000000000000000000000000000000
+<S>  New H40:  polypaver__floats__multiply(polypaver__floats__divide(x, n), 
+          polypaver__floats__exp(- polypaver__floats__multiply(
+          polypaver__floats__multiply(polypaver__floats__divide(x, n), step), 
+          polypaver__floats__multiply(polypaver__floats__divide(x, n), step)))) 
+          <= 340282000000000000000000000000000000000
+<S>  New C1:  polypaver__floats__add(result, polypaver__floats__multiply(
+          polypaver__floats__divide(x, n), polypaver__floats__exp(- 
+          polypaver__floats__multiply(polypaver__floats__multiply(
+          polypaver__floats__divide(x, n), step), polypaver__floats__multiply(
+          polypaver__floats__divide(x, n), step))))) >= - 
+          340282000000000000000000000000000000000
+<S>  New C2:  polypaver__floats__add(result, polypaver__floats__multiply(
+          polypaver__floats__divide(x, n), polypaver__floats__exp(- 
+          polypaver__floats__multiply(polypaver__floats__multiply(
+          polypaver__floats__divide(x, n), step), polypaver__floats__multiply(
+          polypaver__floats__divide(x, n), step))))) <= 
+          340282000000000000000000000000000000000
+     +++  New H49:  integer__size >= 0
+     +++  New H50:  float__size >= 0
+
+
+@@@@@@@@@@  VC: function_erfriemann_16.  @@@@@@@@@@
+%%%  Simplified H1 on reading formula in, to give:
+     %%%  H1:  polypaver__interval__contained_in(result - 
+          polypaver__exact__integral(0, stepstart, polypaver__exact__exp(- (
+          polypaver__exact__integration_variable * 
+          polypaver__exact__integration_variable))), polypaver__interval__hull(
+          - (1 / 10 * (step + 1)), (1 - polypaver__exact__exp(- (x * step / n * 
+          (x * step / n)))) * x / n + 1 / 10 * (step + 1)))
+%%%  Simplified H2 on reading formula in, to give:
+     %%%  H2:  polypaver__floats__is_range(result, - 10, 100)
+---  Hypothesis H12 has been replaced by "true".  (It is already present, as H3)
+          .
+---  Hypothesis H17 has been replaced by "true".  (It is already present, as 
+          H13).
+---  Hypothesis H18 has been replaced by "true".  (It is already present, as 
+          H14).
+---  Hypothesis H19 has been replaced by "true".  (It is already present, as 
+          H13).
+---  Hypothesis H20 has been replaced by "true".  (It is already present, as 
+          H14).
+---  Hypothesis H21 has been replaced by "true".  (It is already present, as 
+          H15).
+---  Hypothesis H22 has been replaced by "true".  (It is already present, as 
+          H16).
+---  Hypothesis H29 has been replaced by "true".  (It is already present, as 
+          H23).
+---  Hypothesis H30 has been replaced by "true".  (It is already present, as 
+          H24).
+---  Hypothesis H31 has been replaced by "true".  (It is already present, as 
+          H23).
+---  Hypothesis H32 has been replaced by "true".  (It is already present, as 
+          H24).
+---  Hypothesis H35 has been replaced by "true".  (It is already present, as 
+          H23).
+---  Hypothesis H36 has been replaced by "true".  (It is already present, as 
+          H24).
+---  Hypothesis H41 has been replaced by "true".  (It is already present, as 
+          H23).
+---  Hypothesis H42 has been replaced by "true".  (It is already present, as 
+          H24).
+---  Hypothesis H43 has been replaced by "true".  (It is already present, as 
+          H33).
+---  Hypothesis H44 has been replaced by "true".  (It is already present, as 
+          H34).
+---  Hypothesis H45 has been replaced by "true".  (It is already present, as 
+          H37).
+---  Hypothesis H46 has been replaced by "true".  (It is already present, as 
+          H38).
+---  Hypothesis H47 has been replaced by "true".  (It is already present, as 
+          H39).
+---  Hypothesis H48 has been replaced by "true".  (It is already present, as 
+          H40).
+---  Hypothesis H51 has been replaced by "true".  (It is already present, as 
+          H39).
+---  Hypothesis H52 has been replaced by "true".  (It is already present, as 
+          H40).
+---  Hypothesis H53 has been replaced by "true".  (It is already present, as 
+          H49).
+---  Hypothesis H54 has been replaced by "true".  (It is already present, as 
+          H50).
+***  Proved C1:  polypaver__floats__add(result, polypaver__floats__multiply(
+          stepsize, polypaver__floats__exp(- polypaver__floats__multiply(
+          stepstart, stepstart)))) >= float__first
+     using hypothesis H49.
+***  Proved C2:  polypaver__floats__add(result, polypaver__floats__multiply(
+          stepsize, polypaver__floats__exp(- polypaver__floats__multiply(
+          stepstart, stepstart)))) <= float__last
+     using hypothesis H50.
+***  PROVED VC.
+
+
+@@@@@@@@@@  VC: function_erfriemann_17.  @@@@@@@@@@
+%%%  Simplified H1 on reading formula in, to give:
+     %%%  H1:  polypaver__interval__contained_in(result - 
+          polypaver__exact__integral(0, stepstart, polypaver__exact__exp(- (
+          polypaver__exact__integration_variable * 
+          polypaver__exact__integration_variable))), polypaver__interval__hull(
+          - (1 / 10 * (step + 1)), (1 - polypaver__exact__exp(- (x * step / n * 
+          (x * step / n)))) * x / n + 1 / 10 * (step + 1)))
+%%%  Simplified H2 on reading formula in, to give:
+     %%%  H2:  polypaver__floats__is_range(result, - 10, 100)
+---  Hypothesis H12 has been replaced by "true".  (It is already present, as H3)
+          .
+---  Hypothesis H17 has been replaced by "true".  (It is already present, as 
+          H13).
+---  Hypothesis H18 has been replaced by "true".  (It is already present, as 
+          H14).
+---  Hypothesis H19 has been replaced by "true".  (It is already present, as 
+          H13).
+---  Hypothesis H20 has been replaced by "true".  (It is already present, as 
+          H14).
+---  Hypothesis H21 has been replaced by "true".  (It is already present, as 
+          H15).
+---  Hypothesis H22 has been replaced by "true".  (It is already present, as 
+          H16).
+---  Hypothesis H29 has been replaced by "true".  (It is already present, as 
+          H23).
+---  Hypothesis H30 has been replaced by "true".  (It is already present, as 
+          H24).
+---  Hypothesis H31 has been replaced by "true".  (It is already present, as 
+          H23).
+---  Hypothesis H32 has been replaced by "true".  (It is already present, as 
+          H24).
+---  Hypothesis H35 has been replaced by "true".  (It is already present, as 
+          H23).
+---  Hypothesis H36 has been replaced by "true".  (It is already present, as 
+          H24).
+---  Hypothesis H41 has been replaced by "true".  (It is already present, as 
+          H23).
+---  Hypothesis H42 has been replaced by "true".  (It is already present, as 
+          H24).
+---  Hypothesis H43 has been replaced by "true".  (It is already present, as 
+          H33).
+---  Hypothesis H44 has been replaced by "true".  (It is already present, as 
+          H34).
+---  Hypothesis H45 has been replaced by "true".  (It is already present, as 
+          H37).
+---  Hypothesis H46 has been replaced by "true".  (It is already present, as 
+          H38).
+---  Hypothesis H47 has been replaced by "true".  (It is already present, as 
+          H39).
+---  Hypothesis H48 has been replaced by "true".  (It is already present, as 
+          H40).
+---  Hypothesis H51 has been replaced by "true".  (It is already present, as 
+          H39).
+---  Hypothesis H52 has been replaced by "true".  (It is already present, as 
+          H40).
+---  Hypothesis H53 has been replaced by "true".  (It is already present, as 
+          H49).
+---  Hypothesis H54 has been replaced by "true".  (It is already present, as 
+          H50).
+---  Hypothesis H55 has been replaced by "true".  (It is already present, as 
+          H49).
+---  Hypothesis H56 has been replaced by "true".  (It is already present, as 
+          H50).
+***  Proved C1:  step + 1 >= integer__first
+     using hypothesis H57.
+-S-  Applied substitution rule erfriemann_rules(3).
+     This was achieved by replacing all occurrences of integer__last by:
+          2147483647.
+<S>  New H10:  n <= 2147483647
+<S>  New H58:  step <= 2147483647
+<S>  New C2:  step <= 2147483646
+-S-  Applied substitution rule erfriemann_rules(2).
+     This was achieved by replacing all occurrences of integer__first by:
+          - 2147483648.
+<S>  New H9:  n >= - 2147483648
+<S>  New H57:  step >= - 2147483648
+-S-  Applied substitution rule erfriemann_rules(7).
+     This was achieved by replacing all occurrences of float__first by:
+          - 340282000000000000000000000000000000000.
+<S>  New H7:  x >= - 340282000000000000000000000000000000000
+<S>  New H13:  stepstart >= - 340282000000000000000000000000000000000
+<S>  New H15:  polypaver__floats__multiply(stepstart, stepstart) >= - 
+          340282000000000000000000000000000000000
+<S>  New H23:  polypaver__floats__exp(- polypaver__floats__multiply(stepstart, 
+          stepstart)) >= - 340282000000000000000000000000000000000
+<S>  New H25:  - polypaver__floats__multiply(stepstart, stepstart) >= - 
+          340282000000000000000000000000000000000
+<S>  New H33:  stepsize >= - 340282000000000000000000000000000000000
+<S>  New H37:  result >= - 340282000000000000000000000000000000000
+<S>  New H39:  polypaver__floats__multiply(stepsize, polypaver__floats__exp(- 
+          polypaver__floats__multiply(stepstart, stepstart))) >= - 
+          340282000000000000000000000000000000000
+<S>  New H49:  polypaver__floats__add(result, polypaver__floats__multiply(
+          stepsize, polypaver__floats__exp(- polypaver__floats__multiply(
+          stepstart, stepstart)))) >= - 340282000000000000000000000000000000000
+-S-  Applied substitution rule erfriemann_rules(8).
+     This was achieved by replacing all occurrences of float__last by:
+          340282000000000000000000000000000000000.
+<S>  New H8:  x <= 340282000000000000000000000000000000000
+<S>  New H14:  stepstart <= 340282000000000000000000000000000000000
+<S>  New H16:  polypaver__floats__multiply(stepstart, stepstart) <= 
+          340282000000000000000000000000000000000
+<S>  New H24:  polypaver__floats__exp(- polypaver__floats__multiply(stepstart, 
+          stepstart)) <= 340282000000000000000000000000000000000
+<S>  New H26:  - polypaver__floats__multiply(stepstart, stepstart) <= 
+          340282000000000000000000000000000000000
+<S>  New H34:  stepsize <= 340282000000000000000000000000000000000
+<S>  New H38:  result <= 340282000000000000000000000000000000000
+<S>  New H40:  polypaver__floats__multiply(stepsize, polypaver__floats__exp(- 
+          polypaver__floats__multiply(stepstart, stepstart))) <= 
+          340282000000000000000000000000000000000
+<S>  New H50:  polypaver__floats__add(result, polypaver__floats__multiply(
+          stepsize, polypaver__floats__exp(- polypaver__floats__multiply(
+          stepstart, stepstart)))) <= 340282000000000000000000000000000000000
+-S-  Applied substitution rule erfriemann_rules(9).
+     This was achieved by replacing all occurrences of float__base__first by:
+          - 340282000000000000000000000000000000000.
+<S>  New H27:  - polypaver__floats__multiply(stepstart, stepstart) >= - 
+          340282000000000000000000000000000000000
+-S-  Applied substitution rule erfriemann_rules(10).
+     This was achieved by replacing all occurrences of float__base__last by:
+          340282000000000000000000000000000000000.
+<S>  New H28:  - polypaver__floats__multiply(stepstart, stepstart) <= 
+          340282000000000000000000000000000000000
+---  Eliminated hypothesis H12 (true-hypothesis).
+---  Eliminated hypothesis H17 (true-hypothesis).
+---  Eliminated hypothesis H18 (true-hypothesis).
+---  Eliminated hypothesis H19 (true-hypothesis).
+---  Eliminated hypothesis H20 (true-hypothesis).
+---  Eliminated hypothesis H21 (true-hypothesis).
+---  Eliminated hypothesis H22 (true-hypothesis).
+---  Eliminated hypothesis H29 (true-hypothesis).
+---  Eliminated hypothesis H30 (true-hypothesis).
+---  Eliminated hypothesis H31 (true-hypothesis).
+---  Eliminated hypothesis H32 (true-hypothesis).
+---  Eliminated hypothesis H35 (true-hypothesis).
+---  Eliminated hypothesis H36 (true-hypothesis).
+---  Eliminated hypothesis H41 (true-hypothesis).
+---  Eliminated hypothesis H42 (true-hypothesis).
+---  Eliminated hypothesis H43 (true-hypothesis).
+---  Eliminated hypothesis H44 (true-hypothesis).
+---  Eliminated hypothesis H45 (true-hypothesis).
+---  Eliminated hypothesis H46 (true-hypothesis).
+---  Eliminated hypothesis H47 (true-hypothesis).
+---  Eliminated hypothesis H48 (true-hypothesis).
+---  Eliminated hypothesis H51 (true-hypothesis).
+---  Eliminated hypothesis H52 (true-hypothesis).
+---  Eliminated hypothesis H53 (true-hypothesis).
+---  Eliminated hypothesis H54 (true-hypothesis).
+---  Eliminated hypothesis H55 (true-hypothesis).
+---  Eliminated hypothesis H56 (true-hypothesis).
+---  Eliminated hypothesis H26 (duplicate of H15).
+---  Eliminated hypothesis H28 (duplicate of H15).
+---  Eliminated hypothesis H27 (duplicate of H25).
+---  Eliminated hypothesis H25 (duplicate of H16).
+-S-  Eliminated hypothesis H5.
+     This was achieved by replacing all occurrences of stepstart by:
+          polypaver__floats__multiply(stepsize, step).
+<S>  New H1:  polypaver__interval__contained_in(result - 
+          polypaver__exact__integral(0, polypaver__floats__multiply(stepsize, 
+          step), polypaver__exact__exp(- (
+          polypaver__exact__integration_variable * 
+          polypaver__exact__integration_variable))), polypaver__interval__hull(
+          - (1 / 10 * (step + 1)), (1 - polypaver__exact__exp(- (x * step / n * 
+          (x * step / n)))) * x / n + 1 / 10 * (step + 1)))
+<S>  New H13:  polypaver__floats__multiply(stepsize, step) >= - 
+          340282000000000000000000000000000000000
+<S>  New H15:  polypaver__floats__multiply(polypaver__floats__multiply(
+          stepsize, step), polypaver__floats__multiply(stepsize, step)) >= - 
+          340282000000000000000000000000000000000
+<S>  New H23:  polypaver__floats__exp(- polypaver__floats__multiply(
+          polypaver__floats__multiply(stepsize, step), 
+          polypaver__floats__multiply(stepsize, step))) >= - 
+          340282000000000000000000000000000000000
+<S>  New H39:  polypaver__floats__multiply(stepsize, polypaver__floats__exp(- 
+          polypaver__floats__multiply(polypaver__floats__multiply(stepsize, 
+          step), polypaver__floats__multiply(stepsize, step)))) >= - 
+          340282000000000000000000000000000000000
+<S>  New H49:  polypaver__floats__add(result, polypaver__floats__multiply(
+          stepsize, polypaver__floats__exp(- polypaver__floats__multiply(
+          polypaver__floats__multiply(stepsize, step), 
+          polypaver__floats__multiply(stepsize, step))))) >= - 
+          340282000000000000000000000000000000000
+<S>  New H14:  polypaver__floats__multiply(stepsize, step) <= 
+          340282000000000000000000000000000000000
+<S>  New H16:  polypaver__floats__multiply(polypaver__floats__multiply(
+          stepsize, step), polypaver__floats__multiply(stepsize, step)) <= 
+          340282000000000000000000000000000000000
+<S>  New H24:  polypaver__floats__exp(- polypaver__floats__multiply(
+          polypaver__floats__multiply(stepsize, step), 
+          polypaver__floats__multiply(stepsize, step))) <= 
+          340282000000000000000000000000000000000
+<S>  New H40:  polypaver__floats__multiply(stepsize, polypaver__floats__exp(- 
+          polypaver__floats__multiply(polypaver__floats__multiply(stepsize, 
+          step), polypaver__floats__multiply(stepsize, step)))) <= 
+          340282000000000000000000000000000000000
+<S>  New H50:  polypaver__floats__add(result, polypaver__floats__multiply(
+          stepsize, polypaver__floats__exp(- polypaver__floats__multiply(
+          polypaver__floats__multiply(stepsize, step), 
+          polypaver__floats__multiply(stepsize, step))))) <= 
+          340282000000000000000000000000000000000
+-S-  Eliminated hypothesis H6.
+     This was achieved by replacing all occurrences of stepsize by:
+          polypaver__floats__divide(x, n).
+<S>  New H33:  polypaver__floats__divide(x, n) >= - 
+          340282000000000000000000000000000000000
+<S>  New H34:  polypaver__floats__divide(x, n) <= 
+          340282000000000000000000000000000000000
+<S>  New H1:  polypaver__interval__contained_in(result - 
+          polypaver__exact__integral(0, polypaver__floats__multiply(
+          polypaver__floats__divide(x, n), step), polypaver__exact__exp(- (
+          polypaver__exact__integration_variable * 
+          polypaver__exact__integration_variable))), polypaver__interval__hull(
+          - (1 / 10 * (step + 1)), (1 - polypaver__exact__exp(- (x * step / n * 
+          (x * step / n)))) * x / n + 1 / 10 * (step + 1)))
+<S>  New H13:  polypaver__floats__multiply(polypaver__floats__divide(x, n), 
+          step) >= - 340282000000000000000000000000000000000
+<S>  New H15:  polypaver__floats__multiply(polypaver__floats__multiply(
+          polypaver__floats__divide(x, n), step), polypaver__floats__multiply(
+          polypaver__floats__divide(x, n), step)) >= - 
+          340282000000000000000000000000000000000
+<S>  New H23:  polypaver__floats__exp(- polypaver__floats__multiply(
+          polypaver__floats__multiply(polypaver__floats__divide(x, n), step), 
+          polypaver__floats__multiply(polypaver__floats__divide(x, n), step))) 
+          >= - 340282000000000000000000000000000000000
+<S>  New H39:  polypaver__floats__multiply(polypaver__floats__divide(x, n), 
+          polypaver__floats__exp(- polypaver__floats__multiply(
+          polypaver__floats__multiply(polypaver__floats__divide(x, n), step), 
+          polypaver__floats__multiply(polypaver__floats__divide(x, n), step)))) 
+          >= - 340282000000000000000000000000000000000
+<S>  New H49:  polypaver__floats__add(result, polypaver__floats__multiply(
+          polypaver__floats__divide(x, n), polypaver__floats__exp(- 
+          polypaver__floats__multiply(polypaver__floats__multiply(
+          polypaver__floats__divide(x, n), step), polypaver__floats__multiply(
+          polypaver__floats__divide(x, n), step))))) >= - 
+          340282000000000000000000000000000000000
+<S>  New H14:  polypaver__floats__multiply(polypaver__floats__divide(x, n), 
+          step) <= 340282000000000000000000000000000000000
+<S>  New H16:  polypaver__floats__multiply(polypaver__floats__multiply(
+          polypaver__floats__divide(x, n), step), polypaver__floats__multiply(
+          polypaver__floats__divide(x, n), step)) <= 
+          340282000000000000000000000000000000000
+<S>  New H24:  polypaver__floats__exp(- polypaver__floats__multiply(
+          polypaver__floats__multiply(polypaver__floats__divide(x, n), step), 
+          polypaver__floats__multiply(polypaver__floats__divide(x, n), step))) 
+          <= 340282000000000000000000000000000000000
+<S>  New H40:  polypaver__floats__multiply(polypaver__floats__divide(x, n), 
+          polypaver__floats__exp(- polypaver__floats__multiply(
+          polypaver__floats__multiply(polypaver__floats__divide(x, n), step), 
+          polypaver__floats__multiply(polypaver__floats__divide(x, n), step)))) 
+          <= 340282000000000000000000000000000000000
+<S>  New H50:  polypaver__floats__add(result, polypaver__floats__multiply(
+          polypaver__floats__divide(x, n), polypaver__floats__exp(- 
+          polypaver__floats__multiply(polypaver__floats__multiply(
+          polypaver__floats__divide(x, n), step), polypaver__floats__multiply(
+          polypaver__floats__divide(x, n), step))))) <= 
+          340282000000000000000000000000000000000
+     +++  New H59:  integer__size >= 0
+     +++  New H60:  float__size >= 0
+
+
+@@@@@@@@@@  VC: function_erfriemann_18.  @@@@@@@@@@
+---  Hypothesis H12 has been replaced by "true".  (It is already present, as 
+          H10).
+---  Hypothesis H13 has been replaced by "true".  (It is already present, as 
+          H11).
+---  Hypothesis H14 has been replaced by "true".  (It is already present, as H3)
+          .
+---  Hypothesis H15 has been replaced by "true".  (It is already present, as H4)
+          .
+---  Hypothesis H16 has been replaced by "true".  (It is already present, as H8)
+          .
+---  Hypothesis H17 has been replaced by "true".  (It is already present, as H9)
+          .
+---  Hypothesis H18 has been replaced by "true".  (It is already present, as H8)
+          .
+---  Hypothesis H19 has been replaced by "true".  (It is already present, as H9)
+          .
+---  Hypothesis H24 has been replaced by "true".  (It is already present, as 
+          H22).
+---  Hypothesis H25 has been replaced by "true".  (It is already present, as 
+          H23).
+---  Hypothesis H27 has been replaced by "true".  (It is already present, as 
+          H20).
+---  Hypothesis H28 has been replaced by "true".  (It is already present, as 
+          H21).
+%%%  Simplified C1 on reading formula in, to give:
+     %%%  C1:  polypaver__interval__contained_in(- polypaver__exact__integral(
+          0, x, polypaver__exact__exp(- (polypaver__exact__integration_variable 
+          * polypaver__exact__integration_variable))), 
+          polypaver__interval__hull(- (1 / 10 * (n + 1)), (1 - 
+          polypaver__exact__exp(- (x * x))) * x / n + 1 / 10 * (n + 1)))
+***  Proved C2:  0 >= float__first
+     using hypothesis H20.
+***  Proved C3:  0 <= float__last
+     using hypothesis H21.
+>>>  Restructured hypothesis H26 into:
+     >>>  H26:  n <= 0
+-S-  Applied substitution rule erfriemann_rules(2).
+     This was achieved by replacing all occurrences of integer__first by:
+          - 2147483648.
+<S>  New H5:  n >= - 2147483648
+<S>  New H22:  true
+-S-  Applied substitution rule erfriemann_rules(3).
+     This was achieved by replacing all occurrences of integer__last by:
+          2147483647.
+<S>  New H6:  n <= 2147483647
+<S>  New H23:  true
+-S-  Applied substitution rule erfriemann_rules(7).
+     This was achieved by replacing all occurrences of float__first by:
+          - 340282000000000000000000000000000000000.
+<S>  New H3:  x >= - 340282000000000000000000000000000000000
+<S>  New H8:  polypaver__floats__divide(x, n) >= - 
+          340282000000000000000000000000000000000
+<S>  New H10:  n >= - 340282000000000000000000000000000000000
+<S>  New H20:  true
+-S-  Applied substitution rule erfriemann_rules(8).
+     This was achieved by replacing all occurrences of float__last by:
+          340282000000000000000000000000000000000.
+<S>  New H4:  x <= 340282000000000000000000000000000000000
+<S>  New H9:  polypaver__floats__divide(x, n) <= 
+          340282000000000000000000000000000000000
+<S>  New H11:  n <= 340282000000000000000000000000000000000
+<S>  New H21:  true
+%%%  Hypotheses H26 & H7 together imply that
+          n < 0.
+     H26 & H7 have therefore been deleted and a new H29 added to this effect.
+---  Eliminated hypothesis H12 (true-hypothesis).
+---  Eliminated hypothesis H13 (true-hypothesis).
+---  Eliminated hypothesis H14 (true-hypothesis).
+---  Eliminated hypothesis H15 (true-hypothesis).
+---  Eliminated hypothesis H16 (true-hypothesis).
+---  Eliminated hypothesis H17 (true-hypothesis).
+---  Eliminated hypothesis H18 (true-hypothesis).
+---  Eliminated hypothesis H19 (true-hypothesis).
+---  Eliminated hypothesis H24 (true-hypothesis).
+---  Eliminated hypothesis H25 (true-hypothesis).
+---  Eliminated hypothesis H27 (true-hypothesis).
+---  Eliminated hypothesis H28 (true-hypothesis).
+---  Eliminated hypothesis H22 (true-hypothesis).
+---  Eliminated hypothesis H23 (true-hypothesis).
+---  Eliminated hypothesis H20 (true-hypothesis).
+---  Eliminated hypothesis H21 (true-hypothesis).
+---  Eliminated hypothesis H6 (redundant, given H29).
+---  Eliminated hypothesis H10 (redundant, given H5).
+---  Eliminated hypothesis H11 (redundant, given H29).
+     +++  New H30:  integer__size >= 0
+     +++  New H31:  float__size >= 0
+
+
+@@@@@@@@@@  VC: function_erfriemann_19.  @@@@@@@@@@
+%%%  Simplified H1 on reading formula in, to give:
+     %%%  H1:  polypaver__interval__contained_in(result - 
+          polypaver__exact__integral(0, stepstart, polypaver__exact__exp(- (
+          polypaver__exact__integration_variable * 
+          polypaver__exact__integration_variable))), polypaver__interval__hull(
+          - (1 / 10 * (step + 1)), (1 - polypaver__exact__exp(- (x * step / n * 
+          (x * step / n)))) * x / n + 1 / 10 * (step + 1)))
+%%%  Simplified H2 on reading formula in, to give:
+     %%%  H2:  polypaver__floats__is_range(result, - 10, 100)
+---  Hypothesis H12 has been replaced by "true".  (It is already present, as H3)
+          .
+---  Hypothesis H17 has been replaced by "true".  (It is already present, as 
+          H13).
+---  Hypothesis H18 has been replaced by "true".  (It is already present, as 
+          H14).
+---  Hypothesis H19 has been replaced by "true".  (It is already present, as 
+          H13).
+---  Hypothesis H20 has been replaced by "true".  (It is already present, as 
+          H14).
+---  Hypothesis H21 has been replaced by "true".  (It is already present, as 
+          H15).
+---  Hypothesis H22 has been replaced by "true".  (It is already present, as 
+          H16).
+---  Hypothesis H29 has been replaced by "true".  (It is already present, as 
+          H23).
+---  Hypothesis H30 has been replaced by "true".  (It is already present, as 
+          H24).
+---  Hypothesis H31 has been replaced by "true".  (It is already present, as 
+          H23).
+---  Hypothesis H32 has been replaced by "true".  (It is already present, as 
+          H24).
+---  Hypothesis H35 has been replaced by "true".  (It is already present, as 
+          H23).
+---  Hypothesis H36 has been replaced by "true".  (It is already present, as 
+          H24).
+---  Hypothesis H41 has been replaced by "true".  (It is already present, as 
+          H23).
+---  Hypothesis H42 has been replaced by "true".  (It is already present, as 
+          H24).
+---  Hypothesis H43 has been replaced by "true".  (It is already present, as 
+          H33).
+---  Hypothesis H44 has been replaced by "true".  (It is already present, as 
+          H34).
+---  Hypothesis H45 has been replaced by "true".  (It is already present, as 
+          H37).
+---  Hypothesis H46 has been replaced by "true".  (It is already present, as 
+          H38).
+---  Hypothesis H47 has been replaced by "true".  (It is already present, as 
+          H39).
+---  Hypothesis H48 has been replaced by "true".  (It is already present, as 
+          H40).
+---  Hypothesis H51 has been replaced by "true".  (It is already present, as 
+          H39).
+---  Hypothesis H52 has been replaced by "true".  (It is already present, as 
+          H40).
+---  Hypothesis H53 has been replaced by "true".  (It is already present, as 
+          H49).
+---  Hypothesis H54 has been replaced by "true".  (It is already present, as 
+          H50).
+---  Hypothesis H55 has been replaced by "true".  (It is already present, as 
+          H49).
+---  Hypothesis H56 has been replaced by "true".  (It is already present, as 
+          H50).
+---  Hypothesis H61 has been replaced by "true".  (It is already present, as 
+          H59).
+---  Hypothesis H62 has been replaced by "true".  (It is already present, as 
+          H60).
+---  Hypothesis H64 has been replaced by "true".  (It is already present, as 
+          H49).
+---  Hypothesis H65 has been replaced by "true".  (It is already present, as 
+          H50).
+%%%  Simplified C1 on reading formula in, to give:
+     %%%  C1:  polypaver__interval__contained_in(polypaver__floats__add(result, 
+          polypaver__floats__multiply(stepsize, polypaver__floats__exp(- 
+          polypaver__floats__multiply(stepstart, stepstart)))) - 
+          polypaver__exact__integral(0, x, polypaver__exact__exp(- (
+          polypaver__exact__integration_variable * 
+          polypaver__exact__integration_variable))), polypaver__interval__hull(
+          - (1 / 10 * (n + 1)), (1 - polypaver__exact__exp(- (x * x))) * x / n 
+          + 1 / 10 * (n + 1)))
+***  Proved C2:  polypaver__floats__add(result, polypaver__floats__multiply(
+          stepsize, polypaver__floats__exp(- polypaver__floats__multiply(
+          stepstart, stepstart)))) >= float__first
+     using hypothesis H49.
+***  Proved C3:  polypaver__floats__add(result, polypaver__floats__multiply(
+          stepsize, polypaver__floats__exp(- polypaver__floats__multiply(
+          stepstart, stepstart)))) <= float__last
+     using hypothesis H50.
+>>>  Restructured hypothesis H63 into:
+     >>>  H63:  n <= step + 1
+-S-  Applied substitution rule erfriemann_rules(2).
+     This was achieved by replacing all occurrences of integer__first by:
+          - 2147483648.
+<S>  New H9:  n >= - 2147483648
+<S>  New H57:  step >= - 2147483648
+<S>  New H59:  step >= - 2147483649
+-S-  Applied substitution rule erfriemann_rules(3).
+     This was achieved by replacing all occurrences of integer__last by:
+          2147483647.
+<S>  New H10:  n <= 2147483647
+<S>  New H58:  step <= 2147483647
+<S>  New H60:  step <= 2147483646
+-S-  Applied substitution rule erfriemann_rules(7).
+     This was achieved by replacing all occurrences of float__first by:
+          - 340282000000000000000000000000000000000.
+<S>  New H7:  x >= - 340282000000000000000000000000000000000
+<S>  New H13:  stepstart >= - 340282000000000000000000000000000000000
+<S>  New H15:  polypaver__floats__multiply(stepstart, stepstart) >= - 
+          340282000000000000000000000000000000000
+<S>  New H23:  polypaver__floats__exp(- polypaver__floats__multiply(stepstart, 
+          stepstart)) >= - 340282000000000000000000000000000000000
+<S>  New H25:  - polypaver__floats__multiply(stepstart, stepstart) >= - 
+          340282000000000000000000000000000000000
+<S>  New H33:  stepsize >= - 340282000000000000000000000000000000000
+<S>  New H37:  result >= - 340282000000000000000000000000000000000
+<S>  New H39:  polypaver__floats__multiply(stepsize, polypaver__floats__exp(- 
+          polypaver__floats__multiply(stepstart, stepstart))) >= - 
+          340282000000000000000000000000000000000
+<S>  New H49:  polypaver__floats__add(result, polypaver__floats__multiply(
+          stepsize, polypaver__floats__exp(- polypaver__floats__multiply(
+          stepstart, stepstart)))) >= - 340282000000000000000000000000000000000
+-S-  Applied substitution rule erfriemann_rules(8).
+     This was achieved by replacing all occurrences of float__last by:
+          340282000000000000000000000000000000000.
+<S>  New H8:  x <= 340282000000000000000000000000000000000
+<S>  New H14:  stepstart <= 340282000000000000000000000000000000000
+<S>  New H16:  polypaver__floats__multiply(stepstart, stepstart) <= 
+          340282000000000000000000000000000000000
+<S>  New H24:  polypaver__floats__exp(- polypaver__floats__multiply(stepstart, 
+          stepstart)) <= 340282000000000000000000000000000000000
+<S>  New H26:  - polypaver__floats__multiply(stepstart, stepstart) <= 
+          340282000000000000000000000000000000000
+<S>  New H34:  stepsize <= 340282000000000000000000000000000000000
+<S>  New H38:  result <= 340282000000000000000000000000000000000
+<S>  New H40:  polypaver__floats__multiply(stepsize, polypaver__floats__exp(- 
+          polypaver__floats__multiply(stepstart, stepstart))) <= 
+          340282000000000000000000000000000000000
+<S>  New H50:  polypaver__floats__add(result, polypaver__floats__multiply(
+          stepsize, polypaver__floats__exp(- polypaver__floats__multiply(
+          stepstart, stepstart)))) <= 340282000000000000000000000000000000000
+-S-  Applied substitution rule erfriemann_rules(9).
+     This was achieved by replacing all occurrences of float__base__first by:
+          - 340282000000000000000000000000000000000.
+<S>  New H27:  - polypaver__floats__multiply(stepstart, stepstart) >= - 
+          340282000000000000000000000000000000000
+-S-  Applied substitution rule erfriemann_rules(10).
+     This was achieved by replacing all occurrences of float__base__last by:
+          340282000000000000000000000000000000000.
+<S>  New H28:  - polypaver__floats__multiply(stepstart, stepstart) <= 
+          340282000000000000000000000000000000000
+---  Eliminated hypothesis H12 (true-hypothesis).
+---  Eliminated hypothesis H17 (true-hypothesis).
+---  Eliminated hypothesis H18 (true-hypothesis).
+---  Eliminated hypothesis H19 (true-hypothesis).
+---  Eliminated hypothesis H20 (true-hypothesis).
+---  Eliminated hypothesis H21 (true-hypothesis).
+---  Eliminated hypothesis H22 (true-hypothesis).
+---  Eliminated hypothesis H29 (true-hypothesis).
+---  Eliminated hypothesis H30 (true-hypothesis).
+---  Eliminated hypothesis H31 (true-hypothesis).
+---  Eliminated hypothesis H32 (true-hypothesis).
+---  Eliminated hypothesis H35 (true-hypothesis).
+---  Eliminated hypothesis H36 (true-hypothesis).
+---  Eliminated hypothesis H41 (true-hypothesis).
+---  Eliminated hypothesis H42 (true-hypothesis).
+---  Eliminated hypothesis H43 (true-hypothesis).
+---  Eliminated hypothesis H44 (true-hypothesis).
+---  Eliminated hypothesis H45 (true-hypothesis).
+---  Eliminated hypothesis H46 (true-hypothesis).
+---  Eliminated hypothesis H47 (true-hypothesis).
+---  Eliminated hypothesis H48 (true-hypothesis).
+---  Eliminated hypothesis H51 (true-hypothesis).
+---  Eliminated hypothesis H52 (true-hypothesis).
+---  Eliminated hypothesis H53 (true-hypothesis).
+---  Eliminated hypothesis H54 (true-hypothesis).
+---  Eliminated hypothesis H55 (true-hypothesis).
+---  Eliminated hypothesis H56 (true-hypothesis).
+---  Eliminated hypothesis H61 (true-hypothesis).
+---  Eliminated hypothesis H62 (true-hypothesis).
+---  Eliminated hypothesis H64 (true-hypothesis).
+---  Eliminated hypothesis H65 (true-hypothesis).
+---  Eliminated hypothesis H26 (duplicate of H15).
+---  Eliminated hypothesis H28 (duplicate of H15).
+---  Eliminated hypothesis H27 (duplicate of H25).
+---  Eliminated hypothesis H25 (duplicate of H16).
+---  Eliminated hypothesis H58 (redundant, given H60).
+---  Eliminated hypothesis H59 (redundant, given H57).
+-S-  Eliminated hypothesis H5.
+     This was achieved by replacing all occurrences of stepstart by:
+          polypaver__floats__multiply(stepsize, step).
+<S>  New H1:  polypaver__interval__contained_in(result - 
+          polypaver__exact__integral(0, polypaver__floats__multiply(stepsize, 
+          step), polypaver__exact__exp(- (
+          polypaver__exact__integration_variable * 
+          polypaver__exact__integration_variable))), polypaver__interval__hull(
+          - (1 / 10 * (step + 1)), (1 - polypaver__exact__exp(- (x * step / n * 
+          (x * step / n)))) * x / n + 1 / 10 * (step + 1)))
+<S>  New H13:  polypaver__floats__multiply(stepsize, step) >= - 
+          340282000000000000000000000000000000000
+<S>  New H15:  polypaver__floats__multiply(polypaver__floats__multiply(
+          stepsize, step), polypaver__floats__multiply(stepsize, step)) >= - 
+          340282000000000000000000000000000000000
+<S>  New H23:  polypaver__floats__exp(- polypaver__floats__multiply(
+          polypaver__floats__multiply(stepsize, step), 
+          polypaver__floats__multiply(stepsize, step))) >= - 
+          340282000000000000000000000000000000000
+<S>  New H39:  polypaver__floats__multiply(stepsize, polypaver__floats__exp(- 
+          polypaver__floats__multiply(polypaver__floats__multiply(stepsize, 
+          step), polypaver__floats__multiply(stepsize, step)))) >= - 
+          340282000000000000000000000000000000000
+<S>  New H49:  polypaver__floats__add(result, polypaver__floats__multiply(
+          stepsize, polypaver__floats__exp(- polypaver__floats__multiply(
+          polypaver__floats__multiply(stepsize, step), 
+          polypaver__floats__multiply(stepsize, step))))) >= - 
+          340282000000000000000000000000000000000
+<S>  New H14:  polypaver__floats__multiply(stepsize, step) <= 
+          340282000000000000000000000000000000000
+<S>  New H16:  polypaver__floats__multiply(polypaver__floats__multiply(
+          stepsize, step), polypaver__floats__multiply(stepsize, step)) <= 
+          340282000000000000000000000000000000000
+<S>  New H24:  polypaver__floats__exp(- polypaver__floats__multiply(
+          polypaver__floats__multiply(stepsize, step), 
+          polypaver__floats__multiply(stepsize, step))) <= 
+          340282000000000000000000000000000000000
+<S>  New H40:  polypaver__floats__multiply(stepsize, polypaver__floats__exp(- 
+          polypaver__floats__multiply(polypaver__floats__multiply(stepsize, 
+          step), polypaver__floats__multiply(stepsize, step)))) <= 
+          340282000000000000000000000000000000000
+<S>  New H50:  polypaver__floats__add(result, polypaver__floats__multiply(
+          stepsize, polypaver__floats__exp(- polypaver__floats__multiply(
+          polypaver__floats__multiply(stepsize, step), 
+          polypaver__floats__multiply(stepsize, step))))) <= 
+          340282000000000000000000000000000000000
+<S>  New C1:  polypaver__interval__contained_in(polypaver__floats__add(result, 
+          polypaver__floats__multiply(stepsize, polypaver__floats__exp(- 
+          polypaver__floats__multiply(polypaver__floats__multiply(stepsize, 
+          step), polypaver__floats__multiply(stepsize, step))))) - 
+          polypaver__exact__integral(0, x, polypaver__exact__exp(- (
+          polypaver__exact__integration_variable * 
+          polypaver__exact__integration_variable))), polypaver__interval__hull(
+          - (1 / 10 * (n + 1)), (1 - polypaver__exact__exp(- (x * x))) * x / n 
+          + 1 / 10 * (n + 1)))
+-S-  Eliminated hypothesis H6.
+     This was achieved by replacing all occurrences of stepsize by:
+          polypaver__floats__divide(x, n).
+<S>  New H33:  polypaver__floats__divide(x, n) >= - 
+          340282000000000000000000000000000000000
+<S>  New H34:  polypaver__floats__divide(x, n) <= 
+          340282000000000000000000000000000000000
+<S>  New H1:  polypaver__interval__contained_in(result - 
+          polypaver__exact__integral(0, polypaver__floats__multiply(
+          polypaver__floats__divide(x, n), step), polypaver__exact__exp(- (
+          polypaver__exact__integration_variable * 
+          polypaver__exact__integration_variable))), polypaver__interval__hull(
+          - (1 / 10 * (step + 1)), (1 - polypaver__exact__exp(- (x * step / n * 
+          (x * step / n)))) * x / n + 1 / 10 * (step + 1)))
+<S>  New H13:  polypaver__floats__multiply(polypaver__floats__divide(x, n), 
+          step) >= - 340282000000000000000000000000000000000
+<S>  New H15:  polypaver__floats__multiply(polypaver__floats__multiply(
+          polypaver__floats__divide(x, n), step), polypaver__floats__multiply(
+          polypaver__floats__divide(x, n), step)) >= - 
+          340282000000000000000000000000000000000
+<S>  New H23:  polypaver__floats__exp(- polypaver__floats__multiply(
+          polypaver__floats__multiply(polypaver__floats__divide(x, n), step), 
+          polypaver__floats__multiply(polypaver__floats__divide(x, n), step))) 
+          >= - 340282000000000000000000000000000000000
+<S>  New H39:  polypaver__floats__multiply(polypaver__floats__divide(x, n), 
+          polypaver__floats__exp(- polypaver__floats__multiply(
+          polypaver__floats__multiply(polypaver__floats__divide(x, n), step), 
+          polypaver__floats__multiply(polypaver__floats__divide(x, n), step)))) 
+          >= - 340282000000000000000000000000000000000
+<S>  New H49:  polypaver__floats__add(result, polypaver__floats__multiply(
+          polypaver__floats__divide(x, n), polypaver__floats__exp(- 
+          polypaver__floats__multiply(polypaver__floats__multiply(
+          polypaver__floats__divide(x, n), step), polypaver__floats__multiply(
+          polypaver__floats__divide(x, n), step))))) >= - 
+          340282000000000000000000000000000000000
+<S>  New H14:  polypaver__floats__multiply(polypaver__floats__divide(x, n), 
+          step) <= 340282000000000000000000000000000000000
+<S>  New H16:  polypaver__floats__multiply(polypaver__floats__multiply(
+          polypaver__floats__divide(x, n), step), polypaver__floats__multiply(
+          polypaver__floats__divide(x, n), step)) <= 
+          340282000000000000000000000000000000000
+<S>  New H24:  polypaver__floats__exp(- polypaver__floats__multiply(
+          polypaver__floats__multiply(polypaver__floats__divide(x, n), step), 
+          polypaver__floats__multiply(polypaver__floats__divide(x, n), step))) 
+          <= 340282000000000000000000000000000000000
+<S>  New H40:  polypaver__floats__multiply(polypaver__floats__divide(x, n), 
+          polypaver__floats__exp(- polypaver__floats__multiply(
+          polypaver__floats__multiply(polypaver__floats__divide(x, n), step), 
+          polypaver__floats__multiply(polypaver__floats__divide(x, n), step)))) 
+          <= 340282000000000000000000000000000000000
+<S>  New H50:  polypaver__floats__add(result, polypaver__floats__multiply(
+          polypaver__floats__divide(x, n), polypaver__floats__exp(- 
+          polypaver__floats__multiply(polypaver__floats__multiply(
+          polypaver__floats__divide(x, n), step), polypaver__floats__multiply(
+          polypaver__floats__divide(x, n), step))))) <= 
+          340282000000000000000000000000000000000
+<S>  New C1:  polypaver__interval__contained_in(polypaver__floats__add(result, 
+          polypaver__floats__multiply(polypaver__floats__divide(x, n), 
+          polypaver__floats__exp(- polypaver__floats__multiply(
+          polypaver__floats__multiply(polypaver__floats__divide(x, n), step), 
+          polypaver__floats__multiply(polypaver__floats__divide(x, n), step)))))
+           - polypaver__exact__integral(0, x, polypaver__exact__exp(- (
+          polypaver__exact__integration_variable * 
+          polypaver__exact__integration_variable))), polypaver__interval__hull(
+          - (1 / 10 * (n + 1)), (1 - polypaver__exact__exp(- (x * x))) * x / n 
+          + 1 / 10 * (n + 1)))
+     +++  New H66:  integer__size >= 0
+     +++  New H67:  float__size >= 0
+

@@ -1,0 +1,1596 @@
+           *******************************************************
+                       Semantic Analysis of SPARK Text
+                              Examiner GPL 2012
+             Copyright (C) 2012 Altran Praxis Limited, Bath, U.K.
+           *******************************************************
+
+
+                        DATE : 17-MAY-2013 00:59:21.38
+
+                        function Riemann.erfRiemann
+
+
+
+
+For path(s) from start to precondition check associated with statement of line 17:
+
+function_erfriemann_1.
+H1:    polypaver__floats__is_range(x, 0, 4) .
+H2:    polypaver__integers__is_range(n, 1, 100) .
+H3:    x >= float__first .
+H4:    x <= float__last .
+H5:    n >= integer__first .
+H6:    n <= integer__last .
+        ->
+C1:    n <> 0 .
+C2:    polypaver__floats__divide(x, n) >= float__first .
+C3:    polypaver__floats__divide(x, n) <= float__last .
+C4:    n >= float__first .
+C5:    n <= float__last .
+C6:    n >= float__first .
+C7:    n <= float__last .
+C8:    x >= float__first .
+C9:    x <= float__last .
+ 
+
+For path(s) from start to run-time check associated with statement of line 17:
+
+function_erfriemann_2.
+H1:    polypaver__floats__is_range(x, 0, 4) .
+H2:    polypaver__integers__is_range(n, 1, 100) .
+H3:    x >= float__first .
+H4:    x <= float__last .
+H5:    n >= integer__first .
+H6:    n <= integer__last .
+H7:    n <> 0 .
+H8:    polypaver__floats__divide(x, n) >= float__first .
+H9:    polypaver__floats__divide(x, n) <= float__last .
+H10:   n >= float__first .
+H11:   n <= float__last .
+H12:   n >= float__first .
+H13:   n <= float__last .
+H14:   x >= float__first .
+H15:   x <= float__last .
+H16:   polypaver__floats__divide(x, n) >= float__first .
+H17:   polypaver__floats__divide(x, n) <= float__last .
+        ->
+C1:    polypaver__floats__divide(x, n) >= float__first .
+C2:    polypaver__floats__divide(x, n) <= float__last .
+ 
+
+For path(s) from start to run-time check associated with statement of line 18:
+
+function_erfriemann_3.
+H1:    polypaver__floats__is_range(x, 0, 4) .
+H2:    polypaver__integers__is_range(n, 1, 100) .
+H3:    x >= float__first .
+H4:    x <= float__last .
+H5:    n >= integer__first .
+H6:    n <= integer__last .
+H7:    n <> 0 .
+H8:    polypaver__floats__divide(x, n) >= float__first .
+H9:    polypaver__floats__divide(x, n) <= float__last .
+H10:   n >= float__first .
+H11:   n <= float__last .
+H12:   n >= float__first .
+H13:   n <= float__last .
+H14:   x >= float__first .
+H15:   x <= float__last .
+H16:   polypaver__floats__divide(x, n) >= float__first .
+H17:   polypaver__floats__divide(x, n) <= float__last .
+H18:   polypaver__floats__divide(x, n) >= float__first .
+H19:   polypaver__floats__divide(x, n) <= float__last .
+        ->
+C1:    0 >= float__first .
+C2:    0 <= float__last .
+ 
+
+For path(s) from start to run-time check associated with statement of line 19:
+
+function_erfriemann_4.
+H1:    polypaver__floats__is_range(x, 0, 4) .
+H2:    polypaver__integers__is_range(n, 1, 100) .
+H3:    x >= float__first .
+H4:    x <= float__last .
+H5:    n >= integer__first .
+H6:    n <= integer__last .
+H7:    n <> 0 .
+H8:    polypaver__floats__divide(x, n) >= float__first .
+H9:    polypaver__floats__divide(x, n) <= float__last .
+H10:   n >= float__first .
+H11:   n <= float__last .
+H12:   n >= float__first .
+H13:   n <= float__last .
+H14:   x >= float__first .
+H15:   x <= float__last .
+H16:   polypaver__floats__divide(x, n) >= float__first .
+H17:   polypaver__floats__divide(x, n) <= float__last .
+H18:   polypaver__floats__divide(x, n) >= float__first .
+H19:   polypaver__floats__divide(x, n) <= float__last .
+H20:   0 >= float__first .
+H21:   0 <= float__last .
+        ->
+C1:    0 >= integer__first .
+C2:    0 <= integer__last .
+ 
+
+For path(s) from start to precondition check associated with statement of line 21:
+
+function_erfriemann_5.
+H1:    polypaver__floats__is_range(x, 0, 4) .
+H2:    polypaver__integers__is_range(n, 1, 100) .
+H3:    x >= float__first .
+H4:    x <= float__last .
+H5:    n >= integer__first .
+H6:    n <= integer__last .
+H7:    n <> 0 .
+H8:    polypaver__floats__divide(x, n) >= float__first .
+H9:    polypaver__floats__divide(x, n) <= float__last .
+H10:   n >= float__first .
+H11:   n <= float__last .
+H12:   n >= float__first .
+H13:   n <= float__last .
+H14:   x >= float__first .
+H15:   x <= float__last .
+H16:   polypaver__floats__divide(x, n) >= float__first .
+H17:   polypaver__floats__divide(x, n) <= float__last .
+H18:   polypaver__floats__divide(x, n) >= float__first .
+H19:   polypaver__floats__divide(x, n) <= float__last .
+H20:   0 >= float__first .
+H21:   0 <= float__last .
+H22:   0 >= integer__first .
+H23:   0 <= integer__last .
+H24:   0 >= integer__first .
+H25:   0 <= integer__last .
+H26:   0 < n .
+H27:   polypaver__floats__divide(x, n) >= float__first .
+H28:   polypaver__floats__divide(x, n) <= float__last .
+H29:   0 >= integer__first .
+H30:   0 <= integer__last .
+        ->
+C1:    polypaver__floats__multiply(polypaver__floats__divide(
+           x, n), 0) >= float__first .
+C2:    polypaver__floats__multiply(polypaver__floats__divide(
+           x, n), 0) <= float__last .
+C3:    0 >= float__first .
+C4:    0 <= float__last .
+C5:    0 >= float__first .
+C6:    0 <= float__last .
+C7:    polypaver__floats__divide(x, n) >= float__first .
+C8:    polypaver__floats__divide(x, n) <= float__last .
+ 
+
+For path(s) from assertion of line 25 to precondition check associated with statement of line 21:
+
+function_erfriemann_6.
+H1:    polypaver__interval__contained_in(result - 
+           polypaver__exact__integral(0, stepstart, 
+           polypaver__exact__exp( -(
+           polypaver__exact__integration_variable ** 2))), 
+           polypaver__interval__hull( -((1/10) * (step + 1)), (1 - 
+           polypaver__exact__exp( -((x * step / n) ** 2))) * 
+           x / n + (1/10) * (step + 1))) .
+H2:    polypaver__floats__is_range(result,  -10, 100) .
+H3:    polypaver__integers__is_range(n, 1, 100) .
+H4:    polypaver__integers__is_range(step, 0, n - 1) .
+H5:    stepstart = polypaver__floats__multiply(stepsize, 
+           step) .
+H6:    stepsize = polypaver__floats__divide(x, n) .
+H7:    x >= float__first .
+H8:    x <= float__last .
+H9:    n >= integer__first .
+H10:   n <= integer__last .
+H11:   polypaver__floats__is_range(x, 0, 4) .
+H12:   polypaver__integers__is_range(n, 1, 100) .
+H13:   stepstart >= float__first .
+H14:   stepstart <= float__last .
+H15:   polypaver__floats__multiply(stepstart, stepstart) >= 
+           float__first .
+H16:   polypaver__floats__multiply(stepstart, stepstart) <= 
+           float__last .
+H17:   stepstart >= float__first .
+H18:   stepstart <= float__last .
+H19:   stepstart >= float__first .
+H20:   stepstart <= float__last .
+H21:   polypaver__floats__multiply(stepstart, stepstart) >= 
+           float__first .
+H22:   polypaver__floats__multiply(stepstart, stepstart) <= 
+           float__last .
+H23:   polypaver__floats__exp( -(polypaver__floats__multiply(
+           stepstart, stepstart))) >= float__first .
+H24:   polypaver__floats__exp( -(polypaver__floats__multiply(
+           stepstart, stepstart))) <= float__last .
+H25:    -(polypaver__floats__multiply(stepstart, stepstart)) >= 
+           float__first .
+H26:    -(polypaver__floats__multiply(stepstart, stepstart)) <= 
+           float__last .
+H27:    -(polypaver__floats__multiply(stepstart, stepstart)) >= 
+           float__base__first .
+H28:    -(polypaver__floats__multiply(stepstart, stepstart)) <= 
+           float__base__last .
+H29:   polypaver__floats__exp( -(polypaver__floats__multiply(
+           stepstart, stepstart))) >= float__first .
+H30:   polypaver__floats__exp( -(polypaver__floats__multiply(
+           stepstart, stepstart))) <= float__last .
+H31:   polypaver__floats__exp( -(polypaver__floats__multiply(
+           stepstart, stepstart))) >= float__first .
+H32:   polypaver__floats__exp( -(polypaver__floats__multiply(
+           stepstart, stepstart))) <= float__last .
+H33:   stepsize >= float__first .
+H34:   stepsize <= float__last .
+H35:   polypaver__floats__exp( -(polypaver__floats__multiply(
+           stepstart, stepstart))) >= float__first .
+H36:   polypaver__floats__exp( -(polypaver__floats__multiply(
+           stepstart, stepstart))) <= float__last .
+H37:   result >= float__first .
+H38:   result <= float__last .
+H39:   polypaver__floats__multiply(stepsize, 
+           polypaver__floats__exp( -(
+           polypaver__floats__multiply(stepstart, stepstart)))) >= 
+           float__first .
+H40:   polypaver__floats__multiply(stepsize, 
+           polypaver__floats__exp( -(
+           polypaver__floats__multiply(stepstart, stepstart)))) <= 
+           float__last .
+H41:   polypaver__floats__exp( -(polypaver__floats__multiply(
+           stepstart, stepstart))) >= float__first .
+H42:   polypaver__floats__exp( -(polypaver__floats__multiply(
+           stepstart, stepstart))) <= float__last .
+H43:   stepsize >= float__first .
+H44:   stepsize <= float__last .
+H45:   result >= float__first .
+H46:   result <= float__last .
+H47:   polypaver__floats__multiply(stepsize, 
+           polypaver__floats__exp( -(
+           polypaver__floats__multiply(stepstart, stepstart)))) >= 
+           float__first .
+H48:   polypaver__floats__multiply(stepsize, 
+           polypaver__floats__exp( -(
+           polypaver__floats__multiply(stepstart, stepstart)))) <= 
+           float__last .
+H49:   polypaver__floats__add(result, 
+           polypaver__floats__multiply(stepsize, 
+           polypaver__floats__exp( -(
+           polypaver__floats__multiply(stepstart, stepstart))))) >= 
+           float__first .
+H50:   polypaver__floats__add(result, 
+           polypaver__floats__multiply(stepsize, 
+           polypaver__floats__exp( -(
+           polypaver__floats__multiply(stepstart, stepstart))))) <= 
+           float__last .
+H51:   polypaver__floats__multiply(stepsize, 
+           polypaver__floats__exp( -(
+           polypaver__floats__multiply(stepstart, stepstart)))) >= 
+           float__first .
+H52:   polypaver__floats__multiply(stepsize, 
+           polypaver__floats__exp( -(
+           polypaver__floats__multiply(stepstart, stepstart)))) <= 
+           float__last .
+H53:   polypaver__floats__add(result, 
+           polypaver__floats__multiply(stepsize, 
+           polypaver__floats__exp( -(
+           polypaver__floats__multiply(stepstart, stepstart))))) >= 
+           float__first .
+H54:   polypaver__floats__add(result, 
+           polypaver__floats__multiply(stepsize, 
+           polypaver__floats__exp( -(
+           polypaver__floats__multiply(stepstart, stepstart))))) <= 
+           float__last .
+H55:   polypaver__floats__add(result, 
+           polypaver__floats__multiply(stepsize, 
+           polypaver__floats__exp( -(
+           polypaver__floats__multiply(stepstart, stepstart))))) >= 
+           float__first .
+H56:   polypaver__floats__add(result, 
+           polypaver__floats__multiply(stepsize, 
+           polypaver__floats__exp( -(
+           polypaver__floats__multiply(stepstart, stepstart))))) <= 
+           float__last .
+H57:   step >= integer__first .
+H58:   step <= integer__last .
+H59:   step + 1 >= integer__first .
+H60:   step + 1 <= integer__last .
+H61:   step + 1 >= integer__first .
+H62:   step + 1 <= integer__last .
+H63:   step + 1 < n .
+H64:   stepsize >= float__first .
+H65:   stepsize <= float__last .
+H66:   step + 1 >= integer__first .
+H67:   step + 1 <= integer__last .
+        ->
+C1:    polypaver__floats__multiply(stepsize, step + 1) >= 
+           float__first .
+C2:    polypaver__floats__multiply(stepsize, step + 1) <= 
+           float__last .
+C3:    step + 1 >= float__first .
+C4:    step + 1 <= float__last .
+C5:    step + 1 >= float__first .
+C6:    step + 1 <= float__last .
+C7:    stepsize >= float__first .
+C8:    stepsize <= float__last .
+ 
+
+For path(s) from start to run-time check associated with statement of line 21:
+
+function_erfriemann_7.
+H1:    polypaver__floats__is_range(x, 0, 4) .
+H2:    polypaver__integers__is_range(n, 1, 100) .
+H3:    x >= float__first .
+H4:    x <= float__last .
+H5:    n >= integer__first .
+H6:    n <= integer__last .
+H7:    n <> 0 .
+H8:    polypaver__floats__divide(x, n) >= float__first .
+H9:    polypaver__floats__divide(x, n) <= float__last .
+H10:   n >= float__first .
+H11:   n <= float__last .
+H12:   n >= float__first .
+H13:   n <= float__last .
+H14:   x >= float__first .
+H15:   x <= float__last .
+H16:   polypaver__floats__divide(x, n) >= float__first .
+H17:   polypaver__floats__divide(x, n) <= float__last .
+H18:   polypaver__floats__divide(x, n) >= float__first .
+H19:   polypaver__floats__divide(x, n) <= float__last .
+H20:   0 >= float__first .
+H21:   0 <= float__last .
+H22:   0 >= integer__first .
+H23:   0 <= integer__last .
+H24:   0 >= integer__first .
+H25:   0 <= integer__last .
+H26:   0 < n .
+H27:   polypaver__floats__divide(x, n) >= float__first .
+H28:   polypaver__floats__divide(x, n) <= float__last .
+H29:   0 >= integer__first .
+H30:   0 <= integer__last .
+H31:   polypaver__floats__multiply(polypaver__floats__divide(
+           x, n), 0) >= float__first .
+H32:   polypaver__floats__multiply(polypaver__floats__divide(
+           x, n), 0) <= float__last .
+H33:   0 >= float__first .
+H34:   0 <= float__last .
+H35:   0 >= float__first .
+H36:   0 <= float__last .
+H37:   polypaver__floats__divide(x, n) >= float__first .
+H38:   polypaver__floats__divide(x, n) <= float__last .
+H39:   polypaver__floats__multiply(polypaver__floats__divide(
+           x, n), 0) >= float__first .
+H40:   polypaver__floats__multiply(polypaver__floats__divide(
+           x, n), 0) <= float__last .
+        ->
+C1:    polypaver__floats__multiply(polypaver__floats__divide(
+           x, n), 0) >= float__first .
+C2:    polypaver__floats__multiply(polypaver__floats__divide(
+           x, n), 0) <= float__last .
+ 
+
+For path(s) from assertion of line 25 to run-time check associated with statement of line 21:
+
+function_erfriemann_8.
+H1:    polypaver__interval__contained_in(result - 
+           polypaver__exact__integral(0, stepstart, 
+           polypaver__exact__exp( -(
+           polypaver__exact__integration_variable ** 2))), 
+           polypaver__interval__hull( -((1/10) * (step + 1)), (1 - 
+           polypaver__exact__exp( -((x * step / n) ** 2))) * 
+           x / n + (1/10) * (step + 1))) .
+H2:    polypaver__floats__is_range(result,  -10, 100) .
+H3:    polypaver__integers__is_range(n, 1, 100) .
+H4:    polypaver__integers__is_range(step, 0, n - 1) .
+H5:    stepstart = polypaver__floats__multiply(stepsize, 
+           step) .
+H6:    stepsize = polypaver__floats__divide(x, n) .
+H7:    x >= float__first .
+H8:    x <= float__last .
+H9:    n >= integer__first .
+H10:   n <= integer__last .
+H11:   polypaver__floats__is_range(x, 0, 4) .
+H12:   polypaver__integers__is_range(n, 1, 100) .
+H13:   stepstart >= float__first .
+H14:   stepstart <= float__last .
+H15:   polypaver__floats__multiply(stepstart, stepstart) >= 
+           float__first .
+H16:   polypaver__floats__multiply(stepstart, stepstart) <= 
+           float__last .
+H17:   stepstart >= float__first .
+H18:   stepstart <= float__last .
+H19:   stepstart >= float__first .
+H20:   stepstart <= float__last .
+H21:   polypaver__floats__multiply(stepstart, stepstart) >= 
+           float__first .
+H22:   polypaver__floats__multiply(stepstart, stepstart) <= 
+           float__last .
+H23:   polypaver__floats__exp( -(polypaver__floats__multiply(
+           stepstart, stepstart))) >= float__first .
+H24:   polypaver__floats__exp( -(polypaver__floats__multiply(
+           stepstart, stepstart))) <= float__last .
+H25:    -(polypaver__floats__multiply(stepstart, stepstart)) >= 
+           float__first .
+H26:    -(polypaver__floats__multiply(stepstart, stepstart)) <= 
+           float__last .
+H27:    -(polypaver__floats__multiply(stepstart, stepstart)) >= 
+           float__base__first .
+H28:    -(polypaver__floats__multiply(stepstart, stepstart)) <= 
+           float__base__last .
+H29:   polypaver__floats__exp( -(polypaver__floats__multiply(
+           stepstart, stepstart))) >= float__first .
+H30:   polypaver__floats__exp( -(polypaver__floats__multiply(
+           stepstart, stepstart))) <= float__last .
+H31:   polypaver__floats__exp( -(polypaver__floats__multiply(
+           stepstart, stepstart))) >= float__first .
+H32:   polypaver__floats__exp( -(polypaver__floats__multiply(
+           stepstart, stepstart))) <= float__last .
+H33:   stepsize >= float__first .
+H34:   stepsize <= float__last .
+H35:   polypaver__floats__exp( -(polypaver__floats__multiply(
+           stepstart, stepstart))) >= float__first .
+H36:   polypaver__floats__exp( -(polypaver__floats__multiply(
+           stepstart, stepstart))) <= float__last .
+H37:   result >= float__first .
+H38:   result <= float__last .
+H39:   polypaver__floats__multiply(stepsize, 
+           polypaver__floats__exp( -(
+           polypaver__floats__multiply(stepstart, stepstart)))) >= 
+           float__first .
+H40:   polypaver__floats__multiply(stepsize, 
+           polypaver__floats__exp( -(
+           polypaver__floats__multiply(stepstart, stepstart)))) <= 
+           float__last .
+H41:   polypaver__floats__exp( -(polypaver__floats__multiply(
+           stepstart, stepstart))) >= float__first .
+H42:   polypaver__floats__exp( -(polypaver__floats__multiply(
+           stepstart, stepstart))) <= float__last .
+H43:   stepsize >= float__first .
+H44:   stepsize <= float__last .
+H45:   result >= float__first .
+H46:   result <= float__last .
+H47:   polypaver__floats__multiply(stepsize, 
+           polypaver__floats__exp( -(
+           polypaver__floats__multiply(stepstart, stepstart)))) >= 
+           float__first .
+H48:   polypaver__floats__multiply(stepsize, 
+           polypaver__floats__exp( -(
+           polypaver__floats__multiply(stepstart, stepstart)))) <= 
+           float__last .
+H49:   polypaver__floats__add(result, 
+           polypaver__floats__multiply(stepsize, 
+           polypaver__floats__exp( -(
+           polypaver__floats__multiply(stepstart, stepstart))))) >= 
+           float__first .
+H50:   polypaver__floats__add(result, 
+           polypaver__floats__multiply(stepsize, 
+           polypaver__floats__exp( -(
+           polypaver__floats__multiply(stepstart, stepstart))))) <= 
+           float__last .
+H51:   polypaver__floats__multiply(stepsize, 
+           polypaver__floats__exp( -(
+           polypaver__floats__multiply(stepstart, stepstart)))) >= 
+           float__first .
+H52:   polypaver__floats__multiply(stepsize, 
+           polypaver__floats__exp( -(
+           polypaver__floats__multiply(stepstart, stepstart)))) <= 
+           float__last .
+H53:   polypaver__floats__add(result, 
+           polypaver__floats__multiply(stepsize, 
+           polypaver__floats__exp( -(
+           polypaver__floats__multiply(stepstart, stepstart))))) >= 
+           float__first .
+H54:   polypaver__floats__add(result, 
+           polypaver__floats__multiply(stepsize, 
+           polypaver__floats__exp( -(
+           polypaver__floats__multiply(stepstart, stepstart))))) <= 
+           float__last .
+H55:   polypaver__floats__add(result, 
+           polypaver__floats__multiply(stepsize, 
+           polypaver__floats__exp( -(
+           polypaver__floats__multiply(stepstart, stepstart))))) >= 
+           float__first .
+H56:   polypaver__floats__add(result, 
+           polypaver__floats__multiply(stepsize, 
+           polypaver__floats__exp( -(
+           polypaver__floats__multiply(stepstart, stepstart))))) <= 
+           float__last .
+H57:   step >= integer__first .
+H58:   step <= integer__last .
+H59:   step + 1 >= integer__first .
+H60:   step + 1 <= integer__last .
+H61:   step + 1 >= integer__first .
+H62:   step + 1 <= integer__last .
+H63:   step + 1 < n .
+H64:   stepsize >= float__first .
+H65:   stepsize <= float__last .
+H66:   step + 1 >= integer__first .
+H67:   step + 1 <= integer__last .
+H68:   polypaver__floats__multiply(stepsize, step + 1) >= 
+           float__first .
+H69:   polypaver__floats__multiply(stepsize, step + 1) <= 
+           float__last .
+H70:   step + 1 >= float__first .
+H71:   step + 1 <= float__last .
+H72:   step + 1 >= float__first .
+H73:   step + 1 <= float__last .
+H74:   stepsize >= float__first .
+H75:   stepsize <= float__last .
+H76:   polypaver__floats__multiply(stepsize, step + 1) >= 
+           float__first .
+H77:   polypaver__floats__multiply(stepsize, step + 1) <= 
+           float__last .
+        ->
+C1:    polypaver__floats__multiply(stepsize, step + 1) >= 
+           float__first .
+C2:    polypaver__floats__multiply(stepsize, step + 1) <= 
+           float__last .
+ 
+
+For path(s) from start to assertion of line 25:
+
+function_erfriemann_9.
+H1:    polypaver__floats__is_range(x, 0, 4) .
+H2:    polypaver__integers__is_range(n, 1, 100) .
+H3:    x >= float__first .
+H4:    x <= float__last .
+H5:    n >= integer__first .
+H6:    n <= integer__last .
+H7:    n <> 0 .
+H8:    polypaver__floats__divide(x, n) >= float__first .
+H9:    polypaver__floats__divide(x, n) <= float__last .
+H10:   n >= float__first .
+H11:   n <= float__last .
+H12:   n >= float__first .
+H13:   n <= float__last .
+H14:   x >= float__first .
+H15:   x <= float__last .
+H16:   polypaver__floats__divide(x, n) >= float__first .
+H17:   polypaver__floats__divide(x, n) <= float__last .
+H18:   polypaver__floats__divide(x, n) >= float__first .
+H19:   polypaver__floats__divide(x, n) <= float__last .
+H20:   0 >= float__first .
+H21:   0 <= float__last .
+H22:   0 >= integer__first .
+H23:   0 <= integer__last .
+H24:   0 >= integer__first .
+H25:   0 <= integer__last .
+H26:   0 < n .
+H27:   polypaver__floats__divide(x, n) >= float__first .
+H28:   polypaver__floats__divide(x, n) <= float__last .
+H29:   0 >= integer__first .
+H30:   0 <= integer__last .
+H31:   polypaver__floats__multiply(polypaver__floats__divide(
+           x, n), 0) >= float__first .
+H32:   polypaver__floats__multiply(polypaver__floats__divide(
+           x, n), 0) <= float__last .
+H33:   0 >= float__first .
+H34:   0 <= float__last .
+H35:   0 >= float__first .
+H36:   0 <= float__last .
+H37:   polypaver__floats__divide(x, n) >= float__first .
+H38:   polypaver__floats__divide(x, n) <= float__last .
+H39:   polypaver__floats__multiply(polypaver__floats__divide(
+           x, n), 0) >= float__first .
+H40:   polypaver__floats__multiply(polypaver__floats__divide(
+           x, n), 0) <= float__last .
+H41:   polypaver__floats__multiply(polypaver__floats__divide(
+           x, n), 0) >= float__first .
+H42:   polypaver__floats__multiply(polypaver__floats__divide(
+           x, n), 0) <= float__last .
+        ->
+C1:    polypaver__interval__contained_in(0 - 
+           polypaver__exact__integral(0, 
+           polypaver__floats__multiply(
+           polypaver__floats__divide(x, n), 0), 
+           polypaver__exact__exp( -(
+           polypaver__exact__integration_variable ** 2))), 
+           polypaver__interval__hull( -((1/10) * (0 + 1)), (1 - 
+           polypaver__exact__exp( -((x * 0 / n) ** 2))) * x / 
+           n + (1/10) * (0 + 1))) .
+C2:    polypaver__floats__is_range(0,  -10, 100) .
+C3:    polypaver__integers__is_range(n, 1, 100) .
+C4:    polypaver__integers__is_range(0, 0, n - 1) .
+C5:    polypaver__floats__multiply(polypaver__floats__divide(
+           x, n), 0) = polypaver__floats__multiply(
+           polypaver__floats__divide(x, n), 0) .
+C6:    polypaver__floats__divide(x, n) = 
+           polypaver__floats__divide(x, n) .
+C7:    x >= float__first .
+C8:    x <= float__last .
+C9:    n >= integer__first .
+C10:   n <= integer__last .
+C11:   polypaver__floats__is_range(x, 0, 4) .
+C12:   polypaver__integers__is_range(n, 1, 100) .
+ 
+
+For path(s) from assertion of line 25 to assertion of line 25:
+
+function_erfriemann_10.
+H1:    polypaver__interval__contained_in(result - 
+           polypaver__exact__integral(0, stepstart, 
+           polypaver__exact__exp( -(
+           polypaver__exact__integration_variable ** 2))), 
+           polypaver__interval__hull( -((1/10) * (step + 1)), (1 - 
+           polypaver__exact__exp( -((x * step / n) ** 2))) * 
+           x / n + (1/10) * (step + 1))) .
+H2:    polypaver__floats__is_range(result,  -10, 100) .
+H3:    polypaver__integers__is_range(n, 1, 100) .
+H4:    polypaver__integers__is_range(step, 0, n - 1) .
+H5:    stepstart = polypaver__floats__multiply(stepsize, 
+           step) .
+H6:    stepsize = polypaver__floats__divide(x, n) .
+H7:    x >= float__first .
+H8:    x <= float__last .
+H9:    n >= integer__first .
+H10:   n <= integer__last .
+H11:   polypaver__floats__is_range(x, 0, 4) .
+H12:   polypaver__integers__is_range(n, 1, 100) .
+H13:   stepstart >= float__first .
+H14:   stepstart <= float__last .
+H15:   polypaver__floats__multiply(stepstart, stepstart) >= 
+           float__first .
+H16:   polypaver__floats__multiply(stepstart, stepstart) <= 
+           float__last .
+H17:   stepstart >= float__first .
+H18:   stepstart <= float__last .
+H19:   stepstart >= float__first .
+H20:   stepstart <= float__last .
+H21:   polypaver__floats__multiply(stepstart, stepstart) >= 
+           float__first .
+H22:   polypaver__floats__multiply(stepstart, stepstart) <= 
+           float__last .
+H23:   polypaver__floats__exp( -(polypaver__floats__multiply(
+           stepstart, stepstart))) >= float__first .
+H24:   polypaver__floats__exp( -(polypaver__floats__multiply(
+           stepstart, stepstart))) <= float__last .
+H25:    -(polypaver__floats__multiply(stepstart, stepstart)) >= 
+           float__first .
+H26:    -(polypaver__floats__multiply(stepstart, stepstart)) <= 
+           float__last .
+H27:    -(polypaver__floats__multiply(stepstart, stepstart)) >= 
+           float__base__first .
+H28:    -(polypaver__floats__multiply(stepstart, stepstart)) <= 
+           float__base__last .
+H29:   polypaver__floats__exp( -(polypaver__floats__multiply(
+           stepstart, stepstart))) >= float__first .
+H30:   polypaver__floats__exp( -(polypaver__floats__multiply(
+           stepstart, stepstart))) <= float__last .
+H31:   polypaver__floats__exp( -(polypaver__floats__multiply(
+           stepstart, stepstart))) >= float__first .
+H32:   polypaver__floats__exp( -(polypaver__floats__multiply(
+           stepstart, stepstart))) <= float__last .
+H33:   stepsize >= float__first .
+H34:   stepsize <= float__last .
+H35:   polypaver__floats__exp( -(polypaver__floats__multiply(
+           stepstart, stepstart))) >= float__first .
+H36:   polypaver__floats__exp( -(polypaver__floats__multiply(
+           stepstart, stepstart))) <= float__last .
+H37:   result >= float__first .
+H38:   result <= float__last .
+H39:   polypaver__floats__multiply(stepsize, 
+           polypaver__floats__exp( -(
+           polypaver__floats__multiply(stepstart, stepstart)))) >= 
+           float__first .
+H40:   polypaver__floats__multiply(stepsize, 
+           polypaver__floats__exp( -(
+           polypaver__floats__multiply(stepstart, stepstart)))) <= 
+           float__last .
+H41:   polypaver__floats__exp( -(polypaver__floats__multiply(
+           stepstart, stepstart))) >= float__first .
+H42:   polypaver__floats__exp( -(polypaver__floats__multiply(
+           stepstart, stepstart))) <= float__last .
+H43:   stepsize >= float__first .
+H44:   stepsize <= float__last .
+H45:   result >= float__first .
+H46:   result <= float__last .
+H47:   polypaver__floats__multiply(stepsize, 
+           polypaver__floats__exp( -(
+           polypaver__floats__multiply(stepstart, stepstart)))) >= 
+           float__first .
+H48:   polypaver__floats__multiply(stepsize, 
+           polypaver__floats__exp( -(
+           polypaver__floats__multiply(stepstart, stepstart)))) <= 
+           float__last .
+H49:   polypaver__floats__add(result, 
+           polypaver__floats__multiply(stepsize, 
+           polypaver__floats__exp( -(
+           polypaver__floats__multiply(stepstart, stepstart))))) >= 
+           float__first .
+H50:   polypaver__floats__add(result, 
+           polypaver__floats__multiply(stepsize, 
+           polypaver__floats__exp( -(
+           polypaver__floats__multiply(stepstart, stepstart))))) <= 
+           float__last .
+H51:   polypaver__floats__multiply(stepsize, 
+           polypaver__floats__exp( -(
+           polypaver__floats__multiply(stepstart, stepstart)))) >= 
+           float__first .
+H52:   polypaver__floats__multiply(stepsize, 
+           polypaver__floats__exp( -(
+           polypaver__floats__multiply(stepstart, stepstart)))) <= 
+           float__last .
+H53:   polypaver__floats__add(result, 
+           polypaver__floats__multiply(stepsize, 
+           polypaver__floats__exp( -(
+           polypaver__floats__multiply(stepstart, stepstart))))) >= 
+           float__first .
+H54:   polypaver__floats__add(result, 
+           polypaver__floats__multiply(stepsize, 
+           polypaver__floats__exp( -(
+           polypaver__floats__multiply(stepstart, stepstart))))) <= 
+           float__last .
+H55:   polypaver__floats__add(result, 
+           polypaver__floats__multiply(stepsize, 
+           polypaver__floats__exp( -(
+           polypaver__floats__multiply(stepstart, stepstart))))) >= 
+           float__first .
+H56:   polypaver__floats__add(result, 
+           polypaver__floats__multiply(stepsize, 
+           polypaver__floats__exp( -(
+           polypaver__floats__multiply(stepstart, stepstart))))) <= 
+           float__last .
+H57:   step >= integer__first .
+H58:   step <= integer__last .
+H59:   step + 1 >= integer__first .
+H60:   step + 1 <= integer__last .
+H61:   step + 1 >= integer__first .
+H62:   step + 1 <= integer__last .
+H63:   step + 1 < n .
+H64:   stepsize >= float__first .
+H65:   stepsize <= float__last .
+H66:   step + 1 >= integer__first .
+H67:   step + 1 <= integer__last .
+H68:   polypaver__floats__multiply(stepsize, step + 1) >= 
+           float__first .
+H69:   polypaver__floats__multiply(stepsize, step + 1) <= 
+           float__last .
+H70:   step + 1 >= float__first .
+H71:   step + 1 <= float__last .
+H72:   step + 1 >= float__first .
+H73:   step + 1 <= float__last .
+H74:   stepsize >= float__first .
+H75:   stepsize <= float__last .
+H76:   polypaver__floats__multiply(stepsize, step + 1) >= 
+           float__first .
+H77:   polypaver__floats__multiply(stepsize, step + 1) <= 
+           float__last .
+H78:   polypaver__floats__multiply(stepsize, step + 1) >= 
+           float__first .
+H79:   polypaver__floats__multiply(stepsize, step + 1) <= 
+           float__last .
+        ->
+C1:    polypaver__interval__contained_in(
+           polypaver__floats__add(result, 
+           polypaver__floats__multiply(stepsize, 
+           polypaver__floats__exp( -(
+           polypaver__floats__multiply(stepstart, stepstart))))) - 
+           polypaver__exact__integral(0, 
+           polypaver__floats__multiply(stepsize, step + 1), 
+           polypaver__exact__exp( -(
+           polypaver__exact__integration_variable ** 2))), 
+           polypaver__interval__hull( -((1/10) * (step + 1 + 1)), (1 - 
+           polypaver__exact__exp( -((x * (step + 1) / n) ** 2))) * 
+           x / n + (1/10) * (step + 1 + 1))) .
+C2:    polypaver__floats__is_range(polypaver__floats__add(
+           result, polypaver__floats__multiply(stepsize, 
+           polypaver__floats__exp( -(
+           polypaver__floats__multiply(stepstart, stepstart))))),  -10, 
+           100) .
+C3:    polypaver__integers__is_range(n, 1, 100) .
+C4:    polypaver__integers__is_range(step + 1, 0, n - 1) .
+C5:    polypaver__floats__multiply(stepsize, step + 1) = 
+           polypaver__floats__multiply(stepsize, step + 1) .
+C6:    stepsize = polypaver__floats__divide(x, n) .
+C7:    x >= float__first .
+C8:    x <= float__last .
+C9:    n >= integer__first .
+C10:   n <= integer__last .
+C11:   polypaver__floats__is_range(x, 0, 4) .
+C12:   polypaver__integers__is_range(n, 1, 100) .
+ 
+
+For path(s) from assertion of line 25 to precondition check associated with statement of line 41:
+
+function_erfriemann_11.
+H1:    polypaver__interval__contained_in(result - 
+           polypaver__exact__integral(0, stepstart, 
+           polypaver__exact__exp( -(
+           polypaver__exact__integration_variable ** 2))), 
+           polypaver__interval__hull( -((1/10) * (step + 1)), (1 - 
+           polypaver__exact__exp( -((x * step / n) ** 2))) * 
+           x / n + (1/10) * (step + 1))) .
+H2:    polypaver__floats__is_range(result,  -10, 100) .
+H3:    polypaver__integers__is_range(n, 1, 100) .
+H4:    polypaver__integers__is_range(step, 0, n - 1) .
+H5:    stepstart = polypaver__floats__multiply(stepsize, 
+           step) .
+H6:    stepsize = polypaver__floats__divide(x, n) .
+H7:    x >= float__first .
+H8:    x <= float__last .
+H9:    n >= integer__first .
+H10:   n <= integer__last .
+H11:   polypaver__floats__is_range(x, 0, 4) .
+H12:   polypaver__integers__is_range(n, 1, 100) .
+H13:   stepstart >= float__first .
+H14:   stepstart <= float__last .
+        ->
+C1:    polypaver__floats__multiply(stepstart, stepstart) >= 
+           float__first .
+C2:    polypaver__floats__multiply(stepstart, stepstart) <= 
+           float__last .
+C3:    stepstart >= float__first .
+C4:    stepstart <= float__last .
+C5:    stepstart >= float__first .
+C6:    stepstart <= float__last .
+ 
+
+For path(s) from assertion of line 25 to precondition check associated with statement of line 41:
+
+function_erfriemann_12.
+H1:    polypaver__interval__contained_in(result - 
+           polypaver__exact__integral(0, stepstart, 
+           polypaver__exact__exp( -(
+           polypaver__exact__integration_variable ** 2))), 
+           polypaver__interval__hull( -((1/10) * (step + 1)), (1 - 
+           polypaver__exact__exp( -((x * step / n) ** 2))) * 
+           x / n + (1/10) * (step + 1))) .
+H2:    polypaver__floats__is_range(result,  -10, 100) .
+H3:    polypaver__integers__is_range(n, 1, 100) .
+H4:    polypaver__integers__is_range(step, 0, n - 1) .
+H5:    stepstart = polypaver__floats__multiply(stepsize, 
+           step) .
+H6:    stepsize = polypaver__floats__divide(x, n) .
+H7:    x >= float__first .
+H8:    x <= float__last .
+H9:    n >= integer__first .
+H10:   n <= integer__last .
+H11:   polypaver__floats__is_range(x, 0, 4) .
+H12:   polypaver__integers__is_range(n, 1, 100) .
+H13:   stepstart >= float__first .
+H14:   stepstart <= float__last .
+H15:   polypaver__floats__multiply(stepstart, stepstart) >= 
+           float__first .
+H16:   polypaver__floats__multiply(stepstart, stepstart) <= 
+           float__last .
+H17:   stepstart >= float__first .
+H18:   stepstart <= float__last .
+H19:   stepstart >= float__first .
+H20:   stepstart <= float__last .
+H21:   polypaver__floats__multiply(stepstart, stepstart) >= 
+           float__first .
+H22:   polypaver__floats__multiply(stepstart, stepstart) <= 
+           float__last .
+        ->
+C1:    polypaver__floats__exp( -(polypaver__floats__multiply(
+           stepstart, stepstart))) >= float__first .
+C2:    polypaver__floats__exp( -(polypaver__floats__multiply(
+           stepstart, stepstart))) <= float__last .
+C3:     -(polypaver__floats__multiply(stepstart, stepstart)) >= 
+           float__first .
+C4:     -(polypaver__floats__multiply(stepstart, stepstart)) <= 
+           float__last .
+C5:     -(polypaver__floats__multiply(stepstart, stepstart)) >= 
+           float__base__first .
+C6:     -(polypaver__floats__multiply(stepstart, stepstart)) <= 
+           float__base__last .
+ 
+
+For path(s) from assertion of line 25 to run-time check associated with statement of line 41:
+
+function_erfriemann_13.
+H1:    polypaver__interval__contained_in(result - 
+           polypaver__exact__integral(0, stepstart, 
+           polypaver__exact__exp( -(
+           polypaver__exact__integration_variable ** 2))), 
+           polypaver__interval__hull( -((1/10) * (step + 1)), (1 - 
+           polypaver__exact__exp( -((x * step / n) ** 2))) * 
+           x / n + (1/10) * (step + 1))) .
+H2:    polypaver__floats__is_range(result,  -10, 100) .
+H3:    polypaver__integers__is_range(n, 1, 100) .
+H4:    polypaver__integers__is_range(step, 0, n - 1) .
+H5:    stepstart = polypaver__floats__multiply(stepsize, 
+           step) .
+H6:    stepsize = polypaver__floats__divide(x, n) .
+H7:    x >= float__first .
+H8:    x <= float__last .
+H9:    n >= integer__first .
+H10:   n <= integer__last .
+H11:   polypaver__floats__is_range(x, 0, 4) .
+H12:   polypaver__integers__is_range(n, 1, 100) .
+H13:   stepstart >= float__first .
+H14:   stepstart <= float__last .
+H15:   polypaver__floats__multiply(stepstart, stepstart) >= 
+           float__first .
+H16:   polypaver__floats__multiply(stepstart, stepstart) <= 
+           float__last .
+H17:   stepstart >= float__first .
+H18:   stepstart <= float__last .
+H19:   stepstart >= float__first .
+H20:   stepstart <= float__last .
+H21:   polypaver__floats__multiply(stepstart, stepstart) >= 
+           float__first .
+H22:   polypaver__floats__multiply(stepstart, stepstart) <= 
+           float__last .
+H23:   polypaver__floats__exp( -(polypaver__floats__multiply(
+           stepstart, stepstart))) >= float__first .
+H24:   polypaver__floats__exp( -(polypaver__floats__multiply(
+           stepstart, stepstart))) <= float__last .
+H25:    -(polypaver__floats__multiply(stepstart, stepstart)) >= 
+           float__first .
+H26:    -(polypaver__floats__multiply(stepstart, stepstart)) <= 
+           float__last .
+H27:    -(polypaver__floats__multiply(stepstart, stepstart)) >= 
+           float__base__first .
+H28:    -(polypaver__floats__multiply(stepstart, stepstart)) <= 
+           float__base__last .
+H29:   polypaver__floats__exp( -(polypaver__floats__multiply(
+           stepstart, stepstart))) >= float__first .
+H30:   polypaver__floats__exp( -(polypaver__floats__multiply(
+           stepstart, stepstart))) <= float__last .
+        ->
+C1:    polypaver__floats__exp( -(polypaver__floats__multiply(
+           stepstart, stepstart))) >= float__first .
+C2:    polypaver__floats__exp( -(polypaver__floats__multiply(
+           stepstart, stepstart))) <= float__last .
+ 
+
+For path(s) from assertion of line 25 to precondition check associated with statement of line 44:
+
+function_erfriemann_14.
+H1:    polypaver__interval__contained_in(result - 
+           polypaver__exact__integral(0, stepstart, 
+           polypaver__exact__exp( -(
+           polypaver__exact__integration_variable ** 2))), 
+           polypaver__interval__hull( -((1/10) * (step + 1)), (1 - 
+           polypaver__exact__exp( -((x * step / n) ** 2))) * 
+           x / n + (1/10) * (step + 1))) .
+H2:    polypaver__floats__is_range(result,  -10, 100) .
+H3:    polypaver__integers__is_range(n, 1, 100) .
+H4:    polypaver__integers__is_range(step, 0, n - 1) .
+H5:    stepstart = polypaver__floats__multiply(stepsize, 
+           step) .
+H6:    stepsize = polypaver__floats__divide(x, n) .
+H7:    x >= float__first .
+H8:    x <= float__last .
+H9:    n >= integer__first .
+H10:   n <= integer__last .
+H11:   polypaver__floats__is_range(x, 0, 4) .
+H12:   polypaver__integers__is_range(n, 1, 100) .
+H13:   stepstart >= float__first .
+H14:   stepstart <= float__last .
+H15:   polypaver__floats__multiply(stepstart, stepstart) >= 
+           float__first .
+H16:   polypaver__floats__multiply(stepstart, stepstart) <= 
+           float__last .
+H17:   stepstart >= float__first .
+H18:   stepstart <= float__last .
+H19:   stepstart >= float__first .
+H20:   stepstart <= float__last .
+H21:   polypaver__floats__multiply(stepstart, stepstart) >= 
+           float__first .
+H22:   polypaver__floats__multiply(stepstart, stepstart) <= 
+           float__last .
+H23:   polypaver__floats__exp( -(polypaver__floats__multiply(
+           stepstart, stepstart))) >= float__first .
+H24:   polypaver__floats__exp( -(polypaver__floats__multiply(
+           stepstart, stepstart))) <= float__last .
+H25:    -(polypaver__floats__multiply(stepstart, stepstart)) >= 
+           float__first .
+H26:    -(polypaver__floats__multiply(stepstart, stepstart)) <= 
+           float__last .
+H27:    -(polypaver__floats__multiply(stepstart, stepstart)) >= 
+           float__base__first .
+H28:    -(polypaver__floats__multiply(stepstart, stepstart)) <= 
+           float__base__last .
+H29:   polypaver__floats__exp( -(polypaver__floats__multiply(
+           stepstart, stepstart))) >= float__first .
+H30:   polypaver__floats__exp( -(polypaver__floats__multiply(
+           stepstart, stepstart))) <= float__last .
+H31:   polypaver__floats__exp( -(polypaver__floats__multiply(
+           stepstart, stepstart))) >= float__first .
+H32:   polypaver__floats__exp( -(polypaver__floats__multiply(
+           stepstart, stepstart))) <= float__last .
+H33:   stepsize >= float__first .
+H34:   stepsize <= float__last .
+H35:   polypaver__floats__exp( -(polypaver__floats__multiply(
+           stepstart, stepstart))) >= float__first .
+H36:   polypaver__floats__exp( -(polypaver__floats__multiply(
+           stepstart, stepstart))) <= float__last .
+H37:   result >= float__first .
+H38:   result <= float__last .
+        ->
+C1:    polypaver__floats__multiply(stepsize, 
+           polypaver__floats__exp( -(
+           polypaver__floats__multiply(stepstart, stepstart)))) >= 
+           float__first .
+C2:    polypaver__floats__multiply(stepsize, 
+           polypaver__floats__exp( -(
+           polypaver__floats__multiply(stepstart, stepstart)))) <= 
+           float__last .
+C3:    polypaver__floats__exp( -(polypaver__floats__multiply(
+           stepstart, stepstart))) >= float__first .
+C4:    polypaver__floats__exp( -(polypaver__floats__multiply(
+           stepstart, stepstart))) <= float__last .
+C5:    stepsize >= float__first .
+C6:    stepsize <= float__last .
+C7:    result >= float__first .
+C8:    result <= float__last .
+ 
+
+For path(s) from assertion of line 25 to precondition check associated with statement of line 44:
+
+function_erfriemann_15.
+H1:    polypaver__interval__contained_in(result - 
+           polypaver__exact__integral(0, stepstart, 
+           polypaver__exact__exp( -(
+           polypaver__exact__integration_variable ** 2))), 
+           polypaver__interval__hull( -((1/10) * (step + 1)), (1 - 
+           polypaver__exact__exp( -((x * step / n) ** 2))) * 
+           x / n + (1/10) * (step + 1))) .
+H2:    polypaver__floats__is_range(result,  -10, 100) .
+H3:    polypaver__integers__is_range(n, 1, 100) .
+H4:    polypaver__integers__is_range(step, 0, n - 1) .
+H5:    stepstart = polypaver__floats__multiply(stepsize, 
+           step) .
+H6:    stepsize = polypaver__floats__divide(x, n) .
+H7:    x >= float__first .
+H8:    x <= float__last .
+H9:    n >= integer__first .
+H10:   n <= integer__last .
+H11:   polypaver__floats__is_range(x, 0, 4) .
+H12:   polypaver__integers__is_range(n, 1, 100) .
+H13:   stepstart >= float__first .
+H14:   stepstart <= float__last .
+H15:   polypaver__floats__multiply(stepstart, stepstart) >= 
+           float__first .
+H16:   polypaver__floats__multiply(stepstart, stepstart) <= 
+           float__last .
+H17:   stepstart >= float__first .
+H18:   stepstart <= float__last .
+H19:   stepstart >= float__first .
+H20:   stepstart <= float__last .
+H21:   polypaver__floats__multiply(stepstart, stepstart) >= 
+           float__first .
+H22:   polypaver__floats__multiply(stepstart, stepstart) <= 
+           float__last .
+H23:   polypaver__floats__exp( -(polypaver__floats__multiply(
+           stepstart, stepstart))) >= float__first .
+H24:   polypaver__floats__exp( -(polypaver__floats__multiply(
+           stepstart, stepstart))) <= float__last .
+H25:    -(polypaver__floats__multiply(stepstart, stepstart)) >= 
+           float__first .
+H26:    -(polypaver__floats__multiply(stepstart, stepstart)) <= 
+           float__last .
+H27:    -(polypaver__floats__multiply(stepstart, stepstart)) >= 
+           float__base__first .
+H28:    -(polypaver__floats__multiply(stepstart, stepstart)) <= 
+           float__base__last .
+H29:   polypaver__floats__exp( -(polypaver__floats__multiply(
+           stepstart, stepstart))) >= float__first .
+H30:   polypaver__floats__exp( -(polypaver__floats__multiply(
+           stepstart, stepstart))) <= float__last .
+H31:   polypaver__floats__exp( -(polypaver__floats__multiply(
+           stepstart, stepstart))) >= float__first .
+H32:   polypaver__floats__exp( -(polypaver__floats__multiply(
+           stepstart, stepstart))) <= float__last .
+H33:   stepsize >= float__first .
+H34:   stepsize <= float__last .
+H35:   polypaver__floats__exp( -(polypaver__floats__multiply(
+           stepstart, stepstart))) >= float__first .
+H36:   polypaver__floats__exp( -(polypaver__floats__multiply(
+           stepstart, stepstart))) <= float__last .
+H37:   result >= float__first .
+H38:   result <= float__last .
+H39:   polypaver__floats__multiply(stepsize, 
+           polypaver__floats__exp( -(
+           polypaver__floats__multiply(stepstart, stepstart)))) >= 
+           float__first .
+H40:   polypaver__floats__multiply(stepsize, 
+           polypaver__floats__exp( -(
+           polypaver__floats__multiply(stepstart, stepstart)))) <= 
+           float__last .
+H41:   polypaver__floats__exp( -(polypaver__floats__multiply(
+           stepstart, stepstart))) >= float__first .
+H42:   polypaver__floats__exp( -(polypaver__floats__multiply(
+           stepstart, stepstart))) <= float__last .
+H43:   stepsize >= float__first .
+H44:   stepsize <= float__last .
+H45:   result >= float__first .
+H46:   result <= float__last .
+H47:   polypaver__floats__multiply(stepsize, 
+           polypaver__floats__exp( -(
+           polypaver__floats__multiply(stepstart, stepstart)))) >= 
+           float__first .
+H48:   polypaver__floats__multiply(stepsize, 
+           polypaver__floats__exp( -(
+           polypaver__floats__multiply(stepstart, stepstart)))) <= 
+           float__last .
+        ->
+C1:    polypaver__floats__add(result, 
+           polypaver__floats__multiply(stepsize, 
+           polypaver__floats__exp( -(
+           polypaver__floats__multiply(stepstart, stepstart))))) >= 
+           float__first .
+C2:    polypaver__floats__add(result, 
+           polypaver__floats__multiply(stepsize, 
+           polypaver__floats__exp( -(
+           polypaver__floats__multiply(stepstart, stepstart))))) <= 
+           float__last .
+C3:    polypaver__floats__multiply(stepsize, 
+           polypaver__floats__exp( -(
+           polypaver__floats__multiply(stepstart, stepstart)))) >= 
+           float__first .
+C4:    polypaver__floats__multiply(stepsize, 
+           polypaver__floats__exp( -(
+           polypaver__floats__multiply(stepstart, stepstart)))) <= 
+           float__last .
+ 
+
+For path(s) from assertion of line 25 to run-time check associated with statement of line 44:
+
+function_erfriemann_16.
+H1:    polypaver__interval__contained_in(result - 
+           polypaver__exact__integral(0, stepstart, 
+           polypaver__exact__exp( -(
+           polypaver__exact__integration_variable ** 2))), 
+           polypaver__interval__hull( -((1/10) * (step + 1)), (1 - 
+           polypaver__exact__exp( -((x * step / n) ** 2))) * 
+           x / n + (1/10) * (step + 1))) .
+H2:    polypaver__floats__is_range(result,  -10, 100) .
+H3:    polypaver__integers__is_range(n, 1, 100) .
+H4:    polypaver__integers__is_range(step, 0, n - 1) .
+H5:    stepstart = polypaver__floats__multiply(stepsize, 
+           step) .
+H6:    stepsize = polypaver__floats__divide(x, n) .
+H7:    x >= float__first .
+H8:    x <= float__last .
+H9:    n >= integer__first .
+H10:   n <= integer__last .
+H11:   polypaver__floats__is_range(x, 0, 4) .
+H12:   polypaver__integers__is_range(n, 1, 100) .
+H13:   stepstart >= float__first .
+H14:   stepstart <= float__last .
+H15:   polypaver__floats__multiply(stepstart, stepstart) >= 
+           float__first .
+H16:   polypaver__floats__multiply(stepstart, stepstart) <= 
+           float__last .
+H17:   stepstart >= float__first .
+H18:   stepstart <= float__last .
+H19:   stepstart >= float__first .
+H20:   stepstart <= float__last .
+H21:   polypaver__floats__multiply(stepstart, stepstart) >= 
+           float__first .
+H22:   polypaver__floats__multiply(stepstart, stepstart) <= 
+           float__last .
+H23:   polypaver__floats__exp( -(polypaver__floats__multiply(
+           stepstart, stepstart))) >= float__first .
+H24:   polypaver__floats__exp( -(polypaver__floats__multiply(
+           stepstart, stepstart))) <= float__last .
+H25:    -(polypaver__floats__multiply(stepstart, stepstart)) >= 
+           float__first .
+H26:    -(polypaver__floats__multiply(stepstart, stepstart)) <= 
+           float__last .
+H27:    -(polypaver__floats__multiply(stepstart, stepstart)) >= 
+           float__base__first .
+H28:    -(polypaver__floats__multiply(stepstart, stepstart)) <= 
+           float__base__last .
+H29:   polypaver__floats__exp( -(polypaver__floats__multiply(
+           stepstart, stepstart))) >= float__first .
+H30:   polypaver__floats__exp( -(polypaver__floats__multiply(
+           stepstart, stepstart))) <= float__last .
+H31:   polypaver__floats__exp( -(polypaver__floats__multiply(
+           stepstart, stepstart))) >= float__first .
+H32:   polypaver__floats__exp( -(polypaver__floats__multiply(
+           stepstart, stepstart))) <= float__last .
+H33:   stepsize >= float__first .
+H34:   stepsize <= float__last .
+H35:   polypaver__floats__exp( -(polypaver__floats__multiply(
+           stepstart, stepstart))) >= float__first .
+H36:   polypaver__floats__exp( -(polypaver__floats__multiply(
+           stepstart, stepstart))) <= float__last .
+H37:   result >= float__first .
+H38:   result <= float__last .
+H39:   polypaver__floats__multiply(stepsize, 
+           polypaver__floats__exp( -(
+           polypaver__floats__multiply(stepstart, stepstart)))) >= 
+           float__first .
+H40:   polypaver__floats__multiply(stepsize, 
+           polypaver__floats__exp( -(
+           polypaver__floats__multiply(stepstart, stepstart)))) <= 
+           float__last .
+H41:   polypaver__floats__exp( -(polypaver__floats__multiply(
+           stepstart, stepstart))) >= float__first .
+H42:   polypaver__floats__exp( -(polypaver__floats__multiply(
+           stepstart, stepstart))) <= float__last .
+H43:   stepsize >= float__first .
+H44:   stepsize <= float__last .
+H45:   result >= float__first .
+H46:   result <= float__last .
+H47:   polypaver__floats__multiply(stepsize, 
+           polypaver__floats__exp( -(
+           polypaver__floats__multiply(stepstart, stepstart)))) >= 
+           float__first .
+H48:   polypaver__floats__multiply(stepsize, 
+           polypaver__floats__exp( -(
+           polypaver__floats__multiply(stepstart, stepstart)))) <= 
+           float__last .
+H49:   polypaver__floats__add(result, 
+           polypaver__floats__multiply(stepsize, 
+           polypaver__floats__exp( -(
+           polypaver__floats__multiply(stepstart, stepstart))))) >= 
+           float__first .
+H50:   polypaver__floats__add(result, 
+           polypaver__floats__multiply(stepsize, 
+           polypaver__floats__exp( -(
+           polypaver__floats__multiply(stepstart, stepstart))))) <= 
+           float__last .
+H51:   polypaver__floats__multiply(stepsize, 
+           polypaver__floats__exp( -(
+           polypaver__floats__multiply(stepstart, stepstart)))) >= 
+           float__first .
+H52:   polypaver__floats__multiply(stepsize, 
+           polypaver__floats__exp( -(
+           polypaver__floats__multiply(stepstart, stepstart)))) <= 
+           float__last .
+H53:   polypaver__floats__add(result, 
+           polypaver__floats__multiply(stepsize, 
+           polypaver__floats__exp( -(
+           polypaver__floats__multiply(stepstart, stepstart))))) >= 
+           float__first .
+H54:   polypaver__floats__add(result, 
+           polypaver__floats__multiply(stepsize, 
+           polypaver__floats__exp( -(
+           polypaver__floats__multiply(stepstart, stepstart))))) <= 
+           float__last .
+        ->
+C1:    polypaver__floats__add(result, 
+           polypaver__floats__multiply(stepsize, 
+           polypaver__floats__exp( -(
+           polypaver__floats__multiply(stepstart, stepstart))))) >= 
+           float__first .
+C2:    polypaver__floats__add(result, 
+           polypaver__floats__multiply(stepsize, 
+           polypaver__floats__exp( -(
+           polypaver__floats__multiply(stepstart, stepstart))))) <= 
+           float__last .
+ 
+
+For path(s) from assertion of line 25 to run-time check associated with statement of line 47:
+
+function_erfriemann_17.
+H1:    polypaver__interval__contained_in(result - 
+           polypaver__exact__integral(0, stepstart, 
+           polypaver__exact__exp( -(
+           polypaver__exact__integration_variable ** 2))), 
+           polypaver__interval__hull( -((1/10) * (step + 1)), (1 - 
+           polypaver__exact__exp( -((x * step / n) ** 2))) * 
+           x / n + (1/10) * (step + 1))) .
+H2:    polypaver__floats__is_range(result,  -10, 100) .
+H3:    polypaver__integers__is_range(n, 1, 100) .
+H4:    polypaver__integers__is_range(step, 0, n - 1) .
+H5:    stepstart = polypaver__floats__multiply(stepsize, 
+           step) .
+H6:    stepsize = polypaver__floats__divide(x, n) .
+H7:    x >= float__first .
+H8:    x <= float__last .
+H9:    n >= integer__first .
+H10:   n <= integer__last .
+H11:   polypaver__floats__is_range(x, 0, 4) .
+H12:   polypaver__integers__is_range(n, 1, 100) .
+H13:   stepstart >= float__first .
+H14:   stepstart <= float__last .
+H15:   polypaver__floats__multiply(stepstart, stepstart) >= 
+           float__first .
+H16:   polypaver__floats__multiply(stepstart, stepstart) <= 
+           float__last .
+H17:   stepstart >= float__first .
+H18:   stepstart <= float__last .
+H19:   stepstart >= float__first .
+H20:   stepstart <= float__last .
+H21:   polypaver__floats__multiply(stepstart, stepstart) >= 
+           float__first .
+H22:   polypaver__floats__multiply(stepstart, stepstart) <= 
+           float__last .
+H23:   polypaver__floats__exp( -(polypaver__floats__multiply(
+           stepstart, stepstart))) >= float__first .
+H24:   polypaver__floats__exp( -(polypaver__floats__multiply(
+           stepstart, stepstart))) <= float__last .
+H25:    -(polypaver__floats__multiply(stepstart, stepstart)) >= 
+           float__first .
+H26:    -(polypaver__floats__multiply(stepstart, stepstart)) <= 
+           float__last .
+H27:    -(polypaver__floats__multiply(stepstart, stepstart)) >= 
+           float__base__first .
+H28:    -(polypaver__floats__multiply(stepstart, stepstart)) <= 
+           float__base__last .
+H29:   polypaver__floats__exp( -(polypaver__floats__multiply(
+           stepstart, stepstart))) >= float__first .
+H30:   polypaver__floats__exp( -(polypaver__floats__multiply(
+           stepstart, stepstart))) <= float__last .
+H31:   polypaver__floats__exp( -(polypaver__floats__multiply(
+           stepstart, stepstart))) >= float__first .
+H32:   polypaver__floats__exp( -(polypaver__floats__multiply(
+           stepstart, stepstart))) <= float__last .
+H33:   stepsize >= float__first .
+H34:   stepsize <= float__last .
+H35:   polypaver__floats__exp( -(polypaver__floats__multiply(
+           stepstart, stepstart))) >= float__first .
+H36:   polypaver__floats__exp( -(polypaver__floats__multiply(
+           stepstart, stepstart))) <= float__last .
+H37:   result >= float__first .
+H38:   result <= float__last .
+H39:   polypaver__floats__multiply(stepsize, 
+           polypaver__floats__exp( -(
+           polypaver__floats__multiply(stepstart, stepstart)))) >= 
+           float__first .
+H40:   polypaver__floats__multiply(stepsize, 
+           polypaver__floats__exp( -(
+           polypaver__floats__multiply(stepstart, stepstart)))) <= 
+           float__last .
+H41:   polypaver__floats__exp( -(polypaver__floats__multiply(
+           stepstart, stepstart))) >= float__first .
+H42:   polypaver__floats__exp( -(polypaver__floats__multiply(
+           stepstart, stepstart))) <= float__last .
+H43:   stepsize >= float__first .
+H44:   stepsize <= float__last .
+H45:   result >= float__first .
+H46:   result <= float__last .
+H47:   polypaver__floats__multiply(stepsize, 
+           polypaver__floats__exp( -(
+           polypaver__floats__multiply(stepstart, stepstart)))) >= 
+           float__first .
+H48:   polypaver__floats__multiply(stepsize, 
+           polypaver__floats__exp( -(
+           polypaver__floats__multiply(stepstart, stepstart)))) <= 
+           float__last .
+H49:   polypaver__floats__add(result, 
+           polypaver__floats__multiply(stepsize, 
+           polypaver__floats__exp( -(
+           polypaver__floats__multiply(stepstart, stepstart))))) >= 
+           float__first .
+H50:   polypaver__floats__add(result, 
+           polypaver__floats__multiply(stepsize, 
+           polypaver__floats__exp( -(
+           polypaver__floats__multiply(stepstart, stepstart))))) <= 
+           float__last .
+H51:   polypaver__floats__multiply(stepsize, 
+           polypaver__floats__exp( -(
+           polypaver__floats__multiply(stepstart, stepstart)))) >= 
+           float__first .
+H52:   polypaver__floats__multiply(stepsize, 
+           polypaver__floats__exp( -(
+           polypaver__floats__multiply(stepstart, stepstart)))) <= 
+           float__last .
+H53:   polypaver__floats__add(result, 
+           polypaver__floats__multiply(stepsize, 
+           polypaver__floats__exp( -(
+           polypaver__floats__multiply(stepstart, stepstart))))) >= 
+           float__first .
+H54:   polypaver__floats__add(result, 
+           polypaver__floats__multiply(stepsize, 
+           polypaver__floats__exp( -(
+           polypaver__floats__multiply(stepstart, stepstart))))) <= 
+           float__last .
+H55:   polypaver__floats__add(result, 
+           polypaver__floats__multiply(stepsize, 
+           polypaver__floats__exp( -(
+           polypaver__floats__multiply(stepstart, stepstart))))) >= 
+           float__first .
+H56:   polypaver__floats__add(result, 
+           polypaver__floats__multiply(stepsize, 
+           polypaver__floats__exp( -(
+           polypaver__floats__multiply(stepstart, stepstart))))) <= 
+           float__last .
+H57:   step >= integer__first .
+H58:   step <= integer__last .
+        ->
+C1:    step + 1 >= integer__first .
+C2:    step + 1 <= integer__last .
+ 
+
+For path(s) from start to finish:
+
+function_erfriemann_18.
+H1:    polypaver__floats__is_range(x, 0, 4) .
+H2:    polypaver__integers__is_range(n, 1, 100) .
+H3:    x >= float__first .
+H4:    x <= float__last .
+H5:    n >= integer__first .
+H6:    n <= integer__last .
+H7:    n <> 0 .
+H8:    polypaver__floats__divide(x, n) >= float__first .
+H9:    polypaver__floats__divide(x, n) <= float__last .
+H10:   n >= float__first .
+H11:   n <= float__last .
+H12:   n >= float__first .
+H13:   n <= float__last .
+H14:   x >= float__first .
+H15:   x <= float__last .
+H16:   polypaver__floats__divide(x, n) >= float__first .
+H17:   polypaver__floats__divide(x, n) <= float__last .
+H18:   polypaver__floats__divide(x, n) >= float__first .
+H19:   polypaver__floats__divide(x, n) <= float__last .
+H20:   0 >= float__first .
+H21:   0 <= float__last .
+H22:   0 >= integer__first .
+H23:   0 <= integer__last .
+H24:   0 >= integer__first .
+H25:   0 <= integer__last .
+H26:   not (0 < n) .
+H27:   0 >= float__first .
+H28:   0 <= float__last .
+        ->
+C1:    polypaver__interval__contained_in(0 - 
+           polypaver__exact__integral(0, x, 
+           polypaver__exact__exp( -(
+           polypaver__exact__integration_variable ** 2))), 
+           polypaver__interval__hull( -((1/10) * (n + 1)), (1 - 
+           polypaver__exact__exp( -(x ** 2))) * x / n + (1/10) * (
+           n + 1))) .
+C2:    0 >= float__first .
+C3:    0 <= float__last .
+ 
+
+For path(s) from assertion of line 25 to finish:
+
+function_erfriemann_19.
+H1:    polypaver__interval__contained_in(result - 
+           polypaver__exact__integral(0, stepstart, 
+           polypaver__exact__exp( -(
+           polypaver__exact__integration_variable ** 2))), 
+           polypaver__interval__hull( -((1/10) * (step + 1)), (1 - 
+           polypaver__exact__exp( -((x * step / n) ** 2))) * 
+           x / n + (1/10) * (step + 1))) .
+H2:    polypaver__floats__is_range(result,  -10, 100) .
+H3:    polypaver__integers__is_range(n, 1, 100) .
+H4:    polypaver__integers__is_range(step, 0, n - 1) .
+H5:    stepstart = polypaver__floats__multiply(stepsize, 
+           step) .
+H6:    stepsize = polypaver__floats__divide(x, n) .
+H7:    x >= float__first .
+H8:    x <= float__last .
+H9:    n >= integer__first .
+H10:   n <= integer__last .
+H11:   polypaver__floats__is_range(x, 0, 4) .
+H12:   polypaver__integers__is_range(n, 1, 100) .
+H13:   stepstart >= float__first .
+H14:   stepstart <= float__last .
+H15:   polypaver__floats__multiply(stepstart, stepstart) >= 
+           float__first .
+H16:   polypaver__floats__multiply(stepstart, stepstart) <= 
+           float__last .
+H17:   stepstart >= float__first .
+H18:   stepstart <= float__last .
+H19:   stepstart >= float__first .
+H20:   stepstart <= float__last .
+H21:   polypaver__floats__multiply(stepstart, stepstart) >= 
+           float__first .
+H22:   polypaver__floats__multiply(stepstart, stepstart) <= 
+           float__last .
+H23:   polypaver__floats__exp( -(polypaver__floats__multiply(
+           stepstart, stepstart))) >= float__first .
+H24:   polypaver__floats__exp( -(polypaver__floats__multiply(
+           stepstart, stepstart))) <= float__last .
+H25:    -(polypaver__floats__multiply(stepstart, stepstart)) >= 
+           float__first .
+H26:    -(polypaver__floats__multiply(stepstart, stepstart)) <= 
+           float__last .
+H27:    -(polypaver__floats__multiply(stepstart, stepstart)) >= 
+           float__base__first .
+H28:    -(polypaver__floats__multiply(stepstart, stepstart)) <= 
+           float__base__last .
+H29:   polypaver__floats__exp( -(polypaver__floats__multiply(
+           stepstart, stepstart))) >= float__first .
+H30:   polypaver__floats__exp( -(polypaver__floats__multiply(
+           stepstart, stepstart))) <= float__last .
+H31:   polypaver__floats__exp( -(polypaver__floats__multiply(
+           stepstart, stepstart))) >= float__first .
+H32:   polypaver__floats__exp( -(polypaver__floats__multiply(
+           stepstart, stepstart))) <= float__last .
+H33:   stepsize >= float__first .
+H34:   stepsize <= float__last .
+H35:   polypaver__floats__exp( -(polypaver__floats__multiply(
+           stepstart, stepstart))) >= float__first .
+H36:   polypaver__floats__exp( -(polypaver__floats__multiply(
+           stepstart, stepstart))) <= float__last .
+H37:   result >= float__first .
+H38:   result <= float__last .
+H39:   polypaver__floats__multiply(stepsize, 
+           polypaver__floats__exp( -(
+           polypaver__floats__multiply(stepstart, stepstart)))) >= 
+           float__first .
+H40:   polypaver__floats__multiply(stepsize, 
+           polypaver__floats__exp( -(
+           polypaver__floats__multiply(stepstart, stepstart)))) <= 
+           float__last .
+H41:   polypaver__floats__exp( -(polypaver__floats__multiply(
+           stepstart, stepstart))) >= float__first .
+H42:   polypaver__floats__exp( -(polypaver__floats__multiply(
+           stepstart, stepstart))) <= float__last .
+H43:   stepsize >= float__first .
+H44:   stepsize <= float__last .
+H45:   result >= float__first .
+H46:   result <= float__last .
+H47:   polypaver__floats__multiply(stepsize, 
+           polypaver__floats__exp( -(
+           polypaver__floats__multiply(stepstart, stepstart)))) >= 
+           float__first .
+H48:   polypaver__floats__multiply(stepsize, 
+           polypaver__floats__exp( -(
+           polypaver__floats__multiply(stepstart, stepstart)))) <= 
+           float__last .
+H49:   polypaver__floats__add(result, 
+           polypaver__floats__multiply(stepsize, 
+           polypaver__floats__exp( -(
+           polypaver__floats__multiply(stepstart, stepstart))))) >= 
+           float__first .
+H50:   polypaver__floats__add(result, 
+           polypaver__floats__multiply(stepsize, 
+           polypaver__floats__exp( -(
+           polypaver__floats__multiply(stepstart, stepstart))))) <= 
+           float__last .
+H51:   polypaver__floats__multiply(stepsize, 
+           polypaver__floats__exp( -(
+           polypaver__floats__multiply(stepstart, stepstart)))) >= 
+           float__first .
+H52:   polypaver__floats__multiply(stepsize, 
+           polypaver__floats__exp( -(
+           polypaver__floats__multiply(stepstart, stepstart)))) <= 
+           float__last .
+H53:   polypaver__floats__add(result, 
+           polypaver__floats__multiply(stepsize, 
+           polypaver__floats__exp( -(
+           polypaver__floats__multiply(stepstart, stepstart))))) >= 
+           float__first .
+H54:   polypaver__floats__add(result, 
+           polypaver__floats__multiply(stepsize, 
+           polypaver__floats__exp( -(
+           polypaver__floats__multiply(stepstart, stepstart))))) <= 
+           float__last .
+H55:   polypaver__floats__add(result, 
+           polypaver__floats__multiply(stepsize, 
+           polypaver__floats__exp( -(
+           polypaver__floats__multiply(stepstart, stepstart))))) >= 
+           float__first .
+H56:   polypaver__floats__add(result, 
+           polypaver__floats__multiply(stepsize, 
+           polypaver__floats__exp( -(
+           polypaver__floats__multiply(stepstart, stepstart))))) <= 
+           float__last .
+H57:   step >= integer__first .
+H58:   step <= integer__last .
+H59:   step + 1 >= integer__first .
+H60:   step + 1 <= integer__last .
+H61:   step + 1 >= integer__first .
+H62:   step + 1 <= integer__last .
+H63:   not (step + 1 < n) .
+H64:   polypaver__floats__add(result, 
+           polypaver__floats__multiply(stepsize, 
+           polypaver__floats__exp( -(
+           polypaver__floats__multiply(stepstart, stepstart))))) >= 
+           float__first .
+H65:   polypaver__floats__add(result, 
+           polypaver__floats__multiply(stepsize, 
+           polypaver__floats__exp( -(
+           polypaver__floats__multiply(stepstart, stepstart))))) <= 
+           float__last .
+        ->
+C1:    polypaver__interval__contained_in(
+           polypaver__floats__add(result, 
+           polypaver__floats__multiply(stepsize, 
+           polypaver__floats__exp( -(
+           polypaver__floats__multiply(stepstart, stepstart))))) - 
+           polypaver__exact__integral(0, x, 
+           polypaver__exact__exp( -(
+           polypaver__exact__integration_variable ** 2))), 
+           polypaver__interval__hull( -((1/10) * (n + 1)), (1 - 
+           polypaver__exact__exp( -(x ** 2))) * x / n + (1/10) * (
+           n + 1))) .
+C2:    polypaver__floats__add(result, 
+           polypaver__floats__multiply(stepsize, 
+           polypaver__floats__exp( -(
+           polypaver__floats__multiply(stepstart, stepstart))))) >= 
+           float__first .
+C3:    polypaver__floats__add(result, 
+           polypaver__floats__multiply(stepsize, 
+           polypaver__floats__exp( -(
+           polypaver__floats__multiply(stepstart, stepstart))))) <= 
+           float__last .
+ 
+

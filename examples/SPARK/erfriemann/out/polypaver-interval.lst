@@ -1,0 +1,21 @@
+           *******************************************************
+                            Listing of SPARK Text
+                              Examiner GPL 2012
+             Copyright (C) 2012 Altran Praxis Limited, Bath, U.K.
+           *******************************************************
+
+
+                        DATE : 17-MAY-2013 00:59:21.37
+
+Line
+   1  package PolyPaver.Interval is
+   2  	
+   3      --# function Hull(Low,High : Float) return Float;
+   4      --# function Contained_In(Object,Subject : Float) return Boolean;
+   5  	
+   6  end PolyPaver.Interval;
+
+Note: Flow analysis mode is automatic
+
+
+--End of file--------------------------------------------------

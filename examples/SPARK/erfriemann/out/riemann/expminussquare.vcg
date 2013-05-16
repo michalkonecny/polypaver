@@ -1,0 +1,92 @@
+           *******************************************************
+                       Semantic Analysis of SPARK Text
+                              Examiner GPL 2012
+             Copyright (C) 2012 Altran Praxis Limited, Bath, U.K.
+           *******************************************************
+
+
+                        DATE : 17-MAY-2013 00:59:21.37
+
+                      function Riemann.expMinusSquare
+
+
+
+
+For path(s) from start to precondition check associated with statement of line 6:
+
+function_expminussquare_1.
+H1:    polypaver__floats__is_range(x,  -1, 5) .
+H2:    x >= float__first .
+H3:    x <= float__last .
+        ->
+C1:    polypaver__floats__multiply(x, x) >= float__first .
+C2:    polypaver__floats__multiply(x, x) <= float__last .
+C3:    x >= float__first .
+C4:    x <= float__last .
+C5:    x >= float__first .
+C6:    x <= float__last .
+ 
+
+For path(s) from start to precondition check associated with statement of line 6:
+
+function_expminussquare_2.
+H1:    polypaver__floats__is_range(x,  -1, 5) .
+H2:    x >= float__first .
+H3:    x <= float__last .
+H4:    polypaver__floats__multiply(x, x) >= float__first .
+H5:    polypaver__floats__multiply(x, x) <= float__last .
+H6:    x >= float__first .
+H7:    x <= float__last .
+H8:    x >= float__first .
+H9:    x <= float__last .
+H10:   polypaver__floats__multiply(x, x) >= float__first .
+H11:   polypaver__floats__multiply(x, x) <= float__last .
+        ->
+C1:    polypaver__floats__exp( -(polypaver__floats__multiply(
+           x, x))) >= float__first .
+C2:    polypaver__floats__exp( -(polypaver__floats__multiply(
+           x, x))) <= float__last .
+C3:     -(polypaver__floats__multiply(x, x)) >= float__first .
+C4:     -(polypaver__floats__multiply(x, x)) <= float__last .
+C5:     -(polypaver__floats__multiply(x, x)) >= float__base__first .
+C6:     -(polypaver__floats__multiply(x, x)) <= float__base__last .
+ 
+
+For path(s) from start to finish:
+
+function_expminussquare_3.
+H1:    polypaver__floats__is_range(x,  -1, 5) .
+H2:    x >= float__first .
+H3:    x <= float__last .
+H4:    polypaver__floats__multiply(x, x) >= float__first .
+H5:    polypaver__floats__multiply(x, x) <= float__last .
+H6:    x >= float__first .
+H7:    x <= float__last .
+H8:    x >= float__first .
+H9:    x <= float__last .
+H10:   polypaver__floats__multiply(x, x) >= float__first .
+H11:   polypaver__floats__multiply(x, x) <= float__last .
+H12:   polypaver__floats__exp( -(polypaver__floats__multiply(
+           x, x))) >= float__first .
+H13:   polypaver__floats__exp( -(polypaver__floats__multiply(
+           x, x))) <= float__last .
+H14:    -(polypaver__floats__multiply(x, x)) >= float__first .
+H15:    -(polypaver__floats__multiply(x, x)) <= float__last .
+H16:    -(polypaver__floats__multiply(x, x)) >= float__base__first .
+H17:    -(polypaver__floats__multiply(x, x)) <= float__base__last .
+H18:   polypaver__floats__exp( -(polypaver__floats__multiply(
+           x, x))) >= float__first .
+H19:   polypaver__floats__exp( -(polypaver__floats__multiply(
+           x, x))) <= float__last .
+        ->
+C1:    polypaver__interval__contained_in(
+           polypaver__floats__exp( -(
+           polypaver__floats__multiply(x, x))), 
+           polypaver__exact__exp( -(x * x)) + 
+           polypaver__interval__hull( -(1/1000000), (1/1000000))) .
+C2:    polypaver__floats__exp( -(polypaver__floats__multiply(
+           x, x))) >= float__first .
+C3:    polypaver__floats__exp( -(polypaver__floats__multiply(
+           x, x))) <= float__last .
+ 
+

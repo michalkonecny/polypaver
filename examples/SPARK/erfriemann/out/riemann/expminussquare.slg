@@ -1,0 +1,178 @@
+*****************************************************************************
+                       Semantic Analysis of SPARK Text
+                              Examiner GPL 2012
+             Copyright (C) 2012 Altran Praxis Limited, Bath, U.K.
+*****************************************************************************
+
+
+CREATED 17-MAY-2013, 00:59:21  SIMPLIFIED 17-MAY-2013, 00:59:25
+
+SPARK Simplifier GPL 2012
+Copyright (C) 2012 Altran Praxis Limited, Bath, U.K.
+
+function Riemann.expMinusSquare
+
+
+
+
+
+
+@@@@@@@@@@  VC: function_expminussquare_1.  @@@@@@@@@@
+%%%  Simplified H1 on reading formula in, to give:
+     %%%  H1:  polypaver__floats__is_range(x, - 1, 5)
+***  Proved C3:  x >= float__first
+     using hypothesis H2.
+***  Proved C4:  x <= float__last
+     using hypothesis H3.
+***  Proved C5:  x >= float__first
+     using hypothesis H2.
+***  Proved C6:  x <= float__last
+     using hypothesis H3.
+-S-  Applied substitution rule expminussqua_rules(2).
+     This was achieved by replacing all occurrences of float__first by:
+          - 340282000000000000000000000000000000000.
+<S>  New H2:  x >= - 340282000000000000000000000000000000000
+<S>  New C1:  polypaver__floats__multiply(x, x) >= - 
+          340282000000000000000000000000000000000
+-S-  Applied substitution rule expminussqua_rules(3).
+     This was achieved by replacing all occurrences of float__last by:
+          340282000000000000000000000000000000000.
+<S>  New H3:  x <= 340282000000000000000000000000000000000
+<S>  New C2:  polypaver__floats__multiply(x, x) <= 
+          340282000000000000000000000000000000000
+     +++  New H4:  float__size >= 0
+
+
+@@@@@@@@@@  VC: function_expminussquare_2.  @@@@@@@@@@
+%%%  Simplified H1 on reading formula in, to give:
+     %%%  H1:  polypaver__floats__is_range(x, - 1, 5)
+---  Hypothesis H6 has been replaced by "true".  (It is already present, as H2).
+---  Hypothesis H7 has been replaced by "true".  (It is already present, as H3).
+---  Hypothesis H8 has been replaced by "true".  (It is already present, as H2).
+---  Hypothesis H9 has been replaced by "true".  (It is already present, as H3).
+---  Hypothesis H10 has been replaced by "true".  (It is already present, as H4)
+          .
+---  Hypothesis H11 has been replaced by "true".  (It is already present, as H5)
+          .
+-S-  Applied substitution rule expminussqua_rules(2).
+     This was achieved by replacing all occurrences of float__first by:
+          - 340282000000000000000000000000000000000.
+<S>  New H2:  x >= - 340282000000000000000000000000000000000
+<S>  New H4:  polypaver__floats__multiply(x, x) >= - 
+          340282000000000000000000000000000000000
+<S>  New C1:  polypaver__floats__exp(- polypaver__floats__multiply(x, x)) >= - 
+          340282000000000000000000000000000000000
+<S>  New C3:  - polypaver__floats__multiply(x, x) >= - 
+          340282000000000000000000000000000000000
+-S-  Applied substitution rule expminussqua_rules(3).
+     This was achieved by replacing all occurrences of float__last by:
+          340282000000000000000000000000000000000.
+<S>  New H3:  x <= 340282000000000000000000000000000000000
+<S>  New H5:  polypaver__floats__multiply(x, x) <= 
+          340282000000000000000000000000000000000
+<S>  New C2:  polypaver__floats__exp(- polypaver__floats__multiply(x, x)) <= 
+          340282000000000000000000000000000000000
+<S>  New C4:  - polypaver__floats__multiply(x, x) <= 
+          340282000000000000000000000000000000000
+-S-  Applied substitution rule expminussqua_rules(4).
+     This was achieved by replacing all occurrences of float__base__first by:
+          - 340282000000000000000000000000000000000.
+<S>  New C5:  - polypaver__floats__multiply(x, x) >= - 
+          340282000000000000000000000000000000000
+-S-  Applied substitution rule expminussqua_rules(5).
+     This was achieved by replacing all occurrences of float__base__last by:
+          340282000000000000000000000000000000000.
+<S>  New C6:  - polypaver__floats__multiply(x, x) <= 
+          340282000000000000000000000000000000000
+***  Proved C3:  - polypaver__floats__multiply(x, x) >= - 
+          340282000000000000000000000000000000000
+     using hypothesis H5.
+***  Proved C4:  - polypaver__floats__multiply(x, x) <= 
+          340282000000000000000000000000000000000
+     via its standard form, which is:
+     Std.Fm C4:  polypaver__floats__multiply(x, x) >= - 
+          340282000000000000000000000000000000000
+     using hypothesis H4.
+***  Proved C5:  - polypaver__floats__multiply(x, x) >= - 
+          340282000000000000000000000000000000000
+     using hypothesis H5.
+***  Proved C6:  - polypaver__floats__multiply(x, x) <= 
+          340282000000000000000000000000000000000
+     via its standard form, which is:
+     Std.Fm C6:  polypaver__floats__multiply(x, x) >= - 
+          340282000000000000000000000000000000000
+     using hypothesis H4.
+---  Eliminated hypothesis H6 (true-hypothesis).
+---  Eliminated hypothesis H7 (true-hypothesis).
+---  Eliminated hypothesis H8 (true-hypothesis).
+---  Eliminated hypothesis H9 (true-hypothesis).
+---  Eliminated hypothesis H10 (true-hypothesis).
+---  Eliminated hypothesis H11 (true-hypothesis).
+     +++  New H12:  float__size >= 0
+
+
+@@@@@@@@@@  VC: function_expminussquare_3.  @@@@@@@@@@
+%%%  Simplified H1 on reading formula in, to give:
+     %%%  H1:  polypaver__floats__is_range(x, - 1, 5)
+---  Hypothesis H6 has been replaced by "true".  (It is already present, as H2).
+---  Hypothesis H7 has been replaced by "true".  (It is already present, as H3).
+---  Hypothesis H8 has been replaced by "true".  (It is already present, as H2).
+---  Hypothesis H9 has been replaced by "true".  (It is already present, as H3).
+---  Hypothesis H10 has been replaced by "true".  (It is already present, as H4)
+          .
+---  Hypothesis H11 has been replaced by "true".  (It is already present, as H5)
+          .
+---  Hypothesis H18 has been replaced by "true".  (It is already present, as 
+          H12).
+---  Hypothesis H19 has been replaced by "true".  (It is already present, as 
+          H13).
+***  Proved C2:  polypaver__floats__exp(- polypaver__floats__multiply(x, x)) >= 
+          float__first
+     using hypothesis H12.
+***  Proved C3:  polypaver__floats__exp(- polypaver__floats__multiply(x, x)) <= 
+          float__last
+     using hypothesis H13.
+-S-  Applied substitution rule expminussqua_rules(2).
+     This was achieved by replacing all occurrences of float__first by:
+          - 340282000000000000000000000000000000000.
+<S>  New H2:  x >= - 340282000000000000000000000000000000000
+<S>  New H4:  polypaver__floats__multiply(x, x) >= - 
+          340282000000000000000000000000000000000
+<S>  New H12:  polypaver__floats__exp(- polypaver__floats__multiply(x, x)) >= - 
+          340282000000000000000000000000000000000
+<S>  New H14:  - polypaver__floats__multiply(x, x) >= - 
+          340282000000000000000000000000000000000
+-S-  Applied substitution rule expminussqua_rules(3).
+     This was achieved by replacing all occurrences of float__last by:
+          340282000000000000000000000000000000000.
+<S>  New H3:  x <= 340282000000000000000000000000000000000
+<S>  New H5:  polypaver__floats__multiply(x, x) <= 
+          340282000000000000000000000000000000000
+<S>  New H13:  polypaver__floats__exp(- polypaver__floats__multiply(x, x)) <= 
+          340282000000000000000000000000000000000
+<S>  New H15:  - polypaver__floats__multiply(x, x) <= 
+          340282000000000000000000000000000000000
+-S-  Applied substitution rule expminussqua_rules(4).
+     This was achieved by replacing all occurrences of float__base__first by:
+          - 340282000000000000000000000000000000000.
+<S>  New H16:  - polypaver__floats__multiply(x, x) >= - 
+          340282000000000000000000000000000000000
+-S-  Applied substitution rule expminussqua_rules(5).
+     This was achieved by replacing all occurrences of float__base__last by:
+          340282000000000000000000000000000000000.
+<S>  New H17:  - polypaver__floats__multiply(x, x) <= 
+          340282000000000000000000000000000000000
+---  Eliminated hypothesis H6 (true-hypothesis).
+---  Eliminated hypothesis H7 (true-hypothesis).
+---  Eliminated hypothesis H8 (true-hypothesis).
+---  Eliminated hypothesis H9 (true-hypothesis).
+---  Eliminated hypothesis H10 (true-hypothesis).
+---  Eliminated hypothesis H11 (true-hypothesis).
+---  Eliminated hypothesis H18 (true-hypothesis).
+---  Eliminated hypothesis H19 (true-hypothesis).
+---  Eliminated hypothesis H15 (duplicate of H4).
+---  Eliminated hypothesis H17 (duplicate of H4).
+---  Eliminated hypothesis H16 (duplicate of H14).
+---  Eliminated hypothesis H14 (duplicate of H5).
+     +++  New H20:  float__size >= 0
+
