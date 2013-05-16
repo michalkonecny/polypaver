@@ -3,7 +3,7 @@
 
 ## release 0.2
 
-* deal with universal_real* constants arise in SPARK VCs 
+* deal with universal_real* constants arising in SPARK VCs 
 
     * find out how they arise
 
@@ -20,6 +20,8 @@
 * SPARK examples
 
     * adapt and add erfriemann
+
+    * remove any occurrences of universal_real* from the peak example
 
 * tidy up options and their --help documentation
 
