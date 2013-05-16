@@ -242,7 +242,15 @@ analyseLeqLess isLeq box a b =
         = (tn cDnNeg, Map.map tn coeffsDnNeg)
     t [a] = a
     tn [a] = negate a
-    (c, coeffs) = UFA.getAffineUpperBound $ a - b
+    (c, coeffs) =
+--        unsafePrint
+--        (
+--            "analyseLeqLess: affine: "
+--            ++ "\n a = " ++ show a
+--            ++ "\n b = " ++ show b
+--            ++ "\n UFA.getAffineUpperBound $ a - b = " ++ (show $ UFA.getAffineUpperBound $ a - b)
+--        ) $ 
+        UFA.getAffineUpperBound $ a - b
     (cDnNeg, coeffsDnNeg) = UFA.getAffineUpperBound $ b - a
     vagueness 
         | Map.null coeffs = (t c + t cDnNeg)
@@ -273,8 +281,8 @@ tryToSkew boxSkewing prebox tv
         (prebox, Nothing, if gotHyperPlane then maybeSkewVar else Nothing)  
     | Prelude.not hyperplanesClose = 
         (prebox, Nothing, Nothing)  
-    | otherwise
-        = (skewedBox, Just hp1, maybeSkewVar)
+    | otherwise =
+        (skewedBox, Just hp1, maybeSkewVar)
     where
     hyperplanesClose
         | gotHyperPlane
