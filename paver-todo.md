@@ -23,21 +23,21 @@
 
     * remove any occurrences of universal_real* from the peak example
 
-* tidy up options and their --help documentation
+* DONE tidy up options and their --help documentation
 
-    * remove eps setting options
+    * DONE remove eps setting options
 
-    * check and document option combinations
+    * DONE check and document option combinations
 
-        * -f and -k
+        * -f and -k  WORKS
 
-        * -I and -k
+        * -I and -k  WORKS
 
 * minimal update of public documentation
 
 * produce binaries for multiple platforms
 
-    * OSX, Windows 32 bit, Linux 32 and 64 bit
+    * OSX (Jan), Windows 32 bit (DONE), Linux 32 (DONE) and 64 bit (MK)
 
 ## release 0.2.1
 
