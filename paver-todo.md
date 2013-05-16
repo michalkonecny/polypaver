@@ -3,7 +3,19 @@
 
 ## release 0.2
 
-### core package release ASAP
+* deal with universal_real* constants arise in SPARK VCs 
+
+    * find out how they arise
+
+    * give a helpful error message when coming across one
+
+        * hint on what in the program is likely to have caused their apprearance 
+
+        * why it is difficult for PolyPaver to work out what their value is
+
+    * (postpone?) find out what their values should be
+
+    * (postpone?) find a way to specify these values
 
 * SPARK examples
 
@@ -24,6 +36,8 @@
 * produce binaries for multiple platforms
 
     * OSX, Windows 32 bit, Linux 32 and 64 bit
+
+## release 0.2.1
 
 ### SPARK preprocessor
 
