@@ -1,0 +1,74 @@
+           *******************************************************
+                       Semantic Analysis of SPARK Text
+                              Examiner GPL 2012
+             Copyright (C) 2012 Altran Praxis Limited, Bath, U.K.
+           *******************************************************
+
+
+                        DATE : 17-MAY-2013 00:54:49.08
+
+                             function Peak.Max
+
+
+
+
+For path(s) from start to run-time check associated with statement of line 8:
+
+function_max_1.
+H1:    x >= float__first .
+H2:    x <= float__last .
+H3:    y >= float__first .
+H4:    y <= float__last .
+H5:    x >= y .
+        ->
+C1:    x >= float__first .
+C2:    x <= float__last .
+ 
+
+For path(s) from start to run-time check associated with statement of line 10:
+
+function_max_2.
+H1:    x >= float__first .
+H2:    x <= float__last .
+H3:    y >= float__first .
+H4:    y <= float__last .
+H5:    not (x >= y) .
+        ->
+C1:    y >= float__first .
+C2:    y <= float__last .
+ 
+
+For path(s) from start to finish:
+
+function_max_3.
+H1:    x >= float__first .
+H2:    x <= float__last .
+H3:    y >= float__first .
+H4:    y <= float__last .
+H5:    x >= y .
+H6:    x >= float__first .
+H7:    x <= float__last .
+H8:    x >= float__first .
+H9:    x <= float__last .
+        ->
+C1:    ((x = x) and (x >= y)) or ((x = y) and (y >= x)) .
+C2:    x >= float__first .
+C3:    x <= float__last .
+ 
+
+function_max_4.
+H1:    x >= float__first .
+H2:    x <= float__last .
+H3:    y >= float__first .
+H4:    y <= float__last .
+H5:    not (x >= y) .
+H6:    y >= float__first .
+H7:    y <= float__last .
+H8:    y >= float__first .
+H9:    y <= float__last .
+        ->
+C1:    ((y = x) and (x >= y)) or ((y = y) and (y >= x)) .
+C2:    y >= float__first .
+C3:    y <= float__last .
+ 
+

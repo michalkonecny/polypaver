@@ -1,0 +1,78 @@
+V "SPARK 2012"
+A -noindex_file
+A -nowarning_file
+A -notarget_compiler_data
+A -config_file=gnat.cfg
+A -source_extension=ada
+A -listing_extension=lst
+A -nodictionary_file
+A -report_file=spark.rep
+A -nohtml
+A -vcg
+A -nostatistics
+A -fdl_identifiers=accept
+A -flow_analysis=auto
+A -language=95
+A -profile=sequential
+A -annotation_character=#
+A -rules=lazy
+A -error_explanations=off
+A -justification_option=full
+A -output_directory=out
+A -output_directory (actual)=/Users/jandur/FPbyContract/paver/examples/SPARK/peak/out/
+P
+R
+
+U Peak%b peak.adb
+U Peak%s peak.ads
+W PolyPaver.Exact%s polypaver-exact.ads polypaver-exact.sli
+W PolyPaver.Floats%s polypaver-floats.ads polypaver-floats.sli
+
+D polypaver-exact.ads 00000000000000 00000000
+D polypaver-floats.ads 00000000000000 00000000
+D peak.ads 00000000000000 00000000
+D peak.adb 00000000000000 00000000
+
+X 1 polypaver-exact.ads
+1K9 Exact 2|1w23
+X 2 polypaver-floats.ads
+2K9 Floats 3|2w23
+12f19 X 13r16
+12f21 Y 13r18
+12V39 Add 13r12
+15f24 X 16r22
+15f26 Y 16r24
+15V44 Subtract 16r13
+18f24 X 19r22
+18f26 Y 19r24
+18V44 Multiply 19r13
+21f22 X 23r20
+21f24 Y 22r13 23r22
+21V42 Divide 23r13
+25f22 X 26r20
+25V40 Square 26r13
+28f20 X 29r18
+28V38 Cube 29r13
+31f20 X 32r13 33r18
+31V38 Sqrt 33r13
+35f19 X 36r17
+35V37 Exp 36r13
+X 3 peak.ads
+5f16 X 6r23 6r29 6r56
+5f18 Y 6r34 6r45 6r51
+6f13 R 6r19 6r41
+25f20 Y1 26r21 27r21 29r11 30r19
+25f23 Y2 26r24 28r21 29r32 31r19
+25f26 Y3 26r27 27r24 29r53 32r19
+25f41 A 26m14 30r11 32r11 33r11
+25f43 B 27m14 30r13 32r13 33r32
+25f45 C 28m14 30r15 31r15 32r15 33r53
+35f18 A 37r11 38r11 39r23
+35f20 B 38r32 39r30
+35f22 C 38r53 39r34
+35f24 X 36r11 39r25 39r32
+39f13 R 39r18 39r45
+41f21 Y1 42r10 43r23
+41f24 Y2 42r31 43r41
+41f27 Y3 42r52 43r59
+43f13 R 43r18 43r36 43r54
