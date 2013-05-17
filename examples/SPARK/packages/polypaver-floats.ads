@@ -7,10 +7,14 @@ package PolyPaver.Floats is
 
     function Eps_Rel return Float;
 
+    --# function Plus_Minus_Eps_Abs return Float;
+
+    --# function Plus_Minus_Eps_Rel return Float;
+
     function Pi return Float;
 
     function Add (X,Y : Float) return Float;
-   --# pre Add(X,Y) in Float;
+    --# pre Add(X,Y) in Float;
 
     function Subtract (X,Y : Float) return Float;
     --# pre Subtract(X,Y) in Float;
@@ -24,9 +28,6 @@ package PolyPaver.Floats is
 
     function Square (X : Float) return Float;
     --# pre Square(X) in Float;
-
-    function Cube (X : Float) return Float;
-    --# pre Cube(X) in Float;
 
     function Sqrt (X : Float) return Float;
     --# pre X >= 0.0 and

@@ -229,7 +229,7 @@ decodePred lab "polypaver__integers__is_integer" [arg1] = IsInt lab arg1
 decodePred lab "polypaver__integers__is_range" [arg1, arg2, arg3] = IsIntRange lab arg1 arg2 arg3
 decodePred lab "polypaver__floats__is_range" [arg1, arg2, arg3] = IsRange lab arg1 arg2 arg3
 decodePred lab "polypaver__long_floats__is_range" [arg1, arg2, arg3] = IsRange lab arg1 arg2 arg3
-decodePred lab "polypaver__exact__contained_in" [arg1, arg2] = ContainedIn lab arg1 arg2
+decodePred lab "polypaver__interval__contained_in" [arg1, arg2] = ContainedIn lab arg1 arg2
 
 decodePred lab "num__isint" [arg1] = IsInt lab arg1
 decodePred lab "num__isintegerrange" [arg1, arg2, arg3] = IsIntRange lab arg1 arg2 arg3
@@ -295,19 +295,17 @@ fncall =
         return (fname, args)
     return $ decodeFn original fname args
 
--- the following definition is incomplete, add cases as needed:
-decodeFn _ "numeric__divide" [arg1, arg2] = arg1 /: arg2
-decodeFn _ "numeric__times" [arg1, arg2] = arg1 *: arg2
-decodeFn _ "numeric__plus" [arg1, arg2] = arg1 +: arg2
-decodeFn _ "numeric__minus" [arg1, arg2] = arg1 -: arg2
-decodeFn _ "num__divide" [arg1, arg2] = arg1 /: arg2
-decodeFn _ "num__multiply" [arg1, arg2] = arg1 *: arg2
-decodeFn _ "num__add" [arg1, arg2] = arg1 +: arg2
-decodeFn _ "num__subtract" [arg1, arg2] = arg1 -: arg2
-decodeFn _ "num__square" [arg1] = termOp1 (FSquare 24 126) arg1
-decodeFn _ "num__sqrt" [arg1] = termOp1 (FSqrt 24 126) arg1
-decodeFn _ "num__exp" [arg1] = termOp1 (FExp 24 126) arg1
 
+-- functions used in hand-written VC-style problems:
+decodeFn _ "Hull" [arg1, arg2] = hull arg1 arg2
+decodeFn _ "Interval" [arg1, arg2] = hull arg1 arg2
+decodeFn _ "Sqrt" [arg1] = sqrt arg1
+decodeFn _ "Exp" [arg1] = exp arg1
+decodeFn _ "Sin" [arg1] = sin arg1
+decodeFn _ "Cos" [arg1] = cos arg1
+decodeFn original "Integral" args = decodeIntegral original args
+
+-- functions declared in the PolyPaver SPARK package and its sub-packages:
 decodeFn _ "polypaver__floats__divide" [arg1, arg2] = termOp2 (FOver 24 126) arg1 arg2
 decodeFn _ "polypaver__floats__multiply" [arg1, arg2] = termOp2 (FTimes 24 126) arg1 arg2
 decodeFn _ "polypaver__floats__add" [arg1, arg2] = termOp2 (FPlus 24 126) arg1 arg2
@@ -324,13 +322,32 @@ decodeFn _ "polypaver__long_floats__square" [arg1] = termOp1 (FSquare 53 1022) a
 decodeFn _ "polypaver__long_floats__sqrt" [arg1] = termOp1 (FSqrt 53 1022) arg1
 decodeFn _ "polypaver__long_floats__exp" [arg1] = termOp1 (FExp 53 1022) arg1
 
-decodeFn _ "polypaver__exact__hull" [arg1, arg2] = hull arg1 arg2
-decodeFn _ "polypaver__exact__interval" [arg1, arg2] = hull arg1 arg2
+decodeFn _ "polypaver__interval__hull" [arg1, arg2] = hull arg1 arg2
+decodeFn _ "polypaver__interval__interval" [arg1, arg2] = hull arg1 arg2
+
+decodeFn _ "polypaver__exact__int_power" [arg1, arg2] = intPower arg1 arg2
+decodeFn _ "polypaver__exact__square" [arg1] = square arg1
 decodeFn _ "polypaver__exact__sqrt" [arg1] = sqrt arg1
 decodeFn _ "polypaver__exact__exp" [arg1] = exp arg1
 decodeFn _ "polypaver__exact__sin" [arg1] = sin arg1
 decodeFn _ "polypaver__exact__cos" [arg1] = cos arg1
 decodeFn original "polypaver__exact__integral" args = decodeIntegral original args
+
+-- We assume abs is exact in FP.  We do not distinguish exact and float variants.
+decodeFn _ "abs" [arg1] = abs arg1 
+
+-- functions used in some old SPARK examples, kept for backward compatibility:
+decodeFn _ "numeric__divide" [arg1, arg2] = arg1 /: arg2
+decodeFn _ "numeric__times" [arg1, arg2] = arg1 *: arg2
+decodeFn _ "numeric__plus" [arg1, arg2] = arg1 +: arg2
+decodeFn _ "numeric__minus" [arg1, arg2] = arg1 -: arg2
+decodeFn _ "num__divide" [arg1, arg2] = arg1 /: arg2
+decodeFn _ "num__multiply" [arg1, arg2] = arg1 *: arg2
+decodeFn _ "num__add" [arg1, arg2] = arg1 +: arg2
+decodeFn _ "num__subtract" [arg1, arg2] = arg1 -: arg2
+decodeFn _ "num__square" [arg1] = termOp1 (FSquare 24 126) arg1
+decodeFn _ "num__sqrt" [arg1] = termOp1 (FSqrt 24 126) arg1
+decodeFn _ "num__exp" [arg1] = termOp1 (FExp 24 126) arg1
 
 decodeFn _ "exact__hull" [arg1, arg2] = hull arg1 arg2
 decodeFn _ "exact__interval" [arg1, arg2] = hull arg1 arg2
@@ -339,15 +356,6 @@ decodeFn _ "exact__exp" [arg1] = exp arg1
 decodeFn _ "exact__sin" [arg1] = sin arg1
 decodeFn _ "exact__cos" [arg1] = cos arg1
 decodeFn original "exact__integral" args = decodeIntegral original args
-decodeFn _ "abs" [arg1] = abs arg1
-
-decodeFn _ "Hull" [arg1, arg2] = hull arg1 arg2
-decodeFn _ "Interval" [arg1, arg2] = hull arg1 arg2
-decodeFn _ "Sqrt" [arg1] = sqrt arg1
-decodeFn _ "Exp" [arg1] = exp arg1
-decodeFn _ "Sin" [arg1] = sin arg1
-decodeFn _ "Cos" [arg1] = cos arg1
-decodeFn original "Integral" args = decodeIntegral original args
 
 decodeFn original fn args =
     unsafePrint
@@ -372,18 +380,38 @@ decodeIntegral original [arg1, arg2, arg3, arg4] =
                 "\nThe fourth parameter must be the integration variable."
 
 
+-- constants used in hand-written VC-style problems:
+var "FepsAbs" = fepsAbs
+var "FepsRel" = fepsRel
+var "FepsiAbs" = fepsiAbs
+var "FepsiRel" = fepsiRel
+var "DepsAbs" = depsAbs
+var "DepsRel" = depsRel
+var "DepsiAbs" = depsiAbs
+var "DepsiRel" = depsiRel
+var "Pi" = pi
+
+-- constants declared in the PolyPaver SPARK package and its sub-packages:
 var "polypaver__floats__eps_abs" = fepsAbs
 var "polypaver__floats__eps_rel" = fepsRel
+var "polypaver__floats__plus_minus_eps_abs" = fepsiAbs
+var "polypaver__floats__plus_minus_eps_rel" = fepsiRel
+var "polypaver__floats__pi" = fround pi
+var "polypaver__long_floats__eps_abs" = depsAbs
+var "polypaver__long_floats__eps_rel" = depsRel
+var "polypaver__long_floats__plus_minus_eps_abs" = depsiAbs
+var "polypaver__long_floats__plus_minus_eps_rel" = depsiRel
+var "polypaver__long_floats__pi" = dround pi
+var "polypaver__exact__pi" = pi
+var "polypaver__exact__integration_variable" = termVar ivNum ivName
+
+-- constants used in some old SPARK examples, kept for backward compatibility:
 var "numeric__eps_abs" = fepsAbs
 var "numeric__eps_rel" = fepsRel
 var "num__eps_abs" = fepsAbs
 var "num__eps_rel" = fepsRel
-var "polypaver__exact__integration_variable" = termVar ivNum ivName
 var "exact__integration_variable" = termVar ivNum ivName
-var "fepsAbs" = fepsAbs
-var "fepsRel" = fepsRel
-var "fepsiAbs" = fepsiAbs
-var "fepsiRel" = fepsiRel
+
 var name =
     termVar n name
     where
