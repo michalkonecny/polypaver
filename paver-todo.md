@@ -19,19 +19,15 @@
 
 * SPARK examples
 
-    * adapt and add erfriemann
+    * DONE adapt and add erfriemann
 
     * remove any occurrences of universal_real* from the peak example
 
 * DONE tidy up options and their --help documentation
 
-    * DONE remove eps setting options
+* add FP sin and cos to the internal language and the SPARK PolyPaver package
 
-    * DONE check and document option combinations
-
-        * -f and -k  WORKS
-
-        * -I and -k  WORKS
+    * look up suitable error bounds in the Ada specification
 
 * minimal update of public documentation
 
@@ -41,21 +37,31 @@
 
 ## release 0.2.1
 
-### SPARK preprocessor
+* SPARK preprocessor
 
-* speed-up Ada parser
+    * speed-up Ada parser
 
-    * deal with the ambiguity in expression_or_discrete_range
+        * deal with the ambiguity in expression_or_discrete_range
 
-* pass 1: determine dependency order among the ads files
+    * pass 1: determine dependency order among the ads files
 
-* pass 2: extract exported types and function return types from ads files
+    * pass 2: extract exported types and function return types from ads files
 
-* pass 3: drill down to all expressions, chaning operators
+    * pass 3: drill down to all expressions, chaning operators
+    
+        * tracking scopes of variables and parameters
 
-    * tracking scopes of variables and parameters
+        * tracking all locally visible types and functions
 
-    * tracking all locally visible types and functions
+* support FP types of any precision
+
+    * merge ...Floats and ...Long_Floats into one package ...Custom_Floats
+
+        * each FP function to have two additional integer parameters mantissa_bits and max_exponent
+
+        * the preprocessor will insert the correct values for these parameters
+
+        * the preprocessor will read gnat.cfg to get these values right, otherwise assume IEEE
 
 ## release 0.5
 

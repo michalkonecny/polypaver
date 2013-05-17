@@ -5,12 +5,12 @@ package body PolyPaver.Floats is
    function Eps_Abs return Float is
    begin
       return 0.5**126;
-   end EpsAbs;
+   end Eps_Abs;
 
    function Eps_Rel return Float is
    begin
       return 0.5**22;
-   end EpsRel;
+   end Eps_Rel;
 
    function Pi return Float is
    begin
@@ -21,6 +21,11 @@ package body PolyPaver.Floats is
    begin
       return X+Y;
    end Add;
+
+   function Subtract (X,Y : Float) return Float is
+   begin
+      return X-Y;
+   end Subtract;
 
    function Multiply (X,Y : Float) return Float is
    begin
@@ -36,11 +41,6 @@ package body PolyPaver.Floats is
    begin
       return X*X;
    end Square;
-
-   function Cube (X : Float) return Float is
-   begin
-      return (X*X)*X;
-   end Cube;
 
    function Sqrt (X : Float) return Float is
    begin

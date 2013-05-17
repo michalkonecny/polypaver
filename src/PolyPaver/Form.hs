@@ -250,13 +250,23 @@ fepsAbs = termOp0 $ FEpsAbs 24 126
 fepsRel = termOp0 $ FEpsRel 24 126
 fepsiAbs = termOp0 $ FEpsiAbs 24 126
 fepsiRel = termOp0 $ FEpsiRel 24 126
+depsAbs = termOp0 $ FEpsAbs 53 1022
+depsRel = termOp0 $ FEpsRel 53 1022
+depsiAbs = termOp0 $ FEpsiAbs 53 1022
+depsiRel = termOp0 $ FEpsiRel 53 1022
 
 fround = termOp1 $ FRound 24 126
+dround = termOp1 $ FRound 53 1022
 
 (+:) = termOp2 $ FPlus 24 126
 (-:) = termOp2 $ FMinus 24 126
 (*:) = termOp2 $ FTimes 24 126
 (/:) = termOp2 $ FOver 24 126
+
+(+::) = termOp2 $ FPlus 53 1022
+(-::) = termOp2 $ FMinus 53 1022
+(*::) = termOp2 $ FTimes 53 1022
+(/::) = termOp2 $ FOver 53 1022
 
 uniascii unicode ascii 
     | useUnicode = unicode
