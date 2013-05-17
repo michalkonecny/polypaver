@@ -35,5 +35,11 @@ package PolyPaver.Floats is
 
     function Exp (X : Float) return Float;
     --# pre Exp(X) in Float;
-	
+    
+    function Sin (X : Float) return Float;
+    --# pre Sin(X) in Float;
+    
+    function Cos (X : Float) return Float;
+    --# pre Cos(X) in Float;
+    
 end PolyPaver.Floats;
