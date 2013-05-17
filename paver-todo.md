@@ -3,19 +3,7 @@
 
 ## release 0.2
 
-* deal with universal_real* constants arising in SPARK VCs 
-
-    * find out how they arise
-
-    * give a helpful error message when coming across one
-
-        * hint on what in the program is likely to have caused their apprearance 
-
-        * why it is difficult for PolyPaver to work out what their value is
-
-    * (postpone?) find out what their values should be
-
-    * (postpone?) find a way to specify these values
+* DONE deal with universal_real* constants arising in SPARK VCs 
 
 * SPARK examples
 
@@ -23,9 +11,9 @@
 
     * DONE deal with universal_real* in the peak example
 
-    * add README files to all folders describing:
+    * add README to the SPARK folder
 
-        * how the VCs were derived 
+        * how the VCs were derived
 
         * how to prove them using PolyPaver
 

@@ -148,7 +148,26 @@ TODO
 
 ### peak
 
+peakq_8 conclusion 1
+* using switches -d 1
+    * proved in < 23min, using <230000 boxes
+
+peakunit_11 conclusion 1
+* using switches
+
+peakunit_11 conclusion 2
+
+
+peakunit_11 conclusion 3
+
+
 ### sqrt
+
+sqrt_13 conclusion 1
+
+* using switches -d 7 -z 5 -e 10
+* proved in <10min, using <20000 boxes
+
 
 ### erfriemann
 
