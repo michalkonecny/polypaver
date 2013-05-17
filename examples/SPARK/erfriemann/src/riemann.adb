@@ -1,11 +1,5 @@
 package body Riemann is
 
-function expMinusSquare(x : Float) return Float
-is
-begin
-  return PolyPaver.Floats.Exp(-PolyPaver.Floats.Multiply(x,x));
-end expMinusSquare;
-
 function erfRiemann(x : Float; n : Integer) return Float
 is
  stepSize : Float;
@@ -37,10 +31,9 @@ begin
    --#     and stepStart = PolyPaver.Floats.Multiply(stepSize, Float(step))
    --#     and stepSize = PolyPaver.Floats.Divide(x,Float(n));
 
-   -- valueStart := exp(-(stepStart * stepStart));
    valueStart := 
+     -- valueStart := exp(-(stepStart * stepStart));
      PolyPaver.Floats.Exp(-PolyPaver.Floats.Multiply(stepStart,stepStart)); 
-     -- expMinusSquare(stepStart);
    result := 
      -- result + stepSize * valueStart;
      PolyPaver.Floats.Add(result,PolyPaver.Floats.Multiply(stepSize,valueStart));

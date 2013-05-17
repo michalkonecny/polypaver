@@ -15,10 +15,7 @@ TODO
 
 TODO
 
-* sqrt_13 1 -o dfs -d 10 -z 20 -m 3
-    * proved in 5028s, using 19387 boxes
+* -d 7 -z 5 -e 10 -m 3
+    * proved in 584s (9min 45s), using 19451 boxes
 
-* sqrt_13 1 -o dfs -d 10 -z 20 -e 20
-
-    * proved in 5197s, using 19385 boxes
 

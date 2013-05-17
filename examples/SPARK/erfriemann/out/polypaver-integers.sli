@@ -19,7 +19,7 @@ A -rules=lazy
 A -error_explanations=off
 A -justification_option=full
 A -output_directory=out
-A -output_directory (actual)=/Users/jandur/FPbyContract/paver/examples/SPARK/erfriemann/out/
+A -output_directory (actual)=/home/mik/research/spark/floats/paver/examples/SPARK/erfriemann/out/
 P
 R
 
