@@ -13,15 +13,13 @@
 
     * add README to the SPARK folder
 
-        * how the VCs were derived
+        * DONE how the VCs were derived
 
         * how to prove them using PolyPaver
 
 * DONE tidy up options and their --help documentation
 
-* add FP sin and cos to the internal language and the SPARK PolyPaver package
-
-    * look up suitable error bounds in the Ada specification
+* DONE add FP sin and cos to the internal language and the SPARK PolyPaver package
 
 * minimal update of public documentation
 
@@ -64,6 +62,10 @@
 ## future releases
 
 * inclusion and inequality transitive substituting formula preprocessor
+
+    * come up with a good top-level algorithm for trying various substitutions
+
+    * make a totally silent version of the main loop
 
 * MetiTarski parser
 
