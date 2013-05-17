@@ -35,5 +35,11 @@ package PolyPaver.Long_Floats is
 
     function Exp (X : Long_Float) return Long_Float;
     --# pre Exp(X) in Long_Float;
+
+    function Sin (X : Long_Float) return Long_Float;
+    --# pre Sin(X) in Long_Float;
+
+    function Cos (X : Long_Float) return Long_Float;
+    --# pre Cos(X) in Long_Float;
 	
 end PolyPaver.Long_Floats;

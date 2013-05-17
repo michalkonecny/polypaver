@@ -53,4 +53,14 @@ package body PolyPaver.Long_Floats is
       return Long_Float_Functions.Exp(X);
    end Exp;
 
+   function Sin (X : Long_Float) return Long_Float is
+   begin
+      return Long_Float_Functions.Sin(X);
+   end Sin;
+
+   function Cos (X : Long_Float) return Long_Float is
+   begin
+      return Long_Float_Functions.Cos(X);
+   end Cos;
+
 end PolyPaver.Long_Floats;

@@ -52,4 +52,14 @@ package body PolyPaver.Floats is
       return Ada.Numerics.Elementary_Functions.Exp(X);
    end Exp;
 
+   function Sin (X : Float) return Float is
+   begin
+      return Ada.Numerics.Elementary_Functions.Sin(X);
+   end Sin;
+
+   function Cos (X : Float) return Float is
+   begin
+      return Ada.Numerics.Elementary_Functions.Cos(X);
+   end Cos;
+
 end PolyPaver.Floats;
