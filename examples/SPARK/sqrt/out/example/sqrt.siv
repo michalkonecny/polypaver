@@ -1,0 +1,253 @@
+*****************************************************************************
+                       Semantic Analysis of SPARK Text
+                              Examiner GPL 2012
+             Copyright (C) 2012 Altran Praxis Limited, Bath, U.K.
+*****************************************************************************
+
+
+CREATED 17-MAY-2013, 11:01:58  SIMPLIFIED 17-MAY-2013, 11:03:12
+
+SPARK Simplifier GPL 2012
+Copyright (C) 2012 Altran Praxis Limited, Bath, U.K.
+
+function Example.Sqrt
+
+
+
+
+For path(s) from start to run-time check associated with statement of line 8:
+
+function_sqrt_1.
+*** true .          /* all conclusions proved */
+
+
+For path(s) from start to precondition check associated with statement of line 
+          9:
+
+function_sqrt_2.
+H1:    1 <= x .
+H2:    x <= 2 .
+H3:    float__size >= 0 .
+       ->
+C1:    polypaver__floats__multiply(1 / 2, x) >= - 
+          340282000000000000000000000000000000000 .
+C2:    polypaver__floats__multiply(1 / 2, x) <= 
+          340282000000000000000000000000000000000 .
+
+
+For path(s) from start to precondition check associated with statement of line 
+          9:
+
+function_sqrt_3.
+H1:    1 <= x .
+H2:    x <= 2 .
+H3:    polypaver__floats__multiply(1 / 2, x) >= - 
+          340282000000000000000000000000000000000 .
+H4:    polypaver__floats__multiply(1 / 2, x) <= 
+          340282000000000000000000000000000000000 .
+H5:    float__size >= 0 .
+       ->
+C1:    polypaver__floats__add(polypaver__floats__multiply(1 / 2, x), 1 / 2) >= 
+          - 340282000000000000000000000000000000000 .
+C2:    polypaver__floats__add(polypaver__floats__multiply(1 / 2, x), 1 / 2) <= 
+          340282000000000000000000000000000000000 .
+
+
+For path(s) from start to run-time check associated with statement of line 9:
+
+function_sqrt_4.
+*** true .          /* all conclusions proved */
+
+
+For path(s) from start to assertion of line 11:
+
+function_sqrt_5.
+H1:    1 <= x .
+H2:    x <= 2 .
+H3:    polypaver__floats__multiply(1 / 2, x) >= - 
+          340282000000000000000000000000000000000 .
+H4:    polypaver__floats__multiply(1 / 2, x) <= 
+          340282000000000000000000000000000000000 .
+H5:    polypaver__floats__add(polypaver__floats__multiply(1 / 2, x), 1 / 2) >= 
+          - 340282000000000000000000000000000000000 .
+H6:    polypaver__floats__add(polypaver__floats__multiply(1 / 2, x), 1 / 2) <= 
+          340282000000000000000000000000000000000 .
+H7:    polypaver__floats__add(polypaver__floats__multiply(1 / 2, x), 1 / 2) <> 
+          x .
+H8:    float__size >= 0 .
+       ->
+C1:    polypaver__floats__add(polypaver__floats__multiply(1 / 2, x), 1 / 2) >= 
+          - (1 / 4 * (x * x)) + x .
+C2:    polypaver__floats__add(polypaver__floats__multiply(1 / 2, x), 1 / 2) <= 
+          1 / 4 * (x * x) + 1 .
+
+
+For path(s) from assertion of line 11 to assertion of line 11:
+
+function_sqrt_6.
+H1:    r >= - (1 / 4 * (x * x)) + x .
+H2:    r <= 1 / 4 * (x * x) + 1 .
+H3:    1 <= x .
+H4:    x <= 2 .
+H5:    r >= - 340282000000000000000000000000000000000 .
+H6:    r <= 340282000000000000000000000000000000000 .
+H7:    r <> 0 .
+H8:    polypaver__floats__divide(x, r) >= - 
+          340282000000000000000000000000000000000 .
+H9:    polypaver__floats__divide(x, r) <= 
+          340282000000000000000000000000000000000 .
+H10:   polypaver__floats__add(r, polypaver__floats__divide(x, r)) >= - 
+          340282000000000000000000000000000000000 .
+H11:   polypaver__floats__add(r, polypaver__floats__divide(x, r)) <= 
+          340282000000000000000000000000000000000 .
+H12:   polypaver__floats__multiply(1 / 2, polypaver__floats__add(r, 
+          polypaver__floats__divide(x, r))) >= - 
+          340282000000000000000000000000000000000 .
+H13:   polypaver__floats__multiply(1 / 2, polypaver__floats__add(r, 
+          polypaver__floats__divide(x, r))) <= 
+          340282000000000000000000000000000000000 .
+H14:   polypaver__floats__multiply(1 / 2, polypaver__floats__add(r, 
+          polypaver__floats__divide(x, r))) <> r .
+H15:   float__size >= 0 .
+       ->
+C1:    polypaver__floats__multiply(1 / 2, polypaver__floats__add(r, 
+          polypaver__floats__divide(x, r))) >= - (1 / 4 * (x * x)) + x .
+C2:    polypaver__floats__multiply(1 / 2, polypaver__floats__add(r, 
+          polypaver__floats__divide(x, r))) <= 1 / 4 * (x * x) + 1 .
+
+
+For path(s) from assertion of line 11 to run-time check associated with 
+          statement of line 12:
+
+function_sqrt_7.
+*** true .          /* all conclusions proved */
+
+
+For path(s) from assertion of line 11 to precondition check associated with 
+          statement of line 13:
+
+function_sqrt_8.
+H1:    r >= - (1 / 4 * (x * x)) + x .
+H2:    r <= 1 / 4 * (x * x) + 1 .
+H3:    1 <= x .
+H4:    x <= 2 .
+H5:    r >= - 340282000000000000000000000000000000000 .
+H6:    r <= 340282000000000000000000000000000000000 .
+H7:    float__size >= 0 .
+       ->
+C1:    r <> 0 .
+C2:    polypaver__floats__divide(x, r) >= - 
+          340282000000000000000000000000000000000 .
+C3:    polypaver__floats__divide(x, r) <= 
+          340282000000000000000000000000000000000 .
+
+
+For path(s) from assertion of line 11 to precondition check associated with 
+          statement of line 13:
+
+function_sqrt_9.
+H1:    r >= - (1 / 4 * (x * x)) + x .
+H2:    r <= 1 / 4 * (x * x) + 1 .
+H3:    1 <= x .
+H4:    x <= 2 .
+H5:    r >= - 340282000000000000000000000000000000000 .
+H6:    r <= 340282000000000000000000000000000000000 .
+H7:    r <> 0 .
+H8:    polypaver__floats__divide(x, r) >= - 
+          340282000000000000000000000000000000000 .
+H9:    polypaver__floats__divide(x, r) <= 
+          340282000000000000000000000000000000000 .
+H10:   float__size >= 0 .
+       ->
+C1:    polypaver__floats__add(r, polypaver__floats__divide(x, r)) >= - 
+          340282000000000000000000000000000000000 .
+C2:    polypaver__floats__add(r, polypaver__floats__divide(x, r)) <= 
+          340282000000000000000000000000000000000 .
+
+
+For path(s) from assertion of line 11 to precondition check associated with 
+          statement of line 13:
+
+function_sqrt_10.
+H1:    r >= - (1 / 4 * (x * x)) + x .
+H2:    r <= 1 / 4 * (x * x) + 1 .
+H3:    1 <= x .
+H4:    x <= 2 .
+H5:    r >= - 340282000000000000000000000000000000000 .
+H6:    r <= 340282000000000000000000000000000000000 .
+H7:    r <> 0 .
+H8:    polypaver__floats__divide(x, r) >= - 
+          340282000000000000000000000000000000000 .
+H9:    polypaver__floats__divide(x, r) <= 
+          340282000000000000000000000000000000000 .
+H10:   polypaver__floats__add(r, polypaver__floats__divide(x, r)) >= - 
+          340282000000000000000000000000000000000 .
+H11:   polypaver__floats__add(r, polypaver__floats__divide(x, r)) <= 
+          340282000000000000000000000000000000000 .
+H12:   float__size >= 0 .
+       ->
+C1:    polypaver__floats__multiply(1 / 2, polypaver__floats__add(r, 
+          polypaver__floats__divide(x, r))) >= - 
+          340282000000000000000000000000000000000 .
+C2:    polypaver__floats__multiply(1 / 2, polypaver__floats__add(r, 
+          polypaver__floats__divide(x, r))) <= 
+          340282000000000000000000000000000000000 .
+
+
+For path(s) from assertion of line 11 to run-time check associated with 
+          statement of line 13:
+
+function_sqrt_11.
+*** true .          /* all conclusions proved */
+
+
+For path(s) from start to finish:
+
+function_sqrt_12.
+H1:    1 <= x .
+H2:    x <= 2 .
+H3:    polypaver__floats__multiply(1 / 2, x) >= - 
+          340282000000000000000000000000000000000 .
+H4:    polypaver__floats__multiply(1 / 2, x) <= 
+          340282000000000000000000000000000000000 .
+H5:    polypaver__floats__add(polypaver__floats__multiply(1 / 2, x), 1 / 2) = x 
+          .
+H6:    float__size >= 0 .
+       ->
+C1:    polypaver__floats__add(polypaver__floats__multiply(1 / 2, x), 1 / 2) <= (
+          1 + 4 * polypaver__floats__eps_rel) * polypaver__exact__sqrt(x) .
+
+
+For path(s) from assertion of line 11 to finish:
+
+function_sqrt_13.
+H1:    r >= - (1 / 4 * (x * x)) + x .
+H2:    r <= 1 / 4 * (x * x) + 1 .
+H3:    1 <= x .
+H4:    x <= 2 .
+H5:    r >= - 340282000000000000000000000000000000000 .
+H6:    r <= 340282000000000000000000000000000000000 .
+H7:    r <> 0 .
+H8:    polypaver__floats__divide(x, r) >= - 
+          340282000000000000000000000000000000000 .
+H9:    polypaver__floats__divide(x, r) <= 
+          340282000000000000000000000000000000000 .
+H10:   polypaver__floats__add(r, polypaver__floats__divide(x, r)) >= - 
+          340282000000000000000000000000000000000 .
+H11:   polypaver__floats__add(r, polypaver__floats__divide(x, r)) <= 
+          340282000000000000000000000000000000000 .
+H12:   polypaver__floats__multiply(1 / 2, polypaver__floats__add(r, 
+          polypaver__floats__divide(x, r))) >= - 
+          340282000000000000000000000000000000000 .
+H13:   polypaver__floats__multiply(1 / 2, polypaver__floats__add(r, 
+          polypaver__floats__divide(x, r))) <= 
+          340282000000000000000000000000000000000 .
+H14:   polypaver__floats__multiply(1 / 2, polypaver__floats__add(r, 
+          polypaver__floats__divide(x, r))) = r .
+H15:   float__size >= 0 .
+       ->
+C1:    polypaver__floats__multiply(1 / 2, polypaver__floats__add(r, 
+          polypaver__floats__divide(x, r))) <= (1 + 4 * 
+          polypaver__floats__eps_rel) * polypaver__exact__sqrt(x) .
+
+
