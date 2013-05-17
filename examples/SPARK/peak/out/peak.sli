@@ -19,7 +19,7 @@ A -rules=lazy
 A -error_explanations=off
 A -justification_option=full
 A -output_directory=out
-A -output_directory (actual)=/Users/jandur/FPbyContract/paver/examples/SPARK/peak/out/
+A -output_directory (actual)=/home/mik/research/spark/floats/paver/examples/SPARK/peak/out/
 P
 R
 
@@ -37,26 +37,24 @@ X 1 polypaver-exact.ads
 1K9 Exact 2|1w23
 X 2 polypaver-floats.ads
 2K9 Floats 3|2w23
-12f19 X 13r16
-12f21 Y 13r18
-12V39 Add 13r12
-15f24 X 16r22
-15f26 Y 16r24
-15V44 Subtract 16r13
-18f24 X 19r22
-18f26 Y 19r24
-18V44 Multiply 19r13
-21f22 X 23r20
-21f24 Y 22r13 23r22
-21V42 Divide 23r13
-25f22 X 26r20
-25V40 Square 26r13
-28f20 X 29r18
-28V38 Cube 29r13
-31f20 X 32r13 33r18
-31V38 Sqrt 33r13
-35f19 X 36r17
-35V37 Exp 36r13
+16f19 X 17r17
+16f21 Y 17r19
+16V39 Add 17r13
+19f24 X 20r22
+19f26 Y 20r24
+19V44 Subtract 20r13
+22f24 X 23r22
+22f26 Y 23r24
+22V44 Multiply 23r13
+25f22 X 27r20
+25f24 Y 26r13 27r22
+25V42 Divide 27r13
+29f22 X 30r20
+29V40 Square 30r13
+32f20 X 33r13 34r18
+32V38 Sqrt 34r13
+36f19 X 37r17
+36V37 Exp 37r13
 X 3 peak.ads
 5f16 X 6r23 6r29 6r56
 5f18 Y 6r34 6r45 6r51

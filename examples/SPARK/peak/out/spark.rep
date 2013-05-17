@@ -5,7 +5,7 @@
            *******************************************************
 
 
-                        DATE : 17-MAY-2013 00:54:49.14
+                        DATE : 17-MAY-2013 13:49:03.94
 
 Options:
     noindex_file
@@ -28,7 +28,7 @@ Options:
     error_explanations=off
     justification_option=full
     output_directory=out
-    output_directory (actual)=/Users/jandur/FPbyContract/paver/examples/SPARK/peak/out/
+    output_directory (actual)=/home/mik/research/spark/floats/paver/examples/SPARK/peak/out/
 
 Selected files:
    @peak.smf
@@ -39,11 +39,11 @@ No Index files were used
 
 Meta File(s) used were:
    peak.smf
-      /Users/jandur/FPbyContract/paver/examples/SPARK/packages/polypaver.ads
-      /Users/jandur/FPbyContract/paver/examples/SPARK/packages/polypaver-exact.ads
-      /Users/jandur/FPbyContract/paver/examples/SPARK/packages/polypaver-floats.ads
-      /Users/jandur/FPbyContract/paver/examples/SPARK/peak/src/peak.ads
-      /Users/jandur/FPbyContract/paver/examples/SPARK/peak/src/peak.adb
+      /home/mik/research/spark/floats/paver/examples/SPARK/packages/polypaver.ads
+      /home/mik/research/spark/floats/paver/examples/SPARK/packages/polypaver-exact.ads
+      /home/mik/research/spark/floats/paver/examples/SPARK/packages/polypaver-floats.ads
+      /home/mik/research/spark/floats/paver/examples/SPARK/peak/src/peak.ads
+      /home/mik/research/spark/floats/paver/examples/SPARK/peak/src/peak.adb
 
 
 Full warning reporting selected
@@ -70,16 +70,16 @@ Line
 
 
 Source Filename(s) used were:
-   /Users/jandur/FPbyContract/paver/examples/SPARK/packages/polypaver.ads
-   /Users/jandur/FPbyContract/paver/examples/SPARK/packages/polypaver-exact.ads
-   /Users/jandur/FPbyContract/paver/examples/SPARK/packages/polypaver-floats.ads
-   /Users/jandur/FPbyContract/paver/examples/SPARK/peak/src/peak.ads
-   /Users/jandur/FPbyContract/paver/examples/SPARK/peak/src/peak.adb
+   /home/mik/research/spark/floats/paver/examples/SPARK/packages/polypaver.ads
+   /home/mik/research/spark/floats/paver/examples/SPARK/packages/polypaver-exact.ads
+   /home/mik/research/spark/floats/paver/examples/SPARK/packages/polypaver-floats.ads
+   /home/mik/research/spark/floats/paver/examples/SPARK/peak/src/peak.ads
+   /home/mik/research/spark/floats/paver/examples/SPARK/peak/src/peak.adb
 
 
 
-Source Filename:   /Users/jandur/FPbyContract/paver/examples/SPARK/packages/polypaver.ads
-Listing Filename:  /Users/jandur/FPbyContract/paver/examples/SPARK/peak/out/polypaver.lst
+Source Filename:   /home/mik/research/spark/floats/paver/examples/SPARK/packages/polypaver.ads
+Listing Filename:  /home/mik/research/spark/floats/paver/examples/SPARK/peak/out/polypaver.lst
 
    Unit name:  PolyPaver
    Unit type:  package specification
@@ -88,8 +88,8 @@ Listing Filename:  /Users/jandur/FPbyContract/paver/examples/SPARK/peak/out/poly
 No errors found
 
 
-Source Filename:   /Users/jandur/FPbyContract/paver/examples/SPARK/packages/polypaver-exact.ads
-Listing Filename:  /Users/jandur/FPbyContract/paver/examples/SPARK/peak/out/polypaver-exact.lst
+Source Filename:   /home/mik/research/spark/floats/paver/examples/SPARK/packages/polypaver-exact.ads
+Listing Filename:  /home/mik/research/spark/floats/paver/examples/SPARK/peak/out/polypaver-exact.lst
 
    Unit name:  PolyPaver.Exact
    Unit type:  package specification
@@ -98,8 +98,8 @@ Listing Filename:  /Users/jandur/FPbyContract/paver/examples/SPARK/peak/out/poly
 No errors found
 
 
-Source Filename:   /Users/jandur/FPbyContract/paver/examples/SPARK/packages/polypaver-floats.ads
-Listing Filename:  /Users/jandur/FPbyContract/paver/examples/SPARK/peak/out/polypaver-floats.lst
+Source Filename:   /home/mik/research/spark/floats/paver/examples/SPARK/packages/polypaver-floats.ads
+Listing Filename:  /home/mik/research/spark/floats/paver/examples/SPARK/peak/out/polypaver-floats.lst
 
    Unit name:  PolyPaver.Floats
    Unit type:  package specification
@@ -108,8 +108,8 @@ Listing Filename:  /Users/jandur/FPbyContract/paver/examples/SPARK/peak/out/poly
 No errors found
 
 
-Source Filename:   /Users/jandur/FPbyContract/paver/examples/SPARK/peak/src/peak.ads
-Listing Filename:  /Users/jandur/FPbyContract/paver/examples/SPARK/peak/out/peak.lst
+Source Filename:   /home/mik/research/spark/floats/paver/examples/SPARK/peak/src/peak.ads
+Listing Filename:  /home/mik/research/spark/floats/paver/examples/SPARK/peak/out/peak.lst
 
    Unit name:  Peak
    Unit type:  package specification
@@ -118,8 +118,8 @@ Listing Filename:  /Users/jandur/FPbyContract/paver/examples/SPARK/peak/out/peak
 No errors found
 
 
-Source Filename:   /Users/jandur/FPbyContract/paver/examples/SPARK/peak/src/peak.adb
-Listing Filename:  /Users/jandur/FPbyContract/paver/examples/SPARK/peak/out/peak.lst
+Source Filename:   /home/mik/research/spark/floats/paver/examples/SPARK/peak/src/peak.adb
+Listing Filename:  /home/mik/research/spark/floats/paver/examples/SPARK/peak/out/peak.lst
 
    Unit name:  Peak
    Unit type:  package body

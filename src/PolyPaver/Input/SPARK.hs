@@ -24,7 +24,7 @@ import PolyPaver.DeriveBounds
 
 import Numeric.ER.Misc
 
-import Data.Char (ord)
+import Data.Char (ord, isSpace)
 import Data.List (intercalate, partition)
 import qualified Data.IntMap as IMap
 
@@ -360,10 +360,12 @@ decodeFn original "exact__integral" args = decodeIntegral original args
 decodeFn original fn args =
     unsafePrint
     (
-        "\nWarning: treating the term " ++ show original ++ " as a variable\n" ++
+        "\nWarning: treating the term " ++ show originalNoSpaces ++ " as a variable\n" ++
         "         because the function " ++ show fn ++ " is not recognised by PolyPaver." 
     ) $
-    var original 
+    var originalNoSpaces
+    where
+    originalNoSpaces = filter (not . isSpace) original
 --        fn ++ "(" ++ (intercalate "," $ map show args) ++ ")"
 --    error $ 
 --        "cannot decode function call " ++ fn ++ 
@@ -411,6 +413,14 @@ var "numeric__eps_rel" = fepsRel
 var "num__eps_abs" = fepsAbs
 var "num__eps_rel" = fepsRel
 var "exact__integration_variable" = termVar ivNum ivName
+
+-- constants of abstract types that the examiner does not understand:
+var "universal_real__size" = plusInfinityTerm 
+var "universal_real__first" = minusInfinityTerm 
+var "universal_real__last" = plusInfinityTerm 
+var "universal_real__base__size" = plusInfinityTerm 
+var "universal_real__base__first" = minusInfinityTerm 
+var "universal_real__base__last" = plusInfinityTerm 
 
 var name =
     termVar n name

@@ -161,6 +161,8 @@ evalTerm
             case term of
                 Pi -> (setSizes $ RAEL.pi 10, term)
                 Lit val -> (rationalToFA val, term)
+                PlusInfinity -> (setSizes $ UFA.const [1/0], term)
+                MinusInfinity -> (setSizes $ UFA.const [-1/0], term)
                 Var varid varName -> (fa, term)
                     where
                     fa =

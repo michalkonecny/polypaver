@@ -105,6 +105,8 @@ newtype Term = Term (Term', Maybe (IRA BM))
   deriving (Eq,Data,Typeable)
 data Term'
   = Lit Rational
+  | MinusInfinity
+  | PlusInfinity
   | Var Int String -- numeric identifier, string only for printing
   | Hull Term Term -- interval covering both values
   | Plus Term Term
@@ -152,7 +154,9 @@ instance Read Term where
 getTermSize :: Term -> Int
 getTermSize (Term (term, _)) =
     case term of
-        Lit r -> 1 
+        Lit r -> 1
+        MinusInfinity -> 1
+        PlusInfinity -> 1 
         Var n s -> 1
         Hull t1 t2 -> 1 + (getTermSize t1) + (getTermSize t2)
         Plus t1 t2 -> 1 + (getTermSize t1) + (getTermSize t2)
@@ -204,6 +208,12 @@ instance Ord Term
   min = termOp2 Min
   max = termOp2 Max
   compare (Term (Lit r1,_)) (Term (Lit r2,_)) = compare r1 r2
+  compare (Term (MinusInfinity, _)) (Term (MinusInfinity, _)) = EQ
+  compare (Term (PlusInfinity, _)) (Term (PlusInfinity, _)) = EQ
+  compare (Term (MinusInfinity, _)) _ = LT
+  compare _ (Term (MinusInfinity, _))= GT
+  compare _ (Term (PlusInfinity, _))= LT
+  compare (Term (PlusInfinity, _)) _ = GT
   compare _ _ = error "compare not implemented for datatype Term except for numeric literals"
   
 instance Num Term
@@ -214,6 +224,8 @@ instance Num Term
   (*) = termOp2 Times
   abs = termOp1 Abs
 
+plusInfinityTerm = termOp0 PlusInfinity
+minusInfinityTerm = termOp0 MinusInfinity
 
 intPower = termOp2 $ IntPower
 square = \ t -> intPower t 2 
@@ -374,6 +386,8 @@ showTermIL shouldShowRanges = st
                 if floor r == ceiling r 
                     then maybeAddBounds $ show (floor r) 
                     else maybeAddBounds $ show (numerator r) ++ "/" ++ show (denominator r)
+            PlusInfinity -> uniascii "+∞" "+oo"
+            MinusInfinity -> uniascii "-∞" "-oo"
             Var n s -> maybeAddBounds s
             Hull t1 t2 -> showOpT ".." "hull" t1 t2
             Plus t1 t2 -> showOpT "+" "sum" t1 t2
@@ -489,6 +503,8 @@ showTermIL shouldShowRanges = st
         isAtomicTerm (Term (term, _)) = 
             case term of
                 (Lit _) -> True
+                PlusInfinity -> True
+                MinusInfinity -> True
                 (Var _ _) -> True
                 (Neg t) -> isAtomicTerm t
                 Pi -> True
