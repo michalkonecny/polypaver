@@ -186,7 +186,9 @@ solveAndReportOnConsole
             -- formula undecided, raise degree:
             | currdeg < maxdeg && undecidedMeasureImproved =
                 do
-                putStrLn $ "Raising degree to " ++ show (currdeg + 1)
+                case reportLevel of
+                    ReportNONE -> return ()
+                    _ -> putStrLn $ "Raising degree to " ++ show (currdeg + 1)
                 currtime <- getCPUTime
                 loopAux
                     loopOrder
