@@ -21,7 +21,13 @@
 
     * DONE adapt and add erfriemann
 
-    * remove any occurrences of universal_real* from the peak example
+    * DONE deal with universal_real* in the peak example
+
+    * add README files to all folders describing:
+
+        * how the VCs were derived 
+
+        * how to prove them using PolyPaver
 
 * DONE tidy up options and their --help documentation
 
