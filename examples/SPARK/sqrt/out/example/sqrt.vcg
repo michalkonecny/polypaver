@@ -1,0 +1,588 @@
+           *******************************************************
+                       Semantic Analysis of SPARK Text
+                              Examiner GPL 2012
+             Copyright (C) 2012 Altran Praxis Limited, Bath, U.K.
+           *******************************************************
+
+
+                        DATE : 17-MAY-2013 11:01:58.42
+
+                           function Example.Sqrt
+
+
+
+
+For path(s) from start to run-time check associated with statement of line 8:
+
+function_sqrt_1.
+H1:    1 <= x .
+H2:    x <= 2 .
+H3:    x >= float__first .
+H4:    x <= float__last .
+        ->
+C1:    x >= float__first .
+C2:    x <= float__last .
+ 
+
+For path(s) from start to precondition check associated with statement of line 9:
+
+function_sqrt_2.
+H1:    1 <= x .
+H2:    x <= 2 .
+H3:    x >= float__first .
+H4:    x <= float__last .
+H5:    x >= float__first .
+H6:    x <= float__last .
+        ->
+C1:    polypaver__floats__multiply((1/2), x) >= float__first .
+C2:    polypaver__floats__multiply((1/2), x) <= float__last .
+C3:    x >= float__first .
+C4:    x <= float__last .
+C5:    (1/2) >= float__first .
+C6:    (1/2) <= float__last .
+ 
+
+For path(s) from start to precondition check associated with statement of line 9:
+
+function_sqrt_3.
+H1:    1 <= x .
+H2:    x <= 2 .
+H3:    x >= float__first .
+H4:    x <= float__last .
+H5:    x >= float__first .
+H6:    x <= float__last .
+H7:    polypaver__floats__multiply((1/2), x) >= float__first .
+H8:    polypaver__floats__multiply((1/2), x) <= float__last .
+H9:    x >= float__first .
+H10:   x <= float__last .
+H11:   (1/2) >= float__first .
+H12:   (1/2) <= float__last .
+H13:   polypaver__floats__multiply((1/2), x) >= float__first .
+H14:   polypaver__floats__multiply((1/2), x) <= float__last .
+        ->
+C1:    polypaver__floats__add(polypaver__floats__multiply((1/2), 
+           x), (1/2)) >= float__first .
+C2:    polypaver__floats__add(polypaver__floats__multiply((1/2), 
+           x), (1/2)) <= float__last .
+C3:    (1/2) >= float__first .
+C4:    (1/2) <= float__last .
+C5:    polypaver__floats__multiply((1/2), x) >= float__first .
+C6:    polypaver__floats__multiply((1/2), x) <= float__last .
+ 
+
+For path(s) from start to run-time check associated with statement of line 9:
+
+function_sqrt_4.
+H1:    1 <= x .
+H2:    x <= 2 .
+H3:    x >= float__first .
+H4:    x <= float__last .
+H5:    x >= float__first .
+H6:    x <= float__last .
+H7:    polypaver__floats__multiply((1/2), x) >= float__first .
+H8:    polypaver__floats__multiply((1/2), x) <= float__last .
+H9:    x >= float__first .
+H10:   x <= float__last .
+H11:   (1/2) >= float__first .
+H12:   (1/2) <= float__last .
+H13:   polypaver__floats__multiply((1/2), x) >= float__first .
+H14:   polypaver__floats__multiply((1/2), x) <= float__last .
+H15:   polypaver__floats__add(polypaver__floats__multiply((1/2), 
+           x), (1/2)) >= float__first .
+H16:   polypaver__floats__add(polypaver__floats__multiply((1/2), 
+           x), (1/2)) <= float__last .
+H17:   (1/2) >= float__first .
+H18:   (1/2) <= float__last .
+H19:   polypaver__floats__multiply((1/2), x) >= float__first .
+H20:   polypaver__floats__multiply((1/2), x) <= float__last .
+H21:   polypaver__floats__add(polypaver__floats__multiply((1/2), 
+           x), (1/2)) >= float__first .
+H22:   polypaver__floats__add(polypaver__floats__multiply((1/2), 
+           x), (1/2)) <= float__last .
+        ->
+C1:    polypaver__floats__add(polypaver__floats__multiply((1/2), 
+           x), (1/2)) >= float__first .
+C2:    polypaver__floats__add(polypaver__floats__multiply((1/2), 
+           x), (1/2)) <= float__last .
+ 
+
+For path(s) from start to assertion of line 11:
+
+function_sqrt_5.
+H1:    1 <= x .
+H2:    x <= 2 .
+H3:    x >= float__first .
+H4:    x <= float__last .
+H5:    x >= float__first .
+H6:    x <= float__last .
+H7:    polypaver__floats__multiply((1/2), x) >= float__first .
+H8:    polypaver__floats__multiply((1/2), x) <= float__last .
+H9:    x >= float__first .
+H10:   x <= float__last .
+H11:   (1/2) >= float__first .
+H12:   (1/2) <= float__last .
+H13:   polypaver__floats__multiply((1/2), x) >= float__first .
+H14:   polypaver__floats__multiply((1/2), x) <= float__last .
+H15:   polypaver__floats__add(polypaver__floats__multiply((1/2), 
+           x), (1/2)) >= float__first .
+H16:   polypaver__floats__add(polypaver__floats__multiply((1/2), 
+           x), (1/2)) <= float__last .
+H17:   (1/2) >= float__first .
+H18:   (1/2) <= float__last .
+H19:   polypaver__floats__multiply((1/2), x) >= float__first .
+H20:   polypaver__floats__multiply((1/2), x) <= float__last .
+H21:   polypaver__floats__add(polypaver__floats__multiply((1/2), 
+           x), (1/2)) >= float__first .
+H22:   polypaver__floats__add(polypaver__floats__multiply((1/2), 
+           x), (1/2)) <= float__last .
+H23:   polypaver__floats__add(polypaver__floats__multiply((1/2), 
+           x), (1/2)) >= float__first .
+H24:   polypaver__floats__add(polypaver__floats__multiply((1/2), 
+           x), (1/2)) <= float__last .
+H25:   polypaver__floats__add(polypaver__floats__multiply((1/2), 
+           x), (1/2)) >= float__first .
+H26:   polypaver__floats__add(polypaver__floats__multiply((1/2), 
+           x), (1/2)) <= float__last .
+H27:   x >= float__first .
+H28:   x <= float__last .
+H29:   polypaver__floats__add(polypaver__floats__multiply((1/2), 
+           x), (1/2)) <> x .
+        ->
+C1:    polypaver__floats__add(polypaver__floats__multiply((1/2), 
+           x), (1/2)) >=  -((1/4) * x ** 2) + x .
+C2:    polypaver__floats__add(polypaver__floats__multiply((1/2), 
+           x), (1/2)) <= (1/4) * x ** 2 + 1 .
+C3:    x >= float__first .
+C4:    x <= float__last .
+C5:    1 <= x .
+C6:    x <= 2 .
+ 
+
+For path(s) from assertion of line 11 to assertion of line 11:
+
+function_sqrt_6.
+H1:    r >=  -((1/4) * x ** 2) + x .
+H2:    r <= (1/4) * x ** 2 + 1 .
+H3:    x >= float__first .
+H4:    x <= float__last .
+H5:    1 <= x .
+H6:    x <= 2 .
+H7:    r >= float__first .
+H8:    r <= float__last .
+H9:    r >= float__first .
+H10:   r <= float__last .
+H11:   r >= float__first .
+H12:   r <= float__last .
+H13:   r <> 0 .
+H14:   polypaver__floats__divide(x, r) >= float__first .
+H15:   polypaver__floats__divide(x, r) <= float__last .
+H16:   r >= float__first .
+H17:   r <= float__last .
+H18:   x >= float__first .
+H19:   x <= float__last .
+H20:   r >= float__first .
+H21:   r <= float__last .
+H22:   (1/2) >= float__first .
+H23:   (1/2) <= float__last .
+H24:   polypaver__floats__divide(x, r) >= float__first .
+H25:   polypaver__floats__divide(x, r) <= float__last .
+H26:   polypaver__floats__add(r, polypaver__floats__divide(
+           x, r)) >= float__first .
+H27:   polypaver__floats__add(r, polypaver__floats__divide(
+           x, r)) <= float__last .
+H28:   polypaver__floats__divide(x, r) >= float__first .
+H29:   polypaver__floats__divide(x, r) <= float__last .
+H30:   polypaver__floats__add(r, polypaver__floats__divide(
+           x, r)) >= float__first .
+H31:   polypaver__floats__add(r, polypaver__floats__divide(
+           x, r)) <= float__last .
+H32:   polypaver__floats__multiply((1/2), 
+           polypaver__floats__add(r, 
+           polypaver__floats__divide(x, r))) >= float__first .
+H33:   polypaver__floats__multiply((1/2), 
+           polypaver__floats__add(r, 
+           polypaver__floats__divide(x, r))) <= float__last .
+H34:   polypaver__floats__add(r, polypaver__floats__divide(
+           x, r)) >= float__first .
+H35:   polypaver__floats__add(r, polypaver__floats__divide(
+           x, r)) <= float__last .
+H36:   polypaver__floats__multiply((1/2), 
+           polypaver__floats__add(r, 
+           polypaver__floats__divide(x, r))) >= float__first .
+H37:   polypaver__floats__multiply((1/2), 
+           polypaver__floats__add(r, 
+           polypaver__floats__divide(x, r))) <= float__last .
+H38:   polypaver__floats__multiply((1/2), 
+           polypaver__floats__add(r, 
+           polypaver__floats__divide(x, r))) >= float__first .
+H39:   polypaver__floats__multiply((1/2), 
+           polypaver__floats__add(r, 
+           polypaver__floats__divide(x, r))) <= float__last .
+H40:   polypaver__floats__multiply((1/2), 
+           polypaver__floats__add(r, 
+           polypaver__floats__divide(x, r))) >= float__first .
+H41:   polypaver__floats__multiply((1/2), 
+           polypaver__floats__add(r, 
+           polypaver__floats__divide(x, r))) <= float__last .
+H42:   r >= float__first .
+H43:   r <= float__last .
+H44:   polypaver__floats__multiply((1/2), 
+           polypaver__floats__add(r, 
+           polypaver__floats__divide(x, r))) <> r .
+        ->
+C1:    polypaver__floats__multiply((1/2), 
+           polypaver__floats__add(r, 
+           polypaver__floats__divide(x, r))) >=  -((1/4) * 
+           x ** 2) + x .
+C2:    polypaver__floats__multiply((1/2), 
+           polypaver__floats__add(r, 
+           polypaver__floats__divide(x, r))) <= (1/4) * x ** 2 + 1 .
+C3:    x >= float__first .
+C4:    x <= float__last .
+C5:    1 <= x .
+C6:    x <= 2 .
+ 
+
+For path(s) from assertion of line 11 to run-time check associated with statement of line 12:
+
+function_sqrt_7.
+H1:    r >=  -((1/4) * x ** 2) + x .
+H2:    r <= (1/4) * x ** 2 + 1 .
+H3:    x >= float__first .
+H4:    x <= float__last .
+H5:    1 <= x .
+H6:    x <= 2 .
+H7:    r >= float__first .
+H8:    r <= float__last .
+        ->
+C1:    r >= float__first .
+C2:    r <= float__last .
+ 
+
+For path(s) from assertion of line 11 to precondition check associated with statement of line 13:
+
+function_sqrt_8.
+H1:    r >=  -((1/4) * x ** 2) + x .
+H2:    r <= (1/4) * x ** 2 + 1 .
+H3:    x >= float__first .
+H4:    x <= float__last .
+H5:    1 <= x .
+H6:    x <= 2 .
+H7:    r >= float__first .
+H8:    r <= float__last .
+H9:    r >= float__first .
+H10:   r <= float__last .
+H11:   r >= float__first .
+H12:   r <= float__last .
+        ->
+C1:    r <> 0 .
+C2:    polypaver__floats__divide(x, r) >= float__first .
+C3:    polypaver__floats__divide(x, r) <= float__last .
+C4:    r >= float__first .
+C5:    r <= float__last .
+C6:    x >= float__first .
+C7:    x <= float__last .
+C8:    r >= float__first .
+C9:    r <= float__last .
+C10:   (1/2) >= float__first .
+C11:   (1/2) <= float__last .
+ 
+
+For path(s) from assertion of line 11 to precondition check associated with statement of line 13:
+
+function_sqrt_9.
+H1:    r >=  -((1/4) * x ** 2) + x .
+H2:    r <= (1/4) * x ** 2 + 1 .
+H3:    x >= float__first .
+H4:    x <= float__last .
+H5:    1 <= x .
+H6:    x <= 2 .
+H7:    r >= float__first .
+H8:    r <= float__last .
+H9:    r >= float__first .
+H10:   r <= float__last .
+H11:   r >= float__first .
+H12:   r <= float__last .
+H13:   r <> 0 .
+H14:   polypaver__floats__divide(x, r) >= float__first .
+H15:   polypaver__floats__divide(x, r) <= float__last .
+H16:   r >= float__first .
+H17:   r <= float__last .
+H18:   x >= float__first .
+H19:   x <= float__last .
+H20:   r >= float__first .
+H21:   r <= float__last .
+H22:   (1/2) >= float__first .
+H23:   (1/2) <= float__last .
+H24:   polypaver__floats__divide(x, r) >= float__first .
+H25:   polypaver__floats__divide(x, r) <= float__last .
+        ->
+C1:    polypaver__floats__add(r, polypaver__floats__divide(
+           x, r)) >= float__first .
+C2:    polypaver__floats__add(r, polypaver__floats__divide(
+           x, r)) <= float__last .
+C3:    polypaver__floats__divide(x, r) >= float__first .
+C4:    polypaver__floats__divide(x, r) <= float__last .
+ 
+
+For path(s) from assertion of line 11 to precondition check associated with statement of line 13:
+
+function_sqrt_10.
+H1:    r >=  -((1/4) * x ** 2) + x .
+H2:    r <= (1/4) * x ** 2 + 1 .
+H3:    x >= float__first .
+H4:    x <= float__last .
+H5:    1 <= x .
+H6:    x <= 2 .
+H7:    r >= float__first .
+H8:    r <= float__last .
+H9:    r >= float__first .
+H10:   r <= float__last .
+H11:   r >= float__first .
+H12:   r <= float__last .
+H13:   r <> 0 .
+H14:   polypaver__floats__divide(x, r) >= float__first .
+H15:   polypaver__floats__divide(x, r) <= float__last .
+H16:   r >= float__first .
+H17:   r <= float__last .
+H18:   x >= float__first .
+H19:   x <= float__last .
+H20:   r >= float__first .
+H21:   r <= float__last .
+H22:   (1/2) >= float__first .
+H23:   (1/2) <= float__last .
+H24:   polypaver__floats__divide(x, r) >= float__first .
+H25:   polypaver__floats__divide(x, r) <= float__last .
+H26:   polypaver__floats__add(r, polypaver__floats__divide(
+           x, r)) >= float__first .
+H27:   polypaver__floats__add(r, polypaver__floats__divide(
+           x, r)) <= float__last .
+H28:   polypaver__floats__divide(x, r) >= float__first .
+H29:   polypaver__floats__divide(x, r) <= float__last .
+H30:   polypaver__floats__add(r, polypaver__floats__divide(
+           x, r)) >= float__first .
+H31:   polypaver__floats__add(r, polypaver__floats__divide(
+           x, r)) <= float__last .
+        ->
+C1:    polypaver__floats__multiply((1/2), 
+           polypaver__floats__add(r, 
+           polypaver__floats__divide(x, r))) >= float__first .
+C2:    polypaver__floats__multiply((1/2), 
+           polypaver__floats__add(r, 
+           polypaver__floats__divide(x, r))) <= float__last .
+C3:    polypaver__floats__add(r, polypaver__floats__divide(
+           x, r)) >= float__first .
+C4:    polypaver__floats__add(r, polypaver__floats__divide(
+           x, r)) <= float__last .
+ 
+
+For path(s) from assertion of line 11 to run-time check associated with statement of line 13:
+
+function_sqrt_11.
+H1:    r >=  -((1/4) * x ** 2) + x .
+H2:    r <= (1/4) * x ** 2 + 1 .
+H3:    x >= float__first .
+H4:    x <= float__last .
+H5:    1 <= x .
+H6:    x <= 2 .
+H7:    r >= float__first .
+H8:    r <= float__last .
+H9:    r >= float__first .
+H10:   r <= float__last .
+H11:   r >= float__first .
+H12:   r <= float__last .
+H13:   r <> 0 .
+H14:   polypaver__floats__divide(x, r) >= float__first .
+H15:   polypaver__floats__divide(x, r) <= float__last .
+H16:   r >= float__first .
+H17:   r <= float__last .
+H18:   x >= float__first .
+H19:   x <= float__last .
+H20:   r >= float__first .
+H21:   r <= float__last .
+H22:   (1/2) >= float__first .
+H23:   (1/2) <= float__last .
+H24:   polypaver__floats__divide(x, r) >= float__first .
+H25:   polypaver__floats__divide(x, r) <= float__last .
+H26:   polypaver__floats__add(r, polypaver__floats__divide(
+           x, r)) >= float__first .
+H27:   polypaver__floats__add(r, polypaver__floats__divide(
+           x, r)) <= float__last .
+H28:   polypaver__floats__divide(x, r) >= float__first .
+H29:   polypaver__floats__divide(x, r) <= float__last .
+H30:   polypaver__floats__add(r, polypaver__floats__divide(
+           x, r)) >= float__first .
+H31:   polypaver__floats__add(r, polypaver__floats__divide(
+           x, r)) <= float__last .
+H32:   polypaver__floats__multiply((1/2), 
+           polypaver__floats__add(r, 
+           polypaver__floats__divide(x, r))) >= float__first .
+H33:   polypaver__floats__multiply((1/2), 
+           polypaver__floats__add(r, 
+           polypaver__floats__divide(x, r))) <= float__last .
+H34:   polypaver__floats__add(r, polypaver__floats__divide(
+           x, r)) >= float__first .
+H35:   polypaver__floats__add(r, polypaver__floats__divide(
+           x, r)) <= float__last .
+H36:   polypaver__floats__multiply((1/2), 
+           polypaver__floats__add(r, 
+           polypaver__floats__divide(x, r))) >= float__first .
+H37:   polypaver__floats__multiply((1/2), 
+           polypaver__floats__add(r, 
+           polypaver__floats__divide(x, r))) <= float__last .
+        ->
+C1:    polypaver__floats__multiply((1/2), 
+           polypaver__floats__add(r, 
+           polypaver__floats__divide(x, r))) >= float__first .
+C2:    polypaver__floats__multiply((1/2), 
+           polypaver__floats__add(r, 
+           polypaver__floats__divide(x, r))) <= float__last .
+ 
+
+For path(s) from start to finish:
+
+function_sqrt_12.
+H1:    1 <= x .
+H2:    x <= 2 .
+H3:    x >= float__first .
+H4:    x <= float__last .
+H5:    x >= float__first .
+H6:    x <= float__last .
+H7:    polypaver__floats__multiply((1/2), x) >= float__first .
+H8:    polypaver__floats__multiply((1/2), x) <= float__last .
+H9:    x >= float__first .
+H10:   x <= float__last .
+H11:   (1/2) >= float__first .
+H12:   (1/2) <= float__last .
+H13:   polypaver__floats__multiply((1/2), x) >= float__first .
+H14:   polypaver__floats__multiply((1/2), x) <= float__last .
+H15:   polypaver__floats__add(polypaver__floats__multiply((1/2), 
+           x), (1/2)) >= float__first .
+H16:   polypaver__floats__add(polypaver__floats__multiply((1/2), 
+           x), (1/2)) <= float__last .
+H17:   (1/2) >= float__first .
+H18:   (1/2) <= float__last .
+H19:   polypaver__floats__multiply((1/2), x) >= float__first .
+H20:   polypaver__floats__multiply((1/2), x) <= float__last .
+H21:   polypaver__floats__add(polypaver__floats__multiply((1/2), 
+           x), (1/2)) >= float__first .
+H22:   polypaver__floats__add(polypaver__floats__multiply((1/2), 
+           x), (1/2)) <= float__last .
+H23:   polypaver__floats__add(polypaver__floats__multiply((1/2), 
+           x), (1/2)) >= float__first .
+H24:   polypaver__floats__add(polypaver__floats__multiply((1/2), 
+           x), (1/2)) <= float__last .
+H25:   polypaver__floats__add(polypaver__floats__multiply((1/2), 
+           x), (1/2)) >= float__first .
+H26:   polypaver__floats__add(polypaver__floats__multiply((1/2), 
+           x), (1/2)) <= float__last .
+H27:   x >= float__first .
+H28:   x <= float__last .
+H29:   not (polypaver__floats__add(
+           polypaver__floats__multiply((1/2), x), (1/2)) <> 
+           x) .
+H30:   polypaver__floats__add(polypaver__floats__multiply((1/2), 
+           x), (1/2)) >= float__first .
+H31:   polypaver__floats__add(polypaver__floats__multiply((1/2), 
+           x), (1/2)) <= float__last .
+        ->
+C1:    polypaver__floats__add(polypaver__floats__multiply((1/2), 
+           x), (1/2)) <= (1 + 4 * polypaver__floats__eps_rel) * 
+           polypaver__exact__sqrt(x) .
+C2:    polypaver__floats__add(polypaver__floats__multiply((1/2), 
+           x), (1/2)) >= float__first .
+C3:    polypaver__floats__add(polypaver__floats__multiply((1/2), 
+           x), (1/2)) <= float__last .
+ 
+
+For path(s) from assertion of line 11 to finish:
+
+function_sqrt_13.
+H1:    r >=  -((1/4) * x ** 2) + x .
+H2:    r <= (1/4) * x ** 2 + 1 .
+H3:    x >= float__first .
+H4:    x <= float__last .
+H5:    1 <= x .
+H6:    x <= 2 .
+H7:    r >= float__first .
+H8:    r <= float__last .
+H9:    r >= float__first .
+H10:   r <= float__last .
+H11:   r >= float__first .
+H12:   r <= float__last .
+H13:   r <> 0 .
+H14:   polypaver__floats__divide(x, r) >= float__first .
+H15:   polypaver__floats__divide(x, r) <= float__last .
+H16:   r >= float__first .
+H17:   r <= float__last .
+H18:   x >= float__first .
+H19:   x <= float__last .
+H20:   r >= float__first .
+H21:   r <= float__last .
+H22:   (1/2) >= float__first .
+H23:   (1/2) <= float__last .
+H24:   polypaver__floats__divide(x, r) >= float__first .
+H25:   polypaver__floats__divide(x, r) <= float__last .
+H26:   polypaver__floats__add(r, polypaver__floats__divide(
+           x, r)) >= float__first .
+H27:   polypaver__floats__add(r, polypaver__floats__divide(
+           x, r)) <= float__last .
+H28:   polypaver__floats__divide(x, r) >= float__first .
+H29:   polypaver__floats__divide(x, r) <= float__last .
+H30:   polypaver__floats__add(r, polypaver__floats__divide(
+           x, r)) >= float__first .
+H31:   polypaver__floats__add(r, polypaver__floats__divide(
+           x, r)) <= float__last .
+H32:   polypaver__floats__multiply((1/2), 
+           polypaver__floats__add(r, 
+           polypaver__floats__divide(x, r))) >= float__first .
+H33:   polypaver__floats__multiply((1/2), 
+           polypaver__floats__add(r, 
+           polypaver__floats__divide(x, r))) <= float__last .
+H34:   polypaver__floats__add(r, polypaver__floats__divide(
+           x, r)) >= float__first .
+H35:   polypaver__floats__add(r, polypaver__floats__divide(
+           x, r)) <= float__last .
+H36:   polypaver__floats__multiply((1/2), 
+           polypaver__floats__add(r, 
+           polypaver__floats__divide(x, r))) >= float__first .
+H37:   polypaver__floats__multiply((1/2), 
+           polypaver__floats__add(r, 
+           polypaver__floats__divide(x, r))) <= float__last .
+H38:   polypaver__floats__multiply((1/2), 
+           polypaver__floats__add(r, 
+           polypaver__floats__divide(x, r))) >= float__first .
+H39:   polypaver__floats__multiply((1/2), 
+           polypaver__floats__add(r, 
+           polypaver__floats__divide(x, r))) <= float__last .
+H40:   polypaver__floats__multiply((1/2), 
+           polypaver__floats__add(r, 
+           polypaver__floats__divide(x, r))) >= float__first .
+H41:   polypaver__floats__multiply((1/2), 
+           polypaver__floats__add(r, 
+           polypaver__floats__divide(x, r))) <= float__last .
+H42:   r >= float__first .
+H43:   r <= float__last .
+H44:   not (polypaver__floats__multiply((1/2), 
+           polypaver__floats__add(r, 
+           polypaver__floats__divide(x, r))) <> r) .
+H45:   polypaver__floats__multiply((1/2), 
+           polypaver__floats__add(r, 
+           polypaver__floats__divide(x, r))) >= float__first .
+H46:   polypaver__floats__multiply((1/2), 
+           polypaver__floats__add(r, 
+           polypaver__floats__divide(x, r))) <= float__last .
+        ->
+C1:    polypaver__floats__multiply((1/2), 
+           polypaver__floats__add(r, 
+           polypaver__floats__divide(x, r))) <= (1 + 4 * 
+           polypaver__floats__eps_rel) * 
+           polypaver__exact__sqrt(x) .
+C2:    polypaver__floats__multiply((1/2), 
+           polypaver__floats__add(r, 
+           polypaver__floats__divide(x, r))) >= float__first .
+C3:    polypaver__floats__multiply((1/2), 
+           polypaver__floats__add(r, 
+           polypaver__floats__divide(x, r))) <= float__last .
+ 
+

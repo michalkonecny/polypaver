@@ -1,0 +1,858 @@
+*****************************************************************************
+                       Semantic Analysis of SPARK Text
+                              Examiner GPL 2012
+             Copyright (C) 2012 Altran Praxis Limited, Bath, U.K.
+*****************************************************************************
+
+
+CREATED 17-MAY-2013, 11:01:58  SIMPLIFIED 17-MAY-2013, 11:03:12
+
+SPARK Simplifier GPL 2012
+Copyright (C) 2012 Altran Praxis Limited, Bath, U.K.
+
+function Example.Sqrt
+
+
+
+
+
+
+@@@@@@@@@@  VC: function_sqrt_1.  @@@@@@@@@@
+***  Proved C1:  x >= float__first
+     using hypothesis H3.
+***  Proved C2:  x <= float__last
+     using hypothesis H4.
+***  PROVED VC.
+
+
+@@@@@@@@@@  VC: function_sqrt_2.  @@@@@@@@@@
+---  Hypothesis H5 has been replaced by "true".  (It is already present, as H3).
+---  Hypothesis H6 has been replaced by "true".  (It is already present, as H4).
+***  Proved C3:  x >= float__first
+     using hypothesis H3.
+***  Proved C4:  x <= float__last
+     using hypothesis H4.
+-S-  Applied substitution rule sqrt_rules(2).
+     This was achieved by replacing all occurrences of float__first by:
+          - 340282000000000000000000000000000000000.
+<S>  New H3:  x >= - 340282000000000000000000000000000000000
+<S>  New C1:  polypaver__floats__multiply(1 / 2, x) >= - 
+          340282000000000000000000000000000000000
+<S>  New C5:  true
+-S-  Applied substitution rule sqrt_rules(3).
+     This was achieved by replacing all occurrences of float__last by:
+          340282000000000000000000000000000000000.
+<S>  New H4:  x <= 340282000000000000000000000000000000000
+<S>  New C2:  polypaver__floats__multiply(1 / 2, x) <= 
+          340282000000000000000000000000000000000
+<S>  New C6:  true
+***  Proved C5:  true
+***  Proved C6:  true
+---  Eliminated hypothesis H5 (true-hypothesis).
+---  Eliminated hypothesis H6 (true-hypothesis).
+---  Eliminated hypothesis H3 (redundant, given H1).
+---  Eliminated hypothesis H4 (redundant, given H2).
+     +++  New H7:  float__size >= 0
+
+
+@@@@@@@@@@  VC: function_sqrt_3.  @@@@@@@@@@
+---  Hypothesis H5 has been replaced by "true".  (It is already present, as H3).
+---  Hypothesis H6 has been replaced by "true".  (It is already present, as H4).
+---  Hypothesis H9 has been replaced by "true".  (It is already present, as H3).
+---  Hypothesis H10 has been replaced by "true".  (It is already present, as H4)
+          .
+---  Hypothesis H13 has been replaced by "true".  (It is already present, as H7)
+          .
+---  Hypothesis H14 has been replaced by "true".  (It is already present, as H8)
+          .
+***  Proved C3:  1 / 2 >= float__first
+     using hypothesis H11.
+***  Proved C4:  1 / 2 <= float__last
+     using hypothesis H12.
+***  Proved C5:  polypaver__floats__multiply(1 / 2, x) >= float__first
+     using hypothesis H7.
+***  Proved C6:  polypaver__floats__multiply(1 / 2, x) <= float__last
+     using hypothesis H8.
+-S-  Applied substitution rule sqrt_rules(2).
+     This was achieved by replacing all occurrences of float__first by:
+          - 340282000000000000000000000000000000000.
+<S>  New H3:  x >= - 340282000000000000000000000000000000000
+<S>  New H7:  polypaver__floats__multiply(1 / 2, x) >= - 
+          340282000000000000000000000000000000000
+<S>  New H11:  true
+<S>  New C1:  polypaver__floats__add(polypaver__floats__multiply(1 / 2, x), 1 / 
+          2) >= - 340282000000000000000000000000000000000
+-S-  Applied substitution rule sqrt_rules(3).
+     This was achieved by replacing all occurrences of float__last by:
+          340282000000000000000000000000000000000.
+<S>  New H4:  x <= 340282000000000000000000000000000000000
+<S>  New H8:  polypaver__floats__multiply(1 / 2, x) <= 
+          340282000000000000000000000000000000000
+<S>  New H12:  true
+<S>  New C2:  polypaver__floats__add(polypaver__floats__multiply(1 / 2, x), 1 / 
+          2) <= 340282000000000000000000000000000000000
+---  Eliminated hypothesis H5 (true-hypothesis).
+---  Eliminated hypothesis H6 (true-hypothesis).
+---  Eliminated hypothesis H9 (true-hypothesis).
+---  Eliminated hypothesis H10 (true-hypothesis).
+---  Eliminated hypothesis H11 (true-hypothesis).
+---  Eliminated hypothesis H12 (true-hypothesis).
+---  Eliminated hypothesis H13 (true-hypothesis).
+---  Eliminated hypothesis H14 (true-hypothesis).
+---  Eliminated hypothesis H3 (redundant, given H1).
+---  Eliminated hypothesis H4 (redundant, given H2).
+     +++  New H15:  float__size >= 0
+
+
+@@@@@@@@@@  VC: function_sqrt_4.  @@@@@@@@@@
+---  Hypothesis H5 has been replaced by "true".  (It is already present, as H3).
+---  Hypothesis H6 has been replaced by "true".  (It is already present, as H4).
+---  Hypothesis H9 has been replaced by "true".  (It is already present, as H3).
+---  Hypothesis H10 has been replaced by "true".  (It is already present, as H4)
+          .
+---  Hypothesis H13 has been replaced by "true".  (It is already present, as H7)
+          .
+---  Hypothesis H14 has been replaced by "true".  (It is already present, as H8)
+          .
+---  Hypothesis H17 has been replaced by "true".  (It is already present, as 
+          H11).
+---  Hypothesis H18 has been replaced by "true".  (It is already present, as 
+          H12).
+---  Hypothesis H19 has been replaced by "true".  (It is already present, as H7)
+          .
+---  Hypothesis H20 has been replaced by "true".  (It is already present, as H8)
+          .
+---  Hypothesis H21 has been replaced by "true".  (It is already present, as 
+          H15).
+---  Hypothesis H22 has been replaced by "true".  (It is already present, as 
+          H16).
+***  Proved C1:  polypaver__floats__add(polypaver__floats__multiply(1 / 2, x), 
+          1 / 2) >= float__first
+     using hypothesis H15.
+***  Proved C2:  polypaver__floats__add(polypaver__floats__multiply(1 / 2, x), 
+          1 / 2) <= float__last
+     using hypothesis H16.
+***  PROVED VC.
+
+
+@@@@@@@@@@  VC: function_sqrt_5.  @@@@@@@@@@
+---  Hypothesis H5 has been replaced by "true".  (It is already present, as H3).
+---  Hypothesis H6 has been replaced by "true".  (It is already present, as H4).
+---  Hypothesis H9 has been replaced by "true".  (It is already present, as H3).
+---  Hypothesis H10 has been replaced by "true".  (It is already present, as H4)
+          .
+---  Hypothesis H13 has been replaced by "true".  (It is already present, as H7)
+          .
+---  Hypothesis H14 has been replaced by "true".  (It is already present, as H8)
+          .
+---  Hypothesis H17 has been replaced by "true".  (It is already present, as 
+          H11).
+---  Hypothesis H18 has been replaced by "true".  (It is already present, as 
+          H12).
+---  Hypothesis H19 has been replaced by "true".  (It is already present, as H7)
+          .
+---  Hypothesis H20 has been replaced by "true".  (It is already present, as H8)
+          .
+---  Hypothesis H21 has been replaced by "true".  (It is already present, as 
+          H15).
+---  Hypothesis H22 has been replaced by "true".  (It is already present, as 
+          H16).
+---  Hypothesis H23 has been replaced by "true".  (It is already present, as 
+          H15).
+---  Hypothesis H24 has been replaced by "true".  (It is already present, as 
+          H16).
+---  Hypothesis H25 has been replaced by "true".  (It is already present, as 
+          H15).
+---  Hypothesis H26 has been replaced by "true".  (It is already present, as 
+          H16).
+---  Hypothesis H27 has been replaced by "true".  (It is already present, as H3)
+          .
+---  Hypothesis H28 has been replaced by "true".  (It is already present, as H4)
+          .
+%%%  Simplified C1 on reading formula in, to give:
+     %%%  C1:  polypaver__floats__add(polypaver__floats__multiply(1 / 2, x), 1 
+          / 2) >= - (1 / 4 * (x * x)) + x
+%%%  Simplified C2 on reading formula in, to give:
+     %%%  C2:  polypaver__floats__add(polypaver__floats__multiply(1 / 2, x), 1 
+          / 2) <= 1 / 4 * (x * x) + 1
+***  Proved C3:  x >= float__first
+     using hypothesis H3.
+***  Proved C4:  x <= float__last
+     using hypothesis H4.
+***  Proved C5:  1 <= x
+     using hypothesis H1.
+***  Proved C6:  x <= 2
+     using hypothesis H2.
+-S-  Applied substitution rule sqrt_rules(2).
+     This was achieved by replacing all occurrences of float__first by:
+          - 340282000000000000000000000000000000000.
+<S>  New H3:  x >= - 340282000000000000000000000000000000000
+<S>  New H7:  polypaver__floats__multiply(1 / 2, x) >= - 
+          340282000000000000000000000000000000000
+<S>  New H11:  true
+<S>  New H15:  polypaver__floats__add(polypaver__floats__multiply(1 / 2, x), 1 
+          / 2) >= - 340282000000000000000000000000000000000
+-S-  Applied substitution rule sqrt_rules(3).
+     This was achieved by replacing all occurrences of float__last by:
+          340282000000000000000000000000000000000.
+<S>  New H4:  x <= 340282000000000000000000000000000000000
+<S>  New H8:  polypaver__floats__multiply(1 / 2, x) <= 
+          340282000000000000000000000000000000000
+<S>  New H12:  true
+<S>  New H16:  polypaver__floats__add(polypaver__floats__multiply(1 / 2, x), 1 
+          / 2) <= 340282000000000000000000000000000000000
+---  Eliminated hypothesis H5 (true-hypothesis).
+---  Eliminated hypothesis H6 (true-hypothesis).
+---  Eliminated hypothesis H9 (true-hypothesis).
+---  Eliminated hypothesis H10 (true-hypothesis).
+---  Eliminated hypothesis H13 (true-hypothesis).
+---  Eliminated hypothesis H14 (true-hypothesis).
+---  Eliminated hypothesis H17 (true-hypothesis).
+---  Eliminated hypothesis H18 (true-hypothesis).
+---  Eliminated hypothesis H19 (true-hypothesis).
+---  Eliminated hypothesis H20 (true-hypothesis).
+---  Eliminated hypothesis H21 (true-hypothesis).
+---  Eliminated hypothesis H22 (true-hypothesis).
+---  Eliminated hypothesis H23 (true-hypothesis).
+---  Eliminated hypothesis H24 (true-hypothesis).
+---  Eliminated hypothesis H25 (true-hypothesis).
+---  Eliminated hypothesis H26 (true-hypothesis).
+---  Eliminated hypothesis H27 (true-hypothesis).
+---  Eliminated hypothesis H28 (true-hypothesis).
+---  Eliminated hypothesis H11 (true-hypothesis).
+---  Eliminated hypothesis H12 (true-hypothesis).
+---  Eliminated hypothesis H3 (redundant, given H1).
+---  Eliminated hypothesis H4 (redundant, given H2).
+     +++  New H30:  float__size >= 0
+
+
+@@@@@@@@@@  VC: function_sqrt_6.  @@@@@@@@@@
+%%%  Simplified H1 on reading formula in, to give:
+     %%%  H1:  r >= - (1 / 4 * (x * x)) + x
+%%%  Simplified H2 on reading formula in, to give:
+     %%%  H2:  r <= 1 / 4 * (x * x) + 1
+---  Hypothesis H9 has been replaced by "true".  (It is already present, as H7).
+---  Hypothesis H10 has been replaced by "true".  (It is already present, as H8)
+          .
+---  Hypothesis H11 has been replaced by "true".  (It is already present, as H7)
+          .
+---  Hypothesis H12 has been replaced by "true".  (It is already present, as H8)
+          .
+---  Hypothesis H16 has been replaced by "true".  (It is already present, as H7)
+          .
+---  Hypothesis H17 has been replaced by "true".  (It is already present, as H8)
+          .
+---  Hypothesis H18 has been replaced by "true".  (It is already present, as H3)
+          .
+---  Hypothesis H19 has been replaced by "true".  (It is already present, as H4)
+          .
+---  Hypothesis H20 has been replaced by "true".  (It is already present, as H7)
+          .
+---  Hypothesis H21 has been replaced by "true".  (It is already present, as H8)
+          .
+---  Hypothesis H24 has been replaced by "true".  (It is already present, as 
+          H14).
+---  Hypothesis H25 has been replaced by "true".  (It is already present, as 
+          H15).
+---  Hypothesis H28 has been replaced by "true".  (It is already present, as 
+          H14).
+---  Hypothesis H29 has been replaced by "true".  (It is already present, as 
+          H15).
+---  Hypothesis H30 has been replaced by "true".  (It is already present, as 
+          H26).
+---  Hypothesis H31 has been replaced by "true".  (It is already present, as 
+          H27).
+---  Hypothesis H34 has been replaced by "true".  (It is already present, as 
+          H26).
+---  Hypothesis H35 has been replaced by "true".  (It is already present, as 
+          H27).
+---  Hypothesis H36 has been replaced by "true".  (It is already present, as 
+          H32).
+---  Hypothesis H37 has been replaced by "true".  (It is already present, as 
+          H33).
+---  Hypothesis H38 has been replaced by "true".  (It is already present, as 
+          H32).
+---  Hypothesis H39 has been replaced by "true".  (It is already present, as 
+          H33).
+---  Hypothesis H40 has been replaced by "true".  (It is already present, as 
+          H32).
+---  Hypothesis H41 has been replaced by "true".  (It is already present, as 
+          H33).
+---  Hypothesis H42 has been replaced by "true".  (It is already present, as H7)
+          .
+---  Hypothesis H43 has been replaced by "true".  (It is already present, as H8)
+          .
+%%%  Simplified C1 on reading formula in, to give:
+     %%%  C1:  polypaver__floats__multiply(1 / 2, polypaver__floats__add(r, 
+          polypaver__floats__divide(x, r))) >= - (1 / 4 * (x * x)) + x
+%%%  Simplified C2 on reading formula in, to give:
+     %%%  C2:  polypaver__floats__multiply(1 / 2, polypaver__floats__add(r, 
+          polypaver__floats__divide(x, r))) <= 1 / 4 * (x * x) + 1
+***  Proved C3:  x >= float__first
+     using hypothesis H3.
+***  Proved C4:  x <= float__last
+     using hypothesis H4.
+***  Proved C5:  1 <= x
+     using hypothesis H5.
+***  Proved C6:  x <= 2
+     using hypothesis H6.
+-S-  Applied substitution rule sqrt_rules(2).
+     This was achieved by replacing all occurrences of float__first by:
+          - 340282000000000000000000000000000000000.
+<S>  New H3:  x >= - 340282000000000000000000000000000000000
+<S>  New H7:  r >= - 340282000000000000000000000000000000000
+<S>  New H14:  polypaver__floats__divide(x, r) >= - 
+          340282000000000000000000000000000000000
+<S>  New H22:  true
+<S>  New H26:  polypaver__floats__add(r, polypaver__floats__divide(x, r)) >= - 
+          340282000000000000000000000000000000000
+<S>  New H32:  polypaver__floats__multiply(1 / 2, polypaver__floats__add(r, 
+          polypaver__floats__divide(x, r))) >= - 
+          340282000000000000000000000000000000000
+-S-  Applied substitution rule sqrt_rules(3).
+     This was achieved by replacing all occurrences of float__last by:
+          340282000000000000000000000000000000000.
+<S>  New H4:  x <= 340282000000000000000000000000000000000
+<S>  New H8:  r <= 340282000000000000000000000000000000000
+<S>  New H15:  polypaver__floats__divide(x, r) <= 
+          340282000000000000000000000000000000000
+<S>  New H23:  true
+<S>  New H27:  polypaver__floats__add(r, polypaver__floats__divide(x, r)) <= 
+          340282000000000000000000000000000000000
+<S>  New H33:  polypaver__floats__multiply(1 / 2, polypaver__floats__add(r, 
+          polypaver__floats__divide(x, r))) <= 
+          340282000000000000000000000000000000000
+---  Eliminated hypothesis H9 (true-hypothesis).
+---  Eliminated hypothesis H10 (true-hypothesis).
+---  Eliminated hypothesis H11 (true-hypothesis).
+---  Eliminated hypothesis H12 (true-hypothesis).
+---  Eliminated hypothesis H16 (true-hypothesis).
+---  Eliminated hypothesis H17 (true-hypothesis).
+---  Eliminated hypothesis H18 (true-hypothesis).
+---  Eliminated hypothesis H19 (true-hypothesis).
+---  Eliminated hypothesis H20 (true-hypothesis).
+---  Eliminated hypothesis H21 (true-hypothesis).
+---  Eliminated hypothesis H24 (true-hypothesis).
+---  Eliminated hypothesis H25 (true-hypothesis).
+---  Eliminated hypothesis H28 (true-hypothesis).
+---  Eliminated hypothesis H29 (true-hypothesis).
+---  Eliminated hypothesis H30 (true-hypothesis).
+---  Eliminated hypothesis H31 (true-hypothesis).
+---  Eliminated hypothesis H34 (true-hypothesis).
+---  Eliminated hypothesis H35 (true-hypothesis).
+---  Eliminated hypothesis H36 (true-hypothesis).
+---  Eliminated hypothesis H37 (true-hypothesis).
+---  Eliminated hypothesis H38 (true-hypothesis).
+---  Eliminated hypothesis H39 (true-hypothesis).
+---  Eliminated hypothesis H40 (true-hypothesis).
+---  Eliminated hypothesis H41 (true-hypothesis).
+---  Eliminated hypothesis H42 (true-hypothesis).
+---  Eliminated hypothesis H43 (true-hypothesis).
+---  Eliminated hypothesis H22 (true-hypothesis).
+---  Eliminated hypothesis H23 (true-hypothesis).
+---  Eliminated hypothesis H3 (redundant, given H5).
+---  Eliminated hypothesis H4 (redundant, given H6).
+     +++  New H45:  float__size >= 0
+
+
+@@@@@@@@@@  VC: function_sqrt_7.  @@@@@@@@@@
+%%%  Simplified H1 on reading formula in, to give:
+     %%%  H1:  r >= - (1 / 4 * (x * x)) + x
+%%%  Simplified H2 on reading formula in, to give:
+     %%%  H2:  r <= 1 / 4 * (x * x) + 1
+***  Proved C1:  r >= float__first
+     using hypothesis H7.
+***  Proved C2:  r <= float__last
+     using hypothesis H8.
+***  PROVED VC.
+
+
+@@@@@@@@@@  VC: function_sqrt_8.  @@@@@@@@@@
+%%%  Simplified H1 on reading formula in, to give:
+     %%%  H1:  r >= - (1 / 4 * (x * x)) + x
+%%%  Simplified H2 on reading formula in, to give:
+     %%%  H2:  r <= 1 / 4 * (x * x) + 1
+---  Hypothesis H9 has been replaced by "true".  (It is already present, as H7).
+---  Hypothesis H10 has been replaced by "true".  (It is already present, as H8)
+          .
+---  Hypothesis H11 has been replaced by "true".  (It is already present, as H7)
+          .
+---  Hypothesis H12 has been replaced by "true".  (It is already present, as H8)
+          .
+***  Proved C4:  r >= float__first
+     using hypothesis H7.
+***  Proved C5:  r <= float__last
+     using hypothesis H8.
+***  Proved C6:  x >= float__first
+     using hypothesis H3.
+***  Proved C7:  x <= float__last
+     using hypothesis H4.
+***  Proved C8:  r >= float__first
+     using hypothesis H7.
+***  Proved C9:  r <= float__last
+     using hypothesis H8.
+-S-  Applied substitution rule sqrt_rules(2).
+     This was achieved by replacing all occurrences of float__first by:
+          - 340282000000000000000000000000000000000.
+<S>  New H3:  x >= - 340282000000000000000000000000000000000
+<S>  New H7:  r >= - 340282000000000000000000000000000000000
+<S>  New C2:  polypaver__floats__divide(x, r) >= - 
+          340282000000000000000000000000000000000
+<S>  New C10:  true
+-S-  Applied substitution rule sqrt_rules(3).
+     This was achieved by replacing all occurrences of float__last by:
+          340282000000000000000000000000000000000.
+<S>  New H4:  x <= 340282000000000000000000000000000000000
+<S>  New H8:  r <= 340282000000000000000000000000000000000
+<S>  New C3:  polypaver__floats__divide(x, r) <= 
+          340282000000000000000000000000000000000
+<S>  New C11:  true
+***  Proved C10:  true
+***  Proved C11:  true
+---  Eliminated hypothesis H9 (true-hypothesis).
+---  Eliminated hypothesis H10 (true-hypothesis).
+---  Eliminated hypothesis H11 (true-hypothesis).
+---  Eliminated hypothesis H12 (true-hypothesis).
+---  Eliminated hypothesis H3 (redundant, given H5).
+---  Eliminated hypothesis H4 (redundant, given H6).
+     +++  New H13:  float__size >= 0
+
+
+@@@@@@@@@@  VC: function_sqrt_9.  @@@@@@@@@@
+%%%  Simplified H1 on reading formula in, to give:
+     %%%  H1:  r >= - (1 / 4 * (x * x)) + x
+%%%  Simplified H2 on reading formula in, to give:
+     %%%  H2:  r <= 1 / 4 * (x * x) + 1
+---  Hypothesis H9 has been replaced by "true".  (It is already present, as H7).
+---  Hypothesis H10 has been replaced by "true".  (It is already present, as H8)
+          .
+---  Hypothesis H11 has been replaced by "true".  (It is already present, as H7)
+          .
+---  Hypothesis H12 has been replaced by "true".  (It is already present, as H8)
+          .
+---  Hypothesis H16 has been replaced by "true".  (It is already present, as H7)
+          .
+---  Hypothesis H17 has been replaced by "true".  (It is already present, as H8)
+          .
+---  Hypothesis H18 has been replaced by "true".  (It is already present, as H3)
+          .
+---  Hypothesis H19 has been replaced by "true".  (It is already present, as H4)
+          .
+---  Hypothesis H20 has been replaced by "true".  (It is already present, as H7)
+          .
+---  Hypothesis H21 has been replaced by "true".  (It is already present, as H8)
+          .
+---  Hypothesis H24 has been replaced by "true".  (It is already present, as 
+          H14).
+---  Hypothesis H25 has been replaced by "true".  (It is already present, as 
+          H15).
+***  Proved C3:  polypaver__floats__divide(x, r) >= float__first
+     using hypothesis H14.
+***  Proved C4:  polypaver__floats__divide(x, r) <= float__last
+     using hypothesis H15.
+-S-  Applied substitution rule sqrt_rules(2).
+     This was achieved by replacing all occurrences of float__first by:
+          - 340282000000000000000000000000000000000.
+<S>  New H3:  x >= - 340282000000000000000000000000000000000
+<S>  New H7:  r >= - 340282000000000000000000000000000000000
+<S>  New H14:  polypaver__floats__divide(x, r) >= - 
+          340282000000000000000000000000000000000
+<S>  New H22:  true
+<S>  New C1:  polypaver__floats__add(r, polypaver__floats__divide(x, r)) >= - 
+          340282000000000000000000000000000000000
+-S-  Applied substitution rule sqrt_rules(3).
+     This was achieved by replacing all occurrences of float__last by:
+          340282000000000000000000000000000000000.
+<S>  New H4:  x <= 340282000000000000000000000000000000000
+<S>  New H8:  r <= 340282000000000000000000000000000000000
+<S>  New H15:  polypaver__floats__divide(x, r) <= 
+          340282000000000000000000000000000000000
+<S>  New H23:  true
+<S>  New C2:  polypaver__floats__add(r, polypaver__floats__divide(x, r)) <= 
+          340282000000000000000000000000000000000
+---  Eliminated hypothesis H9 (true-hypothesis).
+---  Eliminated hypothesis H10 (true-hypothesis).
+---  Eliminated hypothesis H11 (true-hypothesis).
+---  Eliminated hypothesis H12 (true-hypothesis).
+---  Eliminated hypothesis H16 (true-hypothesis).
+---  Eliminated hypothesis H17 (true-hypothesis).
+---  Eliminated hypothesis H18 (true-hypothesis).
+---  Eliminated hypothesis H19 (true-hypothesis).
+---  Eliminated hypothesis H20 (true-hypothesis).
+---  Eliminated hypothesis H21 (true-hypothesis).
+---  Eliminated hypothesis H22 (true-hypothesis).
+---  Eliminated hypothesis H23 (true-hypothesis).
+---  Eliminated hypothesis H24 (true-hypothesis).
+---  Eliminated hypothesis H25 (true-hypothesis).
+---  Eliminated hypothesis H3 (redundant, given H5).
+---  Eliminated hypothesis H4 (redundant, given H6).
+     +++  New H26:  float__size >= 0
+
+
+@@@@@@@@@@  VC: function_sqrt_10.  @@@@@@@@@@
+%%%  Simplified H1 on reading formula in, to give:
+     %%%  H1:  r >= - (1 / 4 * (x * x)) + x
+%%%  Simplified H2 on reading formula in, to give:
+     %%%  H2:  r <= 1 / 4 * (x * x) + 1
+---  Hypothesis H9 has been replaced by "true".  (It is already present, as H7).
+---  Hypothesis H10 has been replaced by "true".  (It is already present, as H8)
+          .
+---  Hypothesis H11 has been replaced by "true".  (It is already present, as H7)
+          .
+---  Hypothesis H12 has been replaced by "true".  (It is already present, as H8)
+          .
+---  Hypothesis H16 has been replaced by "true".  (It is already present, as H7)
+          .
+---  Hypothesis H17 has been replaced by "true".  (It is already present, as H8)
+          .
+---  Hypothesis H18 has been replaced by "true".  (It is already present, as H3)
+          .
+---  Hypothesis H19 has been replaced by "true".  (It is already present, as H4)
+          .
+---  Hypothesis H20 has been replaced by "true".  (It is already present, as H7)
+          .
+---  Hypothesis H21 has been replaced by "true".  (It is already present, as H8)
+          .
+---  Hypothesis H24 has been replaced by "true".  (It is already present, as 
+          H14).
+---  Hypothesis H25 has been replaced by "true".  (It is already present, as 
+          H15).
+---  Hypothesis H28 has been replaced by "true".  (It is already present, as 
+          H14).
+---  Hypothesis H29 has been replaced by "true".  (It is already present, as 
+          H15).
+---  Hypothesis H30 has been replaced by "true".  (It is already present, as 
+          H26).
+---  Hypothesis H31 has been replaced by "true".  (It is already present, as 
+          H27).
+***  Proved C3:  polypaver__floats__add(r, polypaver__floats__divide(x, r)) >= 
+          float__first
+     using hypothesis H26.
+***  Proved C4:  polypaver__floats__add(r, polypaver__floats__divide(x, r)) <= 
+          float__last
+     using hypothesis H27.
+-S-  Applied substitution rule sqrt_rules(2).
+     This was achieved by replacing all occurrences of float__first by:
+          - 340282000000000000000000000000000000000.
+<S>  New H3:  x >= - 340282000000000000000000000000000000000
+<S>  New H7:  r >= - 340282000000000000000000000000000000000
+<S>  New H14:  polypaver__floats__divide(x, r) >= - 
+          340282000000000000000000000000000000000
+<S>  New H22:  true
+<S>  New H26:  polypaver__floats__add(r, polypaver__floats__divide(x, r)) >= - 
+          340282000000000000000000000000000000000
+<S>  New C1:  polypaver__floats__multiply(1 / 2, polypaver__floats__add(r, 
+          polypaver__floats__divide(x, r))) >= - 
+          340282000000000000000000000000000000000
+-S-  Applied substitution rule sqrt_rules(3).
+     This was achieved by replacing all occurrences of float__last by:
+          340282000000000000000000000000000000000.
+<S>  New H4:  x <= 340282000000000000000000000000000000000
+<S>  New H8:  r <= 340282000000000000000000000000000000000
+<S>  New H15:  polypaver__floats__divide(x, r) <= 
+          340282000000000000000000000000000000000
+<S>  New H23:  true
+<S>  New H27:  polypaver__floats__add(r, polypaver__floats__divide(x, r)) <= 
+          340282000000000000000000000000000000000
+<S>  New C2:  polypaver__floats__multiply(1 / 2, polypaver__floats__add(r, 
+          polypaver__floats__divide(x, r))) <= 
+          340282000000000000000000000000000000000
+---  Eliminated hypothesis H9 (true-hypothesis).
+---  Eliminated hypothesis H10 (true-hypothesis).
+---  Eliminated hypothesis H11 (true-hypothesis).
+---  Eliminated hypothesis H12 (true-hypothesis).
+---  Eliminated hypothesis H16 (true-hypothesis).
+---  Eliminated hypothesis H17 (true-hypothesis).
+---  Eliminated hypothesis H18 (true-hypothesis).
+---  Eliminated hypothesis H19 (true-hypothesis).
+---  Eliminated hypothesis H20 (true-hypothesis).
+---  Eliminated hypothesis H21 (true-hypothesis).
+---  Eliminated hypothesis H22 (true-hypothesis).
+---  Eliminated hypothesis H23 (true-hypothesis).
+---  Eliminated hypothesis H24 (true-hypothesis).
+---  Eliminated hypothesis H25 (true-hypothesis).
+---  Eliminated hypothesis H28 (true-hypothesis).
+---  Eliminated hypothesis H29 (true-hypothesis).
+---  Eliminated hypothesis H30 (true-hypothesis).
+---  Eliminated hypothesis H31 (true-hypothesis).
+---  Eliminated hypothesis H3 (redundant, given H5).
+---  Eliminated hypothesis H4 (redundant, given H6).
+     +++  New H32:  float__size >= 0
+
+
+@@@@@@@@@@  VC: function_sqrt_11.  @@@@@@@@@@
+%%%  Simplified H1 on reading formula in, to give:
+     %%%  H1:  r >= - (1 / 4 * (x * x)) + x
+%%%  Simplified H2 on reading formula in, to give:
+     %%%  H2:  r <= 1 / 4 * (x * x) + 1
+---  Hypothesis H9 has been replaced by "true".  (It is already present, as H7).
+---  Hypothesis H10 has been replaced by "true".  (It is already present, as H8)
+          .
+---  Hypothesis H11 has been replaced by "true".  (It is already present, as H7)
+          .
+---  Hypothesis H12 has been replaced by "true".  (It is already present, as H8)
+          .
+---  Hypothesis H16 has been replaced by "true".  (It is already present, as H7)
+          .
+---  Hypothesis H17 has been replaced by "true".  (It is already present, as H8)
+          .
+---  Hypothesis H18 has been replaced by "true".  (It is already present, as H3)
+          .
+---  Hypothesis H19 has been replaced by "true".  (It is already present, as H4)
+          .
+---  Hypothesis H20 has been replaced by "true".  (It is already present, as H7)
+          .
+---  Hypothesis H21 has been replaced by "true".  (It is already present, as H8)
+          .
+---  Hypothesis H24 has been replaced by "true".  (It is already present, as 
+          H14).
+---  Hypothesis H25 has been replaced by "true".  (It is already present, as 
+          H15).
+---  Hypothesis H28 has been replaced by "true".  (It is already present, as 
+          H14).
+---  Hypothesis H29 has been replaced by "true".  (It is already present, as 
+          H15).
+---  Hypothesis H30 has been replaced by "true".  (It is already present, as 
+          H26).
+---  Hypothesis H31 has been replaced by "true".  (It is already present, as 
+          H27).
+---  Hypothesis H34 has been replaced by "true".  (It is already present, as 
+          H26).
+---  Hypothesis H35 has been replaced by "true".  (It is already present, as 
+          H27).
+---  Hypothesis H36 has been replaced by "true".  (It is already present, as 
+          H32).
+---  Hypothesis H37 has been replaced by "true".  (It is already present, as 
+          H33).
+***  Proved C1:  polypaver__floats__multiply(1 / 2, polypaver__floats__add(r, 
+          polypaver__floats__divide(x, r))) >= float__first
+     using hypothesis H32.
+***  Proved C2:  polypaver__floats__multiply(1 / 2, polypaver__floats__add(r, 
+          polypaver__floats__divide(x, r))) <= float__last
+     using hypothesis H33.
+***  PROVED VC.
+
+
+@@@@@@@@@@  VC: function_sqrt_12.  @@@@@@@@@@
+---  Hypothesis H5 has been replaced by "true".  (It is already present, as H3).
+---  Hypothesis H6 has been replaced by "true".  (It is already present, as H4).
+---  Hypothesis H9 has been replaced by "true".  (It is already present, as H3).
+---  Hypothesis H10 has been replaced by "true".  (It is already present, as H4)
+          .
+---  Hypothesis H13 has been replaced by "true".  (It is already present, as H7)
+          .
+---  Hypothesis H14 has been replaced by "true".  (It is already present, as H8)
+          .
+---  Hypothesis H17 has been replaced by "true".  (It is already present, as 
+          H11).
+---  Hypothesis H18 has been replaced by "true".  (It is already present, as 
+          H12).
+---  Hypothesis H19 has been replaced by "true".  (It is already present, as H7)
+          .
+---  Hypothesis H20 has been replaced by "true".  (It is already present, as H8)
+          .
+---  Hypothesis H21 has been replaced by "true".  (It is already present, as 
+          H15).
+---  Hypothesis H22 has been replaced by "true".  (It is already present, as 
+          H16).
+---  Hypothesis H23 has been replaced by "true".  (It is already present, as 
+          H15).
+---  Hypothesis H24 has been replaced by "true".  (It is already present, as 
+          H16).
+---  Hypothesis H25 has been replaced by "true".  (It is already present, as 
+          H15).
+---  Hypothesis H26 has been replaced by "true".  (It is already present, as 
+          H16).
+---  Hypothesis H27 has been replaced by "true".  (It is already present, as H3)
+          .
+---  Hypothesis H28 has been replaced by "true".  (It is already present, as H4)
+          .
+---  Hypothesis H30 has been replaced by "true".  (It is already present, as 
+          H15).
+---  Hypothesis H31 has been replaced by "true".  (It is already present, as 
+          H16).
+***  Proved C2:  polypaver__floats__add(polypaver__floats__multiply(1 / 2, x), 
+          1 / 2) >= float__first
+     using hypothesis H15.
+***  Proved C3:  polypaver__floats__add(polypaver__floats__multiply(1 / 2, x), 
+          1 / 2) <= float__last
+     using hypothesis H16.
+>>>  Restructured hypothesis H29 into:
+     >>>  H29:  polypaver__floats__add(polypaver__floats__multiply(1 / 2, x), 1 
+          / 2) = x
+-S-  Applied substitution rule sqrt_rules(2).
+     This was achieved by replacing all occurrences of float__first by:
+          - 340282000000000000000000000000000000000.
+<S>  New H3:  x >= - 340282000000000000000000000000000000000
+<S>  New H7:  polypaver__floats__multiply(1 / 2, x) >= - 
+          340282000000000000000000000000000000000
+<S>  New H11:  true
+<S>  New H15:  polypaver__floats__add(polypaver__floats__multiply(1 / 2, x), 1 
+          / 2) >= - 340282000000000000000000000000000000000
+-S-  Applied substitution rule sqrt_rules(3).
+     This was achieved by replacing all occurrences of float__last by:
+          340282000000000000000000000000000000000.
+<S>  New H4:  x <= 340282000000000000000000000000000000000
+<S>  New H8:  polypaver__floats__multiply(1 / 2, x) <= 
+          340282000000000000000000000000000000000
+<S>  New H12:  true
+<S>  New H16:  polypaver__floats__add(polypaver__floats__multiply(1 / 2, x), 1 
+          / 2) <= 340282000000000000000000000000000000000
+---  Eliminated hypothesis H5 (true-hypothesis).
+---  Eliminated hypothesis H6 (true-hypothesis).
+---  Eliminated hypothesis H9 (true-hypothesis).
+---  Eliminated hypothesis H10 (true-hypothesis).
+---  Eliminated hypothesis H13 (true-hypothesis).
+---  Eliminated hypothesis H14 (true-hypothesis).
+---  Eliminated hypothesis H17 (true-hypothesis).
+---  Eliminated hypothesis H18 (true-hypothesis).
+---  Eliminated hypothesis H19 (true-hypothesis).
+---  Eliminated hypothesis H20 (true-hypothesis).
+---  Eliminated hypothesis H21 (true-hypothesis).
+---  Eliminated hypothesis H22 (true-hypothesis).
+---  Eliminated hypothesis H23 (true-hypothesis).
+---  Eliminated hypothesis H24 (true-hypothesis).
+---  Eliminated hypothesis H25 (true-hypothesis).
+---  Eliminated hypothesis H26 (true-hypothesis).
+---  Eliminated hypothesis H27 (true-hypothesis).
+---  Eliminated hypothesis H28 (true-hypothesis).
+---  Eliminated hypothesis H30 (true-hypothesis).
+---  Eliminated hypothesis H31 (true-hypothesis).
+---  Eliminated hypothesis H11 (true-hypothesis).
+---  Eliminated hypothesis H12 (true-hypothesis).
+---  Eliminated hypothesis H3 (redundant, given H1).
+---  Eliminated hypothesis H4 (redundant, given H2).
+---  Eliminated hypothesis H15 (redundant, given H1 & H29).
+---  Eliminated hypothesis H16 (redundant, given H2 & H29).
+     +++  New H32:  float__size >= 0
+
+
+@@@@@@@@@@  VC: function_sqrt_13.  @@@@@@@@@@
+%%%  Simplified H1 on reading formula in, to give:
+     %%%  H1:  r >= - (1 / 4 * (x * x)) + x
+%%%  Simplified H2 on reading formula in, to give:
+     %%%  H2:  r <= 1 / 4 * (x * x) + 1
+---  Hypothesis H9 has been replaced by "true".  (It is already present, as H7).
+---  Hypothesis H10 has been replaced by "true".  (It is already present, as H8)
+          .
+---  Hypothesis H11 has been replaced by "true".  (It is already present, as H7)
+          .
+---  Hypothesis H12 has been replaced by "true".  (It is already present, as H8)
+          .
+---  Hypothesis H16 has been replaced by "true".  (It is already present, as H7)
+          .
+---  Hypothesis H17 has been replaced by "true".  (It is already present, as H8)
+          .
+---  Hypothesis H18 has been replaced by "true".  (It is already present, as H3)
+          .
+---  Hypothesis H19 has been replaced by "true".  (It is already present, as H4)
+          .
+---  Hypothesis H20 has been replaced by "true".  (It is already present, as H7)
+          .
+---  Hypothesis H21 has been replaced by "true".  (It is already present, as H8)
+          .
+---  Hypothesis H24 has been replaced by "true".  (It is already present, as 
+          H14).
+---  Hypothesis H25 has been replaced by "true".  (It is already present, as 
+          H15).
+---  Hypothesis H28 has been replaced by "true".  (It is already present, as 
+          H14).
+---  Hypothesis H29 has been replaced by "true".  (It is already present, as 
+          H15).
+---  Hypothesis H30 has been replaced by "true".  (It is already present, as 
+          H26).
+---  Hypothesis H31 has been replaced by "true".  (It is already present, as 
+          H27).
+---  Hypothesis H34 has been replaced by "true".  (It is already present, as 
+          H26).
+---  Hypothesis H35 has been replaced by "true".  (It is already present, as 
+          H27).
+---  Hypothesis H36 has been replaced by "true".  (It is already present, as 
+          H32).
+---  Hypothesis H37 has been replaced by "true".  (It is already present, as 
+          H33).
+---  Hypothesis H38 has been replaced by "true".  (It is already present, as 
+          H32).
+---  Hypothesis H39 has been replaced by "true".  (It is already present, as 
+          H33).
+---  Hypothesis H40 has been replaced by "true".  (It is already present, as 
+          H32).
+---  Hypothesis H41 has been replaced by "true".  (It is already present, as 
+          H33).
+---  Hypothesis H42 has been replaced by "true".  (It is already present, as H7)
+          .
+---  Hypothesis H43 has been replaced by "true".  (It is already present, as H8)
+          .
+---  Hypothesis H45 has been replaced by "true".  (It is already present, as 
+          H32).
+---  Hypothesis H46 has been replaced by "true".  (It is already present, as 
+          H33).
+***  Proved C2:  polypaver__floats__multiply(1 / 2, polypaver__floats__add(r, 
+          polypaver__floats__divide(x, r))) >= float__first
+     using hypothesis H32.
+***  Proved C3:  polypaver__floats__multiply(1 / 2, polypaver__floats__add(r, 
+          polypaver__floats__divide(x, r))) <= float__last
+     using hypothesis H33.
+>>>  Restructured hypothesis H44 into:
+     >>>  H44:  polypaver__floats__multiply(1 / 2, polypaver__floats__add(r, 
+          polypaver__floats__divide(x, r))) = r
+-S-  Applied substitution rule sqrt_rules(2).
+     This was achieved by replacing all occurrences of float__first by:
+          - 340282000000000000000000000000000000000.
+<S>  New H3:  x >= - 340282000000000000000000000000000000000
+<S>  New H7:  r >= - 340282000000000000000000000000000000000
+<S>  New H14:  polypaver__floats__divide(x, r) >= - 
+          340282000000000000000000000000000000000
+<S>  New H22:  true
+<S>  New H26:  polypaver__floats__add(r, polypaver__floats__divide(x, r)) >= - 
+          340282000000000000000000000000000000000
+<S>  New H32:  polypaver__floats__multiply(1 / 2, polypaver__floats__add(r, 
+          polypaver__floats__divide(x, r))) >= - 
+          340282000000000000000000000000000000000
+-S-  Applied substitution rule sqrt_rules(3).
+     This was achieved by replacing all occurrences of float__last by:
+          340282000000000000000000000000000000000.
+<S>  New H4:  x <= 340282000000000000000000000000000000000
+<S>  New H8:  r <= 340282000000000000000000000000000000000
+<S>  New H15:  polypaver__floats__divide(x, r) <= 
+          340282000000000000000000000000000000000
+<S>  New H23:  true
+<S>  New H27:  polypaver__floats__add(r, polypaver__floats__divide(x, r)) <= 
+          340282000000000000000000000000000000000
+<S>  New H33:  polypaver__floats__multiply(1 / 2, polypaver__floats__add(r, 
+          polypaver__floats__divide(x, r))) <= 
+          340282000000000000000000000000000000000
+---  Eliminated hypothesis H9 (true-hypothesis).
+---  Eliminated hypothesis H10 (true-hypothesis).
+---  Eliminated hypothesis H11 (true-hypothesis).
+---  Eliminated hypothesis H12 (true-hypothesis).
+---  Eliminated hypothesis H16 (true-hypothesis).
+---  Eliminated hypothesis H17 (true-hypothesis).
+---  Eliminated hypothesis H18 (true-hypothesis).
+---  Eliminated hypothesis H19 (true-hypothesis).
+---  Eliminated hypothesis H20 (true-hypothesis).
+---  Eliminated hypothesis H21 (true-hypothesis).
+---  Eliminated hypothesis H24 (true-hypothesis).
+---  Eliminated hypothesis H25 (true-hypothesis).
+---  Eliminated hypothesis H28 (true-hypothesis).
+---  Eliminated hypothesis H29 (true-hypothesis).
+---  Eliminated hypothesis H30 (true-hypothesis).
+---  Eliminated hypothesis H31 (true-hypothesis).
+---  Eliminated hypothesis H34 (true-hypothesis).
+---  Eliminated hypothesis H35 (true-hypothesis).
+---  Eliminated hypothesis H36 (true-hypothesis).
+---  Eliminated hypothesis H37 (true-hypothesis).
+---  Eliminated hypothesis H38 (true-hypothesis).
+---  Eliminated hypothesis H39 (true-hypothesis).
+---  Eliminated hypothesis H40 (true-hypothesis).
+---  Eliminated hypothesis H41 (true-hypothesis).
+---  Eliminated hypothesis H42 (true-hypothesis).
+---  Eliminated hypothesis H43 (true-hypothesis).
+---  Eliminated hypothesis H45 (true-hypothesis).
+---  Eliminated hypothesis H46 (true-hypothesis).
+---  Eliminated hypothesis H22 (true-hypothesis).
+---  Eliminated hypothesis H23 (true-hypothesis).
+---  Eliminated hypothesis H3 (redundant, given H5).
+---  Eliminated hypothesis H4 (redundant, given H6).
+     +++  New H47:  float__size >= 0
+

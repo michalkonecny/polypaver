@@ -1,0 +1,29 @@
+           *******************************************************
+                            Listing of SPARK Text
+                              Examiner GPL 2012
+             Copyright (C) 2012 Altran Praxis Limited, Bath, U.K.
+           *******************************************************
+
+
+                        DATE : 17-MAY-2013 11:01:58.41
+
+Line
+   1  package PolyPaver.Exact is
+   2  	
+   3      --# function Square (X : Float) return Float;
+   4      --# function Int_Power (X : Float; N : Integer) return Float;
+   5      --# function Sqrt (X : Float) return Float;
+   6      --# function Exp (X : Float) return Float;
+   7      --# function Sin (X : Float) return Float;
+   8      --# function Cos (X : Float) return Float;
+   9      --# function Pi return Float;
+  10  
+  11      --# function Integral (Lo,Hi,Integrand : Float) return Float;
+  12      --# function Integration_Variable return Float;
+  13  	
+  14  end PolyPaver.Exact;
+
+Note: Flow analysis mode is automatic
+
+
+--End of file--------------------------------------------------

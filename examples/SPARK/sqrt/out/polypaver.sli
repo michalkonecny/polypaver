@@ -1,0 +1,29 @@
+V "SPARK 2012"
+A -noindex_file
+A -nowarning_file
+A -notarget_compiler_data
+A -config_file=gnat.cfg
+A -source_extension=ada
+A -listing_extension=lst
+A -nodictionary_file
+A -report_file=spark.rep
+A -nohtml
+A -vcg
+A -nostatistics
+A -fdl_identifiers=accept
+A -flow_analysis=auto
+A -language=95
+A -profile=sequential
+A -annotation_character=#
+A -rules=lazy
+A -error_explanations=off
+A -justification_option=full
+A -output_directory=out
+A -output_directory (actual)=/home/mik/research/spark/floats/paver/examples/SPARK/sqrt/out/
+P
+R
+
+U PolyPaver%s polypaver.ads
+
+D polypaver.ads 00000000000000 00000000
+

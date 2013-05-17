@@ -1,0 +1,29 @@
+           {*******************************************************}
+                               {FDL Declarations}
+                              {Examiner GPL 2012}
+             {Copyright (C) 2012 Altran Praxis Limited, Bath, U.K.}
+           {*******************************************************}
+
+
+                        {DATE : 17-MAY-2013 11:01:58.42}
+
+                           {function Example.Sqrt}
+
+
+title function sqrt;
+
+  function round__(real) : integer;
+  const float__base__first : real = pending; 
+  const float__base__last : real = pending; 
+  const float__first : real = pending; 
+  const float__last : real = pending; 
+  const float__size : integer = pending; 
+  var x : real;
+  var r : real;
+  function polypaver__exact__sqrt(real) : real;
+  function polypaver__floats__eps_rel : real;
+  function polypaver__floats__add(real, real) : real;
+  function polypaver__floats__multiply(real, real) : real;
+  function polypaver__floats__divide(real, real) : real;
+
+end;
