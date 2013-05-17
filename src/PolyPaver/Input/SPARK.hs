@@ -319,6 +319,8 @@ decodeFn _ "polypaver__floats__add" [arg1, arg2] = termOp2 (FPlus 24 126) arg1 a
 decodeFn _ "polypaver__floats__subtract" [arg1, arg2] = termOp2 (FMinus 24 126) arg1 arg2
 decodeFn _ "polypaver__floats__square" [arg1] = termOp1 (FSquare 24 126) arg1
 decodeFn _ "polypaver__floats__sqrt" [arg1] = termOp1 (FSqrt 24 126) arg1
+decodeFn _ "polypaver__floats__sin" [arg1] = termOp1 (FSin 24 126) arg1
+decodeFn _ "polypaver__floats__cos" [arg1] = termOp1 (FCos 24 126) arg1
 decodeFn _ "polypaver__floats__exp" [arg1] = termOp1 (FExp 24 126) arg1
 
 decodeFn _ "polypaver__long_floats__divide" [arg1, arg2] = termOp2 (FOver 53 1022) arg1 arg2
@@ -327,6 +329,8 @@ decodeFn _ "polypaver__long_floats__add" [arg1, arg2] = termOp2 (FPlus 53 1022) 
 decodeFn _ "polypaver__long_floats__subtract" [arg1, arg2] = termOp2 (FMinus 53 1022) arg1 arg2
 decodeFn _ "polypaver__long_floats__square" [arg1] = termOp1 (FSquare 53 1022) arg1
 decodeFn _ "polypaver__long_floats__sqrt" [arg1] = termOp1 (FSqrt 53 1022) arg1
+decodeFn _ "polypaver__long_floats__sin" [arg1] = termOp1 (FSin 53 1022) arg1
+decodeFn _ "polypaver__long_floats__cos" [arg1] = termOp1 (FCos 53 1022) arg1
 decodeFn _ "polypaver__long_floats__exp" [arg1] = termOp1 (FExp 53 1022) arg1
 
 decodeFn _ "polypaver__interval__hull" [arg1, arg2] = hull arg1 arg2

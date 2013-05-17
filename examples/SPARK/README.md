@@ -142,23 +142,52 @@ Similarly, peakq_8 conclusion 2 is proved in 87s using the default setting, whic
 
 ### Summary of easy conlusions
 
-TODO
+<table border="1">
+<tr>
+<th>Program</th>
+<th>Problems</th>
+<th>Easy problems (ie proved with -d 0 -t 120 -f or -d 1 -t 120 -f)</th>
+</tr>
+<tr>
+<td>peak</td>
+<td>63</td>
+<td>59</td>
+</tr>
+<tr>
+<td>sqrt</td>
+<td>21</td>
+<td>20</td>
+</tr>
+<tr>
+<td>erfriemann</td>
+<td>31</td>
+<td>28</td>
+</tr>
+</table>
+
 
 ## Proving the hard conclusions
 
 ### peak
 
 peakq_8 conclusion 1
+
 * using switches -d 1
+
     * proved in < 23min, using <230000 boxes
 
 peakunit_11 conclusion 1
-* using switches
+
+* using switches -d 1 -g
 
 peakunit_11 conclusion 2
 
+* using switches -d 1 -g
+
 
 peakunit_11 conclusion 3
+
+* using switches -d 1 -g
 
 
 ### sqrt
@@ -171,6 +200,20 @@ sqrt_13 conclusion 1
 
 ### erfriemann
 
+erfriemann_10 conclusion 1
+
+* -d 0 -I 4 -f
+* proved in <31h
+
+erfriemann_10 conclusion 2
+
+* -d 0 -I 4 -f
+* proved in <7min
+
+erfriemann_19 conclusion 1
+
+* -d 0 -I 4 -f
+* proved in <80min
 
 
 

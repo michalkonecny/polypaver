@@ -91,6 +91,8 @@ getTermVarNames (Term (term, _)) =
         FTimes _ _ left right -> getTermVarNames2 left right
         FSquare _ _ arg -> getTermVarNames arg
         FSqrt _ _ arg -> getTermVarNames arg
+        FSin _ _ arg -> getTermVarNames arg
+        FCos _ _ arg -> getTermVarNames arg
         FOver _ _ left right -> getTermVarNames2 left right
         FExp _ _ arg -> getTermVarNames arg
         _ -> IMap.empty
@@ -152,6 +154,8 @@ getTermFreeVars (Term (term, _)) =
         FTimes _ _ left right -> getTermFreeVars2 left right
         FSquare _ _ arg -> getTermFreeVars arg
         FSqrt _ _ arg -> getTermFreeVars arg
+        FSin _ _ arg -> getTermFreeVars arg
+        FCos _ _ arg -> getTermFreeVars arg
         FOver _ _ left right -> getTermFreeVars2 left right
         FExp _ _ arg -> getTermFreeVars arg
         _ -> Set.empty
@@ -235,6 +239,8 @@ renameVarsTerm old2new = rnm
             FTimes rel abs left right -> FTimes rel abs (rnm left) (rnm right)
             FSquare rel abs arg -> FSquare rel abs $ rnm arg
             FSqrt rel abs arg -> FSqrt rel abs $ rnm arg
+            FSin rel abs arg -> FSin rel abs $ rnm arg
+            FCos rel abs arg -> FCos rel abs $ rnm arg
             FOver rel abs left right -> FOver rel abs (rnm left) (rnm right)
             FExp rel abs arg -> FExp rel abs $ rnm arg
             t -> t
@@ -321,6 +327,8 @@ substituteVarsTerm old2new = subst
             FTimes rel abs left right -> FTimes rel abs (subst left) (subst right)
             FSquare rel abs arg -> FSquare rel abs $ subst arg
             FSqrt rel abs arg -> FSqrt rel abs $ subst arg
+            FSin rel abs arg -> FSin rel abs $ subst arg
+            FCos rel abs arg -> FCos rel abs $ subst arg
             FOver rel abs left right -> FOver rel abs (subst left) (subst right)
             FExp rel abs arg -> FExp rel abs $ subst arg
             t -> t

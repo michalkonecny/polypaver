@@ -138,6 +138,8 @@ data Term'
   | FOver Int Int Term Term
   | FSquare Int Int Term
   | FSqrt Int Int Term
+  | FSin Int Int Term
+  | FCos Int Int Term
   | FExp Int Int Term
   deriving (Eq,Show,Read,Data,Typeable)
 
@@ -188,6 +190,8 @@ getTermSize (Term (term, _)) =
         FOver _ _ t1 t2 -> 1 + (getTermSize t1) + (getTermSize t2)
         FSquare _ _ t -> 1 + (getTermSize t)
         FSqrt _ _ t -> 1 + (getTermSize t)
+        FSin _ _ t -> 1 + (getTermSize t)
+        FCos _ _ t -> 1 + (getTermSize t)
         FExp _ _ t -> 1 + (getTermSize t)
 
 
@@ -419,6 +423,8 @@ showTermIL shouldShowRanges = st
             FOver _ _ t1 t2 -> showOpT (uniascii "⊘" "(/)") "div" t1 t2
             FSquare _ _ t -> showFnT "fsquare" [t]
             FSqrt _ _ t -> showFnT "fsqrt" [t]
+            FSin _ _ t -> showFnT "fsin" [t]
+            FCos _ _ t -> showFnT "fcos" [t]
             FExp _ _ t -> showFnT "fexp" [t]
         where
         formatIntPower t1 t2 =
