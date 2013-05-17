@@ -166,7 +166,7 @@ Similarly, peakq_8 conclusion 2 is proved in 87s using the default setting, whic
 </table>
 
 
-## Proving the hard conclusions
+## Proving the hard problems
 
 ### peak
 
