@@ -1,7 +1,7 @@
 package PolyPaver.Exact is
 	
     --# function Square (X : Float) return Float;
-    --# function Int_Power (X : Float, N : Integer) return Float;
+    --# function Int_Power (X : Float; N : Integer) return Float;
     --# function Sqrt (X : Float) return Float;
     --# function Exp (X : Float) return Float;
     --# function Sin (X : Float) return Float;
