@@ -292,22 +292,34 @@ evalTerm
                     evTermBox' ppb $ round (left * right)
                     where
                     round = termOp1 $ FRound rel abs
+                FOver rel abs left right ->
+                    evTermBox' ppb $ round (left / right)
+                    where
+                    round = termOp1 $ FRound rel abs
                 FSquare rel abs arg ->
                     evTermBox' ppb $ round (square arg)
                     where
                     round = termOp1 $ FRound rel abs
                 FSqrt rel abs arg ->
-                    evTermBox' ppb $ round $ (1+2*fepsiRel) * (sqrt arg)
+                    evTermBox' ppb $ round $ (1+2*epsiRel) * (sqrt arg)
                     where
                     round = termOp1 $ FRound rel abs
-                FOver rel abs left right ->
-                    evTermBox' ppb $ round (left / right)
+                    epsiRel = termOp0 $ FEpsiRel rel abs
+                FSin rel abs arg ->
+                    evTermBox' ppb $ round $ (1+2*epsiRel) * (sin arg)
                     where
                     round = termOp1 $ FRound rel abs
+                    epsiRel = termOp0 $ FEpsiRel rel abs
+                FCos rel abs arg ->
+                    evTermBox' ppb $ round $ (1+2*epsiRel) * (cos arg)
+                    where
+                    round = termOp1 $ FRound rel abs
+                    epsiRel = termOp0 $ FEpsiRel rel abs
                 FExp rel abs arg ->
-                    evTermBox' ppb $ round $ (1+4*fepsiRel) * (exp arg)
+                    evTermBox' ppb $ round $ (1+4*epsiRel) * (exp arg)
                     where
                     round = termOp1 $ FRound rel abs
+                    epsiRel = termOp0 $ FEpsiRel rel abs
 
         setSizes :: FAPUOI BM -> FAPUOI BM  
         setSizes = FA.setMaxDegree maxdeg . FA.setMaxSize maxsize
