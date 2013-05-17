@@ -5,7 +5,7 @@
 *****************************************************************************
 
 
-CREATED 17-MAY-2013, 00:59:21  SIMPLIFIED 17-MAY-2013, 00:59:24
+CREATED 17-MAY-2013, 19:02:19  SIMPLIFIED 17-MAY-2013, 19:02:26
 
 SPARK Simplifier GPL 2012
 Copyright (C) 2012 Altran Praxis Limited, Bath, U.K.
@@ -16,7 +16,7 @@ function Riemann.erfRiemann
 
 
 For path(s) from start to precondition check associated with statement of line 
-          17:
+          11:
 
 function_erfriemann_1.
 H1:    polypaver__floats__is_range(x, 0, 4) .
@@ -35,26 +35,26 @@ C3:    polypaver__floats__divide(x, n) <=
           340282000000000000000000000000000000000 .
 
 
-For path(s) from start to run-time check associated with statement of line 17:
+For path(s) from start to run-time check associated with statement of line 11:
 
 function_erfriemann_2.
 *** true .          /* all conclusions proved */
 
 
-For path(s) from start to run-time check associated with statement of line 18:
+For path(s) from start to run-time check associated with statement of line 12:
 
 function_erfriemann_3.
 *** true .          /* all conclusions proved */
 
 
-For path(s) from start to run-time check associated with statement of line 19:
+For path(s) from start to run-time check associated with statement of line 13:
 
 function_erfriemann_4.
 *** true .          /* all conclusions proved */
 
 
 For path(s) from start to precondition check associated with statement of line 
-          21:
+          15:
 
 function_erfriemann_5.
 H1:    polypaver__floats__is_range(x, 0, 4) .
@@ -76,8 +76,8 @@ C2:    polypaver__floats__multiply(polypaver__floats__divide(x, n), 0) <=
           340282000000000000000000000000000000000 .
 
 
-For path(s) from assertion of line 25 to precondition check associated with 
-          statement of line 21:
+For path(s) from assertion of line 19 to precondition check associated with 
+          statement of line 15:
 
 function_erfriemann_6.
 H1:    polypaver__interval__contained_in(result - polypaver__exact__integral(0, 
@@ -152,20 +152,20 @@ C2:    polypaver__floats__multiply(polypaver__floats__divide(x, n), step + 1)
           <= 340282000000000000000000000000000000000 .
 
 
-For path(s) from start to run-time check associated with statement of line 21:
+For path(s) from start to run-time check associated with statement of line 15:
 
 function_erfriemann_7.
 *** true .          /* all conclusions proved */
 
 
-For path(s) from assertion of line 25 to run-time check associated with 
-          statement of line 21:
+For path(s) from assertion of line 19 to run-time check associated with 
+          statement of line 15:
 
 function_erfriemann_8.
 *** true .          /* all conclusions proved */
 
 
-For path(s) from start to assertion of line 25:
+For path(s) from start to assertion of line 19:
 
 function_erfriemann_9.
 H1:    polypaver__floats__is_range(x, 0, 4) .
@@ -195,7 +195,7 @@ C2:    polypaver__floats__is_range(0, - 10, 100) .
 C3:    polypaver__integers__is_range(0, 0, n - 1) .
 
 
-For path(s) from assertion of line 25 to assertion of line 25:
+For path(s) from assertion of line 19 to assertion of line 19:
 
 function_erfriemann_10.
 H1:    polypaver__interval__contained_in(result - polypaver__exact__integral(0, 
@@ -288,8 +288,8 @@ C2:    polypaver__floats__is_range(polypaver__floats__add(result,
 C3:    polypaver__integers__is_range(step + 1, 0, n - 1) .
 
 
-For path(s) from assertion of line 25 to precondition check associated with 
-          statement of line 41:
+For path(s) from assertion of line 19 to precondition check associated with 
+          statement of line 34:
 
 function_erfriemann_11.
 H1:    polypaver__interval__contained_in(result - polypaver__exact__integral(0, 
@@ -323,8 +323,8 @@ C2:    polypaver__floats__multiply(polypaver__floats__multiply(
           340282000000000000000000000000000000000 .
 
 
-For path(s) from assertion of line 25 to precondition check associated with 
-          statement of line 41:
+For path(s) from assertion of line 19 to precondition check associated with 
+          statement of line 34:
 
 function_erfriemann_12.
 H1:    polypaver__interval__contained_in(result - polypaver__exact__integral(0, 
@@ -366,15 +366,15 @@ C2:    polypaver__floats__exp(- polypaver__floats__multiply(
           <= 340282000000000000000000000000000000000 .
 
 
-For path(s) from assertion of line 25 to run-time check associated with 
-          statement of line 41:
+For path(s) from assertion of line 19 to run-time check associated with 
+          statement of line 34:
 
 function_erfriemann_13.
 *** true .          /* all conclusions proved */
 
 
-For path(s) from assertion of line 25 to precondition check associated with 
-          statement of line 44:
+For path(s) from assertion of line 19 to precondition check associated with 
+          statement of line 37:
 
 function_erfriemann_14.
 H1:    polypaver__interval__contained_in(result - polypaver__exact__integral(0, 
@@ -432,8 +432,8 @@ C2:    polypaver__floats__multiply(polypaver__floats__divide(x, n),
           <= 340282000000000000000000000000000000000 .
 
 
-For path(s) from assertion of line 25 to precondition check associated with 
-          statement of line 44:
+For path(s) from assertion of line 19 to precondition check associated with 
+          statement of line 37:
 
 function_erfriemann_15.
 H1:    polypaver__interval__contained_in(result - polypaver__exact__integral(0, 
@@ -503,15 +503,15 @@ C2:    polypaver__floats__add(result, polypaver__floats__multiply(
           340282000000000000000000000000000000000 .
 
 
-For path(s) from assertion of line 25 to run-time check associated with 
-          statement of line 44:
+For path(s) from assertion of line 19 to run-time check associated with 
+          statement of line 37:
 
 function_erfriemann_16.
 *** true .          /* all conclusions proved */
 
 
-For path(s) from assertion of line 25 to run-time check associated with 
-          statement of line 47:
+For path(s) from assertion of line 19 to run-time check associated with 
+          statement of line 40:
 
 function_erfriemann_17.
 H1:    polypaver__interval__contained_in(result - polypaver__exact__integral(0, 
@@ -607,7 +607,7 @@ C1:    polypaver__interval__contained_in(- polypaver__exact__integral(0, x,
           + 1 / 10 * (n + 1))) .
 
 
-For path(s) from assertion of line 25 to finish:
+For path(s) from assertion of line 19 to finish:
 
 function_erfriemann_19.
 H1:    polypaver__interval__contained_in(result - polypaver__exact__integral(0, 

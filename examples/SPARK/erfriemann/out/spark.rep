@@ -5,7 +5,7 @@
            *******************************************************
 
 
-                        DATE : 17-MAY-2013 00:59:21.40
+                        DATE : 17-MAY-2013 19:02:19.14
 
 Options:
     noindex_file
@@ -28,7 +28,7 @@ Options:
     error_explanations=off
     justification_option=full
     output_directory=out
-    output_directory (actual)=/Users/jandur/FPbyContract/paver/examples/SPARK/erfriemann/out/
+    output_directory (actual)=/home/mik/research/spark/floats/paver/examples/SPARK/erfriemann/out/
 
 Selected files:
    @riemann.smf
@@ -39,13 +39,13 @@ No Index files were used
 
 Meta File(s) used were:
    riemann.smf
-      /Users/jandur/FPbyContract/paver/examples/SPARK/packages/polypaver.ads
-      /Users/jandur/FPbyContract/paver/examples/SPARK/packages/polypaver-exact.ads
-      /Users/jandur/FPbyContract/paver/examples/SPARK/packages/polypaver-interval.ads
-      /Users/jandur/FPbyContract/paver/examples/SPARK/packages/polypaver-integers.ads
-      /Users/jandur/FPbyContract/paver/examples/SPARK/packages/polypaver-floats.ads
-      /Users/jandur/FPbyContract/paver/examples/SPARK/erfriemann/src/riemann.ads
-      /Users/jandur/FPbyContract/paver/examples/SPARK/erfriemann/src/riemann.adb
+      /home/mik/research/spark/floats/paver/examples/SPARK/packages/polypaver.ads
+      /home/mik/research/spark/floats/paver/examples/SPARK/packages/polypaver-exact.ads
+      /home/mik/research/spark/floats/paver/examples/SPARK/packages/polypaver-interval.ads
+      /home/mik/research/spark/floats/paver/examples/SPARK/packages/polypaver-integers.ads
+      /home/mik/research/spark/floats/paver/examples/SPARK/packages/polypaver-floats.ads
+      /home/mik/research/spark/floats/paver/examples/SPARK/erfriemann/src/riemann.ads
+      /home/mik/research/spark/floats/paver/examples/SPARK/erfriemann/src/riemann.adb
 
 
 Full warning reporting selected
@@ -72,18 +72,18 @@ Line
 
 
 Source Filename(s) used were:
-   /Users/jandur/FPbyContract/paver/examples/SPARK/packages/polypaver.ads
-   /Users/jandur/FPbyContract/paver/examples/SPARK/packages/polypaver-exact.ads
-   /Users/jandur/FPbyContract/paver/examples/SPARK/packages/polypaver-interval.ads
-   /Users/jandur/FPbyContract/paver/examples/SPARK/packages/polypaver-integers.ads
-   /Users/jandur/FPbyContract/paver/examples/SPARK/packages/polypaver-floats.ads
-   /Users/jandur/FPbyContract/paver/examples/SPARK/erfriemann/src/riemann.ads
-   /Users/jandur/FPbyContract/paver/examples/SPARK/erfriemann/src/riemann.adb
+   /home/mik/research/spark/floats/paver/examples/SPARK/packages/polypaver.ads
+   /home/mik/research/spark/floats/paver/examples/SPARK/packages/polypaver-exact.ads
+   /home/mik/research/spark/floats/paver/examples/SPARK/packages/polypaver-interval.ads
+   /home/mik/research/spark/floats/paver/examples/SPARK/packages/polypaver-integers.ads
+   /home/mik/research/spark/floats/paver/examples/SPARK/packages/polypaver-floats.ads
+   /home/mik/research/spark/floats/paver/examples/SPARK/erfriemann/src/riemann.ads
+   /home/mik/research/spark/floats/paver/examples/SPARK/erfriemann/src/riemann.adb
 
 
 
-Source Filename:   /Users/jandur/FPbyContract/paver/examples/SPARK/packages/polypaver.ads
-Listing Filename:  /Users/jandur/FPbyContract/paver/examples/SPARK/erfriemann/out/polypaver.lst
+Source Filename:   /home/mik/research/spark/floats/paver/examples/SPARK/packages/polypaver.ads
+Listing Filename:  /home/mik/research/spark/floats/paver/examples/SPARK/erfriemann/out/polypaver.lst
 
    Unit name:  PolyPaver
    Unit type:  package specification
@@ -92,8 +92,8 @@ Listing Filename:  /Users/jandur/FPbyContract/paver/examples/SPARK/erfriemann/ou
 No errors found
 
 
-Source Filename:   /Users/jandur/FPbyContract/paver/examples/SPARK/packages/polypaver-exact.ads
-Listing Filename:  /Users/jandur/FPbyContract/paver/examples/SPARK/erfriemann/out/polypaver-exact.lst
+Source Filename:   /home/mik/research/spark/floats/paver/examples/SPARK/packages/polypaver-exact.ads
+Listing Filename:  /home/mik/research/spark/floats/paver/examples/SPARK/erfriemann/out/polypaver-exact.lst
 
    Unit name:  PolyPaver.Exact
    Unit type:  package specification
@@ -102,8 +102,8 @@ Listing Filename:  /Users/jandur/FPbyContract/paver/examples/SPARK/erfriemann/ou
 No errors found
 
 
-Source Filename:   /Users/jandur/FPbyContract/paver/examples/SPARK/packages/polypaver-interval.ads
-Listing Filename:  /Users/jandur/FPbyContract/paver/examples/SPARK/erfriemann/out/polypaver-interval.lst
+Source Filename:   /home/mik/research/spark/floats/paver/examples/SPARK/packages/polypaver-interval.ads
+Listing Filename:  /home/mik/research/spark/floats/paver/examples/SPARK/erfriemann/out/polypaver-interval.lst
 
    Unit name:  PolyPaver.Interval
    Unit type:  package specification
@@ -112,8 +112,8 @@ Listing Filename:  /Users/jandur/FPbyContract/paver/examples/SPARK/erfriemann/ou
 No errors found
 
 
-Source Filename:   /Users/jandur/FPbyContract/paver/examples/SPARK/packages/polypaver-integers.ads
-Listing Filename:  /Users/jandur/FPbyContract/paver/examples/SPARK/erfriemann/out/polypaver-integers.lst
+Source Filename:   /home/mik/research/spark/floats/paver/examples/SPARK/packages/polypaver-integers.ads
+Listing Filename:  /home/mik/research/spark/floats/paver/examples/SPARK/erfriemann/out/polypaver-integers.lst
 
    Unit name:  PolyPaver.Integers
    Unit type:  package specification
@@ -122,8 +122,8 @@ Listing Filename:  /Users/jandur/FPbyContract/paver/examples/SPARK/erfriemann/ou
 No errors found
 
 
-Source Filename:   /Users/jandur/FPbyContract/paver/examples/SPARK/packages/polypaver-floats.ads
-Listing Filename:  /Users/jandur/FPbyContract/paver/examples/SPARK/erfriemann/out/polypaver-floats.lst
+Source Filename:   /home/mik/research/spark/floats/paver/examples/SPARK/packages/polypaver-floats.ads
+Listing Filename:  /home/mik/research/spark/floats/paver/examples/SPARK/erfriemann/out/polypaver-floats.lst
 
    Unit name:  PolyPaver.Floats
    Unit type:  package specification
@@ -132,8 +132,8 @@ Listing Filename:  /Users/jandur/FPbyContract/paver/examples/SPARK/erfriemann/ou
 No errors found
 
 
-Source Filename:   /Users/jandur/FPbyContract/paver/examples/SPARK/erfriemann/src/riemann.ads
-Listing Filename:  /Users/jandur/FPbyContract/paver/examples/SPARK/erfriemann/out/riemann.lst
+Source Filename:   /home/mik/research/spark/floats/paver/examples/SPARK/erfriemann/src/riemann.ads
+Listing Filename:  /home/mik/research/spark/floats/paver/examples/SPARK/erfriemann/out/riemann.lst
 
    Unit name:  Riemann
    Unit type:  package specification
@@ -142,24 +142,19 @@ Listing Filename:  /Users/jandur/FPbyContract/paver/examples/SPARK/erfriemann/ou
 No errors found
 
 
-Source Filename:   /Users/jandur/FPbyContract/paver/examples/SPARK/erfriemann/src/riemann.adb
-Listing Filename:  /Users/jandur/FPbyContract/paver/examples/SPARK/erfriemann/out/riemann.lst
+Source Filename:   /home/mik/research/spark/floats/paver/examples/SPARK/erfriemann/src/riemann.adb
+Listing Filename:  /home/mik/research/spark/floats/paver/examples/SPARK/erfriemann/out/riemann.lst
 
    Unit name:  Riemann
    Unit type:  package body
    Unit has been analysed, any errors are listed below.
 
-2 error(s) or warning(s)
+1 error(s) or warning(s)
 
 Line
-   7  end expMinusSquare;
+  43  end erfRiemann;
 
 --- (  1)  Warning           :405: VCs for statements including real numbers are 
-           approximate.
-
-  50  end erfRiemann;
-
---- (  2)  Warning           :405: VCs for statements including real numbers are 
            approximate.
 
 Note: Automatic flow analysis mode selected

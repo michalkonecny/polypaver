@@ -2,11 +2,6 @@ with PolyPaver.Floats;
 --# inherit PolyPaver.Exact, PolyPaver.Interval, PolyPaver.Integers, PolyPaver.Floats;
 package Riemann is 
 
-function expMinusSquare(x : Float) return Float;
---# pre PolyPaver.Floats.Is_Range(x, -1.0, 5.0);
---# return result =>
---#    PolyPaver.Interval.Contained_In(result, PolyPaver.Exact.Exp(-x*x) + PolyPaver.Interval.Hull(-0.000001,0.000001));
-
 function erfRiemann(x : Float; n : Integer) return Float;
 --# pre PolyPaver.Floats.Is_Range(x, 0.0, 4.0)
 --#     and PolyPaver.Integers.Is_Range(n, 1, 100);
