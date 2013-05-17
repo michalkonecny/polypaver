@@ -69,10 +69,10 @@ evalForm maxdeg maxsize ix minIntegrationStepSize ppb@(_, _, isIntVarMap, _) for
             Or left right -> evOp2 Or (L.||) left right 
             And left right -> evOp2 And (L.&&) left right
             Implies left right -> evOp2 Implies (L.~>) left right
-            Le lab left right -> evOpT2 False (Le lab) (\formWR -> L.less lab formWR ppb) left right 
-            Leq lab left right -> evOpT2 False (Leq lab) (\formWR -> L.leq lab formWR ppb) left right
-            Ge lab left right -> evOpT2 False (Le lab) (\formWR -> L.less lab formWR ppb) right left
-            Geq lab left right -> evOpT2 False (Leq lab) (\formWR -> L.leq lab formWR ppb) right left
+            Le lab left right -> evLess lab left right 
+            Leq lab left right -> evLeq lab left right
+            Ge lab left right -> evLess lab right left
+            Geq lab left right -> evLeq lab right left
             Eq lab left right ->
                 evForm $ And 
                     (Leq (lab ++ "<=") left right)
@@ -105,6 +105,45 @@ evalForm maxdeg maxsize ix minIntegrationStepSize ppb@(_, _, isIntVarMap, _) for
         formWithRanges = op leftWithRanges rightWithRanges
         (leftVal, leftWithRanges) = evTerm False left 
         (rightVal, rightWithRanges) = evTerm rightNeedsInnerRounding right
+    evLess = evLessLeq False Le L.less
+    evLeq = evLessLeq True Leq L.leq
+    evLessLeq isLeq formOp logicOp lab (Term (PlusInfinity, _)) (Term (PlusInfinity, _)) =
+        (L.fromBool lab ppb isLeq, 
+         formOp lab plusInfinityTermWithRange plusInfinityTermWithRange)
+    evLessLeq isLeq formOp logicOp lab (Term (MinusInfinity, _)) (Term (MinusInfinity, _)) =
+        (L.fromBool lab ppb isLeq, 
+         formOp lab minusInfinityTermWithRange minusInfinityTermWithRange)
+    evLessLeq _isLeq formOp logicOp lab (Term (MinusInfinity, _)) (Term (PlusInfinity, _)) =
+        (L.fromBool lab ppb True, 
+         formOp lab minusInfinityTermWithRange plusInfinityTermWithRange)
+    evLessLeq _isLeq formOp logicOp lab (Term (PlusInfinity, _)) (Term (MinusInfinity, _)) =
+        (L.fromBool lab ppb False, 
+         formOp lab plusInfinityTermWithRange minusInfinityTermWithRange)
+    evLessLeq _isLeq formOp logicOp lab (Term (MinusInfinity, _)) right =
+        (L.fromBool lab ppb True,
+         formOp lab minusInfinityTermWithRange rightWithRanges)
+        where
+        (_rightVal, rightWithRanges) = evTerm False right 
+    evLessLeq _isLeq formOp logicOp lab left (Term (MinusInfinity, _)) =
+        (L.fromBool lab ppb False,
+         formOp lab leftWithRanges minusInfinityTermWithRange)
+        where
+        (_leftVal, leftWithRanges) = evTerm False left 
+    evLessLeq _isLeq formOp logicOp lab (Term (PlusInfinity, _)) right =
+        (L.fromBool lab ppb False,
+         formOp lab plusInfinityTermWithRange rightWithRanges)
+        where
+        (_rightVal, rightWithRanges) = evTerm False right 
+    evLessLeq _isLeq formOp logicOp lab left (Term (PlusInfinity, _)) =
+        (L.fromBool lab ppb True,
+         formOp lab leftWithRanges plusInfinityTermWithRange)
+        where
+        (_leftVal, leftWithRanges) = evTerm False left 
+    evLessLeq _ formOp logicOp lab left right =
+        evOpT2 False (formOp lab) (\formWR -> logicOp lab formWR ppb) left right
+    plusInfinityTermWithRange = (Term (PlusInfinity, Just $ 1/0))
+    minusInfinityTermWithRange = (Term (MinusInfinity, Just $ -1/0))
+        
 
 termIsIntegerType :: (IMap.IntMap Bool) -> Term -> Bool
 termIsIntegerType isIntVarMap (Term (t, _)) =
@@ -161,8 +200,14 @@ evalTerm
             case term of
                 Pi -> (setSizes $ RAEL.pi 10, term)
                 Lit val -> (rationalToFA val, term)
-                PlusInfinity -> (setSizes $ UFA.const [1/0], term)
-                MinusInfinity -> (setSizes $ UFA.const [-1/0], term)
+                PlusInfinity ->
+                    unsafePrint
+                    ("Warning: Currently PolyPaver cannot prove a statement that has an infinity in a sub-expression.") 
+                    (setSizes $ UFA.const [1/0], term)
+                MinusInfinity -> 
+                    unsafePrint
+                    ("Warning: Currently PolyPaver cannot prove a statement that has an infinity in a sub-expression.") 
+                    (setSizes $ UFA.const [-1/0], term)
                 Var varid varName -> (fa, term)
                     where
                     fa =

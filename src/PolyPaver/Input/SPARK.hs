@@ -144,12 +144,12 @@ vcHead =
 vcWhole :: Parser Form 
 vcWhole = 
     do
-    t <- vcBody <|> vcEmptyBody
+    t <- vcHypothesesAndConclusions <|> vcConclusionsOnly <|> vcEmpty
 --    unsafePrint ("vcWhole: done vcName = " ++ vcName ++ "; form = " ++ showForm t) $ return ()
     return t
 
-vcBody :: Parser Form
-vcBody = 
+vcHypothesesAndConclusions :: Parser Form
+vcHypothesesAndConclusions = 
     do
     hs <- many hypothesis
     m_whiteSpace
@@ -158,8 +158,15 @@ vcBody =
     cs <- many1 (try conclusion)
     return $ foldr (--->) (foldl1 (/\) cs) $ sortFormulasBySize hs 
 
-vcEmptyBody :: Parser Form
-vcEmptyBody =
+vcConclusionsOnly :: Parser Form
+vcConclusionsOnly = 
+    do
+    cs <- many1 (try conclusion)
+    return $ foldl1 (/\) cs
+
+
+vcEmpty :: Parser Form
+vcEmpty =
     do
     m_symbol "***"
     manyTill anyToken m_dot 
