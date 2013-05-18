@@ -25,7 +25,9 @@
 
 * produce binaries for multiple platforms
 
-    * OSX (Jan), Windows 32 bit (DONE), Linux 32 (DONE) and 64 bit (MK)
+    * OSX (Jan), Windows 7 (DONE), Windows 8 (Jan+Adam), Linux 32 (DONE) and 64 bit (DONE)
+
+    * clearly state prerequisites of each binary - use a fresh install to verify
 
 ## release 0.2.1
 
@@ -64,6 +66,8 @@
 * inclusion and inequality transitive substituting formula preprocessor
 
     * come up with a good top-level algorithm for trying various substitutions
+
+        * identify possible substitutions - inequalities require monotonicity
 
     * make a totally silent version of the main loop
 
