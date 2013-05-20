@@ -17,6 +17,14 @@
 
         * how to prove them using PolyPaver
 
+    * add README to the vc folder
+        
+        * add grammar for vc input language (consider name alternatives?)
+		
+		* add examples (one simple one hard or one with a simple and a hard conclusion?)
+        
+        * how to prove them using PolyPaver
+        
 * DONE tidy up options and their --help documentation
 
 * DONE add FP sin and cos to the internal language and the SPARK PolyPaver package
@@ -28,6 +36,8 @@
     * OSX (Jan), Windows 7 (DONE), Windows 8 (Jan+Adam), Linux 32 (DONE) and 64 bit (DONE)
 
     * clearly state prerequisites of each binary - use a fresh install to verify
+
+		* Linux 32 and 64 bit 
 
 ## release 0.2.1
 
