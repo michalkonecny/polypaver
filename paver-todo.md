@@ -37,7 +37,7 @@
 
     * clearly state prerequisites of each binary - use a fresh install to verify
 
-		* Linux 32 and 64 bit 
+		* Linux 32 and 64 bit (see )
 
 ## release 0.2.1
 
