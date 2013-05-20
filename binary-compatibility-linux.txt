@@ -1,0 +1,27 @@
+PolyPaver binary compatibility tests.
+
+tested linux binaries:
+
+ - 64bit binary built on Kubuntu 11.04 
+   - Tested on vanilla Ubuntu 64bit 13.04, works as expected after symlinking libgmp.so.10 to libgmp.so.3 
+   - Tested on vanilla Ubuntu 32bit 13.04, failed to launch (with message: cannot execute binary file)
+   - Tested on vanilla Ubuntu 64bit 12.10, works as expected after symlinking libgmp.so.10 to libgmp.so.3 
+   - Tested on vanilla Ubuntu 32bit 12.10, failed to launch (with message: cannot execute binary file)
+   - Tested on vanilla Ubuntu 64bit 12.04, works as expected after symlinking libgmp.so.10 to libgmp.so.3 
+   - Tested on vanilla Ubuntu 64bit 11.10, works as expected after symlinking libgmp.so.10 to libgmp.so.3 
+   - Tested on vanilla Ubuntu 32bit 11.10, failed to launch (with message: failed to execute binary file)
+   - Tested on vanilla (sans gtk) Ubuntu 64bit 11.04, worked as expected
+
+ - 32bit binary built on Kubuntu 12.04 
+   - Tested on vanilla Ubuntu 64bit 13.04, failed to launch (with message: no such file or directory) 
+   - Tested on vanilla Ubuntu 32bit 13.04, worked as expected
+   - Tested on vanilla Ubuntu 64bit 12.10, failed to launch (with message: no such file or directory) 
+   - Tested on vanilla Ubuntu 32bit 12.10, worked as expected
+   - Tested on vanilla Ubuntu 64bit 12.04, failed to launch (with message: failed to execute binary file)
+   - Tested on vanilla Ubuntu 64bit 11.10, failed to launch (with message: no such file or directory) 
+   - Tested on vanilla Ubuntu 32bit 11.10, failed to launch due to incompatible system library (libc.so.6 complains that version GLIBC_2.1.5 could not be found)
+   - Tested on vanilla Ubuntu 32bit 11.04, failed to launch due to incompatible system library
+
+ - Cabal install from sources on OSX 10.7.5 and 10.8.3
+   - works as exepected, except plotting, which fails with Cairo error.
+
