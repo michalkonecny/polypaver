@@ -147,11 +147,35 @@ drawSubBox initboxInfo w h (subbox,(r,g,b,a)) =
     a box in the coordinates of a canvas of the given size.
 -}
 subBoxToCanvasBox initboxInfo w h subbox =
-    map converPt [p1,p2,p3,p4]
+    thickenIfLine $ map converPt [p1,p2,p3,p4]
     where
     converPt [x,y] =
         boxCoordsToCanvasCoords initboxInfo w h (x,y)
     [p1,p4,p2,p3] = ppCorners subbox
+
+thickenIfLine orig@[(x1,y1),(x2,y2),(x3,y3),(x4,y4)] 
+    | xDiff == 0 && yDiff > 2 = [(x1-1,y1),(x2+1,y2),(x3+1,y3),(x4-1,y4)]
+    | yDiff == 0 && xDiff > 2 = [(x1,y1-1),(x2,y2+1),(x3,y3+1),(x4,y4-1)]
+    | otherwise = orig
+    where
+    xDiff = sum $ map abs $ [x1-x2, x1-x3, x1-x4]
+    yDiff = sum $ map abs $ [y1-y2, y1-y3, y1-y4]
+-- alternative approach:    
+--    check14 . check13 . check12
+--    where
+--    check14 [p1,p2,p3,p4] = [r1,r2,r3,r4]
+--        where
+--        [r1,r4,r2,r3] = check12 [p1,p4,p2,p3]
+--    check13 [p1,p2,p3,p4] = [r1,r2,r3,r4]
+--        where
+--        [r1,r3,r2,r4] = check12 [p1,p3,p2,p4]
+--    check12 orig@[p1@(x1,y1),p2,p3@(x3,y3),p4]
+--        | p1 == p2 && p3 == p4 =
+--            if abs (x1 - x3) < abs (y1 - y3)
+--                then [(x1-1,y1),(x1+1,y1),(x3+1,y3),(x3-1,y3)]
+--                else [(x1,y1-1),(x1,y1+1),(x3,y3+1),(x3,y3-1)]
+--        | otherwise = orig
+    
 
 {-
     Takes a point in problem coordinates and maps it to a point
