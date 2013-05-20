@@ -1,3 +1,4 @@
+{-# LANGUAGE CPP #-}
 {-# LANGUAGE DeriveDataTypeable #-}
 
 {-|
@@ -18,7 +19,10 @@ import PolyPaver.Form (splitConclusion)
 import PolyPaver.Invocation
 import PolyPaver.Input.SPARK
 import PolyPaver.Input.TPTP
+
+#ifdef DynamicLoading 
 import PolyPaver.Input.Haskell
+#endif
 import PolyPaver.DeriveBounds (getBox)
 import PolyPaver.Vars (substituteVarsForm,getFormVarNames)
 
@@ -31,7 +35,9 @@ main
     = batchMain lookupFile
     
 lookupFile args@(inputPath : _)
+#ifdef DynamicLoading 
     | hasHsExtension inputPath = lookupHaskell args
+#endif
     | hasFormExtension inputPath = lookupForm args
     | hasVCExtension inputPath = lookupVC args
     | hasSivExtension inputPath = lookupSiv args
@@ -39,11 +45,13 @@ lookupFile args@(inputPath : _)
         error "Input of TPTP files not supported yet"  
 --        lookupTptp args
     
+#ifdef DynamicLoading     
 lookupHaskell [inputPath] = lookupHaskell [inputPath, "problem"]
 lookupHaskell (inputPath : problemNames) =
     do
     problems <- loadHaskellProblems inputPath problemNames
     return $ zip problemNames problems
+#endif
     
 lookupForm [inputPath] =
     do
