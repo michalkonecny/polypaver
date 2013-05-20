@@ -10,7 +10,7 @@ Maintainer:     mikkonecny@gmail.com
 Homepage:       http://code.google.com/p/polypaver/
 Stability:      experimental
 Category:       Numerical, Theorem Provers
-Synopsis:       numerical constraint solver based on polynomial interval arithmetic
+Synopsis:       Numerical theorem prover based on polynomial interval arithmetic
 Tested-with:    
                 GHC ==7.4.2
 Description:
@@ -31,6 +31,7 @@ Description:
 
 Extra-Source-Files:
     CHANGES
+    LICENCE
     examples/vc/mini.vc
     examples/vc/power.vc
     examples/vc/sqrt43.vc
@@ -85,6 +86,11 @@ Extra-Source-Files:
     examples/SPARK/sqrt/out/sqrt.fdl
     examples/SPARK/sqrt/sqrt.smf
 
+Flag DynamicLoading
+  Description: Enable dynamically loading problems defined in Haskell.  Requires installed PolyPaver library.
+  Default: False
+
+
 Library
   hs-source-dirs: src
   ghc-options:     -O2
@@ -102,9 +108,8 @@ Library
         syb >= 0.1 && < 1,
         time >= 1.1 && < 2,
         convertible >= 1.0 && < 2,
-        parsec >= 3.1.1 && < 3.2,
-        ghc >= 7.4 && < 7.5,
-        ghc-paths >= 0.1 && < 0.2
+        parsec >= 3.1.1 && < 3.2
+
   Exposed-modules:
     PolyPaver
 
@@ -118,9 +123,6 @@ Library
     PolyPaver.PPBox,
     PolyPaver.Plot,
     PolyPaver.DeriveBounds,
-    PolyPaver.Input.SPARK,
-    PolyPaver.Input.Haskell,
-    PolyPaver.Input.TPTP,
     Numeric.ER.ShowHTML,
     Numeric.ER.BasicTypes.PlusMinus,
     Numeric.ER.Misc,
@@ -176,20 +178,42 @@ Executable polypaver
   hs-source-dirs: src
   ghc-options:     -O2
   main-is: Main.hs
-  Build-Depends:
-        base >= 4 && < 5,
-        containers >= 0.3.0.0 && < 0.5,
-        gtk >= 0.12.0 && < 0.13,
-        cairo >= 0.12.0 && < 0.13,
-        stm >= 2 && < 3,
-        cmdargs >= 0.7 && < 0.11,
-        filepath >= 1.1 && < 2,
-        regex-compat >= 0.93.1 && < 0.96,
-        html >= 1.0.1.2 && < 2,
-        binary >= 0.5 && < 1,
-        syb >= 0.1 && < 1,
-        time >= 1.1 && < 2,
-        convertible >= 1.0 && < 2,
-        parsec >= 3.1.1 && < 3.2,
-        ghc >= 7.4 && < 7.5,
-        ghc-paths >= 0.1 && < 0.2
+  if flag(DynamicLoading)
+    cpp-options: -DDynamicLoading
+    Build-Depends:
+          base >= 4 && < 5,
+          containers >= 0.3.0.0 && < 0.5,
+          gtk >= 0.12.0 && < 0.13,
+          cairo >= 0.12.0 && < 0.13,
+          stm >= 2 && < 3,
+          cmdargs >= 0.7 && < 0.11,
+          filepath >= 1.1 && < 2,
+          regex-compat >= 0.93.1 && < 0.96,
+          html >= 1.0.1.2 && < 2,
+          binary >= 0.5 && < 1,
+          syb >= 0.1 && < 1,
+          time >= 1.1 && < 2,
+          convertible >= 1.0 && < 2,
+          parsec >= 3.1.1 && < 3.2,
+          ghc >= 7.4 && < 7.5,
+          ghc-paths >= 0.1 && < 0.2
+  else
+    Build-Depends:
+          base >= 4 && < 5,
+          containers >= 0.3.0.0 && < 0.5,
+          gtk >= 0.12.0 && < 0.13,
+          cairo >= 0.12.0 && < 0.13,
+          stm >= 2 && < 3,
+          cmdargs >= 0.7 && < 0.11,
+          filepath >= 1.1 && < 2,
+          regex-compat >= 0.93.1 && < 0.96,
+          html >= 1.0.1.2 && < 2,
+          binary >= 0.5 && < 1,
+          syb >= 0.1 && < 1,
+          time >= 1.1 && < 2,
+          convertible >= 1.0 && < 2,
+          parsec >= 3.1.1 && < 3.2
+  Other-modules:
+    PolyPaver.Input.SPARK,
+    PolyPaver.Input.Haskell,
+    PolyPaver.Input.TPTP
