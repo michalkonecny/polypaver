@@ -11,17 +11,21 @@
 
     * DONE deal with universal_real* in the peak example
 
-    * add README to the SPARK folder
+    * wiki on how to work with SPARK, using the supplied examples
 
         * DONE how the VCs were derived
 
-        * how to prove them using PolyPaver
-
-    * add README to the vc folder
+        * DONE how to prove the VCs using PolyPaver
         
-        * add grammar for vc input language (consider name alternatives?)
+        * migrate to Google Code
+        
+        * add some text on how to 
+
+    * wiki on how to work with the PP format
+        
+        * add grammar for pp input language
 		
-		* add examples (one simple one hard or one with a simple and a hard conclusion?)
+		* MAYBE add examples (one simple one hard or one with a simple and a hard conclusion?)
         
         * how to prove them using PolyPaver
         
@@ -29,15 +33,20 @@
 
 * DONE add FP sin and cos to the internal language and the SPARK PolyPaver package
 
-* minimal update of public documentation
-
 * produce binaries for multiple platforms
 
-    * OSX (Jan), Windows 7 (DONE), Windows 8 (Jan+Adam), Linux 32 (DONE) and 64 bit (DONE)
+    * OSX (Jan), Windows 7 (ready), Windows 8 (Jan+Adam)
+    
+    * Linux 12.04 32 bit (ready) and 12.04 64 bit (Jan?)
 
     * clearly state prerequisites of each binary - use a fresh install to determine and verify
 
 		* Linux 32 and 64 bit (see )
+
+* minimal update of visible documentation on Google Code
+
+    * probably hide some of the old stuff (perhaps temporarily)
+
 
 ## release 0.2.1
 

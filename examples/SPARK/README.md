@@ -1,6 +1,8 @@
-# Example verified SPARK Ada programs 
+# Verifying numerical SPARK Ada programs using PolyPaver 
 
-## Overview of the programs' goals
+TODO: a few sentences of introduction
+
+## Overview of the example programs
 
 ### peak
 
@@ -19,6 +21,13 @@
 *Main procedure*: erfRiemann  
 *Input*: real value X and integer n  
 *Output*: a Riemann sum over n segments, approximating the value of the Gaussian error function for X
+
+## How to write SPARK programs that can be verified using PolyPaver
+
+TODO: 
+* List replacements for Ada FP operations and functions.  
+* State that in annotations, numerical operations retain their exact meaning.
+* List annotation functions understood by polypaver (such as such as polypaver.exact.sqrt). 
 
 ## Generation of verification conditions (VCs):
 
@@ -176,18 +185,13 @@ peakq_8 conclusion 1
 
     * proved in < 23min, using <230000 boxes
 
-peakunit_11 conclusion 1
+peakunit_11 conclusions 1,2,3
 
-* using switches -d 1 -g
+* These are statements of a similar nature as `examples/pp/skewing.pp` but with 8 variables.
 
-peakunit_11 conclusion 2
+* PolyPaver has not managed to prove any of them within a timeout of 3 days.
 
-* using switches -d 1 -g
-
-
-peakunit_11 conclusion 3
-
-* using switches -d 1 -g
+* An explanation why PolyPaver is not suited for such problems at present and how we plan to address this limitation in future is in file `examples/pp/skewing.pp`.
 
 
 ### sqrt
@@ -195,6 +199,7 @@ peakunit_11 conclusion 3
 sqrt_13 conclusion 1
 
 * using switches -d 7 -z 5 -e 10
+
 * proved in <10min, using <20000 boxes
 
 
@@ -203,16 +208,19 @@ sqrt_13 conclusion 1
 erfriemann_10 conclusion 1
 
 * -d 0 -I 4 -f
+
 * proved in <31h
 
 erfriemann_10 conclusion 2
 
 * -d 0 -I 4 -f
+
 * proved in <7min
 
 erfriemann_19 conclusion 1
 
 * -d 0 -I 4 -f
+
 * proved in <80min
 
 
