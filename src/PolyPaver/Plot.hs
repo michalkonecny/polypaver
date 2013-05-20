@@ -154,8 +154,8 @@ subBoxToCanvasBox initboxInfo w h subbox =
     [p1,p4,p2,p3] = ppCorners subbox
 
 thickenIfLine orig@[(x1,y1),(x2,y2),(x3,y3),(x4,y4)] 
-    | xDiff == 0 && yDiff > 2 = [(x1-1,y1),(x2+1,y2),(x3+1,y3),(x4-1,y4)]
-    | yDiff == 0 && xDiff > 2 = [(x1,y1-1),(x2,y2+1),(x3,y3+1),(x4,y4-1)]
+    | xDiff == 0 && yDiff > 2 = [(x1-2,y1),(x2+2,y2),(x3+2,y3),(x4-2,y4)]
+    | yDiff == 0 && xDiff > 2 = [(x1,y1-2),(x2,y2+2),(x3,y3+2),(x4,y4-2)]
     | otherwise = orig
     where
     xDiff = sum $ map abs $ [x1-x2, x1-x3, x1-x4]
