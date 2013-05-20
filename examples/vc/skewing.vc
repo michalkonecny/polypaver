@@ -16,7 +16,21 @@
          -d 0    (589 boxes, 0.5s)
          -d 4    (709 boxes, 52s)
          -d 4 -g (607 boxes, 47s)
-         -d 4 -k -m 5 (497 parallelepipeds, 38s) 
+         -d 4 -k -m 5 (497 parallelepipeds, 38s)
+         
+    Setting both -k and -g in this case runs very slowly,
+    illustrating the following weakness of -k.  Skewing usually
+    means that the problem is being proved in some areas outside the
+    original domain.  When the domain is near a difficult area,
+    such as x = -0.01 in this problem, skewing into the difficult
+    area is very counter-productive.
+    
+    A much more promising approach to solve problems such as this one
+    seems to be using a symbolic component, which will attempt safe
+    substitutions, such as the one used to obtain C2 from C1, and try
+    proving that problem using the current polypaver algorithm.
+    The authors hope such component will be available in a future release 
+    not too far away.
 */
 skewing.
 H1: x <- [0 .. 1].
