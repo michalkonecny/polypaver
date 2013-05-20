@@ -104,7 +104,7 @@ paver =
     ,time = 7*24*3600 &= help "timeout in seconds (default = 7*24*3600 ie 1 week)"    
     ,boxSkewing = False &= name "k" &= help "allow parallelepiped boxes, by default only coaxial rectangles" 
         &= groupname "Experimental"
-    ,splitGuessing = -1 &= name "g" &= opt (20 :: Int) &= help "try guessing the best direction but do not allow a box in which a pair of edge lengths exceeds this ratio (default 20)"
+    ,splitGuessing = -1 &= name "g" &= opt (20 :: Int) &= help "try guessing the best box splitting direction but do not allow a box in which a pair of box edge lengths exceeds a given ratio (default 20)"
 --    ,epsrelbits = 23 &= name "r" &= help "n to compute machine epsilon using 2^-n (default = 24)" &= groupname "Floating point rounding interpretation in conjectures"
 --    ,epsabsbits = 126 &= name "a" &= help "n to compute denormalised epsilon using 2^-n (default = 126)"
     ,quiet = False &= help "suppress all output except the final result (default off)" 

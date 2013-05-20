@@ -35,7 +35,7 @@
 
     * OSX (Jan), Windows 7 (DONE), Windows 8 (Jan+Adam), Linux 32 (DONE) and 64 bit (DONE)
 
-    * clearly state prerequisites of each binary - use a fresh install to verify
+    * clearly state prerequisites of each binary - use a fresh install to determine and verify
 
 		* Linux 32 and 64 bit (see )
 

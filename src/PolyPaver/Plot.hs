@@ -12,14 +12,14 @@ import PolyPaver.PPBox
 import qualified Numeric.ER.Real.Approx as RA
 import Numeric.ER.Misc
 
+import Graphics.UI.Gtk hiding (drawPolygon)
+import Graphics.Rendering.Cairo
+
 import Control.Concurrent
 import Control.Concurrent.STM
 
-----canvas-----
-import Graphics.UI.Gtk hiding (drawPolygon)
-import Graphics.Rendering.Cairo
---import Data.Time.Clock.POSIX
---import System.CPUTime
+--import qualified Data.Map as Map
+import qualified Data.IntMap as IMap
 
 {-|
   sample usage: @addBox stateTV (1,0,0,0.9) box@
@@ -50,8 +50,10 @@ initPlot initbox w h =
     -- 4---3
     -- |   |
     -- 1---2
-    [p1@[x1,y1],p4@[_,y4],p2@[x2,_],p3] = ppCorners initbox
-    initboxInfo = (ppCentre initbox, x2 - x1, y4 - y1)
+    [p1@[x1,y1], p4@[_,y4], p2@[x2,_], p3] = ppCorners affines
+    (_isSkewed, affines, _varIsInts, varNamesMap) = initbox
+    varNames = map snd $ IMap.toAscList varNamesMap
+    initboxInfo = (ppCentre affines, x2 - x1, y4 - y1, varNames)
 
 myCanvas stateTV draw initboxInfo w h = 
     do
@@ -84,7 +86,44 @@ myExposeHandler stateTV widget draw initboxInfo _event =
 
 draw initboxInfo w h state  = 
     do
-    mapM_ (drawSubBox initboxInfo w h) $ reverse state
+    drawAxisLabels initboxInfo w h
+    mapM_ (drawSubBox initboxInfo w h) state
+
+drawAxisLabels initboxInfo w h =
+    do
+    setFontSize 17
+    -- draw variable names:
+    moveTo centreX (botLeftY + 10)
+    showTextCenteredAndShiftedBy (0,0.5) var1
+    moveTo (botLeftX - 10) centreY
+    showTextCenteredAndShiftedBy (-0.5,0) var2
+    -- draw domain endpoints on X axis:
+    moveTo botLeftX (botLeftY + 10)
+    showTextCenteredAndShiftedBy (0,0.5) (showAsD $ xIO - wI/2)
+    moveTo topRightX (botLeftY + 10)
+    showTextCenteredAndShiftedBy (0,0.5) (showAsD $ xIO + wI/2)
+    -- draw domain endpoints on Y axis:
+    moveTo (botLeftX - 10) botLeftY
+    showTextCenteredAndShiftedBy (-0.5,0) (showAsD $ yIO - hI/2)
+    moveTo (botLeftX - 10) topRightY
+    showTextCenteredAndShiftedBy (-0.5,0) (showAsD $ yIO + hI/2)
+    where
+    (centreX, centreY) = boxCoordsToCanvasCoords initboxInfo w h (xIO,yIO)
+    (botLeftX, botLeftY) = boxCoordsToCanvasCoords initboxInfo w h (xIO-wI/2,yIO-hI/2)
+    (topRightX, topRightY) = boxCoordsToCanvasCoords initboxInfo w h (xIO+wI/2,yIO+hI/2)
+    ([xIO,yIO],wI,hI,[var1, var2]) = initboxInfo
+    showAsD aI = show aD where (_, aD) = RA.doubleBounds aI
+    showTextCenteredAndShiftedBy (xShiftInWidths, yShiftInHeights) text =
+        do
+        extents <- textExtents text
+        uncurry relMoveTo $ getPos extents
+        showText text
+        where
+        getPos extents =
+             (-w/2 +w*xShiftInWidths,h/2 + h*yShiftInHeights)
+             where
+             w = textExtentsWidth extents
+             h = textExtentsHeight extents
 
 drawSubBox initboxInfo w h (subbox,(r,g,b,a)) = 
     do
@@ -133,7 +172,7 @@ boxCoordsToCanvasCoords initboxInfo w h (xB,yB) =
     (xC,yC)
     where
     -- convert from unit square coordinates to canvas coordinates,
-    -- mapping the unit square to the centre one of nine equal squares:
+    -- mapping the unit square to the centre of the visible area:
     -- ----------
     -- |  |  |  | 
     -- ----------
@@ -142,14 +181,14 @@ boxCoordsToCanvasCoords initboxInfo w h (xB,yB) =
     -- |  |  |  | 
     -- ----------
     
-    xC = w*(1/2 + xL/3)
-    yC = h*(1/2 - yL/3) -- cairo's origin is the top left corner
+    xC = w*(0.5 + 0.75*xL)
+    yC = h*(0.5 - 0.75*yL) -- cairo's origin is the top left corner
     -- convert relative coords from IRA to Double:
     [(xL,xR), (yL,yR)] = map RA.doubleBounds [xU, yU]
     -- translate box coords to unit square coord relative to initbox:
-    xU = (xB - xIO) / wI
-    yU = (yB - yIO) / hI
-    -- extract initbox origin and half-width and half-height:
-    ([xIO,yIO],wI,hI) = initboxInfo
+    xU = (xB - xIO) / (wI)
+    yU = (yB - yIO) / (hI)
+    -- extract initbox origin and width and height:
+    ([xIO,yIO],wI,hI,_) = initboxInfo
 
 
