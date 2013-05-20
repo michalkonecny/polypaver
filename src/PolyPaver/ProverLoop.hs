@@ -93,7 +93,7 @@ solveAndReportOnConsole
             | dim /= 2 || w <= 0 || h <= 0 -> return Nothing
             | otherwise ->
                 do
-                stateTV <- Plot.initPlot initbox w h
+                stateTV <- Plot.initPlot initppb w h
                 return $ Just stateTV
     -- take the clock reading:
     inittime <- getCPUTime
