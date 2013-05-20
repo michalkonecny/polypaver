@@ -1,4 +1,4 @@
-# VC files and examples
+# PP files and examples
 
 ## Grammar
 
@@ -24,7 +24,7 @@
 
 To categorise the easy problems, first run
 
-    > polypaver power.vc -t 1 -q
+    > polypaver power.pp -t 1 -q
 
 The above command applies PolyPaver for 1s on default settings to each  conclusion in the file.
 
@@ -38,7 +38,7 @@ some parameters other than time.
 The success rate is improved by switching from the default degree 0 enclosures
 to affine enclosures:
 
-    > polypaver power.vc ...
+    > polypaver power.pp ...
 
 For those problems where PolyPaver timed out, the output shows how far it got at proving it.
 Typically, if the fraction is above 1 percent, it is possible to decide the problem in reasonably time 

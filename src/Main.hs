@@ -39,7 +39,7 @@ lookupFile args@(inputPath : _)
     | hasHsExtension inputPath = lookupHaskell args
 #endif
     | hasFormExtension inputPath = lookupForm args
-    | hasVCExtension inputPath = lookupVC args
+    | hasPPExtension inputPath = lookupPP args
     | hasSivExtension inputPath = lookupSiv args
     | hasTptpExtension inputPath =
         error "Input of TPTP files not supported yet"  
@@ -83,24 +83,24 @@ lookupForm [inputPath] =
             s _ = Nothing
 --        ts = reverse $ take 11 $ iterate (*2) 1
 
-lookupVC [inputPath] =
+lookupPP [inputPath] =
     do
     fileContents <- readFile inputPath
-    let vc = parseVCInFile inputPath fileContents
-    return $ mkProblems vc
+    let pp = parseVCInFile inputPath fileContents
+    return $ mkProblems pp
     
-lookupVC [inputPath, conclNumberS] =
+lookupPP [inputPath, conclNumberS] =
     case reads conclNumberS of
         (conclNumber, _) : _ ->
             do
             fileContents <- readFile inputPath
-            let vc = parseVCInFile inputPath fileContents
-            return $ [mkProblems vc !! (conclNumber - 1)]
-        _ -> vcArgsError
+            let pp = parseVCInFile inputPath fileContents
+            return $ [mkProblems pp !! (conclNumber - 1)]
+        _ -> ppArgsError
     
-lookupVC _ = vcArgsError 
+lookupPP _ = ppArgsError 
 
-vcArgsError = error "PolyPaver: expecting arguments: <file.vc> [<conclusion number>]"
+ppArgsError = error "PolyPaver: expecting arguments: <file.pp> [<conclusion number>]"
     
     
 lookupSiv [inputPath] =
@@ -138,6 +138,6 @@ mkProblems (name, vc, box) =
     
 hasHsExtension path = ".hs" `isSuffixOf` path
 hasFormExtension path = ".form" `isSuffixOf` path
-hasVCExtension path = ".vc" `isSuffixOf` path
+hasPPExtension path = ".pp" `isSuffixOf` path
 hasSivExtension path = ".siv" `isSuffixOf` path
 hasTptpExtension path = ".tptp" `isSuffixOf` path
