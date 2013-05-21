@@ -102,6 +102,12 @@ Extra-Source-Files:
     examples/SPARK/erfriemann/out/spark.rep
 
 
+source-repository this
+  type:     mercurial
+  location: https://code.google.com/p/polypaver/
+  tag:      polypaver-0.2
+
+
 Flag DynamicLoading
   Description: Enable dynamically loading problems defined in Haskell.  Requires installed PolyPaver library.
   Default: False
