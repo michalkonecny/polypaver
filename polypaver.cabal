@@ -39,6 +39,7 @@ Extra-Source-Files:
     examples/pp/skewing.pp
     examples/haskell/sqrtexp.hs
     examples/form/true.form
+    examples/SPARK/README
     examples/SPARK/packages/polypaver.ads
     examples/SPARK/packages/polypaver-exact.ads
     examples/SPARK/packages/polypaver-floats.ads
