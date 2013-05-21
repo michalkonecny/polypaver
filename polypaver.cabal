@@ -45,9 +45,10 @@ Extra-Source-Files:
     examples/SPARK/packages/polypaver-floats.adb
     examples/SPARK/packages/polypaver-integers.ads
     examples/SPARK/packages/polypaver-interval.ads
-    examples/SPARK/peak/gnat.cfg
     examples/SPARK/peak/src/peak.adb
     examples/SPARK/peak/src/peak.ads
+    examples/SPARK/peak/peak.smf
+    examples/SPARK/peak/gnat.cfg
     examples/SPARK/peak/spark.sw
     examples/SPARK/peak/out/peak.sli
     examples/SPARK/peak/out/peak.lst
@@ -72,10 +73,10 @@ Extra-Source-Files:
     examples/SPARK/peak/out/peak/max.siv
     examples/SPARK/peak/out/peak/max.slg
     examples/SPARK/peak/out/peak/peakq.siv
-    examples/SPARK/peak/peak.smf
-    examples/SPARK/sqrt/gnat.cfg
     examples/SPARK/sqrt/src/sqrt.adb
     examples/SPARK/sqrt/src/sqrt.ads
+    examples/SPARK/sqrt/sqrt.smf
+    examples/SPARK/sqrt/gnat.cfg
     examples/SPARK/sqrt/spark.sw
     examples/SPARK/sqrt/out/sqrt.siv
     examples/SPARK/sqrt/out/sqrt.slg
@@ -85,7 +86,20 @@ Extra-Source-Files:
     examples/SPARK/sqrt/out/sqrt.rls
     examples/SPARK/sqrt/out/spark.rep
     examples/SPARK/sqrt/out/sqrt.fdl
-    examples/SPARK/sqrt/sqrt.smf
+    examples/SPARK/erfriemann/src/riemann.adb
+    examples/SPARK/erfriemann/src/riemann.ads
+    examples/SPARK/erfriemann/riemann.smf
+    examples/SPARK/erfriemann/spark.sw
+    examples/SPARK/erfriemann/gnat.cfg
+    examples/SPARK/erfriemann/out/riemann/erfriemann.fdl
+    examples/SPARK/erfriemann/out/riemann/erfriemann.rls
+    examples/SPARK/erfriemann/out/riemann/erfriemann.siv
+    examples/SPARK/erfriemann/out/riemann/erfriemann.slg
+    examples/SPARK/erfriemann/out/riemann/erfriemann.vcg
+    examples/SPARK/erfriemann/out/riemann.lst
+    examples/SPARK/erfriemann/out/riemann.sli
+    examples/SPARK/erfriemann/out/spark.rep
+
 
 Flag DynamicLoading
   Description: Enable dynamically loading problems defined in Haskell.  Requires installed PolyPaver library.
