@@ -17,7 +17,7 @@
 
         * DONE how to prove the VCs using PolyPaver
         
-        * migrate to Google Code
+        * DONE migrate to Google Code
         
         * add some text on how to 
 
