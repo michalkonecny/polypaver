@@ -79,14 +79,14 @@ Extra-Source-Files:
     examples/SPARK/sqrt/sqrt.smf
     examples/SPARK/sqrt/gnat.cfg
     examples/SPARK/sqrt/spark.sw
-    examples/SPARK/sqrt/out/sqrt.siv
-    examples/SPARK/sqrt/out/sqrt.slg
-    examples/SPARK/sqrt/out/sqrt.lst
-    examples/SPARK/sqrt/out/sqrt.vcg
+    examples/SPARK/sqrt/out/example/sqrt.siv
+    examples/SPARK/sqrt/out/example/sqrt.slg
+    examples/SPARK/sqrt/out/example/sqrt.vcg
+    examples/SPARK/sqrt/out/example/sqrt.rls
+    examples/SPARK/sqrt/out/example/sqrt.fdl
     examples/SPARK/sqrt/out/sqrt.sli
-    examples/SPARK/sqrt/out/sqrt.rls
+    examples/SPARK/sqrt/out/sqrt.lst
     examples/SPARK/sqrt/out/spark.rep
-    examples/SPARK/sqrt/out/sqrt.fdl
     examples/SPARK/erfriemann/src/riemann.adb
     examples/SPARK/erfriemann/src/riemann.ads
     examples/SPARK/erfriemann/riemann.smf
