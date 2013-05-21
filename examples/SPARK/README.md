@@ -1,6 +1,12 @@
 # Verifying numerical SPARK Ada programs using PolyPaver 
 
-PolyPaver provides facilities for automatically proving SPARK generated verification conditions (VCs) that make up correctness theorems for SPARK Ada prorams. The verification approach relies on the SPAR toolset for VC generation and simplification. The resulting correctness theorems genrally comprise the set of numerically nontrivial sub-theorems encoding exception freedom and (optionally) accuracy properties. Below follows a brief introduction to the method by which VCs may be derived that PolyPaver can process and a procedure for working with the options provided by PolyPaver to guide and control the proof effort. 
+PolyPaver provides facilities for automatically proving SPARK generated verification conditions (VCs) 
+that make up correctness theorems for SPARK Ada programs. 
+The verification approach relies on the SPAR toolset for VC generation and simplification. 
+The resulting correctness theorems generally comprise the set of numerically nontrivial 
+sub-theorems encoding exception freedom and (optionally) accuracy properties. 
+Below follows a brief introduction to the method by which VCs may be derived that PolyPaver can process 
+and a procedure for working with the options provided by PolyPaver to guide and control the proof effort. 
 
 ## Overview of the example programs
 
@@ -29,7 +35,28 @@ TODO:
 * State that in annotations, numerical operations retain their exact meaning.
 * List annotation functions understood by polypaver (such as such as polypaver.exact.sqrt). 
 
-To generate correctness theorems for a program PolyPaver uses the SPARK Examiner VC generator to produce a set of VCs. As the currently available version of the Examiner treats flaoting point operations as exact real arithmetic, it is necessary to short-circuit the VC generation process. To thi end, PolyPaver provides a SPARK Ada package with an interface to the Ada numerics packages and with a number of abstract operations (so-called proof functions) that may be used in annotations to encode accuracy properties of SPARK flaoting point programs. The SPARK tools also treat numeric expressions in annotations as exact real expressions and therefore abstract versions of the standard numeric operations are not needed. PolyPaver does however provide a number of extensions to the SPARK annotation language, such as an interval constrctor, integral operrator and interval containment relation, to make it convenient to express a accuracy constraints involving special fucntions.
+To generate correctness theorems for a program, 
+PolyPaver uses the SPARK Examiner VC generator to produce a set of VCs. 
+As the currently available version of the Examiner treats flaoting point 
+operations as exact real arithmetic, it is necessary to short-circuit the VC generation process. 
+To thi end, PolyPaver provides a SPARK Ada package with an interface to the Ada numerics packages 
+and 
+
+In addition to the above operators, these packages also
+provide a number of abstract operations (so-called proof functions) 
+that may be used in annotations
+to encode accuracy properties of SPARK floating-point programs. 
+The SPARK tools also treat numeric operators in annotations 
+as exact real operators and therefore abstract versions of the standard 
+numeric operations are not needed, if this is what is intended. 
+PolyPaver does however provide a number of functions with intended
+exact real semantics, which extend the expressiveness of the SPARK annotation language.
+Among such operators are the interval constructor, the integral operator for 
+continuous functions defined by algebraic expressions 
+and the interval containment relation.
+The interval operators make it more convenient to express accuracy constraints.
+The integral operator facilitates verifying specifications
+with special functions that have an integral form.
 
 ## Generation of verification conditions (VCs):
 
