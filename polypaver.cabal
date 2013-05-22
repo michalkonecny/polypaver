@@ -32,6 +32,7 @@ Description:
 Extra-Source-Files:
     CHANGES
     LICENCE
+    examples/pp/README
     examples/pp/mini.pp
     examples/pp/power.pp
     examples/pp/sqrt43.pp
