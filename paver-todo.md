@@ -31,16 +31,20 @@
 
     * OSX (Jan), Windows 7 (DONE), Windows 8 (Jan+Adam)
     
-    * Linux 12.04 32 bit (DONE) and 12.04 64 bit (Jan)
+    * DONE Linux 12.04 32 bit (DONE) and 12.04 64 bit (Jan)
 
     * clearly state prerequisites of each binary - use a fresh install to determine and verify
 
+		* DONE Linux 12.04 64 bit 
+
 * rewrite page Installation
+
   * at the end add #sidebar TableOfContents
 
 * rewrite page Releases
+
   * at the end add #sidebar TableOfContents
-        
+
 * update top level documentation on Google Code
 
     * probably hide some of the old stuff (perhaps temporarily)
