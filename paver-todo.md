@@ -11,7 +11,7 @@
 
     * DONE deal with universal_real* in the peak example
 
-    * wiki on how to work with SPARK, using the supplied examples
+    * DONE wiki on how to work with SPARK, using the supplied examples
 
         * DONE how the VCs were derived
 
@@ -19,13 +19,13 @@
         
         * DONE migrate to Google Code
         
-        * polish it up
+        * DONE polish it up
         
     * wiki on how to work with the PP format
         
-        * add grammar for pp input language
+        * grammar for pp input language
 		
-		* MAYBE add examples (one simple one hard or one with a simple and a hard conclusion?)
+		* add examples (one simple one hard or one with a simple and a hard conclusion?)
         
         * how to prove them using PolyPaver
         
