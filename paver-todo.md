@@ -5,7 +5,7 @@
 
 * DONE deal with universal_real* constants arising in SPARK VCs 
 
-* SPARK examples
+* DONE SPARK examples
 
     * DONE adapt and add erfriemann
 
@@ -21,18 +21,12 @@
         
         * DONE polish it up
         
-    * wiki on how to work with the PP format
-        
-        * grammar for pp input language
+* page SyntaxPP
+    
+    * DONE grammar for pp input language
+    
+    * polish, maybe add some text
 		
-		* add examples (one simple one hard or one with a simple and a hard conclusion?)
-        
-        * how to prove them using PolyPaver
-        
-* DONE tidy up options and their --help documentation
-
-* DONE add FP sin and cos to the internal language and the SPARK PolyPaver package
-
 * produce binaries for multiple platforms
 
     * OSX (Jan), Windows 7 (DONE), Windows 8 (Jan+Adam)
@@ -41,8 +35,13 @@
 
     * clearly state prerequisites of each binary - use a fresh install to determine and verify
 
+* rewrite page Installation
+  * at the end add #sidebar TableOfContents
 
-* minimal update of visible documentation on Google Code
+* rewrite page Releases
+  * at the end add #sidebar TableOfContents
+        
+* update top level documentation on Google Code
 
     * probably hide some of the old stuff (perhaps temporarily)
     
