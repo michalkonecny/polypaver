@@ -19,8 +19,8 @@
         
         * DONE migrate to Google Code
         
-        * add some text on how to 
-
+        * polish it up
+        
     * wiki on how to work with the PP format
         
         * add grammar for pp input language
@@ -35,13 +35,12 @@
 
 * produce binaries for multiple platforms
 
-    * OSX (Jan), Windows 7 (ready), Windows 8 (Jan+Adam)
+    * OSX (Jan), Windows 7 (DONE), Windows 8 (Jan+Adam)
     
-    * Linux 12.04 32 bit (ready) and 12.04 64 bit (Jan?)
+    * Linux 12.04 32 bit (DONE) and 12.04 64 bit (Jan)
 
     * clearly state prerequisites of each binary - use a fresh install to determine and verify
 
-		* Linux 32 and 64 bit (see )
 
 * minimal update of visible documentation on Google Code
 
