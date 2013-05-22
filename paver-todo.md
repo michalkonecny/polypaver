@@ -45,6 +45,8 @@
 * minimal update of visible documentation on Google Code
 
     * probably hide some of the old stuff (perhaps temporarily)
+    
+* announce to various people and on some forums
 
 
 ## release 0.2.1
