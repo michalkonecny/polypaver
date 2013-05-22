@@ -37,6 +37,7 @@ Extra-Source-Files:
     examples/pp/sqrt43.pp
     examples/pp/integral.pp
     examples/pp/skewing.pp
+    examples/pp/skewing2.pp
     examples/haskell/sqrtexp.hs
     examples/form/true.form
     examples/SPARK/README
