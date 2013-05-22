@@ -31,7 +31,7 @@
 
     * OSX (Jan), Windows 7 (DONE), Windows 8 (Jan+Adam)
     
-    * DONE Linux 12.04 32 bit (DONE) and 12.04 64 bit (Jan)
+    * DONE Linux 12.04 32 bit (DONE) and 12.04 64 bit (DONE)
 
     * clearly state prerequisites of each binary - use a fresh install to determine and verify
 
