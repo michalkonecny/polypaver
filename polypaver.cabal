@@ -44,6 +44,8 @@ Extra-Source-Files:
     examples/SPARK/packages/polypaver-exact.ads
     examples/SPARK/packages/polypaver-floats.ads
     examples/SPARK/packages/polypaver-floats.adb
+    examples/SPARK/packages/polypaver-long_floats.ads
+    examples/SPARK/packages/polypaver-long_floats.adb
     examples/SPARK/packages/polypaver-integers.ads
     examples/SPARK/packages/polypaver-interval.ads
     examples/SPARK/peak/src/peak.adb
