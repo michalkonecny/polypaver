@@ -75,7 +75,7 @@ data PolyPaver = PolyPaver
     ,quiet :: Bool
     ,verbose :: Bool
     ,plotWidth :: Int
-    ,plotHieght :: Int
+    ,plotHeight :: Int
     }
     deriving (Show,Data,Typeable)
 
@@ -113,7 +113,7 @@ paver =
     ,verbose = False &= help "output extra details while paving (default off)"
     ,plotWidth = 0 &= name "w" &= help "plot width for 2D problems, 0 mean no plotting (default)" 
         &= groupname "Plotting"
-    ,plotHieght = 0 &= name "h" &= help "plot height for 2D problems, 0 mean no plotting (default)"
+    ,plotHeight = 0 &= name "h" &= help "plot height for 2D problems, 0 mean no plotting (default)"
     } 
     &= help (unlines 
                 ["Tries to decide numerical conjectures (problems) using polynomial enclosures.",
@@ -291,6 +291,6 @@ runPaver problem args =
     splitGuessingOpt = case splitGuessing args of -1 -> Nothing; n -> Just n
     splitIntFirstOpt = splitIntFirst args
     boxSkewingOpt = boxSkewing args
-    plotSizesOpt = (plotWidth args, plotHieght args)
+    plotSizesOpt = (plotWidth args, plotHeight args)
     plotStepDelayMs = 0
         
