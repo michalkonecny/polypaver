@@ -1,3 +1,4 @@
+{-# LANGUAGE CPP #-}
 {-# LANGUAGE DeriveDataTypeable #-}
 
 {-|
@@ -119,8 +120,12 @@ paver =
                  "[PROBLEM_ID] specifies one or more conjectures as follows:                   ",
                  "  <name>.vc [<conclusion number>]: like a VC in SPARK .siv                   ",
                  "  <name>.siv [<vc name> [<conclusion number>]]: SPARK-generated VCs          ",
-                 "  <name>.form: using internal syntax (machine generated)                     ", 
-                 "  <name>.hs [<identifier name>]: Haskell constant of type Problem            "])
+                 "  <name>.form: using internal syntax (machine generated)                     "
+#ifdef DynamicLoading 
+                 , 
+                 "  <name>.hs [<identifier name>]: Haskell constant of type Problem            "
+#endif
+                 ])
     &= summary "PolyPaver 0.2 (c) 2011, 2013 Jan Duracz and Michal Konecny (Aston University)"
     &= name "polypaver"
 
