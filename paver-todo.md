@@ -54,6 +54,10 @@
 
 ## release 0.2.1
 
+* UI
+
+    * print help menu when given incorrect paramters
+
 * SPARK preprocessor
 
     * speed-up Ada parser
