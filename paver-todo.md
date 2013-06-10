@@ -15,10 +15,6 @@
 
 * SPARK preprocessor
 
-    * speed-up Ada parser
-
-        * find out what causes most slowdown
-
     * pass 1: determine dependency order among the ads files
 
     * pass 2: recognise imported types and function signatures
