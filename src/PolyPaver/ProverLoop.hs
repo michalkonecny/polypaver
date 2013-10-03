@@ -20,6 +20,7 @@ module PolyPaver.ProverLoop
 )
 where
 
+import PolyPaver.Args
 import PolyPaver.Form
 import PolyPaver.PPBox
 import PolyPaver.Eval
@@ -43,10 +44,6 @@ import qualified Data.IntMap as IMap
 import System.Console.CmdArgs
 import Control.Concurrent (threadDelay)
 import System.CPUTime
-
-data Order = 
-    BFS | DFS | DFSthenBFS | BFSFalsifyOnly
-    deriving (Show,Data,Typeable)
 
 data ReportLevel =
     ReportNONE | ReportNORMAL | ReportALL 
@@ -72,23 +69,15 @@ instance Show ProverResult where
 
 
 solveAndReportOnConsole
-    plotSize plotStepDelayMs
-    order reportLevel 
---    epsrelbits epsabsbits 
-    boxSkewing 
-    splitGuessing splitIntFirst
-    origstartdeg maxdeg improvementRatioThreshold 
-    maxsize
-    mindepth maxdepth maxQLength 
-    ix minIntegrationStepSize 
-    maxtime originalForm 
+    args
+    originalForm 
     initppb@(_, initbox, varIsInts, varNames)
     =
     do
     putStrLn $ "Trying to decide the conjecture: " ++ (showForm 10000 False originalForm)
     putStrLn $ "over the box " ++ ppShow initppb
     -- possibly initialise plotting:
-    mstateTV <- case plotSize of
+    mstateTV <- case (plotWidth args, plotHeight args) of
         (w,h) 
             | dim /= 2 || w <= 0 || h <= 0 -> return Nothing
             | otherwise ->
@@ -99,7 +88,7 @@ solveAndReportOnConsole
     inittime <- getCPUTime
     -- start looping:
     loopAux
-        order
+        (order args)
         mstateTV inittime
         0 -- maxDepthReached
 
@@ -114,6 +103,15 @@ solveAndReportOnConsole
 
         Nothing Nothing
     where
+    reportLevel 
+        | quiet args = ReportNONE
+        | verbose args = ReportALL
+        | otherwise = ReportNORMAL
+    minIntegrationStepSize = 2^^(- (minIntegrExp args)) 
+        -- ^ approximate step to use in piecewise numerical integration
+    improvementRatioThreshold = 1.2
+        -- ^ when to try raising degree/effort and when to give up and split
+    origstartdeg = startDegree args
     dim = DBox.size initbox
     loopAux 
             loopOrder
@@ -141,13 +139,16 @@ solveAndReportOnConsole
               "\nGreatest queue size: " ++ show maxQLengthReached ++  
               "\nGreatest depth: " ++ show maxDepthReached ++ "\n\n"
             stopProver $ Proved $ currtime-inittime
+        timeout = (toInteger $ time args) * second
+            where
+            second = 1000000000000
         tryNextBox
             -- detect timeout:
-            | prevtime-inittime > maxtime*1000000000000 =  
+            | prevtime - inittime > timeout =  
                 do
                 abort prevtime "TIMED OUT" "TIMED OUT"
             -- split when forced:
-            | depth < mindepth = 
+            | depth < minDepth args = 
                 do
                 reportInitSplit
                 currtime <- getCPUTime
@@ -184,7 +185,7 @@ solveAndReportOnConsole
                   "\n\n" 
                 stopProver $ Disproved (currtime-inittime)
             -- formula undecided, raise degree:
-            | currdeg < maxdeg && undecidedMeasureImproved =
+            | currdeg < degree args && undecidedMeasureImproved =
                 do
                 case reportLevel of
                     ReportNONE -> return ()
@@ -199,15 +200,15 @@ solveAndReportOnConsole
                     (Just $ currdeg + 1)
                     (Just undecidedMeasure)
             -- formula undecided, reached maximum depth:
-            | depth >= maxdepth = 
+            | depth >= maxDepth args = 
                 do
                 currtime <- getCPUTime
-                abort currtime "REACHED MAXIMUM DEPTH" ("Reached MAXIMUM DEPTH " ++ show maxdepth)
+                abort currtime "REACHED MAXIMUM DEPTH" ("Reached MAXIMUM DEPTH " ++ show (maxDepth args))
             -- formula undecided, reached maximum queue size:
-            | qlength >= (case loopOrder of BFSFalsifyOnly -> 5000 ; _ -> maxQLength) = 
+            | qlength >= (case loopOrder of BFSFalsifyOnly -> 5000 ; _ -> (maxQueueLength args)) = 
                 do
                 currtime <- getCPUTime
-                abort currtime "REACHED MAXIMUM QUEUE SIZE" ("Reached MAXIMUM QUEUE SIZE " ++ show maxQLength)
+                abort currtime "REACHED MAXIMUM QUEUE SIZE" ("Reached MAXIMUM QUEUE SIZE " ++ show (maxQueueLength args))
             -- formula undecided, cannot split the box any further:
             | not splitSuccess ||
               length thinVars == dim =
@@ -320,9 +321,23 @@ solveAndReportOnConsole
                         (Nothing, 2) -> problemvol -- no skewing or dropping of boxes - a clean split
                         _ -> problemvol - (ppVolume ppb) + (sum $ map ppVolume newBoxes2)
         (splitSuccess, maybeHP, splitVar, (boxL,boxR))
-            = L.split thinVarsMaybeNonIntVars maybeVar ppb boxSkewing splitGuessing value
+            = L.split thinVarsMaybeNonIntVars maybeVar ppb (boxSkewing args) maybeSplitGuessingLimit value
         (_, _, splitVarNoHP, (boxLNoHP,boxRNoHP))
             = L.split thinVarsMaybeNonIntVars maybeVar ppb False Nothing value
+        maybeVar =
+            case maybeSplitGuessingLimit of
+                Nothing -> Nothing
+                _ -> Just $ advanceVar thinVarsMaybeNonIntVars prevSplitVar
+            where
+            advanceVar forbiddenVars var
+                | allVarsForbidden = var
+                | newVar `elem` forbiddenVars = advanceVar forbiddenVars newVar
+                | otherwise = newVar
+                where
+                allVarsForbidden = length forbiddenVars == dim
+                newVar = (var + 1) `mod` dim
+        maybeSplitGuessingLimit = case splitGuessing args of -1 -> Nothing; n -> Just n
+
         undecidedMaybeSimplerForm
             =
             case maybeHP of
@@ -338,7 +353,7 @@ solveAndReportOnConsole
         maybeDecision = L.decide (value :: L.TVM)
         (value, formWithRanges) =
             evalForm 
-                currdeg maxsize ix minIntegrationStepSize ppb -- (epsrelbits,epsabsbits) 
+                currdeg (maxSize args) ix minIntegrationStepSize ppb -- (epsrelbits,epsabsbits) 
                 form
 --            case fptype of
 --                 B32 -> evalForm currdeg maxsize ix box (23,-126) form :: L.TVM -- Maybe Bool
@@ -347,9 +362,10 @@ solveAndReportOnConsole
 --                 B64near -> evalForm currdeg maxsize ix box (53,-1022) form :: L.TVM -- Maybe Bool
         (L.TVDebugReport formDebug, _) = 
             evalForm 
-                currdeg maxsize ix minIntegrationStepSize ppb -- (epsrelbits,epsabsbits) 
+                currdeg (maxSize args) ix minIntegrationStepSize ppb -- (epsrelbits,epsabsbits) 
                 form
-
+        ix = fromInteger $ toInteger $ effort args
+        
         newstartdeg =
             (origstartdeg + currdeg) `div` 2
         currdeg =  
@@ -361,21 +377,9 @@ solveAndReportOnConsole
                 Just prevUndecidedMeasure ->
                     prevUndecidedMeasure / undecidedMeasure > improvementRatioThreshold
 
-        maybeVar =
-            case splitGuessing of
-                Nothing -> Nothing
-                _ -> Just $ advanceVar thinVarsMaybeNonIntVars prevSplitVar
-            where
-            advanceVar forbiddenVars var
-                | allVarsForbidden = var
-                | newVar `elem` forbiddenVars = advanceVar forbiddenVars newVar
-                | otherwise = newVar
-                where
-                allVarsForbidden = length forbiddenVars == dim
-                newVar = (var + 1) `mod` dim
 
         thinVarsMaybeNonIntVars
-            | splitIntFirst && canSplitIntVar = thinVarsAndNonIntVars
+            | (splitIntFirst args) && canSplitIntVar = thinVarsAndNonIntVars
             | otherwise = thinVars
             where
             canSplitIntVar = not $ null thickIntVars
@@ -399,7 +403,7 @@ solveAndReportOnConsole
                     do
                     putStrLn banner
                     putStrLn identifyBox
-                    case depth < mindepth of
+                    case depth < minDepth args of
                         True -> return ()
                         _ ->
                             case reportLevel of
@@ -504,6 +508,8 @@ solveAndReportOnConsole
         green = (0.1,0.6,0.1,0.4)
         red = (0.6,0.1,0.1,1)
         yellow = (0.6,0.6,0.1,0.05)
+        
+        plotStepDelayMs = 0
         
 showDuration durationInPicoseconds =
     (show durationInSeconds) ++ " s (" ++ show days ++ "d, " ++ show hours ++ "h, " ++ show mins ++ "min, " ++ show secs ++ "s)" 
