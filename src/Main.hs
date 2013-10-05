@@ -15,10 +15,10 @@
 -}
 module Main where
 
-import PolyPaver.Form (splitConclusion)
+--import PolyPaver.Form (splitConclusion)
 import PolyPaver.Invocation
 import PolyPaver.Input.SPARK
-import PolyPaver.Input.TPTP
+--import PolyPaver.Input.TPTP
 
 #ifdef DynamicLoading 
 import PolyPaver.Input.Haskell
@@ -26,14 +26,16 @@ import PolyPaver.Input.Haskell
 import PolyPaver.DeriveBounds (getBox)
 import PolyPaver.Vars (substituteVarsForm,getFormVarNames)
 
-import System.Console.CmdArgs
+--import System.Console.CmdArgs
 
 import qualified Data.IntMap as IMap
 import Data.List
 
+main :: IO ()
 main 
     = batchMain lookupFile
     
+lookupFile :: [FilePath] -> IO [(String, Problem)]
 lookupFile args@(inputPath : _)
 #ifdef DynamicLoading 
     | hasHsExtension inputPath = lookupHaskell args
@@ -44,15 +46,22 @@ lookupFile args@(inputPath : _)
     | hasTptpExtension inputPath =
         error "Input of TPTP files not supported yet"  
 --        lookupTptp args
-    
+lookupFile _ =
+    do 
+    reportCmdLine
+    error "No problem specified."
+
 #ifdef DynamicLoading     
+lookupHaskell :: [FilePath] -> IO [(String, Problem)]
 lookupHaskell [inputPath] = lookupHaskell [inputPath, "problem"]
 lookupHaskell (inputPath : problemNames) =
     do
     problems <- loadHaskellProblems inputPath problemNames
     return $ zip problemNames problems
+lookupHaskell _ = return []
 #endif
     
+lookupForm :: [FilePath] -> IO [(String, Problem)]
 lookupForm [inputPath] =
     do
     tightnessValues <- getTightnessValues
@@ -82,7 +91,9 @@ lookupForm [inputPath] =
             s varId | varId == 0 = Just $ Lit $ fromInteger t
             s _ = Nothing
 --        ts = reverse $ take 11 $ iterate (*2) 1
+lookupForm _ = return []
 
+lookupPP :: [FilePath] -> IO [(String, Problem)]
 lookupPP [inputPath] =
     do
     fileContents <- readFile inputPath
@@ -97,12 +108,16 @@ lookupPP [inputPath, conclNumberS] =
             let pp = parseVCInFile inputPath fileContents
             return $ [mkProblems pp !! (conclNumber - 1)]
         _ -> ppArgsError
-    
 lookupPP _ = ppArgsError 
 
-ppArgsError = error "PolyPaver: expecting arguments: <file.pp> [<conclusion number>]"
+ppArgsError :: IO a
+ppArgsError =
+    do
+    reportCmdLine 
+    error "Expecting arguments: <file.pp> [<conclusion number>]"
     
     
+lookupSiv :: [FilePath] -> IO [(String, Problem)]
 lookupSiv [inputPath] =
     do
     fileContents <- readFile inputPath
@@ -127,17 +142,33 @@ lookupSiv [inputPath, vcName, conclNumberS] =
     
 lookupSiv _ = sivArgsError 
 
-sivArgsError = error "PolyPaver: expecting arguments: <file.siv> [<vc name> [<conclusion number>]]"
+sivArgsError :: IO b
+sivArgsError =
+    do
+    reportCmdLine
+    error "Expecting arguments: <file.siv> [<vc name> [<conclusion number>]]"
 
+mkProblems :: ([Char], Form, [(Int, (Rational, Rational), Bool)])
+                -> [([Char], Problem)]
 mkProblems (name, vc, box) =
     map mkProb $ zip [1..] subvcs
     where
     mkProb (conclusionNumber, subvc) = 
-        (name ++ " conclusion " ++ show conclusionNumber, Problem box subvc)
+        (name ++ " conclusion " ++ show (conclusionNumber :: Int), Problem box subvc)
     subvcs = splitConclusion vc 
     
+
+hasHsExtension :: FilePath -> Bool
 hasHsExtension path = ".hs" `isSuffixOf` path
+
+hasFormExtension :: FilePath -> Bool
 hasFormExtension path = ".form" `isSuffixOf` path
+
+hasPPExtension :: FilePath -> Bool
 hasPPExtension path = ".pp" `isSuffixOf` path
+
+hasSivExtension :: FilePath -> Bool
 hasSivExtension path = ".siv" `isSuffixOf` path
+
+hasTptpExtension :: FilePath -> Bool
 hasTptpExtension path = ".tptp" `isSuffixOf` path

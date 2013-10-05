@@ -2,15 +2,18 @@
 module PolyPaver.Plot 
 (
     initPlot,
-    addBox,
-    waitForClose
+    addBox
+--    ,
+--    waitForClose
 )
 where
 
 import PolyPaver.PPBox
 
 import qualified Numeric.ER.Real.Approx as RA
-import Numeric.ER.Misc
+import Numeric.ER.Real.Base
+import Numeric.ER.Real.DefaultRepr
+--import Numeric.ER.Misc
 
 import Graphics.UI.Gtk hiding (drawPolygon)
 import Graphics.Rendering.Cairo
@@ -21,10 +24,13 @@ import Control.Concurrent.STM
 --import qualified Data.Map as Map
 import qualified Data.IntMap as IMap
 
+type RGBA = (Double, Double, Double, Double)
+
 {-|
   sample usage: @addBox stateTV (1,0,0,0.9) box@
 -}
-addBox stateTV rgba box  
+addBox :: TVar [(PPBox b, RGBA)] -> RGBA -> PPBox b -> IO ()
+addBox stateTV rgba box
     =
     do
 --    putStrLn $ "addBox called" -- ++ ppShow box
@@ -33,62 +39,98 @@ addBox stateTV rgba box
         writeTVar stateTV ((box,rgba) : state)
 --    putStrLn $ "addBox completed"
 
-waitForClose stateTV =
-    atomically $
-        do
-        state <- readTVar stateTV
-        case state of
-            [] -> return ()
-            _ -> retry
+--waitForClose :: TVar [(PPBox b, RGBA)] -> IO ()
+--waitForClose stateTV =
+--    atomically $
+--        do
+--        state <- readTVar stateTV
+--        case state of
+--            [] -> return ()
+--            _ -> retry
 
+initPlot :: 
+    ERRealBase b =>
+    PPBox b -> 
+    Int -> 
+    Int -> 
+    IO (TVar [(PPBox b, RGBA)])
 initPlot initbox w h =
     do
     stateTV <- atomically $ newTVar []
-    forkIO $ myCanvas stateTV draw initboxInfo w h
+    _ <- forkIO $ myCanvas stateTV draw initboxInfo w h
     return stateTV
     where
     -- 4---3
     -- |   |
     -- 1---2
-    [p1@[x1,y1], p4@[_,y4], p2@[x2,_], p3] = ppCorners affines
+    [_p1@[x1,y1], _p4@[_,y4], _p2@[x2,_], _p3] = ppCorners affines
     (_isSkewed, affines, _varIsInts, varNamesMap) = initbox
     varNames = map snd $ IMap.toAscList varNamesMap
     initboxInfo = (ppCentre affines, x2 - x1, y4 - y1, varNames)
 
-myCanvas stateTV draw initboxInfo w h = 
+myCanvas :: 
+  (Fractional t1, Fractional t2) =>
+  TVar [a]
+  -> (t5 -> t1 -> t2 -> [a] -> Render t4)
+  -> t5
+  -> Int
+  -> Int
+  -> IO ()
+myCanvas stateTV draw2 initboxInfo w h = 
     do
 --    unsafeInitGUIForThreadedRTS
-    initGUI
+    _ <- initGUI
     window <- windowNew
     da <- drawingAreaNew
     set window [ containerChild := da ]
     windowSetDefaultSize window w h
-    onExpose da (myExposeHandler stateTV da draw initboxInfo)
+    _ <- onExpose da (myExposeHandler stateTV da draw2 initboxInfo)
     timeoutAdd (widgetQueueDraw da >> return True) 500 >> return ()
     idleAdd (yield >> threadDelay 10000 >> return True) priorityDefaultIdle >> return ()
-    onDestroy window mainQuit
+    _ <- onDestroy window mainQuit
     widgetShowAll window
     mainGUI
     atomically $ writeTVar stateTV []
 
-myExposeHandler stateTV widget draw initboxInfo _event = 
+myExposeHandler ::
+     (Fractional t1, Fractional t2, WidgetClass widget) =>
+     TVar t3 -> 
+     widget -> 
+     (t5 -> t1 -> t2 -> t3 -> Render t4) -> 
+     t5 -> 
+     t -> 
+     IO Bool
+myExposeHandler stateTV widget draw2 initboxInfo _event = 
     do
 --    putStrLn $ "myExposeHandler called"
     drawWin <- widgetGetDrawWindow widget
     (wi,hi) <- widgetGetSize widget
     let (w,h) = (realToFrac wi, realToFrac hi)
     state <- atomically $ readTVar stateTV
-    renderWithDrawable drawWin $ 
+    _ <- renderWithDrawable drawWin $ 
         do
-        draw initboxInfo w h state
+        draw2 initboxInfo w h state
 --    putStrLn $ "myExposeHandler completed"
     return True
 
+draw ::
+    ERRealBase b =>
+    ([IRA b], IRA b, IRA b, [String]) -> 
+    Double -> 
+    Double -> 
+    [(PPBox b, RGBA)] -> 
+    Render ()
 draw initboxInfo w h state  = 
     do
     drawAxisLabels initboxInfo w h
     mapM_ (drawSubBox initboxInfo w h) state
 
+drawAxisLabels :: 
+    RA.ERIntApprox ira =>
+    ([ira], ira, ira, [String]) -> 
+    Double -> 
+    Double -> 
+    Render ()
 drawAxisLabels initboxInfo w h =
     do
     setFontSize 17
@@ -120,11 +162,18 @@ drawAxisLabels initboxInfo w h =
         showText text
         where
         getPos extents =
-             (-w/2 +w*xShiftInWidths,h/2 + h*yShiftInHeights)
+             (-ww/2 +ww*xShiftInWidths,hh/2 + hh*yShiftInHeights)
              where
-             w = textExtentsWidth extents
-             h = textExtentsHeight extents
+             ww = textExtentsWidth extents
+             hh = textExtentsHeight extents
 
+drawSubBox ::
+    ERRealBase b =>
+    ([IRA b], IRA b, IRA b, t3) ->
+    Double -> 
+    Double -> 
+    (PPBox b, RGBA) -> 
+    Render ()
 drawSubBox initboxInfo w h (subbox,(r,g,b,a)) = 
     do
     setSourceRGBA r g b a -- 0 1 0 0.4 light green
@@ -146,13 +195,25 @@ drawSubBox initboxInfo w h (subbox,(r,g,b,a)) =
     Takes a box in the problem format and maps it to 
     a box in the coordinates of a canvas of the given size.
 -}
+subBoxToCanvasBox ::
+   ERRealBase b =>
+   ([IRA b], IRA b, IRA b, t3) -> 
+   Double -> 
+   Double -> 
+   PPBox b
+   -> [(Double, Double)]
 subBoxToCanvasBox initboxInfo w h subbox =
     thickenIfLine $ map converPt [p1,p2,p3,p4]
     where
     converPt [x,y] =
         boxCoordsToCanvasCoords initboxInfo w h (x,y)
-    [p1,p4,p2,p3] = ppCorners subbox
+    [p1,p4,p2,p3] = ppCorners subboxPP
+    (_, subboxPP, _, _) = subbox
+    
 
+thickenIfLine ::
+    (Ord a, Num a) =>
+    [(a, a)] -> [(a, a)]
 thickenIfLine orig@[(x1,y1),(x2,y2),(x3,y3),(x4,y4)] 
     | xDiff == 0 && yDiff > 2 = [(x1-2,y1),(x2+2,y2),(x3+2,y3),(x4-2,y4)]
     | yDiff == 0 && xDiff > 2 = [(x1,y1-2),(x2,y2+2),(x3,y3+2),(x4,y4-2)]
@@ -181,6 +242,10 @@ thickenIfLine orig@[(x1,y1),(x2,y2),(x3,y3),(x4,y4)]
     Takes a point in problem coordinates and maps it to a point
     in the coordinates of a canvas of width w and height h.
 -}
+boxCoordsToCanvasCoords ::
+    RA.ERIntApprox t =>
+    ([t], t, t, t1) -> Double -> Double -> 
+    (t, t) -> (Double, Double)
 boxCoordsToCanvasCoords initboxInfo w h (xB,yB) =
 --    unsafePrint
 --    (
@@ -208,7 +273,7 @@ boxCoordsToCanvasCoords initboxInfo w h (xB,yB) =
     xC = w*(0.5 + 0.75*xL)
     yC = h*(0.5 - 0.75*yL) -- cairo's origin is the top left corner
     -- convert relative coords from IRA to Double:
-    [(xL,xR), (yL,yR)] = map RA.doubleBounds [xU, yU]
+    [(xL,_xR), (yL,_yR)] = map RA.doubleBounds [xU, yU]
     -- translate box coords to unit square coord relative to initbox:
     xU = (xB - xIO) / (wI)
     yU = (yB - yIO) / (hI)
