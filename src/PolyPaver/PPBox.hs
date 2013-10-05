@@ -38,10 +38,10 @@ import PolyPaver.Vars
 
 import Numeric.ER.Misc
 import qualified Numeric.ER.Real.Approx as RA
-import Numeric.ER.Real.Approx.Interval (ERInterval(..))
+--import Numeric.ER.Real.Approx.Interval (ERInterval(..))
 import qualified Numeric.ER.Real.Base as B
 import Numeric.ER.Real.DefaultRepr
-import Numeric.ER.RnToRm.DefaultRepr
+--import Numeric.ER.RnToRm.DefaultRepr
 
 import qualified Data.Map as Map
 import qualified Data.IntMap as IMap
@@ -60,6 +60,9 @@ type Coeffs b = Map.Map Int (IRA b)
 
 type BoxHyperPlane b = Affine b
 
+ppShow ::
+    B.ERRealBase b =>
+    (PPBox b) -> String
 ppShow (skewed, box, _, varNames)
     | skewed =
         "PP{ corner0=" ++ show corner0 ++ "; "
@@ -83,10 +86,10 @@ ppShow (skewed, box, _, varNames)
     corner0 = getCorner centre coeffsList (replicate (length vars) (-1))
     showVarInterval var =
         case IMap.lookup var box of
-            Just (const, coeffs) ->
+            Just (constant, coeffs) ->
                 case Map.lookup var coeffs of
                     Nothing -> showVar varNames var ++ " is thin"
-                    Just cf -> showVar varNames var ++ " in " ++ show ((const - cf) RA.\/ (const + cf))
+                    Just cf -> showVar varNames var ++ " in " ++ show ((constant - cf) RA.\/ (constant + cf))
     showVarCorner var =
         "corner" ++ show (var + 1) ++ "=" ++ show (getVarCorner var)
     getVarCorner var =
@@ -99,6 +102,9 @@ ppShow (skewed, box, _, varNames)
             ++
             (replicate (length vars - var - 1) (-1))
 
+showAffine ::
+    (B.ERRealBase b) =>
+    (Affine b) -> [Char]
 showAffine (c, coeffs)
     = show c ++ " + " ++ (intercalate " + " $ map showVarCoeff $ Map.toAscList coeffs)
     where
@@ -115,17 +121,19 @@ ppBoxFromRAs varIsInts varNames intervals =
     (False, IMap.fromList $ map readInterval $ intervals, varIsInts, varNames) 
     where
     readInterval (i,(lRA, rRA)) =
-        (i, (const,  Map.insert i slope zeroCoeffs))
+        (i, (constant,  Map.insert i slope zeroCoeffs))
         where
-        (const, slope) = constSlopeFromRA (lRA, rRA)
+        (constant, slope) = constSlopeFromRA (lRA, rRA)
     vars = map fst intervals
     zeroCoeffs = Map.fromList $ zip vars $ repeat 0
 
+constSlopeFromRA :: 
+    Fractional t => (t, t) -> (t, t)
 constSlopeFromRA (lRA,rRA) =
-    (const, slope)
+    (constant, slope)
     where
     slope = (rRA - lRA) / 2
-    const = (rRA + lRA) / 2
+    constant = (rRA + lRA) / 2
 
 ppBoxFromIntervals ::
     (B.ERRealBase b) =>
@@ -142,9 +150,16 @@ ppBoxFromIntervals varIsInts varNames intervals =
         lRA = fromRational l
         rRA = fromRational r
 
+ppCentre :: 
+    IMap.IntMap (Affine b) -> 
+    [IRA b]
 ppCentre box =
     fst $ unzip $ snd $ unzip $ IMap.toAscList box
 
+ppCorners ::
+    B.ERRealBase b =>
+    IMap.IntMap (Affine b) -> 
+    [[IRA b]]
 ppCorners box
     =
     map (getCorner centre coeffsList) signCombinations
@@ -159,22 +174,26 @@ getCorner ::
     [IRA b] -> [Map.Map Int (IRA b)] -> [IRA b] -> [IRA b]
 getCorner centre coeffsList signs =
     zipWith (+) centre $
-        map (sumWithSigns signs) coeffsList
+        map sumWithSigns coeffsList
     where
-    sumWithSigns sings coeffs
+    sumWithSigns coeffs
         =
         sum $ zipWith (*) signs $ map snd $ Map.toAscList coeffs
-    getCoord pt coeffs =
-        case Map.lookup pt coeffs of Just cf -> cf
 
+ppEvalBox ::
+    B.ERRealBase b =>
+    IMap.IntMap (Affine b) -> [IRA b] -> [IRA b]
 ppEvalBox box ptUnitCoords
     =
     getCorner centre coeffsList ptUnitCoords
     where
-    (vars, affines) = unzip $ IMap.toAscList box
+    (_vars, affines) = unzip $ IMap.toAscList box
     (centre, coeffsList) = unzip affines
     
 
+ppInvertBox :: 
+    (B.ERRealBase b) =>
+    IMap.IntMap (Affine b) -> IMap.IntMap (Affine b)
 ppInvertBox box
     =
     IMap.fromAscList $ map (\(v,(c,cfList)) -> (v,(c, Map.fromAscList cfList))) $
@@ -234,6 +253,9 @@ ppVolume (skewed, box, varIsInts, _)
     boxIntIntervals =
         ppNonSkewedToIntervals boxIntOnly
 
+shrinkIntervalToIntegerBounds :: 
+     RA.ERIntApprox t =>
+     t -> (Integer, Integer)
 shrinkIntervalToIntegerBounds interval =
 --    unsafePrint
 --    (
@@ -250,11 +272,18 @@ shrinkIntervalToIntegerBounds interval =
     (rFloorEI, _) = RA.integerBounds r
     (l,r) = RA.bounds interval
         
+ppNonSkewedToIntervals :: 
+    B.ERRealBase b =>
+    IMap.IntMap (Affine b) -> 
+    [IRA b]
 ppNonSkewedToIntervals box =
     map affineUnivariateToInterval $ IMap.toList box 
     
-affineUnivariateToInterval (var, (const, slopesMap)) =
-    const + slope * ((-1) RA.\/ 1)
+affineUnivariateToInterval :: 
+    (B.ERRealBase b) =>
+    (Int, Affine b) -> IRA b
+affineUnivariateToInterval (var, (constant, slopesMap)) =
+    constant + slope * ((-1) RA.\/ 1)
     where
     Just slope = Map.lookup var slopesMap
     
@@ -289,10 +318,8 @@ ppAffineEqual (c1, coeffs1) (c2, coeffs2)
     (and $ map snd $ Map.toList $
         Map.intersectionWith eq coeffs1 coeffs2)
     where
-    c1 `eq` c2 = 
-        case c1 `RA.equalReals` c2 of
-            Just res -> res
-            _ -> False
+    a `eq` b = 
+        (a `RA.equalReals` b) == Just True
             
 ppCoeffsZero :: 
     (B.ERRealBase b) => 
@@ -334,6 +361,11 @@ ppIntersect (_, box1, _, _) (_, box2, _, _)
     ptIsInside2 pt =
         ppPointInside box2 pt
             
+ppPointInside ::
+    (B.ERRealBase b) =>
+    IMap.IntMap (Affine b) -> 
+    [IRA b] -> 
+    Maybe Bool
 ppPointInside box pt
     =
 --    unsafePrint
@@ -357,6 +389,7 @@ ppPointInside box pt
     insideUnitInterval coord
         = (RA.bounds coord) `insideBounds` (-1,1)
             
+insideBounds :: Ord a => (a, a) -> (a, a) -> Maybe Bool
 insideBounds (aL,aR) (bL,bR)
     | aR < bL  = Just False
     | aL > bR = Just False
@@ -368,7 +401,7 @@ ppSkewAlongHyperPlane ::
     PPBox b -> 
     BoxHyperPlane b -> 
     (IRA b, Maybe Int, PPBox b)
-ppSkewAlongHyperPlane prebox@(skewed, preAffine, varIsInts, varNames) hp@(hp_const, hp_coeffs)
+ppSkewAlongHyperPlane prebox@(_skewed, preAffine, varIsInts, varNames) _hp@(hp_const, hp_coeffs)
     | 0 `RA.refines` skewVar_stretch = 
 --        unsafePrint
 --        (

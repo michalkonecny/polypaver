@@ -1,12 +1,22 @@
 {-# LANGUAGE CPP #-}
 {-# LANGUAGE DeriveDataTypeable #-}
 
-module PolyPaver.Args where
+module PolyPaver.Args 
+(
+    Args,
+    PolyPaver(..),    
+    Order(..),
+    paverDefaultArgs,
+    setDefaults,
+    checkArgs   
+)
+where
 
-import System.Console.CmdArgs
+import System.Console.CmdArgs hiding (args)
+import qualified System.Console.CmdArgs as Args
 
-import Data.Typeable
-import Data.Data
+--import Data.Typeable
+--import Data.Data
 import Data.Maybe (catMaybes)
 
 type Args = PolyPaver
@@ -41,7 +51,7 @@ data Order =
 paverDefaultArgs :: Args
 paverDefaultArgs =
     PolyPaver 
-    {problemId = [] &= args &= typ "PROBLEM_ID" 
+    {problemId = [] &= Args.args &= typ "PROBLEM_ID" 
     ,tightnessValues = "1" &= name "i"
         &= groupname "Problem parameters"
         &= help "value(s) of T to try (if the formula has an unbound variable T) (eg \"2^0..10\" or \"1..10\" or \"1,10,100\") (default = 1)" 
@@ -105,9 +115,12 @@ setDefaults = setMaxQLength . setStartDegree
         | startDegree args == -1 = args { startDegree = degree args }
         | otherwise = args 
 
+maxQueueLengthDefaultDFS :: Int
 maxQueueLengthDefaultDFS = 50
+maxQueueLengthDefaultBFS :: Int
 maxQueueLengthDefaultBFS = 5000
 
+checkArgs :: Args -> [String]
 checkArgs args =
     catMaybes $ [checkSplitGuessing, checkSkewing]
     where
