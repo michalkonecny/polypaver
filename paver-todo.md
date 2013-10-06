@@ -4,9 +4,6 @@
 
 * produce OS X binaries for release 0.2
 
-* announce 0.2 to various people and on some forums
-
-
 ## release 0.2.1
 
 * UI
