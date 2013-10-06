@@ -4,9 +4,9 @@
 
 * Produce OS X binaries for release 0.2.
 
-## release 0.2.2
+## release 0.2.1
 
-* Try substitutions to deal effectively with formulas such as x > 1 => x > 0.
+* Try substitutions to deal effectively with formulas such as x > f(y) + 1 => x > f(y).
 
 * Evaluate each common sub-expression only once per box.   
 
