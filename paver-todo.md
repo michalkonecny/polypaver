@@ -2,7 +2,9 @@
 (Log is below)
 
 
-* produce OS X binaries for release 0.2
+* Produce OS X binaries for release 0.2.
+
+* Try substitutions to deal effectively with formulas such as x > 1 => x > 0.   
 
 ## release 0.2.1
 
