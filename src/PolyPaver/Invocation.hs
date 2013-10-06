@@ -155,7 +155,7 @@ runPaver problem args =
     hSetBuffering stdout LineBuffering -- print progress in real time, not in batches
     progressChannel <- newTChanIO
     _ <- forkIO $ paverOnThisProblem progressChannel
-    if shouldPlot then startPlotter progressChannel else return ()
+    if shouldPlot then (forkIO (startPlotter progressChannel) >> return ()) else return ()
     monitorProgress progressChannel
     -- TODO: counter-example BFS nearby the last box if appropriate 
     where
