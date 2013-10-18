@@ -103,9 +103,9 @@ setDefaults :: PolyPaver -> PolyPaver
 setDefaults = setMaxQLength . setStartDegree
     where
     setMaxQLength args =
-        case maxQueueLength args == -1 of
-            False -> args -- maxQueueLength is explicitly set, do no change
-            True -> 
+        if maxQueueLength args == -1
+            then args -- maxQueueLength is explicitly set, do no change
+            else 
                 case order args of
                     DFS -> args { maxQueueLength = maxQueueLengthDefaultDFS }
                     BFS -> args { maxQueueLength = maxQueueLengthDefaultBFS }
@@ -121,8 +121,8 @@ maxQueueLengthDefaultBFS :: Int
 maxQueueLengthDefaultBFS = 5000
 
 checkArgs :: Args -> [String]
-checkArgs args =
-    catMaybes $ [checkSplitGuessing, checkSkewing]
+checkArgs args = 
+    catMaybes [checkSplitGuessing, checkSkewing]
     where
     checkSkewing
         | boxSkewing args && startDegree args == 0 =
