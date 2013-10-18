@@ -100,7 +100,7 @@ defaultMain problem =
         msgs -> 
             do
             mapM_ putStrLn msgs
-            error $ "The above errors have been identified in the command-line arguments."
+            error "The above errors have been identified in the command-line arguments."
 
 batchMain :: 
     ([String] -> IO [(String, Problem)]) -> 
@@ -122,7 +122,7 @@ batchMain problemFactory =
         msgs -> 
             do
             mapM_ putStrLn msgs
-            error $ "The above errors have been identified in the command-line arguments."
+            error "The above errors have been identified in the command-line arguments."
     where
     printSummaryLine ((name, _problem), result) =
         putStrLn $ name ++ ": " ++ showPaverResultOneLine result
@@ -142,7 +142,7 @@ reportCmdLine
     do
     rawargs <- getArgs
     progName <- getProgName
-    putStrLn $ "command line: " ++ progName ++ " " ++ (intercalate " " rawargs)
+    putStrLn $ "command line: " ++ progName ++ " " ++ intercalate " " rawargs
     
     
 runPaver :: 
@@ -290,7 +290,7 @@ showState state =
 
 showDuration :: Integer -> String
 showDuration durationInPicoseconds =
-    (show durationInSeconds) ++ "s (" ++ show days ++ "d, " ++ show hours ++ "h, " ++ show mins ++ "min, " ++ show secs ++ "s)" 
+    show durationInSeconds ++ "s (" ++ show days ++ "d, " ++ show hours ++ "h, " ++ show mins ++ "min, " ++ show secs ++ "s)" 
     where
     durationInSeconds = (fromInteger durationInPicoseconds) / 1000000000000 :: Double 
     (minsAll, secs) = quotRem (Prelude.round durationInSeconds) 60

@@ -32,7 +32,7 @@ import qualified Data.Map as Map
 import qualified Data.IntMap as IMap
 
 getBox :: 
-    Form -> 
+    Form ->
     Either String [(Int, (Rational, Rational), Bool)]
 getBox form 
     | allGood = 
