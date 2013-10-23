@@ -47,14 +47,14 @@ import qualified Data.Ratio as Q
     Also, compute a formula that is equivalent to the original formula over this box but possibly simpler.
 -}
 evalForm ::
-    (L.TruthValue tv (Maybe (IRA BM))) =>
+    (L.TruthValue tv (Maybe (IRA BM)), HasDefaultValue l, Eq l) =>
     Int {-^ polynomial degree limit -} -> 
     Int {-^ polynomial term size limit -} -> 
     EffortIndex {-^ effort index for regulating model error -} -> 
     IRA BM {-^ minIntegrationStepSize -} -> 
     PPBox BM {-^ domains of variables -} -> 
 --    (Int,Int) {-^ precision of emulated FP operations -} -> 
-    Form (Maybe (IRA BM)) {-^ form to evaluate -} -> 
+    Form l {-^ form to evaluate -} -> 
     (tv, 
      Form (Maybe (IRA BM))) {-^ form with added range bounds in all terms -}
 evalForm maxdeg maxsize ix minIntegrationStepSize ppb@(_, _, isIntVarMap, _) origForm =
@@ -80,12 +80,17 @@ evalForm maxdeg maxsize ix minIntegrationStepSize ppb@(_, _, isIntVarMap, _) ori
                 evForm $ Or
                     (Le (lab ++ "<") left right)
                     (Le (lab ++ ">") right left)
-            ContainedIn lab left right -> evOpT2 True (ContainedIn lab) (\formWR -> flip $ L.includes lab formWR ppb) left right 
+            ContainedIn lab left right -> 
+                evOpT2 True (ContainedIn lab) (\formWR -> flip $ L.includes lab formWR ppb) left right 
             IsRange lab t lower upper -> 
                 evForm $  (Leq (lab ++ "LO") lower t) /\ (Leq (lab ++ "HI") t upper)
             IsIntRange lab t lower upper -> 
                 evForm $  (IsInt lab t) /\ (IsRange lab t lower upper)
-            IsInt lab t@(Term (_,l)) -> (L.fromBool lab l ppb $ termIsIntegerType isIntVarMap t, form)
+            IsInt lab t@(Term (_,_)) -> 
+                (L.fromBool lab Nothing ppb $ termIsIntegerType isIntVarMap t, 
+                 IsInt lab tWithRanges)
+                where
+                (_tVal, tWithRanges) = evTerm False t 
     evOp1 op opTV arg =
         (opTV argTV, op argWithRanges)
         where
@@ -106,35 +111,35 @@ evalForm maxdeg maxsize ix minIntegrationStepSize ppb@(_, _, isIntVarMap, _) ori
         (rightVal, rightWithRanges) = evTerm rightNeedsInnerRounding right
     evLess = evLessLeq False Le L.less
     evLeq = evLessLeq True Leq L.leq
-    evLessLeq isLeq formOp _logicOp lab (Term (PlusInfinity, l)) (Term (PlusInfinity, _)) =
-        (L.fromBool lab l ppb isLeq, 
+    evLessLeq isLeq formOp _logicOp lab (Term (PlusInfinity, _)) (Term (PlusInfinity, _)) =
+        (L.fromBool lab Nothing ppb isLeq, 
          formOp lab plusInfinityTermWithRange plusInfinityTermWithRange)
-    evLessLeq isLeq formOp _logicOp lab (Term (MinusInfinity, l)) (Term (MinusInfinity, _)) =
-        (L.fromBool lab l ppb isLeq, 
+    evLessLeq isLeq formOp _logicOp lab (Term (MinusInfinity, _)) (Term (MinusInfinity, _)) =
+        (L.fromBool lab Nothing ppb isLeq, 
          formOp lab minusInfinityTermWithRange minusInfinityTermWithRange)
-    evLessLeq _isLeq formOp _logicOp lab (Term (MinusInfinity, l)) (Term (PlusInfinity, _)) =
-        (L.fromBool lab l ppb True, 
+    evLessLeq _isLeq formOp _logicOp lab (Term (MinusInfinity, _)) (Term (PlusInfinity, _)) =
+        (L.fromBool lab Nothing ppb True, 
          formOp lab minusInfinityTermWithRange plusInfinityTermWithRange)
-    evLessLeq _isLeq formOp _logicOp lab (Term (PlusInfinity, l)) (Term (MinusInfinity, _)) =
-        (L.fromBool lab l ppb False, 
+    evLessLeq _isLeq formOp _logicOp lab (Term (PlusInfinity, _)) (Term (MinusInfinity, _)) =
+        (L.fromBool lab Nothing ppb False, 
          formOp lab plusInfinityTermWithRange minusInfinityTermWithRange)
-    evLessLeq _isLeq formOp _logicOp lab (Term (MinusInfinity, l)) right =
-        (L.fromBool lab l ppb True,
+    evLessLeq _isLeq formOp _logicOp lab (Term (MinusInfinity, _)) right =
+        (L.fromBool lab Nothing ppb True,
          formOp lab minusInfinityTermWithRange rightWithRanges)
         where
         (_rightVal, rightWithRanges) = evTerm False right 
-    evLessLeq _isLeq formOp _logicOp lab left (Term (MinusInfinity, l)) =
-        (L.fromBool lab l ppb False,
+    evLessLeq _isLeq formOp _logicOp lab left (Term (MinusInfinity, _)) =
+        (L.fromBool lab Nothing ppb False,
          formOp lab leftWithRanges minusInfinityTermWithRange)
         where
         (_leftVal, leftWithRanges) = evTerm False left 
-    evLessLeq _isLeq formOp _logicOp lab (Term (PlusInfinity, l)) right =
-        (L.fromBool lab l ppb False,
+    evLessLeq _isLeq formOp _logicOp lab (Term (PlusInfinity, _)) right =
+        (L.fromBool lab Nothing ppb False,
          formOp lab plusInfinityTermWithRange rightWithRanges)
         where
         (_rightVal, rightWithRanges) = evTerm False right 
-    evLessLeq _isLeq formOp _logicOp lab left (Term (PlusInfinity, l)) =
-        (L.fromBool lab l ppb True,
+    evLessLeq _isLeq formOp _logicOp lab left (Term (PlusInfinity, _)) =
+        (L.fromBool lab Nothing ppb True,
          formOp lab leftWithRanges plusInfinityTermWithRange)
         where
         (_leftVal, leftWithRanges) = evTerm False left 
@@ -164,7 +169,7 @@ termIsIntegerType isIntVarMap (Term (t, _)) =
             
      
 evalTerm ::
-    (L.TruthValue tv (Maybe (IRA BM))) =>
+    (L.TruthValue tv (Maybe (IRA BM)), HasDefaultValue l, Eq l) =>
     tv {-^ sample truth value to aid type checking -} -> 
     Int {-^ polynomial degree limit -} -> 
     Int {-^ polynomial term size limit -} -> 
@@ -173,7 +178,7 @@ evalTerm ::
     PPBox BM {-^ domains of variables -} -> 
 --    (Int,Int) {-^ precision of emulated FP operations -} ->
     Bool {-^ should compute ranges using inner rounding? -} -> 
-    Term (Maybe (IRA BM)) {-^ term to evaluate -} -> 
+    Term l {-^ term to evaluate -} -> 
     (FAPUOI BM, Term (Maybe (IRA BM)))
 evalTerm 
         _sampleTV maxdeg maxsize ix minIntegrationStepSize ppbOrig -- fptype@(epsrelbits,epsabsbits) 
@@ -192,22 +197,22 @@ evalTerm
         [valueRAOuter] = FA.getRangeApprox valueFA
         ((_ol, _oh), (il, ih)) = RA.oiBounds valueFA
         (valueFA, term') = evTermBox' ppb term
-    evTermBox' ppb@(skewed, box, isIntVarMap, namesMap) (Term (term, _)) =
+    evTermBox' ppb@(skewed, box, isIntVarMap, namesMap) (Term (term', _)) =
         (valueFA, termWithRanges)
         where
         (valueFA, termWithRanges) =
-            case term of
-                Pi -> (setSizes $ RAEL.pi 10, term)
-                Lit val -> (rationalToFA val, term)
+            case term' of
+                Pi -> (setSizes $ RAEL.pi 10, Pi)
+                Lit val -> (rationalToFA val, Lit val)
                 PlusInfinity ->
                     unsafePrint
                     ("Warning: Currently PolyPaver cannot prove a statement that has an infinity in a sub-expression.") 
-                    (setSizes $ UFA.const [1/0], term)
+                    (setSizes $ UFA.const [1/0], PlusInfinity)
                 MinusInfinity -> 
                     unsafePrint
                     ("Warning: Currently PolyPaver cannot prove a statement that has an infinity in a sub-expression.") 
-                    (setSizes $ UFA.const [-1/0], term)
-                Var varid varName -> (fa, term)
+                    (setSizes $ UFA.const [-1/0], MinusInfinity)
+                Var varid varName -> (fa, Var varid varName)
                     where
                     fa =
                         case isConst of
@@ -258,8 +263,8 @@ evalTerm
                 Hull left right -> evOp2 Hull (RA.\/) left right
                 Integral ivarId ivarName lower upper integrand ->
                     evIntegral ivarId ivarName lower upper integrand
-                FEpsAbs _ epsabsbits -> (rationalToFA $ 2^^(- epsabsbits), term) 
-                FEpsRel epsrelbits _ -> (rationalToFA $ 2^^(- epsrelbits), term) 
+                FEpsAbs epsrelbits epsabsbits -> (rationalToFA $ 2^^(- epsabsbits), FEpsAbs epsrelbits epsabsbits) 
+                FEpsRel epsrelbits epsabsbits -> (rationalToFA $ 2^^(- epsrelbits), FEpsRel epsrelbits epsabsbits) 
                 FEpsiAbs rel abse -> evTermBox' ppb $ plusMinus $ termOp0 $ FEpsAbs rel abse 
                 FEpsiRel rel abse -> evTermBox' ppb $ plusMinus $ termOp0 $ FEpsRel rel abse
                 FRound rel abse arg 
