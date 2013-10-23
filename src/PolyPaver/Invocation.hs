@@ -32,7 +32,7 @@ import PolyPaver.Vars
 import qualified PolyPaver.Plot as Plot
 
 --import Numeric.ER.BasicTypes.DomainBox.IntMap
---import Numeric.ER.Real.DefaultRepr
+import Numeric.ER.Real.DefaultRepr
 import Numeric.ER.Real.Base
 import Numeric.ER.Real.Base.MachineDouble
 --import qualified Numeric.ER.Real.Approx as RA
@@ -59,7 +59,7 @@ data Problem = Problem
             [(Int,
               (Rational,Rational),
                Bool)], -- is the variable restricted to integers?
-        problem_form :: Form
+        problem_form :: Form (Maybe (IRA BM))
     }
     deriving (Show,Read,Typeable)
 

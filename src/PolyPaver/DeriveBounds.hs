@@ -24,6 +24,7 @@ import PolyPaver.Logic (TVM(..))
 
 import qualified Numeric.ER.Real.Approx as RA
 import qualified Numeric.ER.Real.Base as B
+import Numeric.ER.Real.DefaultRepr
 
 import Numeric.ER.Misc
 
@@ -32,7 +33,7 @@ import qualified Data.Map as Map
 import qualified Data.IntMap as IMap
 
 getBox :: 
-    Form ->
+    Form  (Maybe (IRA BM)) ->
     Either String [(Int, (Rational, Rational), Bool)]
 getBox form 
     | allGood = 
@@ -52,7 +53,7 @@ getBox form
         unlines $ map reportBadVar $ filter (not . isGood) varRanges
         where
         reportBadVar (v, _) =
-            "*** failed to derive a bound for variable " ++ showVar varNames v ++ " in formula " ++ showForm 10000 False form 
+            "*** failed to derive a bound for variable " ++ showVar varNames v ++ " in formula " ++ showForm 10000 const form 
     varSet = getFormFreeVars form
     varNames = getFormVarNames form
     initBox
@@ -155,7 +156,7 @@ scanHypothesis _ intervals = intervals
     
 evalT ::
     (IMap.IntMap (Maybe Rational, Maybe Rational)) ->
-    Term ->
+    Term  (Maybe (IRA BM)) ->
     (Maybe Rational, Maybe Rational)
 evalT intervals term 
     | termVarsBounded = (ifBoundedDown l, ifBoundedUp r)

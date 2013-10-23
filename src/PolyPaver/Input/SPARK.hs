@@ -23,6 +23,7 @@ import PolyPaver.Vars
 import PolyPaver.DeriveBounds
 
 import Numeric.ER.Misc
+import Numeric.ER.Real.DefaultRepr
 
 import Data.Char (ord, isSpace)
 import Data.List (intercalate, partition)
@@ -45,7 +46,7 @@ import Text.Parsec.Language
 parseVCInFile ::
     String {-^ description of the source (eg file name) for error reporting -} ->
     String {-^ the contents of the vc file -} -> 
-    (String, Form, [(Int, (Rational, Rational), Bool)])
+    (String, Form (Maybe (IRA BM)), [(Int, (Rational, Rational), Bool)])
     {-^ the VC and the bounding box for its variables -}
 parseVCInFile sourceDescription s =
     case parse vcInFile sourceDescription s of
@@ -56,7 +57,7 @@ parseSivVC ::
     String {-^ description of the source (eg file name) for error reporting -} ->
     String {-^ the contents of the SPARK vcg or siv file -} -> 
     String {-^ VC name -} -> 
-    (String, Form, [(Int, (Rational, Rational), Bool)])
+    (String, Form (Maybe (IRA BM)), [(Int, (Rational, Rational), Bool)])
     {-^ the VC and the bounding box for its variables -}
 parseSivVC sourceDescription s vcName =
     case parse (sivVC vcName) "siv" s of
@@ -66,7 +67,7 @@ parseSivVC sourceDescription s vcName =
 parseSivAll ::
     String {-^ description of the source (eg file name) for error reporting -} ->
     String {-^ the contents of the SPARK vcg or siv file -} -> 
-    [(String, Form, [(Int, (Rational, Rational), Bool)])]
+    [(String, Form (Maybe (IRA BM)), [(Int, (Rational, Rational), Bool)])]
     {-^ the VC and the bounding box for its variables -}
 parseSivAll sourceDescription s =
     case parse sivAll "siv" s of
@@ -95,7 +96,7 @@ addBox (name, form) =
             Right box -> box
     formN = removeDisjointHypotheses $ normaliseVars form
   
-sivAll :: Parser [(String, Form)]
+sivAll :: Parser [(String, Form (Maybe (IRA BM)))]
 sivAll =
     many $
     do
@@ -111,7 +112,7 @@ sivAll =
         <|> 
         (m_symbol $ "function_")
   
-sivVC :: String -> Parser Form
+sivVC :: String -> Parser (Form (Maybe (IRA BM)))
 sivVC vcName =
     do
     untilStartOfVC
@@ -141,14 +142,14 @@ vcHead =
     m_dot
     return vcName
 
-vcWhole :: Parser Form 
+vcWhole :: Parser (Form (Maybe (IRA BM))) 
 vcWhole = 
     do
     t <- vcHypothesesAndConclusions <|> vcConclusionsOnly <|> vcEmpty
 --    unsafePrint ("vcWhole: done vcName = " ++ vcName ++ "; form = " ++ showForm t) $ return ()
     return t
 
-vcHypothesesAndConclusions :: Parser Form
+vcHypothesesAndConclusions :: Parser (Form (Maybe (IRA BM)))
 vcHypothesesAndConclusions = 
     do
     hs <- many hypothesis
@@ -158,19 +159,19 @@ vcHypothesesAndConclusions =
     cs <- many1 (try conclusion)
     return $ foldr (--->) (foldl1 (/\) cs) $ sortFormulasBySize hs 
 
-vcConclusionsOnly :: Parser Form
+vcConclusionsOnly :: Parser (Form (Maybe (IRA BM)))
 vcConclusionsOnly = 
     do
     cs <- many1 (try conclusion)
     return $ foldl1 (/\) cs
 
 
-vcEmpty :: Parser Form
+vcEmpty :: Parser (Form (Maybe (IRA BM)))
 vcEmpty =
     do
     m_symbol "***"
     manyTill anyToken m_dot 
-    return Verum
+    return (verum Nothing)
 
 hypothesis = vcItem "H"
 conclusion = vcItem "C"
@@ -185,7 +186,7 @@ vcItem symb =
 --    unsafePrint ("vcItem: done item = " ++ symb ++ show n ++ "; form = " ++ showForm f) $ return ()
     return f
     
-formula :: Label -> Parser Form
+formula :: FormLabel -> Parser (Form (Maybe (IRA BM)))
 formula lab = buildExpressionParser formTable (atomicFormula lab) <?> ("formula " ++ lab)
 formTable = 
     [ [Infix (m_reserved "and" >> return (And)) AssocLeft]
@@ -252,7 +253,7 @@ decodePred lab pred args =
         "(" ++ (intercalate "," $ map show args) ++ ")"
 
 
-term :: Parser Term
+term :: Parser (Term (Maybe (IRA BM)))
 term = buildExpressionParser termTable atomicTerm <?> "term"
 termTable = 
     [ [prefix "-" negate]

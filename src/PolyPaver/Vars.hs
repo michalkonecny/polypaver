@@ -26,20 +26,21 @@ module PolyPaver.Vars
 )
 where
 
-import PolyPaver.Form
+import PolyPaver.Form 
 
-import Numeric.ER.Misc
+--import Numeric.ER.Misc
 
 import qualified Data.Set as Set
 import qualified Data.Map as Map
 import qualified Data.IntMap as IMap
 
+showVar :: IMap.IntMap [Char] -> IMap.Key -> [Char]
 showVar varNames var =
     case IMap.lookup var varNames of
         Nothing -> "x" ++ show var
         Just name -> name
 
-getFormVarNames :: Form -> IMap.IntMap String
+getFormVarNames :: Form l -> IMap.IntMap String
 getFormVarNames form =
     case form of
         Not arg -> getFormVarNames arg
@@ -58,10 +59,11 @@ getFormVarNames form =
         IsInt _ t -> getTermVarNames t
         _ -> IMap.empty
 
+getFormVarNames2 :: Form l -> Form l -> IMap.IntMap String
 getFormVarNames2 f1 f2 = 
     (getFormVarNames f1) `IMap.union` (getFormVarNames f2)
 
-getTermVarNames :: Term -> IMap.IntMap String
+getTermVarNames :: Term l -> IMap.IntMap String
 getTermVarNames (Term (term, _)) =
     case term of
         Var varid name -> IMap.singleton varid name
@@ -81,7 +83,7 @@ getTermVarNames (Term (term, _)) =
         Sin arg -> getTermVarNames arg
         Cos arg -> getTermVarNames arg
         Atan arg -> getTermVarNames arg
-        Integral ivarId ivarName lower upper integrand ->
+        Integral ivarId _ivarName lower upper integrand ->
             (getTermVarNames2 lower upper)
             `IMap.union`
             (IMap.delete ivarId $ getTermVarNames integrand)
@@ -97,12 +99,14 @@ getTermVarNames (Term (term, _)) =
         FExp _ _ arg -> getTermVarNames arg
         _ -> IMap.empty
 
+getTermVarNames2 :: Term l -> Term l -> IMap.IntMap String
 getTermVarNames2 t1 t2 = 
     (getTermVarNames t1) `IMap.union` (getTermVarNames t2)
+getTermVarNames3 :: Term l -> Term l -> Term l -> IMap.IntMap String
 getTermVarNames3 t1 t2 t3 = 
     (getTermVarNames t1) `IMap.union` (getTermVarNames t2) `IMap.union` (getTermVarNames t3)
 
-getFormFreeVars :: Form -> Set.Set Int
+getFormFreeVars :: Form l -> Set.Set Int
 getFormFreeVars form =
     case form of
         Not arg -> getFormFreeVars arg
@@ -121,10 +125,11 @@ getFormFreeVars form =
         IsInt _ arg -> getTermFreeVars arg
         _ -> Set.empty
 
+getFormFreeVars2 :: Form l -> Form l -> Set.Set Int
 getFormFreeVars2 f1 f2 = 
     (getFormFreeVars f1) `Set.union` (getFormFreeVars f2)
 
-getTermFreeVars :: Term -> Set.Set Int
+getTermFreeVars :: Term l -> Set.Set Int
 getTermFreeVars (Term (term, _)) =
     case term of
         Var varid _ -> Set.singleton varid
@@ -144,7 +149,7 @@ getTermFreeVars (Term (term, _)) =
         Sin arg -> getTermFreeVars arg
         Cos arg -> getTermFreeVars arg
         Atan arg -> getTermFreeVars arg
-        Integral ivarId ivarName lower upper integrand ->
+        Integral ivarId _ivarName lower upper integrand ->
             (getTermFreeVars2 lower upper)
             `Set.union`
             (Set.delete ivarId $ getTermFreeVars integrand)
@@ -160,13 +165,16 @@ getTermFreeVars (Term (term, _)) =
         FExp _ _ arg -> getTermFreeVars arg
         _ -> Set.empty
 
+getTermFreeVars2 :: Term l -> Term l -> Set.Set Int
 getTermFreeVars2 t1 t2 =
     (getTermFreeVars t1) `Set.union` (getTermFreeVars t2)
+
+getTermFreeVars3 :: Term l -> Term l -> Term l -> Set.Set Int
 getTermFreeVars3 t1 t2 t3 =
     (getTermFreeVars t1) `Set.union` (getTermFreeVars t2) `Set.union` (getTermFreeVars t3)
 
 renameVarsForm :: 
-    (Int -> Int) -> Form -> Form  
+    (Int -> Int) -> Form l -> Form l  
 renameVarsForm old2new = rnm
     where
     rnmT = renameVarsTerm old2new
@@ -202,7 +210,7 @@ renameVarsForm old2new = rnm
             f -> f
 
 renameVarsTerm :: 
-    (Int -> Int) -> Term -> Term  
+    (Int -> Int) -> Term l -> Term l  
 renameVarsTerm old2new = rnm
     where
     rnm (Term (term, maybeRangeBounds)) =
@@ -230,22 +238,22 @@ renameVarsTerm old2new = rnm
                 Integral ivarId ivarName (rnm lower) (rnm upper) (rnmIV integrand)
                 where
                 rnmIV = renameVarsTerm old2newIV
-                old2newIV id 
-                    | id == ivarId = id
-                    | otherwise = old2newIV id
-            FRound rel abs arg -> FRound rel abs $ rnm arg
-            FPlus rel abs left right -> FPlus rel abs (rnm left) (rnm right)
-            FMinus rel abs left right -> FMinus rel abs (rnm left) (rnm right)
-            FTimes rel abs left right -> FTimes rel abs (rnm left) (rnm right)
-            FSquare rel abs arg -> FSquare rel abs $ rnm arg
-            FSqrt rel abs arg -> FSqrt rel abs $ rnm arg
-            FSin rel abs arg -> FSin rel abs $ rnm arg
-            FCos rel abs arg -> FCos rel abs $ rnm arg
-            FOver rel abs left right -> FOver rel abs (rnm left) (rnm right)
-            FExp rel abs arg -> FExp rel abs $ rnm arg
+                old2newIV varId
+                    | varId == ivarId = varId
+                    | otherwise = old2newIV varId
+            FRound rel abse arg -> FRound rel abse $ rnm arg
+            FPlus rel abse left right -> FPlus rel abse (rnm left) (rnm right)
+            FMinus rel abse left right -> FMinus rel abse (rnm left) (rnm right)
+            FTimes rel abse left right -> FTimes rel abse (rnm left) (rnm right)
+            FSquare rel abse arg -> FSquare rel abse $ rnm arg
+            FSqrt rel abse arg -> FSqrt rel abse $ rnm arg
+            FSin rel abse arg -> FSin rel abse $ rnm arg
+            FCos rel abse arg -> FCos rel abse $ rnm arg
+            FOver rel abse left right -> FOver rel abse (rnm left) (rnm right)
+            FExp rel abse arg -> FExp rel abse $ rnm arg
             t -> t
 
-normaliseVars :: Form -> Form
+normaliseVars :: Form l -> Form l
 normaliseVars form =
     renameVarsForm old2new form
     where
@@ -258,13 +266,12 @@ normaliseVars form =
     varSet = getFormFreeVars form
 
 substituteVarsForm :: 
-    (Int -> Maybe Term') -> Form -> Form  
+    (Int -> Maybe (Term' l)) -> Form l -> Form l  
 substituteVarsForm old2new = subst
     where
     substT = substituteVarsTerm old2new
     subst form =
         case form of
-            Predicate term -> Predicate $ substT term
             Not arg -> Not $ subst arg
             Or left right ->
                 Or (subst left) (subst right)
@@ -295,14 +302,14 @@ substituteVarsForm old2new = subst
             f -> f
 
 substituteVarsTerm :: 
-    (Int -> Maybe Term') -> Term -> Term  
+    (Int -> Maybe (Term' l)) -> Term l -> Term l  
 substituteVarsTerm old2new = subst
     where
     subst (Term (term, maybeRangeBounds)) =
         Term (subst' term, maybeRangeBounds)
     subst' term =
         case term of
-            Var varid s -> case (old2new varid) of Just newTerm -> newTerm; _ -> term
+            Var varid _s -> case (old2new varid) of Just newTerm -> newTerm; _ -> term
             Hull left right -> Hull (subst left) (subst right)
             Plus left right -> Plus (subst left) (subst right)
             Minus left right -> Minus (subst left) (subst right)
@@ -321,19 +328,19 @@ substituteVarsTerm old2new = subst
             Atan arg -> Atan $ subst arg
             Integral ivarId ivarName lower upper integrand ->
                 Integral ivarId ivarName (subst lower) (subst upper) (subst integrand)
-            FRound rel abs arg -> FRound rel abs $ subst arg
-            FPlus rel abs left right -> FPlus rel abs (subst left) (subst right)
-            FMinus rel abs left right -> FMinus rel abs (subst left) (subst right)
-            FTimes rel abs left right -> FTimes rel abs (subst left) (subst right)
-            FSquare rel abs arg -> FSquare rel abs $ subst arg
-            FSqrt rel abs arg -> FSqrt rel abs $ subst arg
-            FSin rel abs arg -> FSin rel abs $ subst arg
-            FCos rel abs arg -> FCos rel abs $ subst arg
-            FOver rel abs left right -> FOver rel abs (subst left) (subst right)
-            FExp rel abs arg -> FExp rel abs $ subst arg
+            FRound rel abse arg -> FRound rel abse $ subst arg
+            FPlus rel abse left right -> FPlus rel abse (subst left) (subst right)
+            FMinus rel abse left right -> FMinus rel abse (subst left) (subst right)
+            FTimes rel abse left right -> FTimes rel abse (subst left) (subst right)
+            FSquare rel abse arg -> FSquare rel abse $ subst arg
+            FSqrt rel abse arg -> FSqrt rel abse $ subst arg
+            FSin rel abse arg -> FSin rel abse $ subst arg
+            FCos rel abse arg -> FCos rel abse $ subst arg
+            FOver rel abse left right -> FOver rel abse (subst left) (subst right)
+            FExp rel abse arg -> FExp rel abse $ subst arg
             t -> t
 
-removeDisjointHypotheses :: Form -> Form
+removeDisjointHypotheses :: Form l -> Form l
 removeDisjointHypotheses form
     =
     rmHyps form
@@ -356,6 +363,7 @@ removeDisjointHypotheses form
         findFix (a1: a2 : rest)
             | a1 == a2 = a1
             | otherwise = findFix (a2 : rest)
+        findFix _ = error "removeDisjointHypotheses: conclusionTransVars: findFix: inappropriate parameter"
         addRelatedVarsHyps (Implies h c) vars
             = addRelatedVarsHyps c $ addRelatedVarsConj h vars
         addRelatedVarsHyps _ vars = vars

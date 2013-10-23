@@ -3,11 +3,10 @@
 {-# LANGUAGE ScopedTypeVariables #-}
 module PolyPaver.Form where
 
-import Numeric.ER.Real.DefaultRepr
-import System.Info
+import System.Info (os)
 
-import Data.Data
-import Data.Ratio
+import Data.Data (Data, Typeable)
+import Data.Ratio (denominator, numerator)
 import Data.List (intercalate, sortBy)
 
 infixr 2 --->
@@ -17,55 +16,52 @@ infixl 5 |<|, |<=|, |>|, |>=|, |<-|, |=|, |==|
 infixl 6 +:, -:
 infixl 7 *:, /:
 
-type Label = String
+type FormLabel = String
 
-data Form
-  = Verum
-  | Falsum
-  | Predicate Term -- Boolean-valued term
-  | Not Form
-  | Or Form Form
-  | And Form Form
-  | Implies Form Form
-  | Le Label Term Term
-  | Leq Label Term Term
-  | Ge Label Term Term
-  | Geq Label Term Term
-  | Eq Label Term Term
-  | Neq Label Term Term
-  | ContainedIn Label Term Term
-  | IsRange Label Term Term Term 
-  | IsIntRange Label Term Term Term 
-  | IsInt Label Term
+data Form l
+  = Not (Form l)
+  | Or (Form l) (Form l)
+  | And (Form l) (Form l)
+  | Implies (Form l) (Form l)
+  | Le FormLabel (Term l) (Term l)
+  | Leq FormLabel (Term l) (Term l)
+  | Ge FormLabel (Term l) (Term l)
+  | Geq FormLabel (Term l) (Term l)
+  | Eq FormLabel (Term l) (Term l)
+  | Neq FormLabel (Term l) (Term l)
+  | ContainedIn FormLabel (Term l) (Term l)
+  | IsRange FormLabel (Term l) (Term l) (Term l)
+  | IsIntRange FormLabel (Term l) (Term l) (Term l)
+  | IsInt FormLabel (Term l)
   deriving (Eq,Show,Read,Data,Typeable)
 
-isAtomicForm :: Form -> Bool
-isAtomicForm (Not f) = False
+verum :: l -> Form l
+verum l = IsInt "Verum" (Term (Lit 0, l))
+
+isAtomicForm :: Form t -> Bool
+isAtomicForm (Not _f) = False
 isAtomicForm (Or _ _) = False
 isAtomicForm (And _ _) = False
 isAtomicForm (Implies _ _) = False
 isAtomicForm _ = True
 
-getConclusion :: Form -> Form
-getConclusion (Implies f1 f2) = getConclusion f2
+getConclusion :: Form t -> Form t
+getConclusion (Implies _f1 f2) = getConclusion f2
 getConclusion f = f
 
-splitConclusion :: Form -> [Form]
+splitConclusion :: Form t -> [Form t]
 splitConclusion (Implies f1 f2) =
     map (Implies f1) $ splitConclusion f2
 splitConclusion f = splitFormula f
 
-splitFormula :: Form -> [Form]
+splitFormula :: Form t -> [Form t]
 splitFormula (And f1 f2) =
     splitFormula f1 ++ splitFormula f2
 splitFormula f = [f] 
 
-getFormulaSize :: Form -> Int
+getFormulaSize :: Form t -> Int
 getFormulaSize form =
     case form of
-        Verum -> 1
-        Falsum -> 1
-        Predicate t -> 1 + (getTermSize t)
         Not f -> 1 + (getFormulaSize f)
         Or f1 f2 -> 1 + (getFormulaSize f1) + (getFormulaSize f2)
         And f1 f2 -> 1 + (getFormulaSize f1) + (getFormulaSize f2)
@@ -81,85 +77,105 @@ getFormulaSize form =
         IsIntRange _ t1 t2 t3 -> 1 + (getTermSize t1) + (getTermSize t2) + (getTermSize t3)
         IsInt _ t -> 1 + (getTermSize t)
 
-sortFormulasBySize :: [Form] -> [Form]
+sortFormulasBySize :: [Form t] -> [Form t]
 sortFormulasBySize formulas =
     map snd $ sortBy (\a b -> compare (fst a) (fst b)) $ map addSize formulas
     where
     addSize formula = (getFormulaSize formula, formula)
 
+(/\) :: Form l -> Form l -> Form l
 (/\) = And
+(\/) :: Form l -> Form l -> Form l
 (\/) = Or
+(--->) :: Form l -> Form l -> Form l
 (--->) = Implies
+(|=|) :: Term l -> Term l -> Form l
 (|=|) = Eq "anon"
+(|==|) :: Term l -> Term l -> Form l
 (|==|) = Eq "anon"
+(|<|) :: Term l -> Term l -> Form l
 (|<|) = Le "anon"
+(|<=|) :: Term l -> Term l -> Form l
 (|<=|) = Leq "anon"
+(|>|) :: Term l -> Term l -> Form l
 (|>|) = Ge "anon"
+(|>=|) :: Term l -> Term l -> Form l
 (|>=|) = Geq "anon"
+(|<-|) :: Term l -> Term l -> Form l
 (|<-|) = ContainedIn "anon"
 
-notVerum Verum = False
-notVerum _ = True
-
-newtype Term = Term (Term', Maybe (IRA BM))
+newtype Term l = Term (Term' l, l)
   deriving (Eq,Data,Typeable)
-data Term'
+data Term' l
   = Lit Rational
   | MinusInfinity
   | PlusInfinity
   | Var Int String -- numeric identifier, string only for printing
-  | Hull Term Term -- interval covering both values
-  | Plus Term Term
-  | Minus Term Term
-  | Neg Term
-  | Times Term Term
-  | IntPower Term Term
-  | Recip Term
-  | Over Term Term
-  | Abs Term
-  | Min Term Term
-  | Max Term Term
+  | Hull (Term l) (Term l) -- interval covering both values
+  | Plus (Term l) (Term l)
+  | Minus (Term l) (Term l)
+  | Neg (Term l)
+  | Times (Term l) (Term l)
+  | IntPower (Term l) (Term l)
+  | Recip (Term l)
+  | Over (Term l) (Term l)
+  | Abs (Term l)
+  | Min (Term l) (Term l)
+  | Max (Term l) (Term l)
   | Pi
-  | Sqrt Term
-  | Exp Term
-  | Sin Term
-  | Cos Term
-  | Atan Term
-  | Integral Int String Term Term Term -- eg: Integral ivarId ivarName lower upper integrand
+  | Sqrt (Term l)
+  | Exp (Term l)
+  | Sin (Term l)
+  | Cos (Term l)
+  | Atan (Term l)
+  | Integral Int String (Term l) (Term l) (Term l) -- eg: Integral ivarId ivarName lower upper integrand
 -- the following term constructors depend on a specific floating-point arithmetic: 
   | FEpsAbs Int Int
   | FEpsRel Int Int
   | FEpsiAbs Int Int
   | FEpsiRel Int Int
-  | FRound Int Int Term
-  | FPlus Int Int Term Term
-  | FMinus Int Int Term Term
-  | FTimes Int Int Term Term
-  | FOver Int Int Term Term
-  | FSquare Int Int Term
-  | FSqrt Int Int Term
-  | FSin Int Int Term
-  | FCos Int Int Term
-  | FExp Int Int Term
+  | FRound Int Int (Term l)
+  | FPlus Int Int (Term l) (Term l)
+  | FMinus Int Int (Term l) (Term l)
+  | FTimes Int Int (Term l) (Term l)
+  | FOver Int Int (Term l) (Term l)
+  | FSquare Int Int (Term l)
+  | FSqrt Int Int (Term l)
+  | FSin Int Int (Term l)
+  | FCos Int Int (Term l)
+  | FExp Int Int (Term l)
   deriving (Eq,Show,Read,Data,Typeable)
 
-instance Show Term where
+instance Show (Term l) where
     show (Term (term', _)) = show term'
+
+class HasDefaultValue t
+    where
+    defaultValue :: t
     
-instance Read Term where
+instance HasDefaultValue (Maybe a) where
+    defaultValue = Nothing
+
+instance HasDefaultValue [a] where
+    defaultValue = []
+
+instance HasDefaultValue () where
+    defaultValue = ()
+
+instance HasDefaultValue l => Read (Term l) where
     readsPrec p s =
         map addTN $ readsPrec p s
         where
         addTN (t, cont) =
-            (Term (t, Nothing), cont) 
+            (Term (t, defaultValue), cont) 
 
-getTermSize :: Term -> Int
+getTermSize :: (Term l) -> Int
 getTermSize (Term (term, _)) =
     case term of
-        Lit r -> 1
+        Lit _r -> 1
         MinusInfinity -> 1
         PlusInfinity -> 1 
-        Var n s -> 1
+        Var _n _s -> 1
         Hull t1 t2 -> 1 + (getTermSize t1) + (getTermSize t2)
         Plus t1 t2 -> 1 + (getTermSize t1) + (getTermSize t2)
         Minus t1 t2 -> 1 + (getTermSize t1) + (getTermSize t2)
@@ -177,7 +193,7 @@ getTermSize (Term (term, _)) =
         Sin t -> 10 + (getTermSize t)
         Cos t -> 10 + (getTermSize t)
         Atan t -> 10 + (getTermSize t)
-        Integral ivarId ivarName lower upper integrand -> 
+        Integral _ivarId _ivarName lower upper integrand -> 
             2 + (getTermSize lower) + (getTermSize upper) + (getTermSize integrand)
         FEpsAbs _ _ -> 1
         FEpsRel _ _ -> 1
@@ -197,17 +213,25 @@ getTermSize (Term (term, _)) =
 
 {--- Operations for convenient encoding of literal values of type Term  ---}
 
-termOp0 op = Term (op, Nothing)
-termOp1 op t1 = Term (op t1, Nothing)
-termOp2 op t1 t2 = Term (op t1 t2, Nothing)
-termOp3 op t1 t2 t3 = Term (op t1 t2 t3, Nothing)
+termOp0 :: HasDefaultValue l => Term' l -> Term l
+termOp0 op = Term (op, defaultValue)
+termOp1 :: HasDefaultValue l => (t -> Term' l) -> t -> Term l
+termOp1 op t1 = Term (op t1, defaultValue)
+termOp2 :: HasDefaultValue l => (t -> t1 -> Term' l) -> t -> t1 -> Term l
+termOp2 op t1 t2 = Term (op t1 t2, defaultValue)
+termOp3 :: HasDefaultValue l => (t -> t1 -> t2 -> Term' l) -> t -> t1 -> t2 -> Term l
+termOp3 op t1 t2 t3 = Term (op t1 t2 t3, defaultValue)
 
-termVar id name = termOp0 $ Var id name
+termVar :: HasDefaultValue l => Int -> String -> Term l
+termVar varid name = termOp0 $ Var varid name
 
+hull :: (HasDefaultValue l) => Term l -> Term l -> Term l
 hull = termOp2 Hull
+
+plusMinus :: (Eq l, HasDefaultValue l) => Term l -> Term l
 plusMinus a = hull (negate a) a
 
-instance Ord Term
+instance (HasDefaultValue l, Eq l) => Ord (Term l)
   where
   min = termOp2 Min
   max = termOp2 Max
@@ -220,7 +244,7 @@ instance Ord Term
   compare (Term (PlusInfinity, _)) _ = GT
   compare _ _ = error "compare not implemented for datatype Term except for numeric literals"
   
-instance Num Term
+instance (HasDefaultValue l, Eq l) => Num (Term l)
   where
   fromInteger n = termOp1 Lit $ fromInteger n
   negate = termOp1 Neg
@@ -228,13 +252,16 @@ instance Num Term
   (*) = termOp2 Times
   abs = termOp1 Abs
 
+plusInfinityTerm, minusInfinityTerm :: (HasDefaultValue l) => Term l
 plusInfinityTerm = termOp0 PlusInfinity
 minusInfinityTerm = termOp0 MinusInfinity
 
-intPower = termOp2 $ IntPower
-square = \ t -> intPower t 2 
+intPower :: (HasDefaultValue l) => Term l -> Term l -> Term l
+intPower = termOp2 IntPower
+square :: (HasDefaultValue l, Eq l) => Term l -> Term l
+square = (`intPower` 2) 
 
-instance Real Term
+instance (HasDefaultValue l, Eq l) => Real (Term l)
     where
     toRational (Term (Lit r, _)) = r
     toRational term = error $ "toRational undefined on term " ++ show term
@@ -246,13 +273,13 @@ instance Real Term
 --    where
     
 
-instance Fractional Term
+instance (HasDefaultValue l, Eq l) => Fractional (Term l)
   where
   fromRational = termOp1 Lit
   recip = termOp1 Recip
   (/) = termOp2 Over
 
-instance Floating Term
+instance (HasDefaultValue l, Eq l) => Floating (Term l)
   where
   sqrt = termOp1 Sqrt
   exp = termOp1 Exp
@@ -260,8 +287,13 @@ instance Floating Term
   sin = termOp1 Sin
   atan = termOp1 Atan
 
+integral :: 
+    HasDefaultValue l =>
+    Int -> String -> Term l -> Term l -> Term l -> Term l
 integral ivarId ivarName = termOp3 $ Integral ivarId ivarName
 
+fepsAbs, fepsRel, fepsiAbs, fepsiRel :: (HasDefaultValue l) =>  Term l
+depsAbs, depsRel, depsiAbs, depsiRel :: (HasDefaultValue l) =>  Term l
 fepsAbs = termOp0 $ FEpsAbs 24 126
 fepsRel = termOp0 $ FEpsRel 24 126
 fepsiAbs = termOp0 $ FEpsiAbs 24 126
@@ -271,27 +303,37 @@ depsRel = termOp0 $ FEpsRel 53 1022
 depsiAbs = termOp0 $ FEpsiAbs 53 1022
 depsiRel = termOp0 $ FEpsiRel 53 1022
 
+fround, dround :: (HasDefaultValue l) =>  Term l -> Term l
 fround = termOp1 $ FRound 24 126
 dround = termOp1 $ FRound 53 1022
 
+(+:),(-:),(*:),(/:) :: (HasDefaultValue l) => Term l -> Term l -> Term l
 (+:) = termOp2 $ FPlus 24 126
 (-:) = termOp2 $ FMinus 24 126
 (*:) = termOp2 $ FTimes 24 126
 (/:) = termOp2 $ FOver 24 126
 
+(+::),(-::),(*::),(/::) :: (HasDefaultValue l) => Term l -> Term l -> Term l
 (+::) = termOp2 $ FPlus 53 1022
 (-::) = termOp2 $ FMinus 53 1022
 (*::) = termOp2 $ FTimes 53 1022
 (/::) = termOp2 $ FOver 53 1022
 
+uniascii :: String -> String -> String
 uniascii unicode ascii 
     | useUnicode = unicode
     | otherwise = ascii
+useUnicode :: Bool
 useUnicode = (os /= "mingw32")
 
-showForm :: Int -> Bool -> Form -> String
-showForm maxLength shouldShowRanges form = 
-    shorten $ sf (Just 0) form
+showForm :: 
+    (HasDefaultValue l, Eq l) => 
+    Int -> 
+    (String -> l -> String) -> 
+    (Form l) -> 
+    String
+showForm maxLength showLabel origForm = 
+    shorten $ sf (Just 0) origForm
     where
     shorten s 
         | extraCharCount < 100 = s
@@ -301,7 +343,7 @@ showForm maxLength shouldShowRanges form =
         sStart = take maxLengthHalf s
         sEnd = drop (length s - maxLengthHalf) s
         maxLengthHalf = maxLength `div` 2
-    st maybeIndentLevel = showTermIL shouldShowRanges maybeIndentLevel
+    st maybeIndentLevel = showTermIL showLabel maybeIndentLevel
     sf Nothing form = sf2 Nothing form
     sf maybeIndentLevel form
         | length oneLineForm <= 60 = oneLineForm
@@ -311,9 +353,6 @@ showForm maxLength shouldShowRanges form =
     sf2 maybeIndentLevel form
         = 
         case form of
-            Verum -> "T"
-            Falsum -> "F"
-            Predicate t -> st maybeIndentLevel t
             Not f -> (uniascii "¬" "~") ++ (indentedBracketsF f)
             Or f1 f2 -> showOpF (uniascii "∨" "\\/") f1 f2
             And f1 f2 -> showOpF (uniascii "∧" "/\\") f1 f2
@@ -343,9 +382,9 @@ showForm maxLength shouldShowRanges form =
             indentedBracketsF f1 
             ++ indent ++ padIfInline op ++ indent ++
             indentedBracketsF f2
-        showPred lab pred ts =
+        showPred lab predicate ts =
             labelIfInline lab
-            ++ pred ++ "("
+            ++ predicate ++ "("
             ++ (intercalate (indent ++ ", ") $ map (\t -> indentNext ++ stNext t) ts)
             ++ indent ++ ")"
         showOpT op lab t1 t2 =
@@ -365,16 +404,17 @@ showForm maxLength shouldShowRanges form =
             case maybeIndentLevel of
                 Nothing -> ""
                 _ -> " [" ++ show lab ++ "] "
-        indentedBracketsF form
-            | isAtomicForm form = sf maybeIndentLevel form
-            | otherwise = "(" ++ indentNext ++ sfNext form ++ indent ++ ")"
+        indentedBracketsF form2
+            | isAtomicForm form2 = sf maybeIndentLevel form2
+            | otherwise = "(" ++ indentNext ++ sfNext form2 ++ indent ++ ")"
         maybeNextIndentLevel = fmap (+ 2) maybeIndentLevel
 
-showTerm :: Bool -> Term -> String
-showTerm shouldShowRanges term = showTermIL shouldShowRanges (Just 0) term
+showTerm :: (HasDefaultValue l, Eq l) => (String -> l -> String) -> (Term l) -> String
+showTerm showLabel term = showTermIL showLabel (Just 0) term
 
-showTermIL :: Bool -> (Maybe Int) -> Term -> String
-showTermIL shouldShowRanges = st
+showTermIL :: 
+    (HasDefaultValue l, Eq l) => (String -> l -> String) -> (Maybe Int) -> (Term l) -> String
+showTermIL showLabel = st
     where
     st Nothing term = st2 Nothing term
     st maybeIndentLevel term
@@ -383,39 +423,39 @@ showTermIL shouldShowRanges = st
         where
         oneLineTerm = st2 Nothing term
 
-    st2 maybeIndentLevel (Term (term,maybeRangeBounds))
+    st2 maybeIndentLevel (Term (term2, label2))
         =
-        case term of
+        case term2 of
             Lit r -> 
-                if floor r == ceiling r 
-                    then maybeAddBounds $ show (floor r) 
-                    else maybeAddBounds $ show (numerator r) ++ "/" ++ show (denominator r)
+                if floor r == (ceiling r :: Integer) 
+                    then addLabel $ show (floor r :: Integer) 
+                    else addLabel $ show (numerator r) ++ "/" ++ show (denominator r)
             PlusInfinity -> uniascii "+∞" "+oo"
             MinusInfinity -> uniascii "-∞" "-oo"
-            Var n s -> maybeAddBounds s
+            Var _n s -> addLabel s
             Hull t1 t2 -> showOpT ".." "hull" t1 t2
             Plus t1 t2 -> showOpT "+" "sum" t1 t2
             Minus t1 t2 -> showOpT "-" "diff" t1 t2
             Neg t -> showFnT "-" [t]
             Times t1 t2 -> showOpT "*" "prod" t1 t2
             IntPower t1 t2 -> formatIntPower t1 t2
-            Recip t -> st2 maybeIndentLevel $ Term (Over 1 t, maybeRangeBounds)
+            Recip t -> st2 maybeIndentLevel $ Term (Over 1 t, label2)
             Over t1 t2 -> showOpT "/" "div" t1 t2
             Abs t -> indentedOpenCloseT "|" "|" False t
             Min t1 t2 -> showFnT "min" [t1, t2]
             Max t1 t2 -> showFnT "max" [t1, t2]
-            Pi -> maybeAddBounds (uniascii "π" "pi")
+            Pi -> addLabel (uniascii "π" "pi")
             Sqrt t -> showFnT "sqrt" [t]
             Exp t -> showFnT "exp" [t]
             Sin t -> showFnT "sin" [t]
             Cos t -> showFnT "cos" [t]
             Atan t -> showFnT "atan" [t]
             Integral ivarId ivarName lower upper integrand -> 
-                showFnT "∫" [lower, upper, Term (Var ivarId ivarName, Nothing), integrand]
-            FEpsAbs _ _ -> maybeAddBounds $ uniascii "εabs" "fepsAbs"
-            FEpsRel _ _ -> maybeAddBounds $ uniascii "εrel" "fepsRel"
-            FEpsiAbs _ _ -> maybeAddBounds $ uniascii "εabsI" "fepsiAbs"
-            FEpsiRel _ _ -> maybeAddBounds $ uniascii "εrelI" "fepsiRel"
+                showFnT "∫" [lower, upper, Term (Var ivarId ivarName, defaultValue), integrand]
+            FEpsAbs _ _ -> addLabel $ uniascii "εabs" "fepsAbs"
+            FEpsRel _ _ -> addLabel $ uniascii "εrel" "fepsRel"
+            FEpsiAbs _ _ -> addLabel $ uniascii "εabsI" "fepsiAbs"
+            FEpsiRel _ _ -> addLabel $ uniascii "εrelI" "fepsiRel"
             FRound _ _ t -> showFnT "rnd" [t]
             FPlus _ _ t1 t2 -> showOpT (uniascii "⊕" "(+)") "sum" t1 t2
             FMinus _ _ t1 t2 -> showOpT (uniascii "⊖" "(-)") "diff" t1 t2
@@ -444,51 +484,32 @@ showTermIL shouldShowRanges = st
             case maybeNextIndentLevel of
                 Just indentLevel -> "\n" ++ replicate indentLevel ' '
                 _ -> ""
-        maybeAddBounds s =
-            case (shouldShowRanges, maybeRangeBounds) of
-                (True, Just rangeBounds) ->
-                    s ++ "∊" ++ show rangeBounds
-                _ -> s
-        showOpT op opname t1 t2 =
+        addLabel s = showLabel s label2
+        showOpT op _opname t1 t2 =
             case maybeNextIndentLevel of
                 Just _ ->
-                    indent ++ rangeIfIndented
+                    indent ++ showLabel "" label2
                     ++ indent ++ indentedBracketsT t1
                     ++ indent ++ op
                     ++ indent ++ indentedBracketsT t2
                 _ -> 
-                    rangeIfInlineOpen
+                    tIfInlineOpen
                     ++ indentedBracketsT t1 
                     ++ padIfInline op
                     ++ indentedBracketsT t2
-                    ++ rangeIfInlineClose
+                    ++ tIfInlineClose
             where
-            rangeIfInlineOpen = 
-                case (shouldShowRanges, maybeRangeBounds) of
-                    (True, Just _) -> "("
-                    _ -> ""
-            rangeIfInlineClose = 
-                case (shouldShowRanges, maybeRangeBounds) of
-                    (True, Just rangeBounds) -> ")∊" ++ show rangeBounds
-                    _ -> ""
-            rangeIfIndented =
-                case (shouldShowRanges, maybeRangeBounds) of
-                    (True, Just rangeBounds) -> "{" ++ opname ++ (uniascii "∊" "<-") ++ show rangeBounds ++ "}"
-                    _ -> ""
+            tIfInlineOpen = "(" 
+            tIfInlineClose = ")" ++ showLabel "" label2 
         showFnT fn ts =
-            fn ++ rangeIfIndented ++ "("
+            fn ++ tIfIndented ++ "("
             ++ (intercalate (indent ++ ", ") $ map (\t -> indentNext ++ stNext t) ts)
             ++ indent ++ ")"
-            ++ range
+            ++ showLabel "" label2
             where
-            rangeIfIndented =
-                case (maybeNextIndentLevel, shouldShowRanges, maybeRangeBounds) of
-                    (Just _, True, Just rangeBounds) ->
-                        "{res" ++ (uniascii "∊" "<-") ++ show rangeBounds ++ "}"
-                    _ -> ""
-            range =
-                case (shouldShowRanges, maybeRangeBounds) of
-                    (True, Just rangeBounds) -> (uniascii "∊" "<-") ++ show rangeBounds
+            tIfIndented =
+                case (maybeNextIndentLevel) of
+                    (Just _) -> showLabel "res" label2
                     _ -> ""
         padIfInline op = case maybeIndentLevel of Nothing -> " " ++ op ++ " "; _ -> op 
         indentedBracketsT = indentedOpenCloseT "(" ")" True
@@ -497,15 +518,14 @@ showTermIL shouldShowRanges = st
             | optional = 
                 open ++ indentNext ++ stNext term ++ indent ++ close
             | otherwise = 
-                open ++ rangeIfIndented ++ indentNext ++ stNext term ++ indent ++ maybeAddBounds close
+                open ++ tIfIndented ++ indentNext ++ stNext term ++ indent ++ addLabel close
             where
-            rangeIfIndented =
-                case (maybeNextIndentLevel, shouldShowRanges, maybeRangeBounds) of
-                    (Just _, True, Just rangeBounds) ->
-                        "{res" ++ (uniascii "∊" "<-") ++ show rangeBounds ++ "}"
+            tIfIndented =
+                case (maybeNextIndentLevel) of
+                    (Just _) -> showLabel "res" label2
                     _ -> ""
         maybeNextIndentLevel = fmap (+ 2) maybeIndentLevel
-        isAtomicTerm :: Term -> Bool
+        isAtomicTerm :: Term l -> Bool
         isAtomicTerm (Term (term, _)) = 
             case term of
                 (Lit _) -> True

@@ -83,7 +83,7 @@ data BoxToDo b =
         boxToDo_depth :: Int,
         boxToDo_skewAncestors :: [PPBox b],
         boxToDo_startDeg :: Int,
-        boxToDo_form :: Form,
+        boxToDo_form :: Form (Maybe (IRA BM)),
         boxToDo_prevSplitVar :: Int,
         boxToDo_ppb :: PPBox b    
     }
@@ -99,7 +99,7 @@ data BoxToDo b =
 tryToDecideFormOnBoxByPaving :: 
     TChan (Either PaverProgress PaverResult) {-^ @out@ -} ->
     Args {-^ @args@ - A record with various parameters -} -> 
-    Form {-^ @form@ - A logical formula -} ->
+    Form  (Maybe (IRA BM)) {-^ @form@ - A logical formula -} ->
     PPBox Double {-^ @box@ - A rectangle (possibly skewed) in R^n -} -> 
     IO ()
 tryToDecideFormOnBoxByPaving
@@ -235,7 +235,7 @@ tryToDecideFormOnBoxByPaving
                     Just _ -> (True, False)
                     _ -> (False, False)
                 where
-                maybeFormTruth = L.decide (value :: L.TVM)
+                maybeFormTruth = L.decide (value :: L.TVM (Maybe (IRA BM)))
             (value, formWithRanges) =
                 evalForm 
                     currentDeg (maxSize args) ix minIntegrationStepSize ppb 
