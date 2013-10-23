@@ -1,3 +1,4 @@
+{-# LANGUAGE FlexibleContexts #-}
 {-|
     Module      :  PolyPaver.Eval
     Description :  evaluation of a formula over a box  
@@ -46,25 +47,23 @@ import qualified Data.Ratio as Q
     Also, compute a formula that is equivalent to the original formula over this box but possibly simpler.
 -}
 evalForm ::
-    (L.TruthValue tv) =>
+    (L.TruthValue tv (Maybe (IRA BM))) =>
     Int {-^ polynomial degree limit -} -> 
     Int {-^ polynomial term size limit -} -> 
     EffortIndex {-^ effort index for regulating model error -} -> 
     IRA BM {-^ minIntegrationStepSize -} -> 
     PPBox BM {-^ domains of variables -} -> 
 --    (Int,Int) {-^ precision of emulated FP operations -} -> 
-    Form {-^ form to evaluate -} -> 
+    Form (Maybe (IRA BM)) {-^ form to evaluate -} -> 
     (tv, 
-     Form) {-^ form with added range bounds in all terms -}
-evalForm maxdeg maxsize ix minIntegrationStepSize ppb@(_, _, isIntVarMap, _) form =
-    evForm form
+     Form (Maybe (IRA BM))) {-^ form with added range bounds in all terms -}
+evalForm maxdeg maxsize ix minIntegrationStepSize ppb@(_, _, isIntVarMap, _) origForm =
+    evForm origForm
     where
-    evTerm = evalTerm sampleTV maxdeg maxsize ix minIntegrationStepSize ppb 
-    (sampleTV, _) = evForm Verum
+    evTerm = evalTerm sampleTVMustNotUse maxdeg maxsize ix minIntegrationStepSize ppb 
+    (sampleTVMustNotUse, _) = evForm origForm -- sampleTVMustNotUse defined by infinite loop - only used for type checking
     evForm form =
         case form of
-            Verum -> (L.fromBool "Verum" ppb True, form)
-            Falsum -> (L.fromBool "Falsum" ppb False, form)
             Not arg -> evOp1 Not L.not arg
             Or left right -> evOp2 Or (L.||) left right 
             And left right -> evOp2 And (L.&&) left right
@@ -78,7 +77,7 @@ evalForm maxdeg maxsize ix minIntegrationStepSize ppb@(_, _, isIntVarMap, _) for
                     (Leq (lab ++ "<=") left right)
                     (Leq (lab ++ ">=") right left)
             Neq lab left right ->
-                evForm $ Or 
+                evForm $ Or
                     (Le (lab ++ "<") left right)
                     (Le (lab ++ ">") right left)
             ContainedIn lab left right -> evOpT2 True (ContainedIn lab) (\formWR -> flip $ L.includes lab formWR ppb) left right 
@@ -86,7 +85,7 @@ evalForm maxdeg maxsize ix minIntegrationStepSize ppb@(_, _, isIntVarMap, _) for
                 evForm $  (Leq (lab ++ "LO") lower t) /\ (Leq (lab ++ "HI") t upper)
             IsIntRange lab t lower upper -> 
                 evForm $  (IsInt lab t) /\ (IsRange lab t lower upper)
-            IsInt lab t -> (L.fromBool lab ppb $ termIsIntegerType isIntVarMap t, form)
+            IsInt lab t@(Term (_,l)) -> (L.fromBool lab l ppb $ termIsIntegerType isIntVarMap t, form)
     evOp1 op opTV arg =
         (opTV argTV, op argWithRanges)
         where
@@ -107,35 +106,35 @@ evalForm maxdeg maxsize ix minIntegrationStepSize ppb@(_, _, isIntVarMap, _) for
         (rightVal, rightWithRanges) = evTerm rightNeedsInnerRounding right
     evLess = evLessLeq False Le L.less
     evLeq = evLessLeq True Leq L.leq
-    evLessLeq isLeq formOp logicOp lab (Term (PlusInfinity, _)) (Term (PlusInfinity, _)) =
-        (L.fromBool lab ppb isLeq, 
+    evLessLeq isLeq formOp _logicOp lab (Term (PlusInfinity, l)) (Term (PlusInfinity, _)) =
+        (L.fromBool lab l ppb isLeq, 
          formOp lab plusInfinityTermWithRange plusInfinityTermWithRange)
-    evLessLeq isLeq formOp logicOp lab (Term (MinusInfinity, _)) (Term (MinusInfinity, _)) =
-        (L.fromBool lab ppb isLeq, 
+    evLessLeq isLeq formOp _logicOp lab (Term (MinusInfinity, l)) (Term (MinusInfinity, _)) =
+        (L.fromBool lab l ppb isLeq, 
          formOp lab minusInfinityTermWithRange minusInfinityTermWithRange)
-    evLessLeq _isLeq formOp logicOp lab (Term (MinusInfinity, _)) (Term (PlusInfinity, _)) =
-        (L.fromBool lab ppb True, 
+    evLessLeq _isLeq formOp _logicOp lab (Term (MinusInfinity, l)) (Term (PlusInfinity, _)) =
+        (L.fromBool lab l ppb True, 
          formOp lab minusInfinityTermWithRange plusInfinityTermWithRange)
-    evLessLeq _isLeq formOp logicOp lab (Term (PlusInfinity, _)) (Term (MinusInfinity, _)) =
-        (L.fromBool lab ppb False, 
+    evLessLeq _isLeq formOp _logicOp lab (Term (PlusInfinity, l)) (Term (MinusInfinity, _)) =
+        (L.fromBool lab l ppb False, 
          formOp lab plusInfinityTermWithRange minusInfinityTermWithRange)
-    evLessLeq _isLeq formOp logicOp lab (Term (MinusInfinity, _)) right =
-        (L.fromBool lab ppb True,
+    evLessLeq _isLeq formOp _logicOp lab (Term (MinusInfinity, l)) right =
+        (L.fromBool lab l ppb True,
          formOp lab minusInfinityTermWithRange rightWithRanges)
         where
         (_rightVal, rightWithRanges) = evTerm False right 
-    evLessLeq _isLeq formOp logicOp lab left (Term (MinusInfinity, _)) =
-        (L.fromBool lab ppb False,
+    evLessLeq _isLeq formOp _logicOp lab left (Term (MinusInfinity, l)) =
+        (L.fromBool lab l ppb False,
          formOp lab leftWithRanges minusInfinityTermWithRange)
         where
         (_leftVal, leftWithRanges) = evTerm False left 
-    evLessLeq _isLeq formOp logicOp lab (Term (PlusInfinity, _)) right =
-        (L.fromBool lab ppb False,
+    evLessLeq _isLeq formOp _logicOp lab (Term (PlusInfinity, l)) right =
+        (L.fromBool lab l ppb False,
          formOp lab plusInfinityTermWithRange rightWithRanges)
         where
         (_rightVal, rightWithRanges) = evTerm False right 
-    evLessLeq _isLeq formOp logicOp lab left (Term (PlusInfinity, _)) =
-        (L.fromBool lab ppb True,
+    evLessLeq _isLeq formOp _logicOp lab left (Term (PlusInfinity, l)) =
+        (L.fromBool lab l ppb True,
          formOp lab leftWithRanges plusInfinityTermWithRange)
         where
         (_leftVal, leftWithRanges) = evTerm False left 
@@ -145,7 +144,7 @@ evalForm maxdeg maxsize ix minIntegrationStepSize ppb@(_, _, isIntVarMap, _) for
     minusInfinityTermWithRange = (Term (MinusInfinity, Just $ -1/0))
         
 
-termIsIntegerType :: (IMap.IntMap Bool) -> Term -> Bool
+termIsIntegerType :: (IMap.IntMap Bool) -> Term l -> Bool
 termIsIntegerType isIntVarMap (Term (t, _)) =
     case t of
         Lit val -> Q.denominator val == 1
@@ -165,7 +164,7 @@ termIsIntegerType isIntVarMap (Term (t, _)) =
             
      
 evalTerm ::
-    (L.TruthValue tv) =>
+    (L.TruthValue tv (Maybe (IRA BM))) =>
     tv {-^ sample truth value to aid type checking -} -> 
     Int {-^ polynomial degree limit -} -> 
     Int {-^ polynomial term size limit -} -> 
@@ -174,12 +173,12 @@ evalTerm ::
     PPBox BM {-^ domains of variables -} -> 
 --    (Int,Int) {-^ precision of emulated FP operations -} ->
     Bool {-^ should compute ranges using inner rounding? -} -> 
-    Term {-^ term to evaluate -} -> 
-    (FAPUOI BM, Term)
+    Term (Maybe (IRA BM)) {-^ term to evaluate -} -> 
+    (FAPUOI BM, Term (Maybe (IRA BM)))
 evalTerm 
-        sampleTV maxdeg maxsize ix minIntegrationStepSize ppbOrig -- fptype@(epsrelbits,epsabsbits) 
-        needInnerRounding term =
-    evTerm term
+        _sampleTV maxdeg maxsize ix minIntegrationStepSize ppbOrig -- fptype@(epsrelbits,epsabsbits) 
+        needInnerRounding origTerm =
+    evTerm origTerm
     where
     evTerm = evTermBox ppbOrig
     evTermBox ppb term =
@@ -191,7 +190,7 @@ evalTerm
         [ilRA] = FA.getRangeApprox il
         [ihRA] = FA.getRangeApprox ih
         [valueRAOuter] = FA.getRangeApprox valueFA
-        ((ol, oh), (il, ih)) = RA.oiBounds valueFA
+        ((_ol, _oh), (il, ih)) = RA.oiBounds valueFA
         (valueFA, term') = evTermBox' ppb term
     evTermBox' ppb@(skewed, box, isIntVarMap, namesMap) (Term (term, _)) =
         (valueFA, termWithRanges)
@@ -261,9 +260,9 @@ evalTerm
                     evIntegral ivarId ivarName lower upper integrand
                 FEpsAbs _ epsabsbits -> (rationalToFA $ 2^^(- epsabsbits), term) 
                 FEpsRel epsrelbits _ -> (rationalToFA $ 2^^(- epsrelbits), term) 
-                FEpsiAbs rel abs -> evTermBox' ppb $ plusMinus $ termOp0 $ FEpsAbs rel abs 
-                FEpsiRel rel abs -> evTermBox' ppb $ plusMinus $ termOp0 $ FEpsRel rel abs
-                FRound rel abs arg 
+                FEpsiAbs rel abse -> evTermBox' ppb $ plusMinus $ termOp0 $ FEpsAbs rel abse 
+                FEpsiRel rel abse -> evTermBox' ppb $ plusMinus $ termOp0 $ FEpsRel rel abse
+                FRound rel abse arg 
 --              | epsabsShownIrrelevant -> -- TOOOOOOOO SLOW
 --                  evTerm $
 --                  (1 + EpsiRel) * arg
@@ -271,8 +270,8 @@ evalTerm
                         evTermBox' ppb $
                             ((1 + epsiRel) * arg) + epsiAbs
                     where
-                    epsiRel = termOp0 $ FEpsRel rel abs
-                    epsiAbs = termOp0 $ FEpsAbs rel abs
+                    epsiRel = termOp0 $ FEpsRel rel abse
+                    epsiAbs = termOp0 $ FEpsAbs rel abse
 --              where
 --              epsabsShownIrrelevant =
 --                case (L.decide aboveEpsTV, L.decide belowEpsTV) of
@@ -280,46 +279,46 @@ evalTerm
 --                    (_, Just True) -> True
 --                    _ -> False 
 --              _ = [aboveEpsTV, belowEpsTV, sampleTV]
-                FPlus rel abs left right -> 
-                    evTermBox' ppb $ round (left + right)
+                FPlus rel abse left right -> 
+                    evTermBox' ppb $ round2 (left + right)
                     where
-                    round = termOp1 $ FRound rel abs
-                FMinus rel abs left right ->
-                    evTermBox' ppb $ round (left - right)        
+                    round2 = termOp1 $ FRound rel abse
+                FMinus rel abse left right ->
+                    evTermBox' ppb $ round2 (left - right)        
                     where
-                    round = termOp1 $ FRound rel abs
-                FTimes rel abs left right ->
-                    evTermBox' ppb $ round (left * right)
+                    round2 = termOp1 $ FRound rel abse
+                FTimes rel abse left right ->
+                    evTermBox' ppb $ round2 (left * right)
                     where
-                    round = termOp1 $ FRound rel abs
-                FOver rel abs left right ->
-                    evTermBox' ppb $ round (left / right)
+                    round2 = termOp1 $ FRound rel abse
+                FOver rel abse left right ->
+                    evTermBox' ppb $ round2 (left / right)
                     where
-                    round = termOp1 $ FRound rel abs
-                FSquare rel abs arg ->
-                    evTermBox' ppb $ round (square arg)
+                    round2 = termOp1 $ FRound rel abse
+                FSquare rel abse arg ->
+                    evTermBox' ppb $ round2 (square arg)
                     where
-                    round = termOp1 $ FRound rel abs
-                FSqrt rel abs arg ->
-                    evTermBox' ppb $ round $ (1+2*epsiRel) * (sqrt arg)
+                    round2 = termOp1 $ FRound rel abse
+                FSqrt rel abse arg ->
+                    evTermBox' ppb $ round2 $ (1+2*epsiRel) * (sqrt arg)
                     where
-                    round = termOp1 $ FRound rel abs
-                    epsiRel = termOp0 $ FEpsiRel rel abs
-                FSin rel abs arg ->
-                    evTermBox' ppb $ round $ (1+2*epsiRel) * (sin arg)
+                    round2 = termOp1 $ FRound rel abse
+                    epsiRel = termOp0 $ FEpsiRel rel abse
+                FSin rel abse arg ->
+                    evTermBox' ppb $ round2 $ (1+2*epsiRel) * (sin arg)
                     where
-                    round = termOp1 $ FRound rel abs
-                    epsiRel = termOp0 $ FEpsiRel rel abs
-                FCos rel abs arg ->
-                    evTermBox' ppb $ round $ (1+2*epsiRel) * (cos arg)
+                    round2 = termOp1 $ FRound rel abse
+                    epsiRel = termOp0 $ FEpsiRel rel abse
+                FCos rel abse arg ->
+                    evTermBox' ppb $ round2 $ (1+2*epsiRel) * (cos arg)
                     where
-                    round = termOp1 $ FRound rel abs
-                    epsiRel = termOp0 $ FEpsiRel rel abs
-                FExp rel abs arg ->
-                    evTermBox' ppb $ round $ (1+4*epsiRel) * (exp arg)
+                    round2 = termOp1 $ FRound rel abse
+                    epsiRel = termOp0 $ FEpsiRel rel abse
+                FExp rel abse arg ->
+                    evTermBox' ppb $ round2 $ (1+4*epsiRel) * (exp arg)
                     where
-                    round = termOp1 $ FRound rel abs
-                    epsiRel = termOp0 $ FEpsiRel rel abs
+                    round2 = termOp1 $ FRound rel abse
+                    epsiRel = termOp0 $ FEpsiRel rel abse
 
         setSizes :: FAPUOI BM -> FAPUOI BM  
         setSizes = FA.setMaxDegree maxdeg . FA.setMaxSize maxsize
@@ -364,7 +363,7 @@ evalTerm
                     case ivarId `Set.member` (getTermFreeVars integrand) of
                         True -> -- nonconstant integrand
                             (setSizes $ primitiveFunctionHi-primitiveFunctionLo,
-                             termWithRanges)
+                             termWithRanges2)
 --                            case 0 `RA.leqReals` integrandEnclosure of
 --                                Just True -> 
 --                                    (FA.setMaxDegree maxdeg $ primitiveFunctionHi-primitiveFunctionLo,
@@ -377,9 +376,9 @@ evalTerm
                             evTermBox' ppb $ 
                                 integrand * (hi - lo) -- this is symbolic arithmetic
                 True -> -- integrating over measure zero set
-                    (0, termWithRanges)
+                    (0, termWithRanges2)
             where
-            termWithRanges =
+            termWithRanges2 =
                 Integral ivarId ivarName loWithRanges hiWithRanges integrandWithRangesLastSegment
             primitiveFunctionLo = 
     --            unsafePrintReturn "primitiveFunctionLo = " $
@@ -412,7 +411,7 @@ evalTerm
             primitiveFunctionLastSegment = last primitiveFunctionSegments
             primitiveFunctionSegments =
                 integratePiecewise
-                    0 -- ix
+                    (0 :: Int) -- ix
                     (zip integrandEnclosuresOverSegments segments)
                     ivarId
                     0 -- value of primitive function at the left endpoint
@@ -452,13 +451,13 @@ evalTerm
                     | otherwise = []
                 (loRangeLo, loRangeHi) = RA.bounds loRange
                 (hiRangeLo, hiRangeHi) = RA.bounds hiRange
-                bisect (lo,hi) 
-                    | (minIntegrationStepSize < hi - lo) = 
-                        (bisect (lo, mid)) ++ 
-                        (bisect (mid, hi))
-                    | otherwise = [RA.fromBounds (lo, hi)]
+                bisect (lo2,hi2) 
+                    | (minIntegrationStepSize < hi2 - lo2) = 
+                        (bisect (lo2, mid)) ++ 
+                        (bisect (mid, hi2))
+                    | otherwise = [RA.fromBounds (lo2, hi2)]
                     where                    
-                    mid = fst $ RA.bounds $ (hi + lo) / 2 
+                    mid = fst $ RA.bounds $ (hi2 + lo2) / 2 
 --                minIntegrationStepSize
 --                    | useBounds > 0 = useBounds
 ----                    | useBox > 0 = useBox -- TODO
@@ -473,7 +472,7 @@ evalTerm
             (loBoundEnclosure, loWithRanges) = evTermBox ppb lo
             (hiBoundEnclosure, hiWithRanges) = evTermBox ppb hi
             
-            integratePiecewise ix integrandEnclosuresSegments ivarId fnAtLeftEndpoint =
+            integratePiecewise _ix integrandEnclosuresSegments _ivarId fnAtLeftEndpoint =
                 aux fnAtLeftEndpoint integrandEnclosuresSegments
                 where
                 aux _ [] = []
@@ -507,7 +506,7 @@ evalTerm
                             (-1) -- an integration start point
                             0 -- value of primitive function at the above start point
                     (_constRA, slopeRA) = constSlopeFromRA segmentBounds 
-                    segmentBounds@(segmentLE, segmentRE) = RA.bounds segment
+                    segmentBounds@(_segmentLE, _segmentRE) = RA.bounds segment
 
 
         

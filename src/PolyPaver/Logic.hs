@@ -1,4 +1,4 @@
-{-# LANGUAGE FlexibleInstances #-}
+{-# LANGUAGE FlexibleInstances, MultiParamTypeClasses, FunctionalDependencies #-}
 
 {-|
     Module      :  PolyPaver.Logic
@@ -23,8 +23,9 @@ where
 import PolyPaver.PPBox
 import PolyPaver.Form
 
-import Numeric.ER.Misc
+--import Numeric.ER.Misc
 import qualified Numeric.ER.Real.Approx as RA
+import qualified Numeric.ER.Real.Base as B
 import qualified Numeric.ER.RnToRm.UnitDom.Approx as UFA
 import Numeric.ER.Real.DefaultRepr
 import Numeric.ER.RnToRm.DefaultRepr
@@ -33,18 +34,19 @@ import qualified Data.List as List
 import qualified Data.Map as Map
 import qualified Data.IntMap as IMap
 
-class TruthValue tv where
+class (HasDefaultValue l, Eq l, Show l) => TruthValue tv l | tv -> l where
     not :: tv -> tv
     (&&) :: tv -> tv -> tv
     (||) :: tv -> tv -> tv
     (~>) :: tv -> tv -> tv
-    fromBool :: Label -> PPBox BM -> Bool -> tv
-    leq :: Label -> Form -> PPBox BM -> FAPUOI BM -> FAPUOI BM -> tv
-    less :: Label -> Form -> PPBox BM -> FAPUOI BM -> FAPUOI BM -> tv
-    includes :: Label -> Form -> PPBox BM -> FAPUOI BM -> FAPUOI BM -> tv
-    bot :: Form -> tv
+    fromBool :: FormLabel -> l -> PPBox BM -> Bool -> tv
+    leq :: FormLabel -> Form l -> PPBox BM -> FAPUOI BM -> FAPUOI BM -> tv
+    less :: FormLabel -> Form l -> PPBox BM -> FAPUOI BM -> FAPUOI BM -> tv
+    includes :: FormLabel -> Form l -> PPBox BM -> FAPUOI BM -> FAPUOI BM -> tv
+    bot :: Form l -> tv
     decide :: tv -> Maybe Bool
     split :: 
+        (HasDefaultValue l, Eq l, Show l) => 
         [Int] -> -- vars that must not be split
         Maybe Int -> -- preferred variable to split
         PPBox BM -> -- box to split
@@ -52,26 +54,26 @@ class TruthValue tv where
         Maybe Int -> -- maybe allow split direction guessing but limit box width ratio to n 
         tv -> -- undecided truth value that may be used to help guide splitting and/or skewing 
         (Bool, -- whether split succeeded in providing two proper sub-boxes 
-         Maybe ((BoxHyperPlane BM, BoxHyperPlane BM), Form, Label, IRA BM), -- whether box skewing has been used
+         Maybe ((BoxHyperPlane BM, BoxHyperPlane BM), Form l, FormLabel, IRA BM), -- whether box skewing has been used
          Int, -- variable whose domain was split
          (PPBox BM, PPBox BM))
 
-data TVM
+data TVM l
     = TVMDecided 
         {
-            tvmAtomicResults :: [(Label, (Maybe Bool, Double, Double))] -- result, distance, vagueness
+            tvmAtomicResults :: [(FormLabel, (Maybe Bool, Double, Double))] -- result, distance, vagueness
         ,   tvmResult :: Bool 
         } 
     | TVMUndecided 
         { 
-            tvmSimplifiedFormula :: Form
+            tvmSimplifiedFormula :: Form l
         ,   tvmDistanceFromTruth :: Double
-        ,   tvmAtomicResults :: [(Label, (Maybe Bool, Double, Double))] -- result, distance, vagueness
-        ,   tvmDecisionHyperPlanes :: [(Double, ((BoxHyperPlane BM, BoxHyperPlane BM), Form, Label, IRA BM))] 
+        ,   tvmAtomicResults :: [(FormLabel, (Maybe Bool, Double, Double))] -- result, distance, vagueness
+        ,   tvmDecisionHyperPlanes :: [(Double, ((BoxHyperPlane BM, BoxHyperPlane BM), Form l, FormLabel, IRA BM))] 
             -- the first one is the best one, keeping its measure, formula and vagueness 
         }
     
-instance Show TVM where
+instance (HasDefaultValue l, Eq l, Show l) => Show (TVM l) where
     show (TVMDecided ares result) 
         = 
         "TVMDecided: " ++ show result 
@@ -81,38 +83,47 @@ instance Show TVM where
         "TVMUndecided"
         ++ "\n Sub-results: \n" ++ unlines (map showAtomicResult ares)
         ++ " Distance+vagueness: " ++ show dist
-        ++ "\n Formula: " ++ showForm 1000 False form 
-        ++ "\n Formula with ranges:\n" ++ showForm 10000 True form 
+        ++ "\n Formula: " ++ showForm 1000 ignoreLabel form 
+        ++ "\n Formula with ranges:\n" ++ showForm 10000 showLabel form 
         ++ "\n Hyperplanes: "
             ++ (case hps of
                     [] -> "none"
                     _ -> (unlines $ map showHP $ zip [1..] hps))
         where
-        showHP (n,(dist, ((hp, hpDn), hpForm, hpLabel, vagueness)))
+        showHP (n,(_dist, ((hp, hpDn), hpForm, hpLabel, vagueness)))
             =
-            "\n   hp" ++ show n ++ ":"
+            "\n   hp" ++ show (n :: Int) ++ ":"
             ++ "label = " ++ hpLabel
             ++ "; dist = " ++ show dist
             ++ "; vagueness = " ++ show vagueness
             ++ "; hp = " ++ showAffine hp
             ++ "; hpDn = " ++ showAffine hpDn
-            ++ "; form = " ++ showForm 1000 False hpForm
+            ++ "; form = " ++ showForm 1000 ignoreLabel hpForm
 
+ignoreLabel :: String -> l -> String
+ignoreLabel = const
+showLabel :: Show l => String -> l -> String
+showLabel s l = s ++ (show l) 
+
+showAtomicResult :: 
+    (Show a1, Show a2, Show a3) =>
+    (FormLabel, (a1, a2, a3)) -> 
+    String
 showAtomicResult (lab, (maybeResult, distanceD, vaguenessD)) =
     "    " ++ lab ++ ": " 
     ++ show maybeResult ++ ", distance = " ++ show distanceD ++ ", vagueness = " ++ show vaguenessD
 
-instance TruthValue TVM where
+instance (HasDefaultValue l, Eq l, Show l) => TruthValue (TVM l) l where
     not tv = tvmNot tv
     -- and:
     tv1@(TVMDecided _ False) && _ = tv1
-    tv1@(TVMDecided ares1 True) && tv2 = tv2 { tvmAtomicResults = ares1 ++ (tvmAtomicResults tv2) }
+    _tv1@(TVMDecided ares1 True) && tv2 = tv2 { tvmAtomicResults = ares1 ++ (tvmAtomicResults tv2) }
     tv1 && (TVMDecided ares2 False) = TVMDecided (tvmAtomicResults tv1 ++ ares2) False
     tv1 && (TVMDecided ares2 True) = tv1 { tvmAtomicResults = (tvmAtomicResults tv1) ++ ares2}
     (TVMUndecided form1 dist1 ares1 hps1) && (TVMUndecided form2 dist2 ares2 hps2) 
         = TVMUndecided (And form1 form2) (max dist1 dist2) (ares1 ++ ares2) (combineHPs hps1 hps2)
     -- or: 
-    tv1@(TVMDecided ares1 True) || _ = tv1
+    tv1@(TVMDecided _ares1 True) || _ = tv1
     (TVMDecided ares1 False) || tv2 = tv2 { tvmAtomicResults = ares1 ++ (tvmAtomicResults tv2)}
     tv1 || (TVMDecided ares2 True) = TVMDecided (tvmAtomicResults tv1 ++ ares2) True
     tv1 || (TVMDecided ares2 False) = tv1 { tvmAtomicResults = tvmAtomicResults tv1 ++ ares2 }
@@ -126,7 +137,7 @@ instance TruthValue TVM where
     (TVMUndecided form1 dist1 ares1 hps1) ~> (TVMUndecided form2 dist2 ares2 hps2)
         = TVMUndecided (Implies form1 form2) (max dist1 dist2) (ares1 ++ ares2) (combineHPs hps1 hps2)
 
-    fromBool lab _ b = TVMDecided [(lab, (Just b, 1, 0))] b
+    fromBool lab _ _ b = TVMDecided [(lab, (Just b, 1, 0))] b
     leq = tvmLeqLess True
     less = tvmLeqLess False
     includes lab form box a b -- b `ContainedIn` a
@@ -166,9 +177,9 @@ instance TruthValue TVM where
             = analyseLeqLess True box aiL boL -- testing for truth (part 1)
         (maybeResultR, distanceDR, vaguenessDR, maybeHyperplaneR, vaguenessR) 
             = analyseLeqLess True box boR aiR -- testing for truth (part 2)
-        (maybeResultU, distanceDU, vaguenessDU, maybeHyperplaneU, _) 
+        (maybeResultU, distanceDU, vaguenessDU, _maybeHyperplaneU, _) 
             = analyseLeqLess True box aoR boL -- testing for falsity due to b > a
-        (maybeResultD, distanceDD, vaguenessDD, maybeHyperplaneD, _) 
+        (maybeResultD, distanceDD, vaguenessDD, _maybeHyperplaneD, _) 
             = analyseLeqLess True box boR aoL -- testing for falsity due to b < a
         ((aoL,aoR),(aiL,aiR)) = RA.oiBounds a
         ((boL,boR),_) = RA.oiBounds b 
@@ -186,12 +197,18 @@ instance TruthValue TVM where
         (success, boxes, splitVar)    
             = makeSplit splitGuessing varsNotToSplit maybeVar box maybeSkewVar
             
+tvmNot :: TVM l -> TVM l
 tvmNot (TVMDecided ares x) = TVMDecided ares (Prelude.not x)
 tvmNot (TVMUndecided form dist ares hps) = TVMUndecided (Not form) dist ares hps
             
+combineHPs :: Ord a => [(a, t)] -> [(a, t)] -> [(a, t)]
 combineHPs hps1 hps2
     = List.sortBy (\(m1, _) (m2, _) -> compare m1 m2) $ hps1 ++ hps2 
 
+tvmLeqLess ::
+    (HasDefaultValue l, Eq l, Show l) => 
+    Bool ->
+    FormLabel -> Form l -> PPBox BM -> FAPUOI BM -> FAPUOI BM -> TVM l
 tvmLeqLess isLeq lab form box a b = 
     case maybeResult of
         Just result -> TVMDecided [(lab, (maybeResult, distanceD, vaguenessD))] result
@@ -209,7 +226,18 @@ tvmLeqLess isLeq lab form box a b =
     distanceVagueness = distanceD + vaguenessD 
     (maybeResult, distanceD, vaguenessD, maybeHyperplane, vagueness) = analyseLeqLess isLeq box a b
 
-analyseLeqLess isLeq box a b =
+analyseLeqLess :: 
+    UFA.ERUnitFnApprox box varid domra ranra fa =>
+    Bool -> 
+    box2 -> 
+    fa -> 
+    fa -> 
+    (Maybe Bool,
+        Double,
+        Double,
+        Maybe ((ranra, Map.Map varid ranra), (ranra, Map.Map varid ranra)),
+        ranra)
+analyseLeqLess isLeq _box a b =
 --    unsafePrint
 --    (
 --        "analyseLeqLess:"
@@ -228,7 +256,7 @@ analyseLeqLess isLeq box a b =
         case maybeResult of
             Just _ -> Nothing
             Nothing -> 
-                case vagueness `RA.leqReals` (2^^(0)) of
+                case vagueness `RA.leqReals` (2^^(0 :: Int)) of
                     Just True -> Just (hyperplane, hyperplaneDn)
                     _ -> Nothing
     maybeResult
@@ -240,8 +268,10 @@ analyseLeqLess isLeq box a b =
         = (t c, Map.map t coeffs)
     hyperplaneDn 
         = (tn cDnNeg, Map.map tn coeffsDnNeg)
-    t [a] = a
-    tn [a] = negate a
+    t [x] = x
+    t _ = error "analyseLeqLess: t: invalid parameter"
+    tn [x] = negate x
+    tn _ = error "analyseLeqLess: tn: invalid parameter"
     (c, coeffs) =
 --        unsafePrint
 --        (
@@ -276,6 +306,14 @@ analyseLeqLess isLeq box a b =
 --            currDiff = abs $ (r - l) / l
     avgSlope = (sum $ map (abs . head) $ Map.elems coeffs) / (fromIntegral $ Map.size coeffs)
     
+tryToSkew :: 
+    (Eq l, Show l, HasDefaultValue l) =>
+    Bool -> 
+    PPBox BM -> 
+    TVM l -> 
+    (PPBox BM,
+     Maybe ((BoxHyperPlane BM, BoxHyperPlane BM), Form l, FormLabel, IRA BM),
+     Maybe Int)
 tryToSkew boxSkewing prebox tv
     | Prelude.not boxSkewing =
         (prebox, Nothing, if gotHyperPlane then maybeSkewVar else Nothing)  
@@ -297,13 +335,21 @@ tryToSkew boxSkewing prebox tv
     ((hyperplane2,_), _, _, _) = hp2
     (gotHyperPlane, hp1, hp2)
         = case tv of
-            (TVMUndecided _ _ _ ((_, hp1) : (_, hp2) : _)) -> 
-                (True, hp1, hp2)
+            (TVMUndecided _ _ _ ((_, hp1_) : (_, hp2_) : _)) -> 
+                (True, hp1_, hp2_)
             _ -> 
                 (False, err, err)
         where
         err = error $ "PolyPaver.Logic: tryToSkew: internal error, tv = " ++ show tv
 
+makeSplit :: 
+    (B.ERRealBase b) =>
+    Maybe Int -> 
+    [IMap.Key] -> 
+    Maybe Int ->
+    PPBox b ->
+    Maybe Int -> 
+    (Bool, (PPBox b, PPBox b), Int)
 makeSplit splitGuessing varsNotToSplit maybeSplitVar ppb@(skewed, box, varIsInts, varNames) maybeSkewVar
     = (success, (ppbL, ppbR), splitVar)
     where
@@ -327,14 +373,16 @@ makeSplit splitGuessing varsNotToSplit maybeSplitVar ppb@(skewed, box, varIsInts
                             skewVar
                         where
                         skewVarWidth =
-                            case Map.lookup skewVar widths of Just w -> w
+                            case Map.lookup skewVar widths of 
+                                Just w -> w
+                                _ -> error $ "makeSplit: splitVar: variable " ++ show skewVar ++ " not found in " ++ show widths
                     _ -> 
                         case maybeSplitVar of
-                            Just splitVar -> splitVar
+                            Just splitVar2 -> splitVar2
                             _ -> widestVar
             _ ->
                 case maybeSplitVar of
-                    Just splitVar -> splitVar
+                    Just splitVar2 -> splitVar2
                     _ -> widestVar
                 
     (largestWidth, widestVar) = foldl findWidestVar (0, err) $ Map.toList widths
@@ -363,9 +411,9 @@ makeSplit splitGuessing varsNotToSplit maybeSplitVar ppb@(skewed, box, varIsInts
         intSplitVarAffineL = updateConstCoeff (lCeilRA, mFloorRA)
         intSplitVarAffineR = updateConstCoeff (mCeilRA, rFloorRA)
         updateConstCoeff (l, r) =
-            (const, Map.insert splitVar slope coeffs)
+            (c, Map.insert splitVar slope coeffs)
             where
-            (const, slope) = constSlopeFromRA (l,r)
+            (c, slope) = constSlopeFromRA (l,r)
             (_, coeffs) = intSplitVarAffine
         mCeilRA 
             | mCeil == mFloor = fromInteger $ mCeil + 1
@@ -385,48 +433,52 @@ makeSplit splitGuessing varsNotToSplit maybeSplitVar ppb@(skewed, box, varIsInts
             varCoeffHalf
                 =
                 upper $
-                case Map.lookup splitVar coeffs of Just cf -> cf / 2
+                case Map.lookup splitVar coeffs of 
+                    Just cf -> cf / 2
+                    _ -> error $ "makeSplit: substL: variable " ++ show splitVar ++ " not found in " ++ show coeffs
         substR (c, coeffs) =
             (lower $ c + varCoeffHalf, Map.insert splitVar varCoeffHalf coeffs)
             where
             varCoeffHalf
                 =
                 upper $
-                case Map.lookup splitVar coeffs of Just cf -> cf / 2
+                case Map.lookup splitVar coeffs of 
+                    Just cf -> cf / 2
+                    _ -> error $ "makeSplit: substR: variable " ++ show splitVar ++ " not found in " ++ show coeffs
         lower i = fst $ RA.bounds i
         upper i = snd $ RA.bounds i
 
 data TVDebugReport = TVDebugReport String
     
-instance TruthValue TVDebugReport where
+instance TruthValue TVDebugReport () where
     not tv = tv
     (TVDebugReport r1) && (TVDebugReport r2) = TVDebugReport $ r1 ++ r2 
     (TVDebugReport r1) || (TVDebugReport r2) = TVDebugReport $ r1 ++ r2 
     (TVDebugReport r1) ~> (TVDebugReport r2) = TVDebugReport $ r1 ++ r2 
-    fromBool lab _ b = TVDebugReport $ "BOOL [" ++ lab ++ "]: " ++ show b 
-    bot form = TVDebugReport ""
-    leq lab form box a b = 
+    fromBool lab _ _ b = TVDebugReport $ "BOOL [" ++ lab ++ "]: " ++ show b 
+    bot _form = TVDebugReport ""
+    leq _lab form _box a b = 
         TVDebugReport $
             banner
-            ++ "\nLEQ:\n" ++ showForm 1000 True form
+            ++ "\nLEQ:\n" ++ showForm 1000 showLabel form
             ++ "\n\nLHS:\n" ++ show a
             ++ "\n\nRHS:\n" ++ show b
             ++ "\n\nRESULT = " ++ show (a `RA.leqReals` b)
             where
             banner = "\n" ++ (concat $ replicate 50 "<=")
-    less lab form box a b = 
+    less _lab form _box a b = 
         TVDebugReport $
             banner
-            ++ "\nLE:\n" ++ showForm 1000 True form
+            ++ "\nLE:\n" ++ showForm 1000 showLabel form
             ++ "\n\nLHS:\n" ++ show a
             ++ "\n\nRHS:\n" ++ show b
             ++ "\n\nRESULT = " ++ show (a `RA.leqReals` b)
             where
             banner = "\n" ++ (concat $ replicate 50 "<=")
-    includes lab form box a b = 
+    includes _lab form _box a b = 
         TVDebugReport $
             banner
-            ++ "\nINCL:\n" ++ showForm 1000 True form
+            ++ "\nINCL:\n" ++ showForm 1000 showLabel form
             ++ "\n\nLHS:\n" ++ show b
             ++ "\n\nRHS:\n" ++ show a
             ++ "\n\nRESULT = " ++ show (a `RA.includes` b)
