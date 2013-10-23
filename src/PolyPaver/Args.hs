@@ -103,7 +103,7 @@ setDefaults :: PolyPaver -> PolyPaver
 setDefaults = setMaxQLength . setStartDegree
     where
     setMaxQLength args =
-        if maxQueueLength args == -1
+        if maxQueueLength args /= -1
             then args -- maxQueueLength is explicitly set, do no change
             else 
                 case order args of
