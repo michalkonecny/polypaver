@@ -371,7 +371,7 @@ tryToDecideFormOnBoxByPaving
             {- functions related to reporting of progress: -}
     
             reportBoxInitSplit =
-                reportProgress True "Not reached minimum depth, splitting." False True (Just Nothing)
+                reportProgress False "Not reached minimum depth, splitting." False True (Just Nothing)
             reportBoxStart =
                 reportProgress False "Evaluating over a new box." True True Nothing
             reportBoxProved =
