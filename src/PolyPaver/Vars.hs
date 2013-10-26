@@ -57,7 +57,7 @@ getFormVarNames form =
         IsRange _ t1 t2 t3 -> getTermVarNames3 t1 t2 t3
         IsIntRange _ t1 t2 t3 -> getTermVarNames3 t1 t2 t3
         IsInt _ t -> getTermVarNames t
-        _ -> IMap.empty
+--        _ -> IMap.empty
 
 getFormVarNames2 :: Form l -> Form l -> IMap.IntMap String
 getFormVarNames2 f1 f2 = 
@@ -123,7 +123,7 @@ getFormFreeVars form =
         IsIntRange _ arg1 arg2 arg3 -> (getTermFreeVars3 arg1 arg2 arg3)
         IsRange _ arg1 arg2 arg3 -> (getTermFreeVars3 arg1 arg2 arg3)
         IsInt _ arg -> getTermFreeVars arg
-        _ -> Set.empty
+--        _ -> Set.empty
 
 getFormFreeVars2 :: Form l -> Form l -> Set.Set Int
 getFormFreeVars2 f1 f2 = 
@@ -207,7 +207,6 @@ renameVarsForm old2new = rnm
                 IsIntRange lab (rnmT arg1) (rnmT arg2) (rnmT arg3)
             IsInt lab arg -> 
                 IsInt lab $ rnmT arg
-            f -> f
 
 renameVarsTerm :: 
     (Int -> Int) -> Term l -> Term l  
@@ -299,7 +298,6 @@ substituteVarsForm old2new = subst
                 IsIntRange lab (substT arg1) (substT arg2) (substT arg3)
             IsInt lab arg -> 
                 IsInt lab $ substT arg
-            f -> f
 
 substituteVarsTerm :: 
     (Int -> Maybe (Term' l)) -> Term l -> Term l  
