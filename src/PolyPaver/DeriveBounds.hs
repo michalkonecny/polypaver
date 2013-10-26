@@ -33,7 +33,8 @@ import qualified Data.Map as Map
 import qualified Data.IntMap as IMap
 
 getBox :: 
-    Form  (Maybe (IRA BM)) ->
+    (HasDefaultValue l, Eq l) =>
+    Form l ->
     Either String [(Int, (Rational, Rational), Bool)]
 getBox form 
     | allGood = 
@@ -155,8 +156,9 @@ scanHypothesis h@(ContainedIn lab (Term (Var v _, _)) t) intervals =
 scanHypothesis _ intervals = intervals
     
 evalT ::
+    (HasDefaultValue l, Eq l) =>
     (IMap.IntMap (Maybe Rational, Maybe Rational)) ->
-    Term  (Maybe (IRA BM)) ->
+    Term  l ->
     (Maybe Rational, Maybe Rational)
 evalT intervals term 
     | termVarsBounded = (ifBoundedDown l, ifBoundedUp r)
@@ -181,7 +183,7 @@ evalT intervals term
     ((l,r),_) 
         = 
         RA.oiBounds $ fst $
-        evalTerm (TVMDecided [] True) 1 100 10 0 box False term
+        evalTerm 1 100 10 0 box False term
         where
         box = 
             ppBoxFromIntervals (IMap.map (const False) termVarNames) termVarNames $ 

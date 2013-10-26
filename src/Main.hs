@@ -20,7 +20,7 @@ import PolyPaver.Invocation
 import PolyPaver.Input.SPARK
 --import PolyPaver.Input.TPTP
 
-import Numeric.ER.Real.DefaultRepr
+--import Numeric.ER.Real.DefaultRepr
 
 
 #ifdef DynamicLoading 
@@ -151,8 +151,8 @@ sivArgsError =
     reportCmdLine
     error "Expecting arguments: <file.siv> [<vc name> [<conclusion number>]]"
 
-mkProblems :: ([Char], Form (Maybe (IRA BM)), [(Int, (Rational, Rational), Bool)])
-                -> [([Char], Problem)]
+mkProblems :: (String, Form (), [(Int, (Rational, Rational), Bool)])
+                -> [(String, Problem)]
 mkProblems (name, vc, box) =
     map mkProb $ zip [1..] subvcs
     where
