@@ -65,7 +65,7 @@ data PaverProgress =
         paverProgress_durationInPicosecs :: Integer,
         paverProgress_maybeState :: Maybe (PavingState Double),
         paverProgress_maybeCurrentBoxToDo :: Maybe (BoxToDo Double),
-        paverProgress_maybeNewBoxDone :: Maybe (PPBox Double, Maybe Bool)
+        paverProgress_maybeNewBoxDone :: Maybe (PPBox Double, Maybe Bool, Form (Maybe (IRA BM)))
     }
     
 data PavingState b =
@@ -83,7 +83,7 @@ data BoxToDo b =
         boxToDo_depth :: Int,
         boxToDo_skewAncestors :: [PPBox b],
         boxToDo_startDeg :: Int,
-        boxToDo_form :: Form (Maybe (IRA BM)),
+        boxToDo_form :: Form (),
         boxToDo_prevSplitVar :: Int,
         boxToDo_ppb :: PPBox b    
     }
@@ -99,7 +99,7 @@ data BoxToDo b =
 tryToDecideFormOnBoxByPaving :: 
     TChan (Either PaverProgress PaverResult) {-^ @out@ -} ->
     Args {-^ @args@ - A record with various parameters -} -> 
-    Form  (Maybe (IRA BM)) {-^ @form@ - A logical formula -} ->
+    Form  () {-^ @form@ - A logical formula -} ->
     PPBox Double {-^ @box@ - A rectangle (possibly skewed) in R^n -} -> 
     IO ()
 tryToDecideFormOnBoxByPaving
@@ -235,7 +235,7 @@ tryToDecideFormOnBoxByPaving
                     Just _ -> (True, False)
                     _ -> (False, False)
                 where
-                maybeFormTruth = L.decide (value :: L.TVM (Maybe (IRA BM)))
+                maybeFormTruth = L.decide value
             (value, formWithRanges) =
                 evalForm 
                     currentDeg (maxSize args) ix minIntegrationStepSize ppb 
@@ -398,11 +398,11 @@ tryToDecideFormOnBoxByPaving
                     | reportState = Just $ pavingState takeCurrentBoxIntoAccount
                     | otherwise = Nothing
                 maybeBoxToDo
-                    | reportBox = Just $ boxToDo { boxToDo_form = formWithRanges }
+                    | reportBox = Just $ boxToDo { boxToDo_form = formRaw }
                     | otherwise = Nothing
                 maybeNewBoxDone =
                     case maybeBoxResult of
-                        Just boxResult -> Just (ppb, boxResult)
+                        Just boxResult -> Just (ppb, boxResult, formWithRanges)
                         _ -> Nothing
         
             pavingState takeCurrentBoxIntoAccount =

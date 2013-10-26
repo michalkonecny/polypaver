@@ -35,31 +35,31 @@ data Form l
   | IsInt FormLabel (Term l)
   deriving (Eq,Show,Read,Data,Typeable)
 
-verum :: l -> Form l
-verum l = IsInt "Verum" (Term (Lit 0, l))
+verum :: (HasDefaultValue l) => Form l
+verum = IsInt "Verum" (Term (Lit 0, defaultValue))
 
-isAtomicForm :: Form t -> Bool
+isAtomicForm :: Form l -> Bool
 isAtomicForm (Not _f) = False
 isAtomicForm (Or _ _) = False
 isAtomicForm (And _ _) = False
 isAtomicForm (Implies _ _) = False
 isAtomicForm _ = True
 
-getConclusion :: Form t -> Form t
+getConclusion :: Form l -> Form l
 getConclusion (Implies _f1 f2) = getConclusion f2
 getConclusion f = f
 
-splitConclusion :: Form t -> [Form t]
+splitConclusion :: Form l -> [Form l]
 splitConclusion (Implies f1 f2) =
     map (Implies f1) $ splitConclusion f2
 splitConclusion f = splitFormula f
 
-splitFormula :: Form t -> [Form t]
+splitFormula :: Form l -> [Form l]
 splitFormula (And f1 f2) =
     splitFormula f1 ++ splitFormula f2
 splitFormula f = [f] 
 
-getFormulaSize :: Form t -> Int
+getFormulaSize :: Form l -> Int
 getFormulaSize form =
     case form of
         Not f -> 1 + (getFormulaSize f)
@@ -77,7 +77,7 @@ getFormulaSize form =
         IsIntRange _ t1 t2 t3 -> 1 + (getTermSize t1) + (getTermSize t2) + (getTermSize t3)
         IsInt _ t -> 1 + (getTermSize t)
 
-sortFormulasBySize :: [Form t] -> [Form t]
+sortFormulasBySize :: [Form l] -> [Form l]
 sortFormulasBySize formulas =
     map snd $ sortBy (\a b -> compare (fst a) (fst b)) $ map addSize formulas
     where

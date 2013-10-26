@@ -23,7 +23,7 @@ import PolyPaver.Vars
 import PolyPaver.DeriveBounds
 
 import Numeric.ER.Misc
-import Numeric.ER.Real.DefaultRepr
+--import Numeric.ER.Real.DefaultRepr
 
 import Data.Char (ord, isSpace)
 import Data.List (intercalate, partition)
@@ -46,7 +46,7 @@ import Text.Parsec.Language
 parseVCInFile ::
     String {-^ description of the source (eg file name) for error reporting -} ->
     String {-^ the contents of the vc file -} -> 
-    (String, Form (Maybe (IRA BM)), [(Int, (Rational, Rational), Bool)])
+    (String, Form (), [(Int, (Rational, Rational), Bool)])
     {-^ the VC and the bounding box for its variables -}
 parseVCInFile sourceDescription s =
     case parse vcInFile sourceDescription s of
@@ -57,7 +57,7 @@ parseSivVC ::
     String {-^ description of the source (eg file name) for error reporting -} ->
     String {-^ the contents of the SPARK vcg or siv file -} -> 
     String {-^ VC name -} -> 
-    (String, Form (Maybe (IRA BM)), [(Int, (Rational, Rational), Bool)])
+    (String, Form (), [(Int, (Rational, Rational), Bool)])
     {-^ the VC and the bounding box for its variables -}
 parseSivVC sourceDescription s vcName =
     case parse (sivVC vcName) "siv" s of
@@ -67,7 +67,7 @@ parseSivVC sourceDescription s vcName =
 parseSivAll ::
     String {-^ description of the source (eg file name) for error reporting -} ->
     String {-^ the contents of the SPARK vcg or siv file -} -> 
-    [(String, Form (Maybe (IRA BM)), [(Int, (Rational, Rational), Bool)])]
+    [(String, Form (), [(Int, (Rational, Rational), Bool)])]
     {-^ the VC and the bounding box for its variables -}
 parseSivAll sourceDescription s =
     case parse sivAll "siv" s of
@@ -96,7 +96,7 @@ addBox (name, form) =
             Right box -> box
     formN = removeDisjointHypotheses $ normaliseVars form
   
-sivAll :: Parser [(String, Form (Maybe (IRA BM)))]
+sivAll :: Parser [(String, Form ())]
 sivAll =
     many $
     do
@@ -112,7 +112,7 @@ sivAll =
         <|> 
         (m_symbol $ "function_")
   
-sivVC :: String -> Parser (Form (Maybe (IRA BM)))
+sivVC :: String -> Parser (Form ())
 sivVC vcName =
     do
     untilStartOfVC
@@ -142,14 +142,14 @@ vcHead =
     m_dot
     return vcName
 
-vcWhole :: Parser (Form (Maybe (IRA BM))) 
+vcWhole :: Parser (Form ()) 
 vcWhole = 
     do
     t <- vcHypothesesAndConclusions <|> vcConclusionsOnly <|> vcEmpty
 --    unsafePrint ("vcWhole: done vcName = " ++ vcName ++ "; form = " ++ showForm t) $ return ()
     return t
 
-vcHypothesesAndConclusions :: Parser (Form (Maybe (IRA BM)))
+vcHypothesesAndConclusions :: Parser (Form ())
 vcHypothesesAndConclusions = 
     do
     hs <- many hypothesis
@@ -159,19 +159,19 @@ vcHypothesesAndConclusions =
     cs <- many1 (try conclusion)
     return $ foldr (--->) (foldl1 (/\) cs) $ sortFormulasBySize hs 
 
-vcConclusionsOnly :: Parser (Form (Maybe (IRA BM)))
+vcConclusionsOnly :: Parser (Form ())
 vcConclusionsOnly = 
     do
     cs <- many1 (try conclusion)
     return $ foldl1 (/\) cs
 
 
-vcEmpty :: Parser (Form (Maybe (IRA BM)))
+vcEmpty :: Parser (Form ())
 vcEmpty =
     do
     m_symbol "***"
     manyTill anyToken m_dot 
-    return (verum Nothing)
+    return verum
 
 hypothesis = vcItem "H"
 conclusion = vcItem "C"
@@ -186,7 +186,7 @@ vcItem symb =
 --    unsafePrint ("vcItem: done item = " ++ symb ++ show n ++ "; form = " ++ showForm f) $ return ()
     return f
     
-formula :: FormLabel -> Parser (Form (Maybe (IRA BM)))
+formula :: FormLabel -> Parser (Form ())
 formula lab = buildExpressionParser formTable (atomicFormula lab) <?> ("formula " ++ lab)
 formTable = 
     [ [Infix (m_reserved "and" >> return (And)) AssocLeft]
@@ -253,8 +253,9 @@ decodePred lab pred args =
         "(" ++ (intercalate "," $ map show args) ++ ")"
 
 
-term :: Parser (Term (Maybe (IRA BM)))
+term :: Parser (Term ())
 term = buildExpressionParser termTable atomicTerm <?> "term"
+
 termTable = 
     [ [prefix "-" negate]
     , [binary "^" (termOp2 IntPower) AssocLeft]
@@ -268,7 +269,7 @@ termTable =
     binary name fun assoc = Infix (do{ m_reservedOp name; return fun }) assoc
     prefix name fun = Prefix (do{ m_reservedOp name; return fun })
     
-
+--atomicTerm :: (HasDefaultValue l) => Parser (Term ()) 
 atomicTerm 
     = m_parens term
     <|> absBrackets term
@@ -305,6 +306,8 @@ fncall =
 
 
 -- functions used in hand-written VC-style problems:
+decodeFn :: 
+    String -> String -> [Term ()] -> Term ()
 decodeFn _ "Hull" [arg1, arg2] = hull arg1 arg2
 decodeFn _ "Interval" [arg1, arg2] = hull arg1 arg2
 decodeFn _ "Sqrt" [arg1] = sqrt arg1
@@ -369,7 +372,7 @@ decodeFn _ "exact__sin" [arg1] = sin arg1
 decodeFn _ "exact__cos" [arg1] = cos arg1
 decodeFn original "exact__integral" args = decodeIntegral original args
 
-decodeFn original fn args =
+decodeFn original fn _args =
     unsafePrint
     (
         "\nWarning: treating the term " ++ show originalNoSpaces ++ " as a variable\n" ++
@@ -383,18 +386,22 @@ decodeFn original fn args =
 --        "cannot decode function call " ++ fn ++ 
 --        "(" ++ (intercalate "," $ map show args) ++ ")"
 
+decodeIntegral :: 
+    String -> [Term ()] -> Term ()
 decodeIntegral _ [arg1, arg2, arg3] = termOp3 (Integral ivNum ivName) arg1 arg2 arg3
 decodeIntegral original [arg1, arg2, arg3, arg4] =
     case arg4 of
-        (Term (Var ivNum ivName, _)) -> 
-            termOp3 (Integral ivNum ivName) arg1 arg2 arg3
+        (Term (Var ivNum2 ivName2, _)) -> 
+            termOp3 (Integral ivNum2 ivName2) arg1 arg2 arg3
         _ ->
             error $
                 "\nInvalid integral: " ++ original ++ 
                 "\nThe fourth parameter must be the integration variable."
-
+decodeIntegral original _ =
+    error $ "Invalid integral: " ++ original
 
 -- constants used in hand-written VC-style problems:
+var :: String -> Term ()
 var "FepsAbs" = fepsAbs
 var "FepsRel" = fepsRel
 var "FepsiAbs" = fepsiAbs
@@ -439,7 +446,9 @@ var name =
     where
     n = sum $ zipWith (*) [1..] $ map ord name
 
+ivNum :: Int
 ivNum = -1 
+ivName :: String
 ivName = "<iv>"
 
 TokenParser{ parens = m_parens
@@ -484,6 +493,7 @@ withConsumed parser =
     end <- getPosition
     return (result, computeConsumed input start end)
 
+computeConsumed :: String -> SourcePos -> SourcePos -> String
 computeConsumed input start end =
 --    unsafePrint
 --    (

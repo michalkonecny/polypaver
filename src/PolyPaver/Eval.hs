@@ -47,7 +47,7 @@ import qualified Data.Ratio as Q
     Also, compute a formula that is equivalent to the original formula over this box but possibly simpler.
 -}
 evalForm ::
-    (L.TruthValue tv (Maybe (IRA BM)), HasDefaultValue l, Eq l) =>
+    (L.TruthValue tv l, HasDefaultValue l, Eq l) =>
     Int {-^ polynomial degree limit -} -> 
     Int {-^ polynomial term size limit -} -> 
     EffortIndex {-^ effort index for regulating model error -} -> 
@@ -55,23 +55,22 @@ evalForm ::
     PPBox BM {-^ domains of variables -} -> 
 --    (Int,Int) {-^ precision of emulated FP operations -} -> 
     Form l {-^ form to evaluate -} -> 
-    (tv, 
+    (tv,
      Form (Maybe (IRA BM))) {-^ form with added range bounds in all terms -}
 evalForm maxdeg maxsize ix minIntegrationStepSize ppb@(_, _, isIntVarMap, _) origForm =
     evForm origForm
     where
-    evTerm = evalTerm sampleTVMustNotUse maxdeg maxsize ix minIntegrationStepSize ppb 
-    (sampleTVMustNotUse, _) = evForm origForm -- sampleTVMustNotUse defined by infinite loop - only used for type checking
+    evTerm = evalTerm maxdeg maxsize ix minIntegrationStepSize ppb 
     evForm form =
         case form of
             Not arg -> evOp1 Not L.not arg
             Or left right -> evOp2 Or (L.||) left right 
             And left right -> evOp2 And (L.&&) left right
             Implies left right -> evOp2 Implies (L.~>) left right
-            Le lab left right -> evLess lab left right 
-            Leq lab left right -> evLeq lab left right
-            Ge lab left right -> evLess lab right left
-            Geq lab left right -> evLeq lab right left
+            Le lab left right -> evLess form lab left right 
+            Leq lab left right -> evLeq form lab left right
+            Ge lab left right -> evLess form lab right left
+            Geq lab left right -> evLeq form lab right left
             Eq lab left right ->
                 evForm $ And 
                     (Leq (lab ++ "<=") left right)
@@ -81,13 +80,13 @@ evalForm maxdeg maxsize ix minIntegrationStepSize ppb@(_, _, isIntVarMap, _) ori
                     (Le (lab ++ "<") left right)
                     (Le (lab ++ ">") right left)
             ContainedIn lab left right -> 
-                evOpT2 True (ContainedIn lab) (\formWR -> flip $ L.includes lab formWR ppb) left right 
+                evOpT2 form True (ContainedIn lab) (\formWR -> flip $ L.includes lab formWR ppb) left right 
             IsRange lab t lower upper -> 
                 evForm $  (Leq (lab ++ "LO") lower t) /\ (Leq (lab ++ "HI") t upper)
             IsIntRange lab t lower upper -> 
                 evForm $  (IsInt lab t) /\ (IsRange lab t lower upper)
-            IsInt lab t@(Term (_,_)) -> 
-                (L.fromBool lab Nothing ppb $ termIsIntegerType isIntVarMap t, 
+            IsInt lab t@(Term (_,l)) -> 
+                (L.fromBool lab l ppb $ termIsIntegerType isIntVarMap t, 
                  IsInt lab tWithRanges)
                 where
                 (_tVal, tWithRanges) = evTerm False t 
@@ -100,51 +99,51 @@ evalForm maxdeg maxsize ix minIntegrationStepSize ppb@(_, _, isIntVarMap, _) ori
         where
         (leftTV, leftWithRanges) = evForm left
         (rightTV, rightWithRanges) = evForm right
-    evOpT2 rightNeedsInnerRounding op opTV left right =
+    evOpT2 form rightNeedsInnerRounding op opTV left right =
         (tv, formWithRanges)
         where
         tv 
 --            | RA.isBottom rightVal || RA.isBottom leftVal = L.bot formWithRanges
-            | otherwise = opTV formWithRanges leftVal rightVal 
+            | otherwise = opTV form leftVal rightVal 
         formWithRanges = op leftWithRanges rightWithRanges
         (leftVal, leftWithRanges) = evTerm False left 
         (rightVal, rightWithRanges) = evTerm rightNeedsInnerRounding right
-    evLess = evLessLeq False Le L.less
-    evLeq = evLessLeq True Leq L.leq
-    evLessLeq isLeq formOp _logicOp lab (Term (PlusInfinity, _)) (Term (PlusInfinity, _)) =
-        (L.fromBool lab Nothing ppb isLeq, 
+    evLess form = evLessLeq form False Le L.less
+    evLeq form = evLessLeq form True Leq L.leq
+    evLessLeq _ isLeq formOp _logicOp lab (Term (PlusInfinity, l)) (Term (PlusInfinity, _)) =
+        (L.fromBool lab l ppb isLeq, 
          formOp lab plusInfinityTermWithRange plusInfinityTermWithRange)
-    evLessLeq isLeq formOp _logicOp lab (Term (MinusInfinity, _)) (Term (MinusInfinity, _)) =
-        (L.fromBool lab Nothing ppb isLeq, 
+    evLessLeq _ isLeq formOp _logicOp lab (Term (MinusInfinity, l)) (Term (MinusInfinity, _)) =
+        (L.fromBool lab l ppb isLeq, 
          formOp lab minusInfinityTermWithRange minusInfinityTermWithRange)
-    evLessLeq _isLeq formOp _logicOp lab (Term (MinusInfinity, _)) (Term (PlusInfinity, _)) =
-        (L.fromBool lab Nothing ppb True, 
+    evLessLeq _ _isLeq formOp _logicOp lab (Term (MinusInfinity, l)) (Term (PlusInfinity, _)) =
+        (L.fromBool lab l ppb True, 
          formOp lab minusInfinityTermWithRange plusInfinityTermWithRange)
-    evLessLeq _isLeq formOp _logicOp lab (Term (PlusInfinity, _)) (Term (MinusInfinity, _)) =
-        (L.fromBool lab Nothing ppb False, 
+    evLessLeq _ _isLeq formOp _logicOp lab (Term (PlusInfinity, l)) (Term (MinusInfinity, _)) =
+        (L.fromBool lab l ppb False, 
          formOp lab plusInfinityTermWithRange minusInfinityTermWithRange)
-    evLessLeq _isLeq formOp _logicOp lab (Term (MinusInfinity, _)) right =
-        (L.fromBool lab Nothing ppb True,
+    evLessLeq _ _isLeq formOp _logicOp lab (Term (MinusInfinity, l)) right =
+        (L.fromBool lab l ppb True,
          formOp lab minusInfinityTermWithRange rightWithRanges)
         where
         (_rightVal, rightWithRanges) = evTerm False right 
-    evLessLeq _isLeq formOp _logicOp lab left (Term (MinusInfinity, _)) =
-        (L.fromBool lab Nothing ppb False,
+    evLessLeq _ _isLeq formOp _logicOp lab left (Term (MinusInfinity, l)) =
+        (L.fromBool lab l ppb False,
          formOp lab leftWithRanges minusInfinityTermWithRange)
         where
         (_leftVal, leftWithRanges) = evTerm False left 
-    evLessLeq _isLeq formOp _logicOp lab (Term (PlusInfinity, _)) right =
-        (L.fromBool lab Nothing ppb False,
+    evLessLeq _ _isLeq formOp _logicOp lab (Term (PlusInfinity, l)) right =
+        (L.fromBool lab l ppb False,
          formOp lab plusInfinityTermWithRange rightWithRanges)
         where
         (_rightVal, rightWithRanges) = evTerm False right 
-    evLessLeq _isLeq formOp _logicOp lab left (Term (PlusInfinity, _)) =
-        (L.fromBool lab Nothing ppb True,
+    evLessLeq _ _isLeq formOp _logicOp lab left (Term (PlusInfinity, l)) =
+        (L.fromBool lab l ppb True,
          formOp lab leftWithRanges plusInfinityTermWithRange)
         where
         (_leftVal, leftWithRanges) = evTerm False left 
-    evLessLeq _ formOp logicOp lab left right =
-        evOpT2 False (formOp lab) (\formWR -> logicOp lab formWR ppb) left right
+    evLessLeq form _ formOp logicOp lab left right =
+        evOpT2 form False (formOp lab) (\formWR -> logicOp lab formWR ppb) left right
     plusInfinityTermWithRange = (Term (PlusInfinity, Just $ 1/0))
     minusInfinityTermWithRange = (Term (MinusInfinity, Just $ -1/0))
         
@@ -169,8 +168,7 @@ termIsIntegerType isIntVarMap (Term (t, _)) =
             
      
 evalTerm ::
-    (L.TruthValue tv (Maybe (IRA BM)), HasDefaultValue l, Eq l) =>
-    tv {-^ sample truth value to aid type checking -} -> 
+    (HasDefaultValue l, Eq l) =>
     Int {-^ polynomial degree limit -} -> 
     Int {-^ polynomial term size limit -} -> 
     EffortIndex {-^ effort index for regulating model error -} -> 
@@ -181,7 +179,7 @@ evalTerm ::
     Term l {-^ term to evaluate -} -> 
     (FAPUOI BM, Term (Maybe (IRA BM)))
 evalTerm 
-        _sampleTV maxdeg maxsize ix minIntegrationStepSize ppbOrig -- fptype@(epsrelbits,epsabsbits) 
+        maxdeg maxsize ix minIntegrationStepSize ppbOrig -- fptype@(epsrelbits,epsabsbits) 
         needInnerRounding origTerm =
     evTerm origTerm
     where
