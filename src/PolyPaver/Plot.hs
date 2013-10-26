@@ -207,6 +207,7 @@ subBoxToCanvasBox initboxInfo w h subbox =
     where
     converPt [x,y] =
         boxCoordsToCanvasCoords initboxInfo w h (x,y)
+    converPt _ = error "subBoxToCanvasBox: converPt failed"
     [p1,p4,p2,p3] = ppCorners subboxPP
     (_, subboxPP, _, _) = subbox
     
@@ -221,6 +222,8 @@ thickenIfLine orig@[(x1,y1),(x2,y2),(x3,y3),(x4,y4)]
     where
     xDiff = sum $ map abs $ [x1-x2, x1-x3, x1-x4]
     yDiff = sum $ map abs $ [y1-y2, y1-y3, y1-y4]
+thickenIfLine _ = error "thickenIfLine applied to incorrect argument"
+
 -- alternative approach:    
 --    check14 . check13 . check12
 --    where

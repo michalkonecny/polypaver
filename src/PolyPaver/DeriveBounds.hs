@@ -20,16 +20,16 @@ import PolyPaver.Form
 import PolyPaver.Vars
 import PolyPaver.Eval
 import PolyPaver.PPBox
-import PolyPaver.Logic (TVM(..))
+--import PolyPaver.Logic (TVM(..))
 
 import qualified Numeric.ER.Real.Approx as RA
-import qualified Numeric.ER.Real.Base as B
-import Numeric.ER.Real.DefaultRepr
+--import qualified Numeric.ER.Real.Base as B
+--import Numeric.ER.Real.DefaultRepr
 
-import Numeric.ER.Misc
+--import Numeric.ER.Misc
 
 import qualified Data.Set as Set
-import qualified Data.Map as Map
+--import qualified Data.Map as Map
 import qualified Data.IntMap as IMap
 
 getBox :: 
@@ -44,11 +44,12 @@ getBox form
     where
     allGood = and $ map isGood varRanges
     varRanges = IMap.toList box
-    isGood (v, (Just _,Just _)) = True
+    isGood (_v, (Just _,Just _)) = True
     isGood _ = False
     removeJustAddIsInt (v, (Just l, Just r)) = (v, (l,r), isInt)
         where
         isInt = v `Set.member` intVars
+    removeJustAddIsInt _ = error "DeriveBounds: getBox: removeJustAddIsInt failed"
     intVars = getIntVarsFromHyps form
     errorMessage =
         unlines $ map reportBadVar $ filter (not . isGood) varRanges
@@ -71,10 +72,12 @@ getBox form
     boxSeq = 
         iterate (scanHypotheses form) initBox
     
+getIntVarsFromHyps :: Form l -> Set.Set Int
 getIntVarsFromHyps (Implies h c) =
     (getIntVars h) `Set.union` (getIntVarsFromHyps c)
 getIntVarsFromHyps _ = Set.empty
 
+getIntVars :: Form l -> Set.Set Int
 getIntVars (And h1 h2) =
     (getIntVars h1) `Set.union` (getIntVars h2)
 getIntVars (Or h1 h2) =
@@ -83,10 +86,20 @@ getIntVars (IsInt _ term) = getTermFreeVars term
 getIntVars (IsIntRange _ term _ _) = getTermFreeVars term
 getIntVars _ = Set.empty
     
+scanHypotheses :: 
+    (Eq l, HasDefaultValue l) =>
+    Form l
+    -> IMap.IntMap (Maybe Rational, Maybe Rational)
+    -> IMap.IntMap (Maybe Rational, Maybe Rational)
 scanHypotheses (Implies h c) =
     scanHypotheses c . scanHypothesis h 
 scanHypotheses _ = id
 
+scanHypothesis :: 
+    (Eq l, HasDefaultValue l) =>
+    Form l -> 
+    IMap.IntMap (Maybe Rational, Maybe Rational) -> 
+    IMap.IntMap (Maybe Rational, Maybe Rational)
 scanHypothesis (And h1 h2) intervals = 
     (scanHypothesis h1 . scanHypothesis h2) intervals
 scanHypothesis (Or h1 h2) intervals = 
@@ -105,7 +118,7 @@ scanHypothesis (IsRange lab t lower upper) intervals =
 scanHypothesis (IsIntRange lab t lower upper) intervals =
     scanHypothesis (IsRange lab t lower upper) intervals
     
-scanHypothesis (Eq _ t1@(Term (Var v1 _, _)) t2@(Term (Var v2 _, _))) intervals = 
+scanHypothesis (Eq _ _t1@(Term (Var v1 _, _)) _t2@(Term (Var v2 _, _))) intervals = 
     IMap.insert v1 val $
     IMap.insert v2 val $
     intervals
@@ -124,7 +137,7 @@ scanHypothesis (Eq _ t (Term (Var v _, _))) intervals =
     where
     val = evalT intervals t
     
-scanHypothesis (Leq _ t1@(Term (Var v1 _, _)) t2@(Term (Var v2 _, _))) intervals = 
+scanHypothesis (Leq _ _t1@(Term (Var v1 _, _)) _t2@(Term (Var v2 _, _))) intervals = 
     IMap.insert v1 (updateUpper val2 val1) $
     IMap.insert v2 (updateLower val1 val2) $
     intervals
@@ -140,7 +153,7 @@ scanHypothesis (Le lab t1 t2) intervals = scanHypothesis (Leq lab t1 t2) interva
 scanHypothesis (Geq lab t1 t2) intervals = scanHypothesis (Leq lab t2 t1) intervals
 scanHypothesis (Ge lab t1 t2) intervals = scanHypothesis (Leq lab t2 t1) intervals
 
-scanHypothesis h@(ContainedIn lab (Term (Var v _, _)) t) intervals =
+scanHypothesis _h@(ContainedIn _lab (Term (Var v _, _)) t) intervals =
 --    unsafePrint
 --    (
 --        "scanHypothesis: " ++ showForm 100 False h
@@ -175,7 +188,7 @@ evalT intervals term
         where
         varBounded v =
             case IMap.lookup v intervals of
-                Just (Just l, Just r) -> True
+                Just (Just _l, Just _r) -> True
                 _ -> False
         
     termVars = getTermFreeVars term
@@ -191,7 +204,8 @@ evalT intervals term
             where
             termVarNames = getTermVarNames term
             varInTerm (v, _) = Set.member v termVars
-            removeJust (v, (Just l, Just r)) = (v, (l, r)) 
+            removeJust (v, (Just l2, Just r2)) = (v, (l2, r2))
+            removeJust _ = error "DeriveBounds: evalT: (l,r): removeJust failed"
                 -- v is bounded thanks to the termVarsBounded guard
             
     ifBoundedUp v
@@ -207,16 +221,23 @@ evalT intervals term
         (d,_) = RA.doubleBounds v
     
     
+updateUpper :: 
+    Ord a =>
+    (t, Maybe a) -> (t1, Maybe a) -> (t1, Maybe a)
 updateUpper (_,Just u2) (l, Just u1) = (l, Just $ min u1 u2)
 updateUpper (_,Just u2) (l, Nothing) = (l, Just $ u2)
 updateUpper (_,Nothing) (l, Just u1) = (l, Just $ u1)
 updateUpper (_,Nothing) (l, Nothing) = (l, Nothing)
+--updateUpper _ _ = error "DeriveBounds: updateUpper failed"
 
+updateLower :: 
+    Ord a =>
+    (Maybe a, t) -> (Maybe a, t1) -> (Maybe a, t1)
 updateLower (Just l2,_) (Just l1,u) = (Just $ max l1 l2, u)
 updateLower (Just l2,_) (Nothing,u) = (Just $ l2, u)
 updateLower (Nothing,_) (Just l1,u) = (Just $ l1, u)
 updateLower (Nothing,_) (Nothing,u) = (Nothing, u)
-
+--updateLower _ _ = error "DeriveBounds: updateLower failed"
 
 findRepeat :: (Eq a, Show a) => a -> [a] -> a
 findRepeat prev (next:rest)

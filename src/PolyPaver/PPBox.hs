@@ -90,6 +90,7 @@ ppShow (skewed, box, _, varNames)
                 case Map.lookup var coeffs of
                     Nothing -> showVar varNames var ++ " is thin"
                     Just cf -> showVar varNames var ++ " in " ++ show ((constant - cf) RA.\/ (constant + cf))
+            _ -> error "ppShow: showVarInterval failed"
     showVarCorner var =
         "corner" ++ show (var + 1) ++ "=" ++ show (getVarCorner var)
     getVarCorner var =
@@ -447,11 +448,15 @@ ppSkewAlongHyperPlane prebox@(_skewed, preAffine, varIsInts, varNames) _hp@(hp_c
             stretched_af_coeff_skewVar
                 = af_coeff_skewVar * (1 + skewVar_stretch)
             af_coeff_skewVar 
-                = case Map.lookup skewVar af_coeffs of Just cf -> cf
+                = case Map.lookup skewVar af_coeffs of 
+                    Just cf -> cf
+                    _ -> error "ppSkewAlongHyperPlane: af_coeff_skewVar failed"
             af_coeffs_outside_hp
                 = Map.difference af_coeffs hp_coeffs
     hp_coeff_skewVar
-        = case Map.lookup skewVar hp_coeffs of Just cf -> cf 
+        = case Map.lookup skewVar hp_coeffs of 
+            Just cf -> cf
+            _ -> error "ppSkewAlongHyperPlane: hp_coeff_skewVar failed" 
     hp_coeffs_noSkewVar 
         = Map.delete skewVar hp_coeffs
     skewVar_stretch = 

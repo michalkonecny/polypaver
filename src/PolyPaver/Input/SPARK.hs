@@ -1,3 +1,6 @@
+{-# OPTIONS_GHC -fno-warn-unused-do-bind #-}
+--{-# LANGUAGE RankNTypes #-}
+
 {-|
     Module      :  PolyPaver.Input.SPARK
     Description :  parser of SPARK vcg and siv files 
@@ -29,6 +32,8 @@ import Data.Char (ord, isSpace)
 import Data.List (intercalate, partition)
 import qualified Data.IntMap as IMap
 
+
+import Data.Functor.Identity
 import Text.Parsec
 import Text.Parsec.String
 import Text.Parsec.Token
@@ -74,6 +79,10 @@ parseSivAll sourceDescription s =
         Right t -> map addBox t
         Left err -> error $ "parse error in " ++ sourceDescription ++ ":" ++ show err 
         
+addBox ::
+    (Eq l, HasDefaultValue l) =>
+    (String, Form l) -> 
+    (String, Form l, [(Int, (Rational, Rational), Bool)])
 addBox (name, form) =
     (name, formNoSingletonVars, boxNoSingletonVars)
     where
@@ -93,7 +102,7 @@ addBox (name, form) =
         case getBox formN of
             Left err -> 
                 error $ "PolyPaver.Input.SPARK: addBox: problem with VC " ++ name ++ ":\n" ++ err
-            Right box -> box
+            Right box2 -> box2
     formN = removeDisjointHypotheses $ normaliseVars form
   
 sivAll :: Parser [(String, Form ())]
@@ -126,6 +135,7 @@ sivVC vcName =
         <|> 
         (m_symbol $ "function_" ++ vcName)
 
+vcInFile :: Parser (String, Form ())
 vcInFile =
     do
     m_whiteSpace
@@ -136,6 +146,7 @@ vcInFile =
     eof
     return (name, form)
 
+vcHead :: Parser String
 vcHead =
     do
     vcName <- m_identifier
@@ -173,21 +184,26 @@ vcEmpty =
     manyTill anyToken m_dot 
     return verum
 
+hypothesis :: Parser (Form ())
 hypothesis = vcItem "H"
+conclusion :: Parser (Form ())
 conclusion = vcItem "C"
 
+vcItem :: String -> Parser (Form ())
 vcItem symb =
     do
     m_symbol symb
-    id <- manyTill anyToken (m_symbol ":")
+    vcId <- manyTill anyToken (m_symbol ":")
     m_whiteSpace
-    f <- formula $ symb ++ id
+    f <- formula $ symb ++ vcId
     m_dot
 --    unsafePrint ("vcItem: done item = " ++ symb ++ show n ++ "; form = " ++ showForm f) $ return ()
     return f
     
 formula :: FormLabel -> Parser (Form ())
 formula lab = buildExpressionParser formTable (atomicFormula lab) <?> ("formula " ++ lab)
+
+formTable :: [[Operator String () Identity (Form l)]]
 formTable = 
     [ [Infix (m_reserved "and" >> return (And)) AssocLeft]
     , [Infix (m_reservedOp "/\\" >> return (And)) AssocLeft]
@@ -201,6 +217,7 @@ formTable =
     , [Infix (m_reservedOp "->" >> return (Implies)) AssocRight]
     ]
 
+atomicFormula :: FormLabel -> Parser (Form ())
 atomicFormula lab = 
     (try $ m_parens (formula lab)) 
     <|> 
@@ -208,6 +225,7 @@ atomicFormula lab =
     <|> 
     (try (predicate lab))
     
+inequality :: FormLabel -> Parser (Form ())
 inequality lab =
     do
     left <- term
@@ -227,12 +245,14 @@ inequality lab =
         m_reservedOp opS
         return opF
 
+predicate :: FormLabel -> Parser (Form ())
 predicate lab =
     do
     pname <- m_identifier
     args <- m_parens $ sepBy term (m_symbol ",")
     return $ decodePred lab pname args
 
+decodePred :: FormLabel -> String -> [Term l] -> Form l
 decodePred lab "polypaver__integers__is_integer" [arg1] = IsInt lab arg1
 decodePred lab "polypaver__integers__is_range" [arg1, arg2, arg3] = IsIntRange lab arg1 arg2 arg3
 decodePred lab "polypaver__floats__is_range" [arg1, arg2, arg3] = IsRange lab arg1 arg2 arg3
@@ -247,15 +267,16 @@ decodePred lab "exact__containedin" [arg1, arg2] = ContainedIn lab arg1 arg2
 
 decodePred lab "integer" [arg1] = IsInt lab arg1
 
-decodePred lab pred args =
+decodePred lab pred2 args =
     error $ 
-        "in [" ++ lab ++ "], cannot decode predicate " ++ pred ++ 
+        "in [" ++ lab ++ "], cannot decode predicate " ++ pred2 ++ 
         "(" ++ (intercalate "," $ map show args) ++ ")"
 
 
 term :: Parser (Term ())
 term = buildExpressionParser termTable atomicTerm <?> "term"
 
+termTable :: [[Operator String () Identity (Term ())]]
 termTable = 
     [ [prefix "-" negate]
     , [binary "^" (termOp2 IntPower) AssocLeft]
@@ -269,7 +290,7 @@ termTable =
     binary name fun assoc = Infix (do{ m_reservedOp name; return fun }) assoc
     prefix name fun = Prefix (do{ m_reservedOp name; return fun })
     
---atomicTerm :: (HasDefaultValue l) => Parser (Term ()) 
+atomicTerm :: Parser (Term ()) 
 atomicTerm 
     = m_parens term
     <|> absBrackets term
@@ -279,6 +300,9 @@ atomicTerm
     <|> fmap var m_identifier
     <|> interval_literal
         
+absBrackets ::
+     Num b =>
+     Parser b -> Parser b
 absBrackets p =
     do
     m_symbol "|"
@@ -286,6 +310,7 @@ absBrackets p =
     m_symbol "|"
     return $ abs res
         
+interval_literal :: Parser (Term ())
 interval_literal =
     do
     m_symbol "["
@@ -295,6 +320,7 @@ interval_literal =
     m_symbol "]"
     return $ hull lb ub
         
+fncall :: Parser (Term ())
 fncall =
     do
     ((fname, args), original) <- withConsumed $
@@ -451,6 +477,15 @@ ivNum = -1
 ivName :: String
 ivName = "<iv>"
 
+m_integer :: Parser Integer
+m_identifier :: Parser String
+m_symbol :: String -> Parser String
+m_reservedOp :: String -> Parser ()
+m_dot :: Parser String
+m_reserved :: String -> Parser ()
+m_whiteSpace :: Parser ()
+m_float :: Parser Double
+--m_parens :: Parser a -> Parser a -- MK: this line fails with type a error, no idea why
 TokenParser{ parens = m_parens
             , identifier = m_identifier
             , reservedOp = m_reservedOp
@@ -463,6 +498,7 @@ TokenParser{ parens = m_parens
             = 
             makeTokenParser tokenDef
 
+tokenDef :: LanguageDef st
 tokenDef = emptyDef{ commentStart = "/*"
                , commentEnd = "*/"
                , commentLine = "//"
