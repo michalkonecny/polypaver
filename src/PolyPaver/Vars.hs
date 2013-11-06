@@ -224,7 +224,7 @@ renameVarsTerm old2new = rnm
             Minus left right -> Minus (rnm left) (rnm right)
             Neg arg -> Neg $ rnm arg
             Times left right -> Times (rnm left) (rnm right)
-            Square arg -> Neg $ rnm arg
+            Square arg -> Square $ rnm arg
             IntPower left right -> IntPower (rnm left) (rnm right)
             Recip arg -> Recip $ rnm arg
             Over left right -> Over (rnm left) (rnm right)
@@ -316,7 +316,7 @@ substituteVarsTerm old2new = subst
             Minus left right -> Minus (subst left) (subst right)
             Neg arg -> Neg $ subst arg
             Times left right -> Times (subst left) (subst right)
-            Square arg -> Neg $ subst arg
+            Square arg -> Square $ subst arg
             IntPower left right -> IntPower (subst left) (subst right)
             Recip arg -> Recip $ subst arg
             Over left right -> Over (subst left) (subst right)
