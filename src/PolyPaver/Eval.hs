@@ -244,6 +244,7 @@ evalTerm
                 Min left right -> evOp2 Min min left right
                 Max left right -> evOp2 Max max left right
                 Times left right -> evOp2 Times (*) left right
+                Square arg -> evOp1 Square (\a -> intPowerOp a 2) arg
                 IntPower left right -> evOp2 IntPower intPowerOp left right
                 Recip arg -> evOp1 Recip recip arg
                 Over left right -> evOp2 Over divOp left right
@@ -343,6 +344,7 @@ evalTerm
             | otherwise =
                 error $ "Exponent of IntPower does not permit a non-negative integer value: " ++ show e
             where
+            _ = [b,e]
             pwr n = b ^ n 
             eL = max 0 eLP
             (eLP, eR) = shrinkIntervalToIntegerBounds eRA
