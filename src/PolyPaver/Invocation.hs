@@ -132,6 +132,8 @@ batchMain problemFactory =
         putStrLn banner
         putStrLn $ "*** applying PolyPaver on conjecture " ++ name
         putStrLn banner
+        putStrLn $ showForm 5000 const (problem_form problem)
+        putStrLn banner
         runPaver problem args
     banner = replicate 100 '*'
     
