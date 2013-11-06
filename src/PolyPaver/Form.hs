@@ -117,6 +117,7 @@ data Term' l
   | Neg (Term l)
   | Times (Term l) (Term l)
   | IntPower (Term l) (Term l)
+  | Square (Term l)
   | Recip (Term l)
   | Over (Term l) (Term l)
   | Abs (Term l)
@@ -181,6 +182,7 @@ getTermSize (Term (term, _)) =
         Minus t1 t2 -> 1 + (getTermSize t1) + (getTermSize t2)
         Neg t -> 1 + (getTermSize t)
         Times t1 t2 -> 1 + (getTermSize t1) + (getTermSize t2)
+        Square t -> 1 + (getTermSize t)
         IntPower t1 t2 -> 1 + (getTermSize t1) + (getTermSize t2)
         Recip t -> 1 + (getTermSize t)
         Over t1 t2 -> 1 + (getTermSize t1) + (getTermSize t2)
@@ -438,6 +440,7 @@ showTermIL showLabel = st
             Minus t1 t2 -> showOpT "-" "diff" t1 t2
             Neg t -> showFnT "-" [t]
             Times t1 t2 -> showOpT "*" "prod" t1 t2
+            Square t -> formatIntPower t $ Term (Lit 2, label2)
             IntPower t1 t2 -> formatIntPower t1 t2
             Recip t -> st2 maybeIndentLevel $ Term (Over 1 t, label2)
             Over t1 t2 -> showOpT "/" "div" t1 t2
