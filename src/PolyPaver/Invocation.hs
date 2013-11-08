@@ -93,7 +93,7 @@ defaultMain problem =
     argsPre <- cmdArgs paverDefaultArgs
     let args = setDefaults argsPre
     case checkArgs args of
-        [] -> runPaver problem args
+        [] -> runPaverReportingProgress problem args
         msgs -> 
             do
             mapM_ putStrLn msgs
@@ -113,8 +113,9 @@ batchMain problemFactory =
             let problemIdOpt = problemId args
             problems <- problemFactory args problemIdOpt
             results <- mapM (runProblem args) problems
-            putStrLn ">>>>>>>>>>> SUMMARY <<<<<<<<<<<"
+            putStr "\n>>>>>>>>>>> SUMMARY <<<<<<<<<<<"
             _ <- mapM printSummaryLine $ zip problems results
+            putStrLn ""
             return ()
         msgs -> 
             do
@@ -122,7 +123,7 @@ batchMain problemFactory =
             error "The above errors have been identified in the command-line arguments."
     where
     printSummaryLine ((name, _problem), result) =
-        putStrLn $ name ++ ": " ++ showPaverResultOneLine result
+        putStr $ "\n" ++ name ++ ": " ++ showPaverResultOneLine result
     runProblem args (name, problem)
         =
         do
@@ -133,7 +134,7 @@ batchMain problemFactory =
         putStrLn banner
         putStrLn $ showForm 5000 const (problem_form problem)
         putStrLn banner
-        runPaver problem args
+        runPaverReportingProgress problem args
     banner = replicate 100 '*'
     
 
@@ -146,11 +147,11 @@ reportCmdLine
     putStrLn $ "command line: " ++ progName ++ " " ++ intercalate " " rawargs
     
     
-runPaver :: 
+runPaverReportingProgress :: 
     Problem -> 
     Args -> 
     IO PaverResult
-runPaver problem args =
+runPaverReportingProgress problem args =
     do
     initMachineDouble -- set FPU to round upwards
     hSetBuffering stdout LineBuffering -- print progress in real time, not in batches
@@ -158,13 +159,12 @@ runPaver problem args =
     _ <- forkIO $ paverOnThisProblem progressChannel
     if shouldPlot then (forkIO (startPlotter progressChannel) >> return ()) else return ()
     monitorProgress progressChannel
-    -- TODO: counter-example BFS nearby the last box if appropriate 
     where
     paverOnThisProblem progressChannel =
         tryToDecideFormOnBoxByPaving
             progressChannel
             args
-            form -- formula to be decided
+            form -- the formula that needs deciding
             initbox
     form = problem_form problem
     varNames = getFormVarNames form
@@ -178,8 +178,11 @@ runPaver problem args =
         where
         printReport progressOrResult =
             do
-            putStrLn $ showProgressOrResult progressOrResult
-            putStrLn ""
+            putStr $ format progressOrResult
+        format 
+            | quiet args = showIfResult 
+            | otherwise = showProgressOrResult
+            
 
     shouldPlot = dim == 2 && w > 0 && h > 0
     dim = length boxBounds
@@ -227,9 +230,14 @@ monitorLoop progressChannel handleNextReport =
 
 
 
+
 showProgressOrResult :: Either PaverProgress PaverResult -> String
 showProgressOrResult (Right result) = showPaverResult result
 showProgressOrResult (Left progress) = showPaverProgress progress
+
+showIfResult :: Either PaverProgress PaverResult -> String
+showIfResult (Right result) = showPaverResult result
+showIfResult (Left _progress) = ""
 
 showPaverResult :: PaverResult -> String
 showPaverResult result =
@@ -238,7 +246,7 @@ showPaverResult result =
     " in " ++ showDuration durationInPicoseconds ++ "." ++
     stateS
     where
-    banner = take 100 $ "^^^^ time = " ++ showDuration durationInPicoseconds ++ repeat '^'
+    banner = take 100 $ "\n^^^^ time = " ++ showDuration durationInPicoseconds ++ repeat '^'
     outcomeS = 
         case outcome of
             Right True -> "\nConjecture proved TRUE" 
@@ -256,7 +264,7 @@ showPaverProgress progress =
     boxS ++
     stateS
     where
-    banner = take 100 $ "**** time = " ++ showDuration durationInPicoseconds ++ repeat '*'
+    banner = take 100 $ "\n**** time = " ++ showDuration durationInPicoseconds ++ repeat '*'
     durationInPicoseconds = paverProgress_durationInPicosecs progress
     messageS = "\n" ++ paverProgress_message progress
     boxS = 
