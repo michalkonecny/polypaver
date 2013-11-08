@@ -148,7 +148,7 @@ data Term' l
   deriving (Eq,Show,Read,Data,Typeable)
 
 instance Show (Term l) where
-    show (Term (term', _)) = show term'
+    show (Term (term', _)) = "(" ++ show term' ++ ")"
 
 class HasDefaultValue t
     where
@@ -387,7 +387,7 @@ showForm maxLength showLabel origForm =
         showPred lab predicate ts =
             labelIfInline lab
             ++ predicate ++ "("
-            ++ (intercalate (indent ++ ", ") $ map (\t -> indentNext ++ stNext t) ts)
+            ++ (intercalate (indent ++ ", ") $ map (\t -> stNext t) ts)
             ++ indent ++ ")"
         showOpT op lab t1 t2 =
             "[" ++ show lab ++ "] "
@@ -496,23 +496,23 @@ showTermIL showLabel = st
                     ++ indent ++ op
                     ++ indent ++ indentedBracketsT t2
                 _ -> 
-                    tIfInlineOpen
+                    inlineOpen
                     ++ indentedBracketsT t1 
                     ++ padIfInline op
                     ++ indentedBracketsT t2
-                    ++ tIfInlineClose
+                    ++ inlineClose
             where
-            tIfInlineOpen = "(" 
-            tIfInlineClose = ")" ++ showLabel "" label2 
+            inlineOpen = "(" 
+            inlineClose = ")" ++ showLabel "" label2 
         showFnT fn ts =
-            fn ++ tIfIndented ++ "("
-            ++ (intercalate (indent ++ ", ") $ map (\t -> indentNext ++ stNext t) ts)
+            fn ++ labIfIndented ++ "("
+            ++ (intercalate (indent ++ ", ") $ map (\t -> stNext t) ts)
             ++ indent ++ ")"
             ++ showLabel "" label2
             where
-            tIfIndented =
+            labIfIndented =
                 case (maybeNextIndentLevel) of
-                    (Just _) -> showLabel "res" label2
+                    (Just _) -> showLabel " " label2
                     _ -> ""
         padIfInline op = case maybeIndentLevel of Nothing -> " " ++ op ++ " "; _ -> op 
         indentedBracketsT = indentedOpenCloseT "(" ")" True
@@ -521,11 +521,11 @@ showTermIL showLabel = st
             | optional = 
                 open ++ indentNext ++ stNext term ++ indent ++ close
             | otherwise = 
-                open ++ tIfIndented ++ indentNext ++ stNext term ++ indent ++ addLabel close
+                open ++ labIfIndented ++ indentNext ++ stNext term ++ indent ++ addLabel close
             where
-            tIfIndented =
+            labIfIndented =
                 case (maybeNextIndentLevel) of
-                    (Just _) -> showLabel "res" label2
+                    (Just _) -> showLabel " " label2
                     _ -> ""
         maybeNextIndentLevel = fmap (+ 2) maybeIndentLevel
         isAtomicTerm :: Term l -> Bool

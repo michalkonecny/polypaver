@@ -45,7 +45,8 @@ data PolyPaver = PolyPaver
     deriving (Show,Data,Typeable)
 
 data Order = 
-    BFS | DFS | DFSthenBFS | BFSFalsifyOnly
+    BFS | DFS 
+--    | DFSthenBFS | BFSFalsifyOnly
     deriving (Show,Data,Typeable)
 
 paverDefaultArgs :: Args
@@ -61,9 +62,9 @@ paverDefaultArgs =
     ,maxSize = 100 &= name "z" &= help "maximum polynomial term size (default = 100)"
     ,effort = 10 &= help "for approximating point-wise sqrt and exp (default = 10)" 
     ,minIntegrExp = 0 &= name "I" &= help "n to compute approximate integration step using 2^(-n)" 
-    ,order = DFSthenBFS 
+    ,order = DFS 
         &= groupname "Box subdivision strategy"
-        &= help "sub-problem processing order, bfs for breadth-first or dfs for depth-first, (default = DFSthenBFS)"
+        &= help "sub-problem processing order, bfs for breadth-first or dfs for depth-first, (default = dfs)"
     ,splitIntFirst = False &= name "f" 
         &= help "whether to split integer valued domains until they are exact before splitting the continuous domains"
     ,minDepth = 0 &= help "minimum bisection depth (default = 0)"
@@ -109,8 +110,8 @@ setDefaults = setMaxQLength . setStartDegree
                 case order args of
                     DFS -> args { maxQueueLength = maxQueueLengthDefaultDFS }
                     BFS -> args { maxQueueLength = maxQueueLengthDefaultBFS }
-                    DFSthenBFS -> args { maxQueueLength = maxQueueLengthDefaultDFS }
-                    BFSFalsifyOnly -> args { maxQueueLength = maxQueueLengthDefaultBFS }
+--                    DFSthenBFS -> args { maxQueueLength = maxQueueLengthDefaultDFS }
+--                    BFSFalsifyOnly -> args { maxQueueLength = maxQueueLengthDefaultBFS }
     setStartDegree args 
         | startDegree args == -1 = args { startDegree = degree args }
         | otherwise = args 

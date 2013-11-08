@@ -152,8 +152,8 @@ tryToDecideFormOnBoxByPaving
             | qlength == 0 =
                 do
                 case (order args) of
-                    BFSFalsifyOnly -> 
-                        stopPaverGiveUp False "Problem proved true while trying to falsify it." 
+--                    BFSFalsifyOnly -> 
+--                        stopPaverGiveUp False "Problem proved true while trying to falsify it." 
                     _ -> 
                         stopPaverProved
             | otherwise = 
@@ -307,9 +307,9 @@ tryToDecideFormOnBoxByPaving
             bisectAndRecur maybeSimplerForm newBoxes isSimpleSplit splitVar2 =
                 case (order args) of
                     DFS -> bisectAndRecurDFS
-                    DFSthenBFS -> bisectAndRecurDFS
+--                    DFSthenBFS -> bisectAndRecurDFS
                     BFS -> bisectAndRecurBFS
-                    BFSFalsifyOnly -> bisectAndRecurBFS
+--                    BFSFalsifyOnly -> bisectAndRecurBFS
                 where
                 bisectAndRecurBFS =
                     pavingLoop
