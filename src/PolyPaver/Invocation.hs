@@ -64,12 +64,9 @@ data Problem = Problem
     deriving (Show,Read,Typeable)
 
 
-getTightnessValues :: IO [Integer]
-getTightnessValues =
-    do
-    argsPre <- cmdArgs paverDefaultArgs
-    let args = setDefaults argsPre
-    return $ parse $ tightnessValues args
+getTightnessValues :: Args -> [Integer]
+getTightnessValues args =
+    parse $ tightnessValues args
     where
     parse ('2' : '^' : s) = map (2^) $ parse2 s
     parse s = parse2 s
@@ -103,7 +100,7 @@ defaultMain problem =
             error "The above errors have been identified in the command-line arguments."
 
 batchMain :: 
-    ([String] -> IO [(String, Problem)]) -> 
+    (Args -> [String] -> IO [(String, Problem)]) -> 
     IO ()
 batchMain problemFactory =
     do
@@ -114,7 +111,7 @@ batchMain problemFactory =
         [] -> 
             do
             let problemIdOpt = problemId args
-            problems <- problemFactory problemIdOpt
+            problems <- problemFactory args problemIdOpt
             results <- mapM (runProblem args) problems
             putStrLn ">>>>>>>>>>> SUMMARY <<<<<<<<<<<"
             _ <- mapM printSummaryLine $ zip problems results
@@ -131,6 +128,8 @@ batchMain problemFactory =
         do
         putStrLn banner
         putStrLn $ "*** applying PolyPaver on conjecture " ++ name
+        putStrLn banner
+        putStrLn $ show (problem_form problem)
         putStrLn banner
         putStrLn $ showForm 5000 const (problem_form problem)
         putStrLn banner

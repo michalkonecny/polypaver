@@ -15,7 +15,7 @@
 -}
 module Main where
 
---import PolyPaver.Form (splitConclusion)
+import PolyPaver.Args
 import PolyPaver.Invocation
 import PolyPaver.Input.SPARK
 --import PolyPaver.Input.TPTP
@@ -38,18 +38,18 @@ main :: IO ()
 main 
     = batchMain lookupFile
     
-lookupFile :: [FilePath] -> IO [(String, Problem)]
-lookupFile args@(inputPath : _)
+lookupFile :: Args -> [FilePath] -> IO [(String, Problem)]
+lookupFile args otherArgs@(inputPath : _)
 #ifdef DynamicLoading 
-    | hasHsExtension inputPath = lookupHaskell args
+    | hasHsExtension inputPath = lookupHaskell otherArgs
 #endif
-    | hasFormExtension inputPath = lookupForm args
-    | hasPPExtension inputPath = lookupPP args
-    | hasSivExtension inputPath = lookupSiv args
+    | hasFormExtension inputPath = lookupForm args otherArgs
+    | hasPPExtension inputPath = lookupPP otherArgs
+    | hasSivExtension inputPath = lookupSiv otherArgs
     | hasTptpExtension inputPath =
         error "Input of TPTP files not supported yet"  
 --        lookupTptp args
-lookupFile _ =
+lookupFile _ _ =
     do 
     reportCmdLine
     error "No problem specified."
@@ -64,14 +64,14 @@ lookupHaskell (inputPath : problemNames) =
 lookupHaskell _ = return []
 #endif
     
-lookupForm :: [FilePath] -> IO [(String, Problem)]
-lookupForm [inputPath] =
+lookupForm :: Args -> [FilePath] -> IO [(String, Problem)]
+lookupForm args [inputPath] =
     do
-    tightnessValues <- getTightnessValues
     fileContents <- readFile inputPath
-    return $ form2problems tightnessValues $ read fileContents
+    return $ form2problems $ read fileContents
     where
-    form2problems tightnessValues form =
+    tightnessVals = getTightnessValues args
+    form2problems form =
         case getBox form of
             Right box -> mkProblems (inputPath, form, box)
             Left msg ->
@@ -82,7 +82,7 @@ lookupForm [inputPath] =
         tryWithT = 
             case IMap.lookup 0 varNames of
                 Just name | name == "T" ->
-                    Just $ concat $ map mkProblems $ map substT tightnessValues
+                    Just $ concat $ map mkProblems $ map substT tightnessVals
                 _ -> Nothing
         varNames = getFormVarNames form
         substT t =
@@ -94,7 +94,7 @@ lookupForm [inputPath] =
             s varId | varId == 0 = Just $ Lit $ fromInteger t
             s _ = Nothing
 --        ts = reverse $ take 11 $ iterate (*2) 1
-lookupForm _ = return []
+lookupForm _ _ = return []
 
 lookupPP :: [FilePath] -> IO [(String, Problem)]
 lookupPP [inputPath] =
