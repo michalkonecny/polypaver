@@ -1,11 +1,14 @@
 {-# OPTIONS_GHC -fno-warn-missing-methods #-}
 {-# LANGUAGE DeriveDataTypeable #-}
-{-# LANGUAGE ScopedTypeVariables #-}
+{-# LANGUAGE ScopedTypeVariables, GeneralizedNewtypeDeriving #-}
+{-# LANGUAGE DeriveGeneric #-}
 module PolyPaver.Form where
 
 import System.Info (os)
 
 import Data.Data (Data, Typeable)
+import GHC.Generics (Generic)
+import Data.Hashable
 import Data.Ratio (denominator, numerator)
 import Data.List (intercalate, sortBy)
 
@@ -33,7 +36,7 @@ data Form l
   | IsRange FormLabel (Term l) (Term l) (Term l)
   | IsIntRange FormLabel (Term l) (Term l) (Term l)
   | IsInt FormLabel (Term l)
-  deriving (Eq,Show,Read,Data,Typeable)
+  deriving (Eq,Show,Read,Typeable,Data)
 
 verum :: (HasDefaultValue l) => Form l
 verum = IsInt "Verum" (Term (Lit 0, defaultValue))
@@ -105,7 +108,7 @@ sortFormulasBySize formulas =
 (|<-|) = ContainedIn "anon"
 
 newtype Term l = Term (Term' l, l)
-  deriving (Eq,Data,Typeable)
+  deriving (Eq,Data,Typeable,Generic,Hashable)
 data Term' l
   = Lit Rational
   | MinusInfinity
@@ -145,7 +148,9 @@ data Term' l
   | FSin Int Int (Term l)
   | FCos Int Int (Term l)
   | FExp Int Int (Term l)
-  deriving (Eq,Show,Read,Data,Typeable)
+  deriving (Eq,Show,Read,Data,Typeable,Generic)
+
+instance Hashable l => Hashable (Term' l)
 
 instance Show (Term l) where
     show (Term (term', _)) = "(" ++ show term' ++ ")"
