@@ -226,7 +226,7 @@ Executable polypaver
           convertible >= 1.0,
           parsec >= 3.1.1,
           transformers,
-          hashable,
+          hashable >= 1.2,
           ghc >= 7.4,
           ghc-paths >= 0.1
   else
@@ -246,4 +246,4 @@ Executable polypaver
           convertible >= 1.0,
           parsec >= 3.1.1,
           transformers,
-          hashable
+          hashable >= 1.2
