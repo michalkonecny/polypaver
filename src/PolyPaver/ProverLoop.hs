@@ -83,7 +83,7 @@ data BoxToDo b =
         boxToDo_depth :: Int,
         boxToDo_skewAncestors :: [PPBox b],
         boxToDo_startDeg :: Int,
-        boxToDo_form :: Form (),
+        boxToDo_form :: Form Int,
         boxToDo_prevSplitVar :: Int,
         boxToDo_ppb :: PPBox b    
     }
@@ -99,13 +99,13 @@ data BoxToDo b =
 tryToDecideFormOnBoxByPaving :: 
     TChan (Either PaverProgress PaverResult) {-^ @out@ -} ->
     Args {-^ @args@ - A record with various parameters -} -> 
-    Form  () {-^ @form@ - A logical formula -} ->
+    Form () {-^ @form@ - A logical formula -} ->
     PPBox Double {-^ @box@ - A rectangle (possibly skewed) in R^n -} -> 
     IO ()
 tryToDecideFormOnBoxByPaving
     outChannel
     args
-    originalForm 
+    originalFormRaw 
     initppb@(_, initbox, varIsInts, _varNames)
     =
     do
@@ -117,6 +117,7 @@ tryToDecideFormOnBoxByPaving
         -- ^ when to try raising degree/effort and when to give up and split
     originalStartDeg = startDegree args
     dim = DBox.size initbox
+    originalForm = prepareForm originalFormRaw
     
     pave inittime = -- continue with inittime available in the scope
         pavingLoop 

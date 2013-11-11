@@ -334,7 +334,7 @@ useUnicode :: Bool
 useUnicode = (os /= "mingw32")
 
 showForm :: 
-    (HasDefaultValue l, Eq l) => 
+    (Eq l) => 
     Int -> 
     (String -> l -> String) -> 
     (Form l) -> 
@@ -416,11 +416,11 @@ showForm maxLength showLabel origForm =
             | otherwise = "(" ++ indentNext ++ sfNext form2 ++ indent ++ ")"
         maybeNextIndentLevel = fmap (+ 2) maybeIndentLevel
 
-showTerm :: (HasDefaultValue l, Eq l) => (String -> l -> String) -> (Term l) -> String
+showTerm :: (Eq l) => (String -> l -> String) -> (Term l) -> String
 showTerm showLabel term = showTermIL showLabel (Just 0) term
 
 showTermIL :: 
-    (HasDefaultValue l, Eq l) => (String -> l -> String) -> (Maybe Int) -> (Term l) -> String
+    (Eq l) => (String -> l -> String) -> (Maybe Int) -> (Term l) -> String
 showTermIL showLabel = st
     where
     st Nothing term = st2 Nothing term
@@ -447,7 +447,7 @@ showTermIL showLabel = st
             Times t1 t2 -> showOpT "*" "prod" t1 t2
             Square t -> formatIntPower t $ Term (Lit 2, label2)
             IntPower t1 t2 -> formatIntPower t1 t2
-            Recip t -> st2 maybeIndentLevel $ Term (Over 1 t, label2)
+            Recip t -> showOpT "/" "div" (Term (Lit 1, label2)) t
             Over t1 t2 -> showOpT "/" "div" t1 t2
             Abs t -> indentedOpenCloseT "|" "|" False t
             Min t1 t2 -> showFnT "min" [t1, t2]
@@ -459,7 +459,7 @@ showTermIL showLabel = st
             Cos t -> showFnT "cos" [t]
             Atan t -> showFnT "atan" [t]
             Integral ivarId ivarName lower upper integrand -> 
-                showFnT "∫" [lower, upper, Term (Var ivarId ivarName, defaultValue), integrand]
+                showFnT "∫" [lower, upper, Term (Var ivarId ivarName, label2), integrand]
             FEpsAbs _ _ -> addLabel $ uniascii "εabs" "fepsAbs"
             FEpsRel _ _ -> addLabel $ uniascii "εrel" "fepsRel"
             FEpsiAbs _ _ -> addLabel $ uniascii "εabsI" "fepsiAbs"

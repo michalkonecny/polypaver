@@ -32,8 +32,10 @@ import qualified Data.Set as Set
 --import qualified Data.Map as Map
 import qualified Data.IntMap as IMap
 
+import Data.Hashable
+
 getBox :: 
-    (HasDefaultValue l, Eq l) =>
+    (HasDefaultValue l, Eq l, Hashable l) =>
     Form l ->
     Either String [(Int, (Rational, Rational), Bool)]
 getBox form 
@@ -87,7 +89,7 @@ getIntVars (IsIntRange _ term _ _) = getTermFreeVars term
 getIntVars _ = Set.empty
     
 scanHypotheses :: 
-    (Eq l, HasDefaultValue l) =>
+    (Eq l, HasDefaultValue l, Hashable l) =>
     Form l
     -> IMap.IntMap (Maybe Rational, Maybe Rational)
     -> IMap.IntMap (Maybe Rational, Maybe Rational)
@@ -96,7 +98,7 @@ scanHypotheses (Implies h c) =
 scanHypotheses _ = id
 
 scanHypothesis :: 
-    (Eq l, HasDefaultValue l) =>
+    (Eq l, HasDefaultValue l, Hashable l) =>
     Form l -> 
     IMap.IntMap (Maybe Rational, Maybe Rational) -> 
     IMap.IntMap (Maybe Rational, Maybe Rational)
@@ -169,7 +171,7 @@ scanHypothesis _h@(ContainedIn _lab (Term (Var v _, _)) t) intervals =
 scanHypothesis _ intervals = intervals
     
 evalT ::
-    (HasDefaultValue l, Eq l) =>
+    (HasDefaultValue l, Eq l, Hashable l) =>
     (IMap.IntMap (Maybe Rational, Maybe Rational)) ->
     Term  l ->
     (Maybe Rational, Maybe Rational)
@@ -195,8 +197,8 @@ evalT intervals term
     
     ((l,r),_) 
         = 
-        RA.oiBounds $ fst $
-        evalTerm 1 100 10 0 box False term
+        RA.oiBounds $ fst $ snd $
+        evalTerm 1 100 10 0 box False IMap.empty $ prepareTerm term
         where
         box = 
             ppBoxFromIntervals (IMap.map (const False) termVarNames) termVarNames $ 
