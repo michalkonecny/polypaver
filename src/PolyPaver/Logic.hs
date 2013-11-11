@@ -34,7 +34,7 @@ import qualified Data.List as List
 import qualified Data.Map as Map
 import qualified Data.IntMap as IMap
 
-class (HasDefaultValue l, Eq l, Show l) => TruthValue tv l | tv -> l where
+class (Eq l, Show l) => TruthValue tv l | tv -> l where
     not :: tv -> tv
     (&&) :: tv -> tv -> tv
     (||) :: tv -> tv -> tv
@@ -46,7 +46,7 @@ class (HasDefaultValue l, Eq l, Show l) => TruthValue tv l | tv -> l where
     bot :: Form l -> tv
     decide :: tv -> Maybe Bool
     split :: 
-        (HasDefaultValue l, Eq l, Show l) => 
+        (Eq l, Show l) => 
         [Int] -> -- vars that must not be split
         Maybe Int -> -- preferred variable to split
         PPBox BM -> -- box to split
@@ -73,7 +73,7 @@ data TVM l
             -- the first one is the best one, keeping its measure, formula and vagueness 
         }
     
-instance (HasDefaultValue l, Eq l, Show l) => Show (TVM l) where
+instance (Eq l, Show l) => Show (TVM l) where
     show (TVMDecided ares result) 
         = 
         "TVMDecided: " ++ show result 
@@ -113,7 +113,7 @@ showAtomicResult (lab, (maybeResult, distanceD, vaguenessD)) =
     "    " ++ lab ++ ": " 
     ++ show maybeResult ++ ", distance = " ++ show distanceD ++ ", vagueness = " ++ show vaguenessD
 
-instance (HasDefaultValue l, Eq l, Show l) => TruthValue (TVM l) l where
+instance (Eq l, Show l) => TruthValue (TVM l) l where
     not tv = tvmNot tv
     -- and:
     tv1@(TVMDecided _ False) && _ = tv1
@@ -206,7 +206,7 @@ combineHPs hps1 hps2
     = List.sortBy (\(m1, _) (m2, _) -> compare m1 m2) $ hps1 ++ hps2 
 
 tvmLeqLess ::
-    (HasDefaultValue l, Eq l, Show l) => 
+    (Eq l, Show l) => 
     Bool ->
     FormLabel -> Form l -> PPBox BM -> FAPUOI BM -> FAPUOI BM -> TVM l
 tvmLeqLess isLeq lab form box a b = 
@@ -307,7 +307,7 @@ analyseLeqLess isLeq _box a b =
     avgSlope = (sum $ map (abs . head) $ Map.elems coeffs) / (fromIntegral $ Map.size coeffs)
     
 tryToSkew :: 
-    (Eq l, Show l, HasDefaultValue l) =>
+    (Eq l, Show l) =>
     Bool -> 
     PPBox BM -> 
     TVM l -> 

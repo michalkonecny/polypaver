@@ -13,7 +13,7 @@
 
     Parser of SPARK vcg and siv files.
 -}
-module PolyPaver.Input.SPARK 
+module PolyPaver.Input.SPARK
 (
     parseVCInFile,
     parseSivVC,
@@ -32,6 +32,7 @@ import Data.Char (ord, isSpace)
 import Data.List (intercalate, partition)
 import qualified Data.IntMap as IMap
 
+import Data.Hashable
 
 import Data.Functor.Identity
 import Text.Parsec
@@ -80,7 +81,7 @@ parseSivAll sourceDescription s =
         Left err -> error $ "parse error in " ++ sourceDescription ++ ":" ++ show err 
         
 addBox ::
-    (Eq l, HasDefaultValue l) =>
+    (Eq l, HasDefaultValue l, Hashable l) =>
     (String, Form l) -> 
     (String, Form l, [(Int, (Rational, Rational), Bool)])
 addBox (name, form) =
