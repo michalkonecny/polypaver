@@ -193,7 +193,7 @@ instance (Eq l, Show l) => TruthValue (TVM l) l where
         where
         -- investigate need for skewing and possibly skew:
         (box, maybeHP, maybeSkewVar)
-            = tryToSkew boxSkewing prebox tv
+            = tryToSkew boxSkewing splitGuessing prebox tv
         (success, boxes, splitVar)    
             = makeSplit splitGuessing varsNotToSplit maybeVar box maybeSkewVar
             
@@ -309,14 +309,19 @@ analyseLeqLess isLeq _box a b =
 tryToSkew :: 
     (Eq l, Show l) =>
     Bool -> 
+    Maybe Int -> 
     PPBox BM -> 
     TVM l -> 
     (PPBox BM,
      Maybe ((BoxHyperPlane BM, BoxHyperPlane BM), Form l, FormLabel, IRA BM),
      Maybe Int)
-tryToSkew boxSkewing prebox tv
+tryToSkew boxSkewing splitGuessing prebox tv
     | Prelude.not boxSkewing =
-        (prebox, Nothing, if gotHyperPlane then maybeSkewVar else Nothing)  
+        case splitGuessing of
+            Nothing ->
+                (prebox, Nothing, Nothing)  
+            _ ->
+                (prebox, Nothing, if gotHyperPlane then maybeSkewVar else Nothing)  
     | Prelude.not hyperplanesClose = 
         (prebox, Nothing, Nothing)  
     | otherwise =

@@ -81,6 +81,7 @@ data BoxToDo b =
     BoxToDo
     {
         boxToDo_depth :: Int,
+        boxToDo_queueSize :: Int,
         boxToDo_skewAncestors :: [PPBox b],
         boxToDo_startDeg :: Int,
         boxToDo_form :: Form Int,
@@ -135,6 +136,7 @@ tryToDecideFormOnBoxByPaving
             BoxToDo 
             {
                 boxToDo_depth = 0,
+                boxToDo_queueSize = 1,
                 boxToDo_skewAncestors = [],
                 boxToDo_startDeg = originalStartDeg,
                 boxToDo_form = originalForm,
@@ -222,7 +224,7 @@ tryToDecideFormOnBoxByPaving
                     bisectAndRecur undecidedMaybeSimplerForm [boxL, boxR] False splitVar
     
 
-            BoxToDo depth skewAncestors startDeg formRaw prevSplitVar ppb@(_skewed, box, _, _) = boxToDo 
+            BoxToDo depth _ skewAncestors startDeg formRaw prevSplitVar ppb@(_skewed, box, _, _) = boxToDo 
                 -- beware: "formRaw" above has ranges left over in it from a parent box - do not show them
             boxToDo = Q.index queue 0
             queueTail = Q.drop 1 queue
@@ -343,6 +345,7 @@ tryToDecideFormOnBoxByPaving
                     BoxToDo
                     {
                         boxToDo_depth = depth+1,
+                        boxToDo_queueSize = newQLength,
                         boxToDo_skewAncestors = newSkewAncestors,
                         boxToDo_startDeg = newstartDeg,
                         boxToDo_form = maybeSimplerForm,
@@ -374,7 +377,7 @@ tryToDecideFormOnBoxByPaving
             reportBoxInitSplit =
                 reportProgress False "Not reached minimum depth, splitting." False True (Just Nothing)
             reportBoxStart =
-                reportProgress False "Evaluating over a new box." True True Nothing
+                reportProgress False "Examining another box." True False Nothing
             reportBoxProved =
                 reportProgress True "Formula proved on this box." False True (Just (Just True))
             reportBoxSplit =
@@ -399,7 +402,7 @@ tryToDecideFormOnBoxByPaving
                     | reportState = Just $ pavingState takeCurrentBoxIntoAccount
                     | otherwise = Nothing
                 maybeBoxToDo
-                    | reportBox = Just $ boxToDo { boxToDo_form = formRaw }
+                    | reportBox = Just boxToDo
                     | otherwise = Nothing
                 maybeNewBoxDone =
                     case maybeBoxResult of

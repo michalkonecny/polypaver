@@ -154,7 +154,7 @@ runPaverReportingProgress ::
 runPaverReportingProgress problem args =
     do
     initMachineDouble -- set FPU to round upwards
-    hSetBuffering stdout LineBuffering -- print progress in real time, not in batches
+    hSetBuffering stdout NoBuffering -- print progress in real time, not in batches
     progressChannel <- newTChanIO
     _ <- forkIO $ paverOnThisProblem progressChannel
     if shouldPlot then (forkIO (startPlotter progressChannel) >> return ()) else return ()
@@ -176,9 +176,9 @@ runPaverReportingProgress problem args =
     monitorProgress progressChannel =
         monitorLoop progressChannel printReport
         where
-        printReport progressOrResult =
+        printReport maybePrevState progressOrResult =
             do
-            putStr $ format progressOrResult
+            putStr $ format maybePrevState progressOrResult
         format 
             | quiet args = showIfResult 
             | otherwise = showProgressOrResult
@@ -195,7 +195,7 @@ runPaverReportingProgress problem args =
         _ <- monitorLoop progressChannel2 (plotBox stateTV)
         return ()
         where
-        plotBox stateTV (Left progress) =
+        plotBox stateTV _ (Left progress) =
             case paverProgress_maybeNewBoxDone progress of
                 Just (ppb, maybeTruth, _) ->
                     do
@@ -208,36 +208,50 @@ runPaverReportingProgress problem args =
                             Just True -> green
                             Nothing -> yellow
                 _ -> return () 
-        plotBox _ _ = return ()
+        plotBox _ _ _ = return ()
         green = (0.1,0.6,0.1,0.4)
         red = (0.6,0.1,0.1,1)
         yellow = (0.6,0.6,0.1,0.05)
 
 monitorLoop :: 
-    TChan (Either progress result) -> 
-    (Either progress result -> IO ()) -> 
+    TChan (Either PaverProgress result) -> 
+    (Maybe (PavingState Double) -> Either PaverProgress result -> IO ()) -> 
     IO result
 monitorLoop progressChannel handleNextReport =
-    aux
+    aux Nothing
     where
-    aux =
+    aux maybePrevState =
         do
         progressOrResult <- atomically $ readTChan progressChannel
-        handleNextReport progressOrResult
+        handleNextReport maybePrevState progressOrResult
         case progressOrResult of
-            Left _ -> aux
+            Left _ -> aux $ updatedMaybePrevState progressOrResult
             Right result -> return result
+        where
+        updatedMaybePrevState progressOrResult =
+            case progressOrResult of
+                (Left progress) ->
+                    case paverProgress_maybeState progress of
+                        Just state -> Just state
+                        _ -> maybePrevState
+                _ -> maybePrevState
 
 
 
 
-showProgressOrResult :: Either PaverProgress PaverResult -> String
-showProgressOrResult (Right result) = showPaverResult result
-showProgressOrResult (Left progress) = showPaverProgress progress
+showProgressOrResult :: 
+    Maybe (PavingState Double) -> 
+    Either PaverProgress PaverResult -> 
+    String
+showProgressOrResult _ (Right result) = showPaverResult result
+showProgressOrResult _ (Left progress) = showPaverProgress progress
 
-showIfResult :: Either PaverProgress PaverResult -> String
-showIfResult (Right result) = showPaverResult result
-showIfResult (Left _progress) = ""
+showIfResult :: 
+    Maybe (PavingState Double) -> 
+    Either PaverProgress PaverResult -> 
+    String
+showIfResult _ (Right result) = showPaverResult result
+showIfResult maybePrevState (Left progress) = showPaverProgressMini maybePrevState progress 
 
 showPaverResult :: PaverResult -> String
 showPaverResult result =
@@ -272,16 +286,38 @@ showPaverProgress progress =
             Just currentBoxToDo -> showBox currentBoxToDo
             _ -> ""
     showBox currentBoxToDo =
-        "\nOn box " 
-        ++ "(depth=" ++ show depth ++ ")"            
-        ++ ": " ++ ppShow ppb
+        "\n" ++ ppShow ppb
+        ++ "(depth=" ++ show depth ++ ", queue=" ++ show queueSize ++ ")"            
         where
         depth = boxToDo_depth currentBoxToDo
+        queueSize = boxToDo_queueSize currentBoxToDo
         ppb = boxToDo_ppb currentBoxToDo
     stateS = 
         case paverProgress_maybeState progress of
             Just state -> showState state
             _ -> ""
+
+showPaverProgressMini ::
+    Maybe (PavingState Double) -> 
+    PaverProgress -> 
+    String
+showPaverProgressMini maybePrevState progress =
+    case paverProgress_maybeState progress of
+        Nothing -> ""
+        Just state ->
+            case maybePrevState of
+                (Just prevState) | differentTrueFraction prevState ->
+                    miniReport
+                _ -> ""
+            where
+            differentTrueFraction prevState =
+                prevTrueFraction < trueFraction
+                where
+                prevTrueFraction = pavingState_trueFraction prevState
+            trueFraction = pavingState_trueFraction state
+            miniReport =
+                "\n" ++ showDuration durationInPicoseconds ++ "> proved faction = " ++ show trueFraction
+            durationInPicoseconds = paverProgress_durationInPicosecs progress
 
 showState :: 
     ERRealBase b =>
@@ -299,13 +335,18 @@ showState state =
 
 showDuration :: Integer -> String
 showDuration durationInPicoseconds =
-    show durationInSeconds ++ "s (" ++ show days ++ "d, " ++ show hours ++ "h, " ++ show mins ++ "min, " ++ show secs ++ "s)" 
+    show durationInSeconds ++ "." ++ millisS ++ "s (" ++ show days ++ "d, " ++ show hours ++ "h, " ++ show mins ++ "min, " ++ show secs ++ "s)" 
     where
-    durationInSeconds = (fromInteger durationInPicoseconds) / 1000000000000 :: Double 
-    (minsAll, secs) = quotRem (Prelude.round durationInSeconds) 60
+    millisS 
+        | length s == 1 = "0" ++ s
+        | otherwise = s
+        where
+        s = show millis
+    durationInSeconds = durationInPicoseconds `div` 1000000000000
+    millis = (durationInPicoseconds `mod` 1000000000000) `div` 10000000000
+    (minsAll, secs) = quotRem durationInSeconds 60
     (hoursAll, mins) = quotRem minsAll 60
     (days, hours) = quotRem hoursAll 24
-    _ = [secs, mins, hours, days :: Int]
 
 showPaverResultOneLine :: PaverResult -> String
 showPaverResultOneLine result =
