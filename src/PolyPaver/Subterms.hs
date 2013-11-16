@@ -1,7 +1,8 @@
 module PolyPaver.Subterms 
 (
     addHashesInForm,
-    addHashesInTerm
+    addHashesInTerm,
+    TermHash
 )
 where
 
@@ -12,9 +13,11 @@ import Data.Hashable
 --import Data.Data (Data, Typeable)
 --import Data.List (intercalate, sortBy)
 
+type TermHash = Int
+
 addHashesInForm :: 
     (Hashable l) =>
-    Form l -> Form Int
+    Form l -> Form TermHash
 addHashesInForm form =
     case form of
         Not arg -> expOp1 Not arg
@@ -40,7 +43,7 @@ addHashesInForm form =
 
 addHashesInTerm ::
     Hashable l =>
-    Term l -> Term Int
+    Term l -> Term TermHash
 addHashesInTerm (Term (term', _l)) =
     (Term (termWithHashes, hash term'))
     where

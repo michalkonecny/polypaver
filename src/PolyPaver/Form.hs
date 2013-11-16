@@ -52,15 +52,21 @@ getConclusion :: Form l -> Form l
 getConclusion (Implies _f1 f2) = getConclusion f2
 getConclusion f = f
 
+getHypothesesAndConclusion :: Form l -> ([Form l], Form l)
+getHypothesesAndConclusion f = aux [] f
+    where
+    aux prevHs (Implies h c) = aux (h : prevHs) c
+    aux prevHs c = (reverse prevHs, c)
+
 splitConclusion :: Form l -> [Form l]
 splitConclusion (Implies f1 f2) =
     map (Implies f1) $ splitConclusion f2
-splitConclusion f = splitFormula f
+splitConclusion f = splitFormulaByAnds f
 
-splitFormula :: Form l -> [Form l]
-splitFormula (And f1 f2) =
-    splitFormula f1 ++ splitFormula f2
-splitFormula f = [f] 
+splitFormulaByAnds :: Form l -> [Form l]
+splitFormulaByAnds (And f1 f2) =
+    splitFormulaByAnds f1 ++ splitFormulaByAnds f2
+splitFormulaByAnds f = [f] 
 
 getFormulaSize :: Form l -> Int
 getFormulaSize form =
