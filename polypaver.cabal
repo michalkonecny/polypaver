@@ -150,6 +150,7 @@ Library
     PolyPaver.Form,
     PolyPaver.Vars,
     PolyPaver.Subterms,
+    PolyPaver.Substitution,
     PolyPaver.PPBox,
     PolyPaver.Plot,
     PolyPaver.DeriveBounds,

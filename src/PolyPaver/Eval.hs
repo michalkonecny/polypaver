@@ -53,7 +53,7 @@ prepareForm form =
 
 prepareTerm ::
     (HasDefaultValue l, Eq l, Hashable l) =>
-    Term l -> Term Int
+    Term l -> Term TermHash
 prepareTerm term =
     addHashesInTerm $ expandRoundedOpsInTerm term
 
@@ -69,7 +69,7 @@ evalForm ::
     IRA BM {-^ minIntegrationStepSize -} -> 
     PPBox BM {-^ domains of variables -} -> 
 --    (Int,Int) {-^ precision of emulated FP operations -} -> 
-    Form Int {-^ form to evaluate, with hashes in all sub-terms -} -> 
+    Form TermHash {-^ form to evaluate, with hashes in all sub-terms -} -> 
     (tv,
      Form (Maybe (IRA BM))) {-^ form with added range bounds in all terms -}
 evalForm maxdeg maxsize ix minIntegrationStepSize ppb@(_, _, isIntVarMap, _) origForm =
