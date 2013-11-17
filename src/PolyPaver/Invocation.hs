@@ -35,7 +35,7 @@ import qualified PolyPaver.Plot as Plot
 --import Numeric.ER.Real.DefaultRepr
 import Numeric.ER.Real.Base
 import Numeric.ER.Real.Base.MachineDouble
---import qualified Numeric.ER.Real.Approx as RA
+import qualified Numeric.ER.Real.Approx as RA
 
 --import qualified Data.Map as Map
 import qualified Data.IntMap as IMap
@@ -311,8 +311,10 @@ showPaverProgressMini maybePrevState progress =
                 _ -> ""
             where
             differentTrueFraction prevState =
-                prevTrueFraction < trueFraction
+                prevTrueFractionR < trueFractionR
                 where
+                (_,prevTrueFractionR) = RA.bounds prevTrueFraction
+                (_,trueFractionR) = RA.bounds trueFraction
                 prevTrueFraction = pavingState_trueFraction prevState
             trueFraction = pavingState_trueFraction state
             miniReport =
