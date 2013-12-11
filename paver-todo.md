@@ -2,15 +2,13 @@
 (Log is below)
 
 
-* Produce OS X binaries for release 0.2.
+* Produce OS X binaries
 
-## release 0.2.1
+## release 0.3
 
 * Try substitutions to deal effectively with formulas such as x > f(y) + 1 => x > f(y).
 
-* Evaluate each common sub-expression only once per box.   
-
-## release 0.2.2
+## release 0.4
 
 * UI
 

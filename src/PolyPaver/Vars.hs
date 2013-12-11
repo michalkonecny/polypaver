@@ -342,6 +342,10 @@ substituteVarsTerm old2new = subst
             FExp rel abse arg -> FExp rel abse $ subst arg
             t -> t
 
+{- |
+   Remove hypotheses that feature only variables that are not in the conclusion
+   nor are connected to the conclusion indirectly via other hypotheses.
+-}
 removeDisjointHypotheses :: Form l -> Form l
 removeDisjointHypotheses form
     =

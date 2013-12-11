@@ -58,6 +58,10 @@ getHypothesesAndConclusion f = aux [] f
     aux prevHs (Implies h c) = aux (h : prevHs) c
     aux prevHs c = (reverse prevHs, c)
 
+joinHypothesesAndConclusion :: ([Form l], Form l) -> Form l
+joinHypothesesAndConclusion (hypotheses, conclusion) =
+    foldr Implies conclusion hypotheses
+
 splitConclusion :: Form l -> [Form l]
 splitConclusion (Implies f1 f2) =
     map (Implies f1) $ splitConclusion f2
