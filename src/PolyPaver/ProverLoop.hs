@@ -44,7 +44,7 @@ import Data.List
 import qualified Data.IntMap as IMap
 
 import Control.Concurrent.STM (atomically)
-import Control.Concurrent.STM.TChan
+import Control.Concurrent.STM.TBQueue
 
 import System.CPUTime
 
@@ -98,7 +98,7 @@ data BoxToDo b =
    It also sends one 'PaverResult' record when it is finished with paving.
 -}
 tryToDecideFormOnBoxByPaving :: 
-    TChan (Either PaverProgress PaverResult) {-^ @out@ -} ->
+    TBQueue (Either PaverProgress PaverResult) {-^ @out@ -} ->
     Args {-^ @args@ - A record with various parameters -} -> 
     Form () {-^ @form@ - A logical formula -} ->
     PPBox Double {-^ @box@ - A rectangle (possibly skewed) in R^n -} -> 
@@ -388,7 +388,7 @@ tryToDecideFormOnBoxByPaving
             reportProgress takeCurrentBoxIntoAccount message reportBox reportState maybeBoxResult  =
                 do
                 currtime <- getCPUTime 
-                atomically $ writeTChan outChannel $
+                atomically $ writeTBQueue outChannel $
                     Left PaverProgress
                     {
                         paverProgress_message = message,
@@ -433,7 +433,7 @@ tryToDecideFormOnBoxByPaving
             stopPaver takeCurrentBoxIntoAccount formTruthOrMessage =
                 do
                 currtime <- getCPUTime 
-                atomically $ writeTChan outChannel $
+                atomically $ writeTBQueue outChannel $
                     Right PaverResult
                     {
                         paverResult_formTruthOrMessage = formTruthOrMessage,
