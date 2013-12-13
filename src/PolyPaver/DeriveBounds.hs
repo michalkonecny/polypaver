@@ -34,6 +34,8 @@ import qualified Data.IntMap as IMap
 
 import Data.Hashable
 
+import qualified Data.Strict.Tuple as SP
+
 getBox :: 
     (HasDefaultValue l, Eq l, Hashable l) =>
     Form l ->
@@ -197,7 +199,7 @@ evalT intervals term
     
     ((l,r),_) 
         = 
-        RA.oiBounds $ fst $ snd $
+        RA.oiBounds $ fst $ SP.snd $
         evalTerm 1 100 10 0 box False IMap.empty $ prepareTerm term
         where
         box = 

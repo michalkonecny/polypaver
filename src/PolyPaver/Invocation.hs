@@ -156,20 +156,20 @@ runPaverReportingProgress problem args =
     initMachineDouble -- set FPU to round upwards
     hSetBuffering stdout NoBuffering -- print progress in real time, not in batches
     progressChannel <- atomically $ newTBQueue 10
-    progressChannelPlot <- atomically $ newTBQueue 10
-    _ <- forkIO $ paverOnThisProblem progressChannel
-    maybeProgressChannelPlot <- case shouldPlot of
+    progressChannelsPlot <- case shouldPlot of
         True -> 
             do
+            progressChannelPlot <- atomically $ newTBQueue 10
             _ <- forkIO (startPlotter progressChannelPlot)
-            return (Just progressChannelPlot)
+            return [progressChannelPlot]
         False ->
-            return Nothing
-    printProgress progressChannel maybeProgressChannelPlot
+            return []
+    _ <- forkIO $ paverOnThisProblem $ progressChannel : progressChannelsPlot
+    printProgress progressChannel
     where
-    paverOnThisProblem progressChannel =
+    paverOnThisProblem progressChannels =
         tryToDecideFormOnBoxByPaving
-            progressChannel
+            progressChannels
             args
             form -- the formula that needs deciding
             initbox
@@ -180,8 +180,8 @@ runPaverReportingProgress problem args =
     boxBounds = map (\(var,bounds,_) -> (var,bounds)) boxBoundsIsInts
     boxBoundsIsInts = problem_box problem
     
-    printProgress progressChannel maybeProgressChannelPlot =
-        monitorLoop progressChannel maybeProgressChannelPlot printReport
+    printProgress progressChannel =
+        monitorLoop progressChannel printReport
         where
         printReport maybePrevState progressOrResult =
             do
@@ -198,7 +198,7 @@ runPaverReportingProgress problem args =
     startPlotter progressChannel =
         do
         stateTV <- Plot.initPlot initbox w h
-        _ <- monitorLoop progressChannel Nothing (plotBox stateTV)
+        _ <- monitorLoop progressChannel (plotBox stateTV)
         return ()
         where
         plotBox stateTV _ (Left progress) =
@@ -221,19 +221,15 @@ runPaverReportingProgress problem args =
 
 monitorLoop :: 
     TBQueue (Either PaverProgress result) -> 
-    Maybe (TBQueue (Either PaverProgress result)) -> 
     (Maybe (PavingState Double) -> Either PaverProgress result -> IO ()) -> 
     IO result
-monitorLoop progressChannel maybeNextChannel handleNextReport =
+monitorLoop progressChannel handleNextReport =
     aux Nothing
     where
     aux maybePrevState =
         do
         progressOrResult <- atomically $ readTBQueue progressChannel
         handleNextReport maybePrevState progressOrResult
-        case maybeNextChannel of
-            Just nextChannel -> atomically $ writeTBQueue nextChannel progressOrResult
-            Nothing -> return ()
         case progressOrResult of
             Left _ -> aux $ updatedMaybePrevState progressOrResult
             Right result -> return result
