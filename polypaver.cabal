@@ -136,7 +136,8 @@ Library
         convertible >= 1.0,
         parsec >= 3.1.1,
         transformers,
-        hashable >= 1.2
+        hashable >= 1.2,
+        strict >= 0.3.2
 
   Exposed-modules:
     PolyPaver
@@ -207,7 +208,7 @@ Library
 
 Executable polypaver
   hs-source-dirs: src
-  ghc-options:     -O2 -Wall
+  ghc-options:     -O2 -Wall -rtsopts -prof -auto-all
   main-is: Main.hs
   if flag(DynamicLoading)
     cpp-options: -DDynamicLoading
@@ -228,6 +229,7 @@ Executable polypaver
           parsec >= 3.1.1,
           transformers,
           hashable >= 1.2,
+          strict >= 0.3.2,
           ghc >= 7.4,
           ghc-paths >= 0.1
   else
@@ -247,4 +249,5 @@ Executable polypaver
           convertible >= 1.0,
           parsec >= 3.1.1,
           transformers,
-          hashable >= 1.2
+          hashable >= 1.2,
+          strict >= 0.3.2

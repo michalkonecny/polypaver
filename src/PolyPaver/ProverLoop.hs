@@ -98,13 +98,13 @@ data BoxToDo b =
    It also sends one 'PaverResult' record when it is finished with paving.
 -}
 tryToDecideFormOnBoxByPaving :: 
-    TBQueue (Either PaverProgress PaverResult) {-^ @out@ -} ->
+    [TBQueue (Either PaverProgress PaverResult)] {-^ @out@ - Channels to send progress reports to -} ->
     Args {-^ @args@ - A record with various parameters -} -> 
     Form () {-^ @form@ - A logical formula -} ->
     PPBox Double {-^ @box@ - A rectangle (possibly skewed) in R^n -} -> 
     IO ()
 tryToDecideFormOnBoxByPaving
-    outChannel
+    outChannels
     args
     originalFormRaw 
     initppb@(_, initbox, varIsInts, _varNames)
@@ -239,7 +239,8 @@ tryToDecideFormOnBoxByPaving
                     _ -> (False, False)
                 where
                 maybeFormTruth = L.decide value
-            (value, formWithRanges) =
+            (value, formWithRanges) = valueAndForm -- TODO: try to replace this pair with a strict pair in an attempt to resolve a space leak 
+            valueAndForm =
                 evalForm 
                     currentDeg (maxSize args) ix minIntegrationStepSize ppb 
                     formRaw
@@ -388,16 +389,18 @@ tryToDecideFormOnBoxByPaving
             reportProgress takeCurrentBoxIntoAccount message reportBox reportState maybeBoxResult  =
                 do
                 currtime <- getCPUTime 
-                atomically $ writeTBQueue outChannel $
-                    Left PaverProgress
-                    {
-                        paverProgress_message = message,
-                        paverProgress_durationInPicosecs = currtime - inittime,
-                        paverProgress_maybeState = maybeState, 
-                        paverProgress_maybeCurrentBoxToDo = maybeBoxToDo,
-                        paverProgress_maybeNewBoxDone = maybeNewBoxDone  
-                    }
+                atomically $ mapM_ (writeToChan currtime) outChannels
                 where
+                writeToChan currtime outChannel = 
+                    writeTBQueue outChannel $
+                        Left PaverProgress
+                        {
+                            paverProgress_message = message,
+                            paverProgress_durationInPicosecs = currtime - inittime,
+                            paverProgress_maybeState = maybeState, 
+                            paverProgress_maybeCurrentBoxToDo = maybeBoxToDo,
+                            paverProgress_maybeNewBoxDone = maybeNewBoxDone  
+                        }
                 maybeState 
                     | reportState = Just $ pavingState takeCurrentBoxIntoAccount
                     | otherwise = Nothing
@@ -406,7 +409,7 @@ tryToDecideFormOnBoxByPaving
                     | otherwise = Nothing
                 maybeNewBoxDone =
                     case maybeBoxResult of
-                        Just boxResult -> Just (ppb, boxResult, formWithRanges)
+                        Just boxResult -> Just (ppb, boxResult, verum) -- formWithRanges) -- TODO: this formula passing causes a space leak
                         _ -> Nothing
         
             pavingState takeCurrentBoxIntoAccount =
@@ -433,14 +436,17 @@ tryToDecideFormOnBoxByPaving
             stopPaver takeCurrentBoxIntoAccount formTruthOrMessage =
                 do
                 currtime <- getCPUTime 
-                atomically $ writeTBQueue outChannel $
-                    Right PaverResult
-                    {
-                        paverResult_formTruthOrMessage = formTruthOrMessage,
-                        paverResult_lastPPB = ppb,
-                        paverResult_durationInPicosecs = currtime - inittime,
-                        paverResult_state = pavingState takeCurrentBoxIntoAccount
-                    }
+                atomically $ mapM_ (writeToChan currtime) outChannels
+                where
+                writeToChan currtime outChannel = 
+                    writeTBQueue outChannel $
+                        Right PaverResult
+                        {
+                            paverResult_formTruthOrMessage = formTruthOrMessage,
+                            paverResult_lastPPB = ppb,
+                            paverResult_durationInPicosecs = currtime - inittime,
+                            paverResult_state = pavingState takeCurrentBoxIntoAccount
+                        }
                 -- end of the imperative program tryToDecideFormOnBoxByPaving, usually end of thread
 
             provedFraction takeCurrentBoxIntoAccount
