@@ -1,7 +1,7 @@
 {-# LANGUAGE FlexibleInstances #-}
 
 {-|
-    Module      :  PolyPaver.Logic
+    Module      :  PolyPaver.PPBox
     Description :  parallelepiped boxes for paving the domain  
     Copyright   :  (c) Michal Konecny, Jan Duracz  
     License     :  BSD3
