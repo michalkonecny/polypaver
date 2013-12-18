@@ -31,7 +31,7 @@ import HscTypes (SourceError, srcErrorMessages)
 import DynFlags
 import Unsafe.Coerce
 import Bag (bagToList)
-import Outputable (runSDoc, defaultErrStyle, initSDocContext)
+import Outputable (runSDoc, defaultErrStyle, initSDocContext, CodeStyle(..))
 
 -- the following imports are for the plugins attempt:
 --import Text.Regex.Posix
@@ -62,20 +62,10 @@ loadHaskellProblems
 
 loadSourceGhc :: String -> Ghc (Maybe String)
 loadSourceGhc path = 
-    let
-        throwingLogAction SevError _ _ msg = throw $ ErrorCall $ showM msg
-        throwingLogAction SevFatal _ _ msg = throw $ ErrorCall $ showM msg
-        throwingLogAction _ _ _ _ = return ()
-        showM msg = show $ runSDoc msg (initSDocContext defaultErrStyle)
-    in 
     do
-    dflags <- getSessionDynFlags
-    setSessionDynFlags (dflags{
-        ghcLink = LinkInMemory,
-        hscTarget = HscInterpreted,
---        packageFlags = [ExposePackage "polypaver"],
-        log_action = throwingLogAction
-        })
+    dflagsPre <- getSessionDynFlags
+    let dflags = adaptDFlags dflagsPre
+    setSessionDynFlags dflags
     target <- guessTarget path Nothing
     addTarget target
     r <- load LoadAllTargets
@@ -87,13 +77,26 @@ loadSourceGhc path =
             errors e = concat $ map show (bagToList $ srcErrorMessages e)
         in
             return $ Just (errors e)
-                
+    where
+    adaptDFlags dflagsPre =
+        dflagsPre 
+        {
+            ghcLink = LinkInMemory,
+            hscTarget = HscInterpreted,
+--            packageFlags = [ExposePackage "polypaver"],
+            log_action = throwingLogAction
+        }
+    throwingLogAction dflags SevError _ _ msg = throw $ ErrorCall $ showM dflags msg
+    throwingLogAction dflags SevFatal _ _ msg = throw $ ErrorCall $ showM dflags msg
+    throwingLogAction dflags _ _ _ _ = return ()
+    showM dflags msg = show $ runSDoc msg (initSDocContext dflags (defaultErrStyle dflags))
                 
 execFnGhc :: String -> String -> Ghc a
 execFnGhc modname fn = 
     do
-    mod <- findModule (mkModuleName modname) Nothing
-    setContext [IIModule mod]
+    let moduleName = mkModuleName modname
+--    mod <- findModule moduleName Nothing
+    setContext [IIModule moduleName]
     value <- compileExpr (modname ++ "." ++ fn)
     let value' = (unsafeCoerce value) :: a
     return value'
