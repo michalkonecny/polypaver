@@ -5,7 +5,7 @@
 *****************************************************************************
 
 
-CREATED 17-MAY-2013, 19:02:19  SIMPLIFIED 17-MAY-2013, 19:02:26
+CREATED 18-DEC-2013, 09:45:35  SIMPLIFIED 18-DEC-2013, 09:45:51
 
 SPARK Simplifier GPL 2012
 Copyright (C) 2012 Altran Praxis Limited, Bath, U.K.
@@ -80,10 +80,10 @@ For path(s) from assertion of line 19 to precondition check associated with
           statement of line 15:
 
 function_erfriemann_6.
-H1:    polypaver__interval__contained_in(result - polypaver__exact__integral(0, 
+H1:    polypaver__interval__contained_in(result, polypaver__exact__integral(0, 
           polypaver__floats__multiply(polypaver__floats__divide(x, n), step), 
           polypaver__exact__exp(- (polypaver__exact__integration_variable * 
-          polypaver__exact__integration_variable))), polypaver__interval__hull(
+          polypaver__exact__integration_variable))) + polypaver__interval__hull(
           - (1 / 10 * (step + 1)), (1 - polypaver__exact__exp(- (x * step / n * 
           (x * step / n)))) * x / n + 1 / 10 * (step + 1))) .
 H2:    polypaver__floats__is_range(result, - 10, 100) .
@@ -185,10 +185,10 @@ H10:   polypaver__floats__multiply(polypaver__floats__divide(x, n), 0) <=
 H11:   integer__size >= 0 .
 H12:   float__size >= 0 .
        ->
-C1:    polypaver__interval__contained_in(- polypaver__exact__integral(0, 
+C1:    polypaver__interval__contained_in(0, polypaver__exact__integral(0, 
           polypaver__floats__multiply(polypaver__floats__divide(x, n), 0), 
           polypaver__exact__exp(- (polypaver__exact__integration_variable * 
-          polypaver__exact__integration_variable))), polypaver__interval__hull(
+          polypaver__exact__integration_variable))) + polypaver__interval__hull(
           - (1 / 10), (1 - polypaver__exact__exp(- (0 / n * (0 / n)))) * x / n 
           + 1 / 10)) .
 C2:    polypaver__floats__is_range(0, - 10, 100) .
@@ -198,10 +198,10 @@ C3:    polypaver__integers__is_range(0, 0, n - 1) .
 For path(s) from assertion of line 19 to assertion of line 19:
 
 function_erfriemann_10.
-H1:    polypaver__interval__contained_in(result - polypaver__exact__integral(0, 
+H1:    polypaver__interval__contained_in(result, polypaver__exact__integral(0, 
           polypaver__floats__multiply(polypaver__floats__divide(x, n), step), 
           polypaver__exact__exp(- (polypaver__exact__integration_variable * 
-          polypaver__exact__integration_variable))), polypaver__interval__hull(
+          polypaver__exact__integration_variable))) + polypaver__interval__hull(
           - (1 / 10 * (step + 1)), (1 - polypaver__exact__exp(- (x * step / n * 
           (x * step / n)))) * x / n + 1 / 10 * (step + 1))) .
 H2:    polypaver__floats__is_range(result, - 10, 100) .
@@ -273,10 +273,10 @@ C1:    polypaver__interval__contained_in(polypaver__floats__add(result,
           polypaver__floats__exp(- polypaver__floats__multiply(
           polypaver__floats__multiply(polypaver__floats__divide(x, n), step), 
           polypaver__floats__multiply(polypaver__floats__divide(x, n), step)))))
-           - polypaver__exact__integral(0, polypaver__floats__multiply(
+          , polypaver__exact__integral(0, polypaver__floats__multiply(
           polypaver__floats__divide(x, n), step + 1), polypaver__exact__exp(- (
           polypaver__exact__integration_variable * 
-          polypaver__exact__integration_variable))), polypaver__interval__hull(
+          polypaver__exact__integration_variable))) + polypaver__interval__hull(
           - (1 / 10 * (step + 2)), (1 - polypaver__exact__exp(- (x * (step + 1) 
           / n * (x * (step + 1) / n)))) * x / n + 1 / 10 * (step + 2))) .
 C2:    polypaver__floats__is_range(polypaver__floats__add(result, 
@@ -289,13 +289,13 @@ C3:    polypaver__integers__is_range(step + 1, 0, n - 1) .
 
 
 For path(s) from assertion of line 19 to precondition check associated with 
-          statement of line 34:
+          statement of line 36:
 
 function_erfriemann_11.
-H1:    polypaver__interval__contained_in(result - polypaver__exact__integral(0, 
+H1:    polypaver__interval__contained_in(result, polypaver__exact__integral(0, 
           polypaver__floats__multiply(polypaver__floats__divide(x, n), step), 
           polypaver__exact__exp(- (polypaver__exact__integration_variable * 
-          polypaver__exact__integration_variable))), polypaver__interval__hull(
+          polypaver__exact__integration_variable))) + polypaver__interval__hull(
           - (1 / 10 * (step + 1)), (1 - polypaver__exact__exp(- (x * step / n * 
           (x * step / n)))) * x / n + 1 / 10 * (step + 1))) .
 H2:    polypaver__floats__is_range(result, - 10, 100) .
@@ -324,13 +324,13 @@ C2:    polypaver__floats__multiply(polypaver__floats__multiply(
 
 
 For path(s) from assertion of line 19 to precondition check associated with 
-          statement of line 34:
+          statement of line 36:
 
 function_erfriemann_12.
-H1:    polypaver__interval__contained_in(result - polypaver__exact__integral(0, 
+H1:    polypaver__interval__contained_in(result, polypaver__exact__integral(0, 
           polypaver__floats__multiply(polypaver__floats__divide(x, n), step), 
           polypaver__exact__exp(- (polypaver__exact__integration_variable * 
-          polypaver__exact__integration_variable))), polypaver__interval__hull(
+          polypaver__exact__integration_variable))) + polypaver__interval__hull(
           - (1 / 10 * (step + 1)), (1 - polypaver__exact__exp(- (x * step / n * 
           (x * step / n)))) * x / n + 1 / 10 * (step + 1))) .
 H2:    polypaver__floats__is_range(result, - 10, 100) .
@@ -367,20 +367,20 @@ C2:    polypaver__floats__exp(- polypaver__floats__multiply(
 
 
 For path(s) from assertion of line 19 to run-time check associated with 
-          statement of line 34:
+          statement of line 36:
 
 function_erfriemann_13.
 *** true .          /* all conclusions proved */
 
 
 For path(s) from assertion of line 19 to precondition check associated with 
-          statement of line 37:
+          statement of line 39:
 
 function_erfriemann_14.
-H1:    polypaver__interval__contained_in(result - polypaver__exact__integral(0, 
+H1:    polypaver__interval__contained_in(result, polypaver__exact__integral(0, 
           polypaver__floats__multiply(polypaver__floats__divide(x, n), step), 
           polypaver__exact__exp(- (polypaver__exact__integration_variable * 
-          polypaver__exact__integration_variable))), polypaver__interval__hull(
+          polypaver__exact__integration_variable))) + polypaver__interval__hull(
           - (1 / 10 * (step + 1)), (1 - polypaver__exact__exp(- (x * step / n * 
           (x * step / n)))) * x / n + 1 / 10 * (step + 1))) .
 H2:    polypaver__floats__is_range(result, - 10, 100) .
@@ -433,13 +433,13 @@ C2:    polypaver__floats__multiply(polypaver__floats__divide(x, n),
 
 
 For path(s) from assertion of line 19 to precondition check associated with 
-          statement of line 37:
+          statement of line 39:
 
 function_erfriemann_15.
-H1:    polypaver__interval__contained_in(result - polypaver__exact__integral(0, 
+H1:    polypaver__interval__contained_in(result, polypaver__exact__integral(0, 
           polypaver__floats__multiply(polypaver__floats__divide(x, n), step), 
           polypaver__exact__exp(- (polypaver__exact__integration_variable * 
-          polypaver__exact__integration_variable))), polypaver__interval__hull(
+          polypaver__exact__integration_variable))) + polypaver__interval__hull(
           - (1 / 10 * (step + 1)), (1 - polypaver__exact__exp(- (x * step / n * 
           (x * step / n)))) * x / n + 1 / 10 * (step + 1))) .
 H2:    polypaver__floats__is_range(result, - 10, 100) .
@@ -504,20 +504,20 @@ C2:    polypaver__floats__add(result, polypaver__floats__multiply(
 
 
 For path(s) from assertion of line 19 to run-time check associated with 
-          statement of line 37:
+          statement of line 39:
 
 function_erfriemann_16.
 *** true .          /* all conclusions proved */
 
 
 For path(s) from assertion of line 19 to run-time check associated with 
-          statement of line 40:
+          statement of line 42:
 
 function_erfriemann_17.
-H1:    polypaver__interval__contained_in(result - polypaver__exact__integral(0, 
+H1:    polypaver__interval__contained_in(result, polypaver__exact__integral(0, 
           polypaver__floats__multiply(polypaver__floats__divide(x, n), step), 
           polypaver__exact__exp(- (polypaver__exact__integration_variable * 
-          polypaver__exact__integration_variable))), polypaver__interval__hull(
+          polypaver__exact__integration_variable))) + polypaver__interval__hull(
           - (1 / 10 * (step + 1)), (1 - polypaver__exact__exp(- (x * step / n * 
           (x * step / n)))) * x / n + 1 / 10 * (step + 1))) .
 H2:    polypaver__floats__is_range(result, - 10, 100) .
@@ -600,9 +600,9 @@ H8:    n < 0 .
 H9:    integer__size >= 0 .
 H10:   float__size >= 0 .
        ->
-C1:    polypaver__interval__contained_in(- polypaver__exact__integral(0, x, 
+C1:    polypaver__interval__contained_in(0, polypaver__exact__integral(0, x, 
           polypaver__exact__exp(- (polypaver__exact__integration_variable * 
-          polypaver__exact__integration_variable))), polypaver__interval__hull(
+          polypaver__exact__integration_variable))) + polypaver__interval__hull(
           - (1 / 10 * (n + 1)), (1 - polypaver__exact__exp(- (x * x))) * x / n 
           + 1 / 10 * (n + 1))) .
 
@@ -610,10 +610,10 @@ C1:    polypaver__interval__contained_in(- polypaver__exact__integral(0, x,
 For path(s) from assertion of line 19 to finish:
 
 function_erfriemann_19.
-H1:    polypaver__interval__contained_in(result - polypaver__exact__integral(0, 
+H1:    polypaver__interval__contained_in(result, polypaver__exact__integral(0, 
           polypaver__floats__multiply(polypaver__floats__divide(x, n), step), 
           polypaver__exact__exp(- (polypaver__exact__integration_variable * 
-          polypaver__exact__integration_variable))), polypaver__interval__hull(
+          polypaver__exact__integration_variable))) + polypaver__interval__hull(
           - (1 / 10 * (step + 1)), (1 - polypaver__exact__exp(- (x * step / n * 
           (x * step / n)))) * x / n + 1 / 10 * (step + 1))) .
 H2:    polypaver__floats__is_range(result, - 10, 100) .
@@ -683,9 +683,9 @@ C1:    polypaver__interval__contained_in(polypaver__floats__add(result,
           polypaver__floats__exp(- polypaver__floats__multiply(
           polypaver__floats__multiply(polypaver__floats__divide(x, n), step), 
           polypaver__floats__multiply(polypaver__floats__divide(x, n), step)))))
-           - polypaver__exact__integral(0, x, polypaver__exact__exp(- (
+          , polypaver__exact__integral(0, x, polypaver__exact__exp(- (
           polypaver__exact__integration_variable * 
-          polypaver__exact__integration_variable))), polypaver__interval__hull(
+          polypaver__exact__integration_variable))) + polypaver__interval__hull(
           - (1 / 10 * (n + 1)), (1 - polypaver__exact__exp(- (x * x))) * x / n 
           + 1 / 10 * (n + 1))) .
 

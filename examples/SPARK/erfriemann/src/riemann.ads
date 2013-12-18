@@ -7,8 +7,10 @@ function erfRiemann(x : Float; n : Integer) return Float;
 --#     and PolyPaver.Integers.Is_Range(n, 1, 100);
 --# return result => 
 --#     PolyPaver.Interval.Contained_In(
---#         result - PolyPaver.Exact.Integral(0.0,x,PolyPaver.Exact.Exp(-PolyPaver.Exact.Integration_Variable**2))
+--#         result
 --#         ,
+--#         PolyPaver.Exact.Integral(0.0,x,PolyPaver.Exact.Exp(-PolyPaver.Exact.Integration_Variable**2))
+--#         +
 --#         PolyPaver.Interval.Hull(
 --#              - 0.1*Float(n+1)
 --#              ,

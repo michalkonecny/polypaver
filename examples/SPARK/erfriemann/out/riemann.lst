@@ -5,7 +5,7 @@
            *******************************************************
 
 
-                        DATE : 17-MAY-2013 19:02:19.14
+                        DATE : 18-DEC-2013 09:45:35.29
 
 Line
    1  package body Riemann is
@@ -27,38 +27,40 @@ Line
   17       PolyPaver.Floats.Multiply(stepSize, Float(step));
   18     --# assert 
   19     --#     PolyPaver.Interval.Contained_In(
-  20     --#         result - PolyPaver.Exact.Integral(0.0,stepStart,PolyPaver.Exact.Exp(-PolyPaver.Exact.Integration_Variable**2))
+  20     --#         result
   21     --#         ,
-  22     --#         PolyPaver.Interval.Hull(
-  23     --#              - 0.1*Float(step+1)
-  24     --#              ,
-  25     --#              (1.0-PolyPaver.Exact.Exp(-(x * Float(step)/Float(n))**2))*x/Float(n)
-  26     --#              + 0.1*Float(step+1)
-  27     --#         )
-  28     --#     )
-  29     --#     and PolyPaver.Floats.Is_Range(result,-10, 100.0)
-  30     --#     and PolyPaver.Integers.Is_Range(n, 1, 100) and PolyPaver.Integers.Is_Range(step, 0, n-1)
-  31     --#     and stepStart = PolyPaver.Floats.Multiply(stepSize, Float(step))
-  32     --#     and stepSize = PolyPaver.Floats.Divide(x,Float(n));
-  33  
-  34     valueStart := 
-  35       -- valueStart := exp(-(stepStart * stepStart));
-  36       PolyPaver.Floats.Exp(-PolyPaver.Floats.Multiply(stepStart,stepStart)); 
-  37     result := 
-  38       -- result + stepSize * valueStart;
-  39       PolyPaver.Floats.Add(result,PolyPaver.Floats.Multiply(stepSize,valueStart));
-  40     step := step + 1;
-  41   end loop;
-  42   return result;
-  43  end erfRiemann;
+  22     --#         PolyPaver.Exact.Integral(0.0,stepStart,PolyPaver.Exact.Exp(-PolyPaver.Exact.Integration_Variable**2))
+  23     --#         +
+  24     --#         PolyPaver.Interval.Hull(
+  25     --#              - 0.1*Float(step+1)
+  26     --#              ,
+  27     --#              (1.0-PolyPaver.Exact.Exp(-(x * Float(step)/Float(n))**2))*x/Float(n)
+  28     --#              + 0.1*Float(step+1)
+  29     --#         )
+  30     --#     )
+  31     --#     and PolyPaver.Floats.Is_Range(result,-10, 100.0)
+  32     --#     and PolyPaver.Integers.Is_Range(n, 1, 100) and PolyPaver.Integers.Is_Range(step, 0, n-1)
+  33     --#     and stepStart = PolyPaver.Floats.Multiply(stepSize, Float(step))
+  34     --#     and stepSize = PolyPaver.Floats.Divide(x,Float(n));
+  35  
+  36     valueStart := 
+  37       -- valueStart := exp(-(stepStart * stepStart));
+  38       PolyPaver.Floats.Exp(-PolyPaver.Floats.Multiply(stepStart,stepStart)); 
+  39     result := 
+  40       -- result + stepSize * valueStart;
+  41       PolyPaver.Floats.Add(result,PolyPaver.Floats.Multiply(stepSize,valueStart));
+  42     step := step + 1;
+  43   end loop;
+  44   return result;
+  45  end erfRiemann;
 
 +++        Flow analysis of subprogram erfRiemann performed 
            (information-flow mode): no errors found.
 --- (  1)  Warning           :405: VCs for statements including real numbers are 
            approximate.
 
-  44  
-  45  end Riemann;
+  46  
+  47  end Riemann;
 
 Note: Flow analysis mode is automatic
 

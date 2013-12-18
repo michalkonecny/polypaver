@@ -5,7 +5,7 @@
            *******************************************************
 
 
-                        DATE : 17-MAY-2013 19:02:19.14
+                        DATE : 18-DEC-2013 09:45:35.29
 
 Options:
     noindex_file
@@ -28,7 +28,7 @@ Options:
     error_explanations=off
     justification_option=full
     output_directory=out
-    output_directory (actual)=/home/mik/research/spark/floats/paver/examples/SPARK/erfriemann/out/
+    output_directory (actual)=/home/mik/research/cca/realproving/polypaver/code-git/examples/SPARK/erfriemann/out/
 
 Selected files:
    @riemann.smf
@@ -39,13 +39,13 @@ No Index files were used
 
 Meta File(s) used were:
    riemann.smf
-      /home/mik/research/spark/floats/paver/examples/SPARK/packages/polypaver.ads
-      /home/mik/research/spark/floats/paver/examples/SPARK/packages/polypaver-exact.ads
-      /home/mik/research/spark/floats/paver/examples/SPARK/packages/polypaver-interval.ads
-      /home/mik/research/spark/floats/paver/examples/SPARK/packages/polypaver-integers.ads
-      /home/mik/research/spark/floats/paver/examples/SPARK/packages/polypaver-floats.ads
-      /home/mik/research/spark/floats/paver/examples/SPARK/erfriemann/src/riemann.ads
-      /home/mik/research/spark/floats/paver/examples/SPARK/erfriemann/src/riemann.adb
+      /home/mik/research/cca/realproving/polypaver/code-git/examples/SPARK/packages/polypaver.ads
+      /home/mik/research/cca/realproving/polypaver/code-git/examples/SPARK/packages/polypaver-exact.ads
+      /home/mik/research/cca/realproving/polypaver/code-git/examples/SPARK/packages/polypaver-interval.ads
+      /home/mik/research/cca/realproving/polypaver/code-git/examples/SPARK/packages/polypaver-integers.ads
+      /home/mik/research/cca/realproving/polypaver/code-git/examples/SPARK/packages/polypaver-floats.ads
+      /home/mik/research/cca/realproving/polypaver/code-git/examples/SPARK/erfriemann/src/riemann.ads
+      /home/mik/research/cca/realproving/polypaver/code-git/examples/SPARK/erfriemann/src/riemann.adb
 
 
 Full warning reporting selected
@@ -72,18 +72,18 @@ Line
 
 
 Source Filename(s) used were:
-   /home/mik/research/spark/floats/paver/examples/SPARK/packages/polypaver.ads
-   /home/mik/research/spark/floats/paver/examples/SPARK/packages/polypaver-exact.ads
-   /home/mik/research/spark/floats/paver/examples/SPARK/packages/polypaver-interval.ads
-   /home/mik/research/spark/floats/paver/examples/SPARK/packages/polypaver-integers.ads
-   /home/mik/research/spark/floats/paver/examples/SPARK/packages/polypaver-floats.ads
-   /home/mik/research/spark/floats/paver/examples/SPARK/erfriemann/src/riemann.ads
-   /home/mik/research/spark/floats/paver/examples/SPARK/erfriemann/src/riemann.adb
+   /home/mik/research/cca/realproving/polypaver/code-git/examples/SPARK/packages/polypaver.ads
+   /home/mik/research/cca/realproving/polypaver/code-git/examples/SPARK/packages/polypaver-exact.ads
+   /home/mik/research/cca/realproving/polypaver/code-git/examples/SPARK/packages/polypaver-interval.ads
+   /home/mik/research/cca/realproving/polypaver/code-git/examples/SPARK/packages/polypaver-integers.ads
+   /home/mik/research/cca/realproving/polypaver/code-git/examples/SPARK/packages/polypaver-floats.ads
+   /home/mik/research/cca/realproving/polypaver/code-git/examples/SPARK/erfriemann/src/riemann.ads
+   /home/mik/research/cca/realproving/polypaver/code-git/examples/SPARK/erfriemann/src/riemann.adb
 
 
 
-Source Filename:   /home/mik/research/spark/floats/paver/examples/SPARK/packages/polypaver.ads
-Listing Filename:  /home/mik/research/spark/floats/paver/examples/SPARK/erfriemann/out/polypaver.lst
+Source Filename:   /home/mik/research/cca/realproving/polypaver/code-git/examples/SPARK/packages/polypaver.ads
+Listing Filename:  /home/mik/research/cca/realproving/polypaver/code-git/examples/SPARK/erfriemann/out/polypaver.lst
 
    Unit name:  PolyPaver
    Unit type:  package specification
@@ -92,8 +92,8 @@ Listing Filename:  /home/mik/research/spark/floats/paver/examples/SPARK/erfriema
 No errors found
 
 
-Source Filename:   /home/mik/research/spark/floats/paver/examples/SPARK/packages/polypaver-exact.ads
-Listing Filename:  /home/mik/research/spark/floats/paver/examples/SPARK/erfriemann/out/polypaver-exact.lst
+Source Filename:   /home/mik/research/cca/realproving/polypaver/code-git/examples/SPARK/packages/polypaver-exact.ads
+Listing Filename:  /home/mik/research/cca/realproving/polypaver/code-git/examples/SPARK/erfriemann/out/polypaver-exact.lst
 
    Unit name:  PolyPaver.Exact
    Unit type:  package specification
@@ -102,8 +102,8 @@ Listing Filename:  /home/mik/research/spark/floats/paver/examples/SPARK/erfriema
 No errors found
 
 
-Source Filename:   /home/mik/research/spark/floats/paver/examples/SPARK/packages/polypaver-interval.ads
-Listing Filename:  /home/mik/research/spark/floats/paver/examples/SPARK/erfriemann/out/polypaver-interval.lst
+Source Filename:   /home/mik/research/cca/realproving/polypaver/code-git/examples/SPARK/packages/polypaver-interval.ads
+Listing Filename:  /home/mik/research/cca/realproving/polypaver/code-git/examples/SPARK/erfriemann/out/polypaver-interval.lst
 
    Unit name:  PolyPaver.Interval
    Unit type:  package specification
@@ -112,8 +112,8 @@ Listing Filename:  /home/mik/research/spark/floats/paver/examples/SPARK/erfriema
 No errors found
 
 
-Source Filename:   /home/mik/research/spark/floats/paver/examples/SPARK/packages/polypaver-integers.ads
-Listing Filename:  /home/mik/research/spark/floats/paver/examples/SPARK/erfriemann/out/polypaver-integers.lst
+Source Filename:   /home/mik/research/cca/realproving/polypaver/code-git/examples/SPARK/packages/polypaver-integers.ads
+Listing Filename:  /home/mik/research/cca/realproving/polypaver/code-git/examples/SPARK/erfriemann/out/polypaver-integers.lst
 
    Unit name:  PolyPaver.Integers
    Unit type:  package specification
@@ -122,8 +122,8 @@ Listing Filename:  /home/mik/research/spark/floats/paver/examples/SPARK/erfriema
 No errors found
 
 
-Source Filename:   /home/mik/research/spark/floats/paver/examples/SPARK/packages/polypaver-floats.ads
-Listing Filename:  /home/mik/research/spark/floats/paver/examples/SPARK/erfriemann/out/polypaver-floats.lst
+Source Filename:   /home/mik/research/cca/realproving/polypaver/code-git/examples/SPARK/packages/polypaver-floats.ads
+Listing Filename:  /home/mik/research/cca/realproving/polypaver/code-git/examples/SPARK/erfriemann/out/polypaver-floats.lst
 
    Unit name:  PolyPaver.Floats
    Unit type:  package specification
@@ -132,8 +132,8 @@ Listing Filename:  /home/mik/research/spark/floats/paver/examples/SPARK/erfriema
 No errors found
 
 
-Source Filename:   /home/mik/research/spark/floats/paver/examples/SPARK/erfriemann/src/riemann.ads
-Listing Filename:  /home/mik/research/spark/floats/paver/examples/SPARK/erfriemann/out/riemann.lst
+Source Filename:   /home/mik/research/cca/realproving/polypaver/code-git/examples/SPARK/erfriemann/src/riemann.ads
+Listing Filename:  /home/mik/research/cca/realproving/polypaver/code-git/examples/SPARK/erfriemann/out/riemann.lst
 
    Unit name:  Riemann
    Unit type:  package specification
@@ -142,8 +142,8 @@ Listing Filename:  /home/mik/research/spark/floats/paver/examples/SPARK/erfriema
 No errors found
 
 
-Source Filename:   /home/mik/research/spark/floats/paver/examples/SPARK/erfriemann/src/riemann.adb
-Listing Filename:  /home/mik/research/spark/floats/paver/examples/SPARK/erfriemann/out/riemann.lst
+Source Filename:   /home/mik/research/cca/realproving/polypaver/code-git/examples/SPARK/erfriemann/src/riemann.adb
+Listing Filename:  /home/mik/research/cca/realproving/polypaver/code-git/examples/SPARK/erfriemann/out/riemann.lst
 
    Unit name:  Riemann
    Unit type:  package body
@@ -152,7 +152,7 @@ Listing Filename:  /home/mik/research/spark/floats/paver/examples/SPARK/erfriema
 1 error(s) or warning(s)
 
 Line
-  43  end erfRiemann;
+  45  end erfRiemann;
 
 --- (  1)  Warning           :405: VCs for statements including real numbers are 
            approximate.

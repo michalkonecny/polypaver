@@ -1,12 +1,14 @@
 # PolyPaver Roadmap
 (Log is below)
 
+* Find a way to produce OS X binaries
 
-* Produce OS X binaries
 
 ## release 0.3
 
 * Try substitutions to deal effectively with formulas such as x > f(y) + 1 => x > f(y).
+
+* Add a Cabal option to build without plotting support.
 
 ## release 0.4
 

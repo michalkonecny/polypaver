@@ -19,7 +19,7 @@ A -rules=lazy
 A -error_explanations=off
 A -justification_option=full
 A -output_directory=out
-A -output_directory (actual)=/home/mik/research/spark/floats/paver/examples/SPARK/erfriemann/out/
+A -output_directory (actual)=/home/mik/research/cca/realproving/polypaver/code-git/examples/SPARK/erfriemann/out/
 P
 R
 
@@ -38,21 +38,21 @@ D riemann.ads 00000000000000 00000000
 D riemann.adb 00000000000000 00000000
 
 X 1 polypaver-exact.ads
-1K9 Exact 4|1w23 5|10r32 10r63 10r84 15r33 2w23 6|20r35 20r74 20r95
-. 25r36
-6V18 Exp 5|10r69 15r39 6|20r80 25r42
-11V18 Integral 5|10r38 6|20r41
-12V18 Integration_Variable 5|10r90 6|20r101
+1K9 Exact 4|1w23 5|12r23 12r54 12r75 17r33 2w23 6|22r26 22r65 22r86
+. 27r36
+6V18 Exp 5|12r60 17r39 6|22r71 27r42
+11V18 Integral 5|12r29 6|22r32
+12V18 Integration_Variable 5|12r81 6|22r92
 X 2 polypaver-interval.ads
-1K9 Interval 5|9r19 12r23 2w40 6|19r22 22r26
-3V18 Hull 5|12r32 6|22r35
+1K9 Interval 5|9r19 14r23 2w40 6|19r22 24r26
+3V18 Hull 5|14r32 6|24r35
 4V18 Contained_In 5|9r28 6|19r31
 X 3 polypaver-integers.ads
-1K9 Integers 5|7r23 2w60 6|30r26 30r69
-4V18 Is_Range 5|7r32 6|30r35 30r78
+1K9 Integers 5|7r23 2w60 6|32r26 32r69
+4V18 Is_Range 5|7r32 6|32r35 32r78
 X 4 polypaver-floats.ads
-2K9 Floats 5|6r19 2w80 6|29r26 31r38 32r37
-4V18 Is_Range 5|6r26 6|29r33
+2K9 Floats 5|6r19 2w80 6|31r26 33r38 34r37
+4V18 Is_Range 5|6r26 6|31r33
 16f19 X 17r17
 16f21 Y 17r19
 16V39 Add 17r13
@@ -61,22 +61,26 @@ X 4 polypaver-floats.ads
 19V44 Subtract 20r13
 22f24 X 23r22
 22f26 Y 23r24
-22V44 Multiply 23r13 6|31r45
+22V44 Multiply 23r13 6|33r45
 25f22 X 27r20
 25f24 Y 26r13 27r22
-25V42 Divide 27r13 6|32r44
+25V42 Divide 27r13 6|34r44
 29f22 X 30r20
 29V40 Square 30r13
 32f20 X 33r13 34r18
 32V38 Sqrt 34r13
 36f19 X 37r17
 36V37 Exp 37r13
+39f19 X 40r17
+39V37 Sin 40r13
+42f19 X 43r17
+42V37 Cos 43r13
 X 5 riemann.ads
-5f21 x 6r35 10r51 15r44 15r51 6|25r48 25r79 32r51
-5i32 n 7r41 13r30 15r59 16r30 6|25r70 25r87 30r44 30r96 32r59
+5f21 x 6r35 12r42 17r44 17r51 6|27r48 27r79 34r51
+5i32 n 7r41 15r30 17r59 18r30 6|27r70 27r87 32r44 32r96 34r59
 8f12 result 10r13
 X 6 riemann.adb
-5f2 stepSize 31r54 32r16
-6f2 stepStart 20r54 31r16
-8f2 result 20r16 29r42
-9i2 step 23r33 25r58 26r33 30r87 31r70
+5f2 stepSize 33r54 34r16
+6f2 stepStart 22r45 33r16
+8f2 result 20r16 31r42
+9i2 step 25r33 27r58 28r33 32r87 33r70

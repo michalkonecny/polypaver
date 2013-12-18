@@ -17,8 +17,10 @@ begin
      PolyPaver.Floats.Multiply(stepSize, Float(step));
    --# assert 
    --#     PolyPaver.Interval.Contained_In(
-   --#         result - PolyPaver.Exact.Integral(0.0,stepStart,PolyPaver.Exact.Exp(-PolyPaver.Exact.Integration_Variable**2))
+   --#         result
    --#         ,
+   --#         PolyPaver.Exact.Integral(0.0,stepStart,PolyPaver.Exact.Exp(-PolyPaver.Exact.Integration_Variable**2))
+   --#         +
    --#         PolyPaver.Interval.Hull(
    --#              - 0.1*Float(step+1)
    --#              ,
