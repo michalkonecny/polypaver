@@ -19,7 +19,7 @@ where
 import PolyPaver.Form
 import PolyPaver.Vars
 import PolyPaver.Eval
-import PolyPaver.PPBox
+import PolyPaver.APBox
 --import PolyPaver.Logic (TVM(..))
 
 import qualified Numeric.ER.Real.Approx as RA
@@ -203,7 +203,7 @@ evalT intervals term
         evalTerm 1 100 10 0 box False IMap.empty $ prepareTerm term
         where
         box = 
-            ppBoxFromIntervals (IMap.map (const False) termVarNames) termVarNames $ 
+            boxFromIntervals (IMap.map (const False) termVarNames) termVarNames $ 
                 map removeJust $ filter varInTerm $ IMap.toList intervals
             where
             termVarNames = getTermVarNames term

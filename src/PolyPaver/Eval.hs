@@ -25,7 +25,7 @@ where
 import PolyPaver.Form
 import PolyPaver.Subterms
 import PolyPaver.Vars
-import PolyPaver.PPBox
+import PolyPaver.APBox
 import qualified PolyPaver.Logic as L
 
 import qualified Numeric.ER.Real.Approx as RA
@@ -69,15 +69,15 @@ evalForm ::
     Int {-^ polynomial term size limit -} -> 
     EffortIndex {-^ effort index for regulating model error -} -> 
     IRA BM {-^ minIntegrationStepSize -} -> 
-    PPBox BM {-^ domains of variables -} -> 
+    APBox BM {-^ domains of variables -} -> 
 --    (Int,Int) {-^ precision of emulated FP operations -} -> 
     Form TermHash {-^ form to evaluate, with hashes in all sub-terms -} -> 
     (tv,
      (Form (Maybe (IRA BM)))) {-^ form with added range bounds in all terms -}
-evalForm maxdeg maxsize ix minIntegrationStepSize ppb@(_, _, isIntVarMap, _) origForm =
+evalForm maxdeg maxsize ix minIntegrationStepSize apb@(_, isIntVarMap, _) origForm =
     SP.snd $! evForm IMap.empty origForm
     where
-    evTerm = evalTerm maxdeg maxsize ix minIntegrationStepSize ppb 
+    evTerm = evalTerm maxdeg maxsize ix minIntegrationStepSize apb 
     evForm prevValuesMap form =
         case form of
             Not arg -> evOp1 Not L.not arg
@@ -97,14 +97,14 @@ evalForm maxdeg maxsize ix minIntegrationStepSize ppb@(_, _, isIntVarMap, _) ori
                     (Le (lab ++ "<") left right)
                     (Le (lab ++ ">") right left)
             ContainedIn lab left right -> 
-                evOpT2 form True (ContainedIn lab) (\formWR -> flip $ L.includes lab formWR ppb) left right 
+                evOpT2 form True (ContainedIn lab) (\formWR -> flip $ L.includes lab formWR apb) left right 
             IsRange lab t lower upper -> 
                 evForm prevValuesMap $  (Leq (lab ++ "LO") lower t) /\ (Leq (lab ++ "HI") t upper)
             IsIntRange lab t lower upper -> 
                 evForm prevValuesMap $  (IsInt lab t) /\ (IsRange lab t lower upper)
             IsInt lab t@(Term (_,l)) ->
                 prevValuesMap SP.:!: 
-                 ((L.fromBool lab l ppb $ termIsIntegerType isIntVarMap t),
+                 ((L.fromBool lab l apb $ termIsIntegerType isIntVarMap t),
                   (IsInt lab tWithRanges))
                 where
                 (_ SP.:!: (_tVal, tWithRanges)) = evTerm False prevValuesMap t
@@ -131,46 +131,46 @@ evalForm maxdeg maxsize ix minIntegrationStepSize ppb@(_, _, isIntVarMap, _) ori
         evLeq form2 = evLessLeq form2 True Leq L.leq
         evLessLeq _ isLeq formOp _logicOp lab (Term (PlusInfinity, l)) (Term (PlusInfinity, _)) =
             (prevValuesMap SP.:!:
-             (L.fromBool lab l ppb isLeq, 
+             (L.fromBool lab l apb isLeq, 
               formOp lab plusInfinityTermWithRange plusInfinityTermWithRange))
         evLessLeq _ isLeq formOp _logicOp lab (Term (MinusInfinity, l)) (Term (MinusInfinity, _)) =
             (prevValuesMap SP.:!:
-             (L.fromBool lab l ppb isLeq, 
+             (L.fromBool lab l apb isLeq, 
               formOp lab minusInfinityTermWithRange minusInfinityTermWithRange))
         evLessLeq _ _isLeq formOp _logicOp lab (Term (MinusInfinity, l)) (Term (PlusInfinity, _)) =
             (prevValuesMap SP.:!:
-             (L.fromBool lab l ppb True, 
+             (L.fromBool lab l apb True, 
               formOp lab minusInfinityTermWithRange plusInfinityTermWithRange))
         evLessLeq _ _isLeq formOp _logicOp lab (Term (PlusInfinity, l)) (Term (MinusInfinity, _)) =
             (prevValuesMap SP.:!:
-             (L.fromBool lab l ppb False, 
+             (L.fromBool lab l apb False, 
               formOp lab plusInfinityTermWithRange minusInfinityTermWithRange))
         evLessLeq _ _isLeq formOp _logicOp lab (Term (MinusInfinity, l)) right =
             (prevValuesMap SP.:!:
-             (L.fromBool lab l ppb True,
+             (L.fromBool lab l apb True,
               formOp lab minusInfinityTermWithRange rightWithRanges))
             where
             (_ SP.:!: (_rightVal, rightWithRanges)) = evTerm False prevValuesMap right
         evLessLeq _ _isLeq formOp _logicOp lab left (Term (MinusInfinity, l)) =
             (prevValuesMap SP.:!:
-             (L.fromBool lab l ppb False,
+             (L.fromBool lab l apb False,
               formOp lab leftWithRanges minusInfinityTermWithRange))
             where
             (_ SP.:!: (_leftVal, leftWithRanges)) = evTerm False prevValuesMap left 
         evLessLeq _ _isLeq formOp _logicOp lab (Term (PlusInfinity, l)) right =
             (prevValuesMap SP.:!:
-             (L.fromBool lab l ppb False,
+             (L.fromBool lab l apb False,
               formOp lab plusInfinityTermWithRange rightWithRanges))
             where
             (_ SP.:!: (_rightVal, rightWithRanges)) = evTerm False prevValuesMap right
         evLessLeq _ _isLeq formOp _logicOp lab left (Term (PlusInfinity, l)) =
             (prevValuesMap SP.:!:
-             (L.fromBool lab l ppb True,
+             (L.fromBool lab l apb True,
               formOp lab leftWithRanges plusInfinityTermWithRange))
             where
             (_ SP.:!: (_leftVal, leftWithRanges)) = evTerm False prevValuesMap left
         evLessLeq form2 _ formOp logicOp lab left right =
-            evOpT2 form2 False (formOp lab) (\formWR -> logicOp lab formWR ppb) left right
+            evOpT2 form2 False (formOp lab) (\formWR -> logicOp lab formWR apb) left right
     plusInfinityTermWithRange = (Term (PlusInfinity, Just $ 1/0))
     minusInfinityTermWithRange = (Term (MinusInfinity, Just $ -1/0))
         
@@ -199,7 +199,7 @@ evalTerm ::
     Int {-^ polynomial term size limit -} -> 
     EffortIndex {-^ effort index for regulating model error -} -> 
     IRA BM {-^ minIntegrationStepSize -} -> 
-    PPBox BM {-^ domains of variables -} -> 
+    APBox BM {-^ domains of variables -} -> 
 --    (Int,Int) {-^ precision of emulated FP operations -} ->
     Bool {-^ should compute ranges using inner rounding? -} -> 
     (IMap.IntMap (FAPUOI BM, Term (Maybe (IRA BM)))) {-^ cache of memoised results -} ->
@@ -211,7 +211,7 @@ evalTerm
         needInnerRounding prevValuesMapOrig origTerm =
     evTermBox ppbOrig prevValuesMapOrig origTerm
     where
-    evTermBox ppb prevValuesMap term@(Term (_, hashValue)) =
+    evTermBox apb prevValuesMap term@(Term (_, hashValue)) =
         -- check whether the result for this term has been memoised:
         case IMap.lookup hashValue prevValuesMap of
             Just memoisedResult -> (prevValuesMap SP.:!: memoisedResult) -- memoised, reuse!
@@ -226,8 +226,8 @@ evalTerm
         [ihRA] = FA.getRangeApprox ih
         [valueRAOuter] = FA.getRangeApprox valueFA
         ((_ol, _oh), (il, ih)) = RA.oiBounds valueFA
-        (newValuesMap SP.:!: (valueFA, term')) = evTermBox' ppb prevValuesMap term
-    evTermBox' ppb@(skewed, box, isIntVarMap, namesMap) prevValuesMap (Term (term', _)) =
+        (newValuesMap SP.:!: (valueFA, term')) = evTermBox' apb prevValuesMap term
+    evTermBox' apb@(box, isIntVarMap, namesMap) prevValuesMap (Term (term', _)) =
             case term' of
                 Pi -> (prevValuesMap SP.:!: (setSizes $ RAEL.pi 10, Pi))
                 Lit val -> (prevValuesMap SP.:!: (rationalToFA val, Lit val))
@@ -243,27 +243,19 @@ evalTerm
                     (prevValuesMap SP.:!: (fa, Var varid varName))
                     where
                     fa =
-                        case isConst of
+                        case isZero r of
                             True -> -- domain of var thin, so var is a const
                                 setSizes $ UFA.const [c]
                             False -> -- domain of var not thin, so safe to proj
-                                setSizes $
-                                case skewed of
-                                    True -> 
-                                        UFA.affine [c] 
-                                            (Map.map (:[]) $ Map.filter nonZero coeffs)
-                                    False ->
-                                        UFA.affine [c] 
-                                            (Map.singleton varid $ (\(Just cf) -> [cf]) $ Map.lookup varid coeffs)
-                    (c, coeffs) = 
+                                setSizes $ UFA.affine [c] (Map.singleton varid [r])
+                    (c, r) = 
                         case IMap.lookup varid box of 
                             Just v -> v
                             Nothing -> 
                                 error $ 
                                     "variable " ++ show varName ++ "(" ++ show varid 
                                     ++ ") not in box " ++ show box
-                    isConst = ppCoeffsZero Nothing  coeffs
-                    nonZero cf = cf `RA.equalReals` 0 /= Just True
+                    isZero cf = cf `RA.equalReals` 0 == Just True
                 Plus left right -> evOp2 Plus (+) left right
                 Minus left right -> evOp2 Minus (-) left right
                 Neg arg -> evOp1 Neg negate arg
@@ -306,12 +298,12 @@ evalTerm
         evOp1 opT opFA arg =
             (newValuesMap SP.:!: (opFA argFA, opT argWithRanges))
             where
-            (newValuesMap SP.:!: (argFA, argWithRanges)) = evTermBox ppb prevValuesMap arg 
+            (newValuesMap SP.:!: (argFA, argWithRanges)) = evTermBox apb prevValuesMap arg 
         evOp2 opT opFA left right =
             (newValuesMap SP.:!: (opFA leftFA rightFA, opT leftWithRanges rightWithRanges))
             where
-            (intermValuesMap SP.:!: (leftFA, leftWithRanges)) = evTermBox ppb prevValuesMap left
-            (newValuesMap SP.:!: (rightFA, rightWithRanges)) = evTermBox ppb intermValuesMap right
+            (intermValuesMap SP.:!: (leftFA, leftWithRanges)) = evTermBox apb prevValuesMap left
+            (newValuesMap SP.:!: (rightFA, rightWithRanges)) = evTermBox apb intermValuesMap right
         
         intPowerOp b e 
             | eL <= eR =
@@ -330,7 +322,7 @@ evalTerm
 --            (
 --                "evIntegral:"
 --                ++ "\n term = " ++ showTerm (Term (term, Nothing))
---                ++ "\n ppb = " ++ show ppb
+--                ++ "\n apb = " ++ show apb
 --                ++ "\n loRange = " ++ show loRange
 --                ++ "\n hiRange = " ++ show hiRange
 --                ++ "\n segments = " ++ show segments
@@ -352,9 +344,9 @@ evalTerm
 --                                _ ->
 ----                                    (UFA.bottomApprox, termWithRanges)
 --                                    integrand
---                                    evTermBox' ppb $ (hi - lo) 
+--                                    evTermBox' apb $ (hi - lo) 
                         False -> -- constant integrand
-                            evTermBox' ppb prevValuesMap $ 
+                            evTermBox' apb prevValuesMap $ 
                                 Term (integrandTimesWidth, hash integrandTimesWidth)
                                 where
                                 integrandTimesWidth = Times integrand (Term (hiMinusLo, hash hiMinusLo))
@@ -377,7 +369,7 @@ evalTerm
                 where
                 constFA = setSizes $ UFA.const [constRA]
                 invslopeFA = setSizes $ UFA.const [1/slopeRA]
-                (constRA, slopeRA) = constSlopeFromRA $ RA.bounds segment
+                (constRA, slopeRA) = centerRadiusFromEndpoints $ RA.bounds segment
             composeBoundEnclosure primitiveFunction boundEnclosure =
                 -- the following relies on the assumption that primitiveFunction is isotone 
                 RA.fromOIBounds ((rol,roh), (ril, rih))
@@ -405,20 +397,20 @@ evalTerm
                 unzip $ map evaluateIntegrandOnSegment segments
             evaluateIntegrandOnSegment segment =
                 SP.snd $ -- forget memoised results for integrand as its values are over a different box 
-                    evTermBox segmentPPB IMap.empty integrand
+                    evTermBox segmentAPB IMap.empty integrand
                 where
-                segmentPPB = 
+                segmentAPB = 
 --                    | skewed = error "Paralellepiped solving not yet supported for the integral operator."
-                    (skewed, segmentBox, 
+                    (segmentBox, 
                      IMap.insert ivarId False isIntVarMap,
                      IMap.insert ivarId ivarName namesMap)
                 segmentBox =
-                    DBox.insert ivarId segmentAffine box
-                segmentAffine = affine
+                    DBox.insert ivarId segmentCenterRadius box
+                segmentCenterRadius = centerRadius
                     where
-                    [(_, affine)] = IMap.toList ivbox
-                    (_, ivbox, _, _) =
-                        ppBoxFromRAs isIntVarMap namesMap [(ivarId, RA.bounds segment)]
+                    [(_, centerRadius)] = IMap.toList ivbox
+                    (ivbox, _, _) =
+                        boxFromEndpoints isIntVarMap namesMap [(ivarId, RA.bounds segment)]
             segments 
                 | loRangeIntersectsHiRange = [integrationDom]
                 | otherwise =
@@ -454,8 +446,8 @@ evalTerm
             integrationDom = loRange RA.\/ hiRange
             [loRange] = FA.getRangeApprox loBoundEnclosure
             [hiRange] = FA.getRangeApprox hiBoundEnclosure
-            (intermValuesMap SP.:!: (loBoundEnclosure, loWithRanges)) = evTermBox ppb prevValuesMap lo
-            (newValuesMap SP.:!: (hiBoundEnclosure, hiWithRanges)) = evTermBox ppb intermValuesMap hi
+            (intermValuesMap SP.:!: (loBoundEnclosure, loWithRanges)) = evTermBox apb prevValuesMap lo
+            (newValuesMap SP.:!: (hiBoundEnclosure, hiWithRanges)) = evTermBox apb intermValuesMap hi
             
             integratePiecewise _ix integrandEnclosuresSegments _ivarId fnAtLeftEndpoint =
                 aux fnAtLeftEndpoint integrandEnclosuresSegments
@@ -490,7 +482,7 @@ evalTerm
                             ivarId
                             (-1) -- an integration start point
                             0 -- value of primitive function at the above start point
-                    (_constRA, slopeRA) = constSlopeFromRA segmentBounds 
+                    (_constRA, slopeRA) = centerRadiusFromEndpoints segmentBounds 
                     segmentBounds@(_segmentLE, _segmentRE) = RA.bounds segment
 
 

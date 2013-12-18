@@ -24,7 +24,7 @@ where
 
 import PolyPaver.Args
 import PolyPaver.Form
-import PolyPaver.PPBox
+import PolyPaver.APBox
 import PolyPaver.Eval
 --import PolyPaver.Vars
 import qualified PolyPaver.Logic as L
@@ -52,7 +52,7 @@ data PaverResult =
     PaverResult
     {
         paverResult_formTruthOrMessage :: Either String Bool,
-        paverResult_lastPPB :: PPBox Double, 
+        paverResult_lastPPB :: APBox Double, 
         paverResult_durationInPicosecs :: Integer,
         paverResult_state :: PavingState Double
     }
@@ -65,7 +65,7 @@ data PaverProgress =
         paverProgress_durationInPicosecs :: Integer,
         paverProgress_maybeState :: Maybe (PavingState Double),
         paverProgress_maybeCurrentBoxToDo :: Maybe (BoxToDo Double),
-        paverProgress_maybeNewBoxDone :: Maybe (PPBox Double, Maybe Bool, Form (Maybe (IRA BM)))
+        paverProgress_maybeNewBoxDone :: Maybe (APBox Double, Maybe Bool, Form (Maybe (IRA BM)))
     }
     
 data PavingState b =
@@ -82,17 +82,15 @@ data BoxToDo b =
     {
         boxToDo_depth :: Int,
         boxToDo_queueSize :: Int,
-        boxToDo_skewAncestors :: [PPBox b],
         boxToDo_startDeg :: Int,
         boxToDo_form :: Form Int,
         boxToDo_prevSplitVar :: Int,
-        boxToDo_ppb :: PPBox b    
+        boxToDo_ppb :: APBox b    
     }
 
 {-|
    Attempt to decide @form@ over @box@ by evaluating @form@ over various sub-boxes of @box@.
-   These sub-boxes are obtain by adaptive bisection and (optionally) skewing in the direction
-   of hyperplanes that approximate the surfaces given by the expressions in the formula.
+   These sub-boxes are obtain by adaptive bisection.
    
    The program sends several 'PaverProgress' records on the @out@ channel for each box it evaluates.
    It also sends one 'PaverResult' record when it is finished with paving.
@@ -101,13 +99,13 @@ tryToDecideFormOnBoxByPaving ::
     [TBQueue (Either PaverProgress PaverResult)] {-^ @out@ - Channels to send progress reports to -} ->
     Args {-^ @args@ - A record with various parameters -} -> 
     Form () {-^ @form@ - A logical formula -} ->
-    PPBox Double {-^ @box@ - A rectangle (possibly skewed) in R^n -} -> 
+    APBox Double {-^ @box@ - An axis-parallel box in R^n -} -> 
     IO ()
 tryToDecideFormOnBoxByPaving
     outChannels
     args
     originalFormRaw 
-    initppb@(_, initbox, varIsInts, _varNames)
+    initppb@(initbox, varIsInts, _varNames)
     =
     do
     inittime <- getCPUTime
@@ -128,7 +126,7 @@ tryToDecideFormOnBoxByPaving
             (Q.singleton firstBoxToDo) -- initial queue with one box only
             (1 :: Int) -- greatest computed queue size
             (0 :: Int) -- number of computed boxes
-            (ppVolume initppb) -- initial volume
+            (boxVolume initppb) -- initial volume
             0 -- volume of proved boxes
             Nothing Nothing
         where
@@ -137,7 +135,6 @@ tryToDecideFormOnBoxByPaving
             {
                 boxToDo_depth = 0,
                 boxToDo_queueSize = 1,
-                boxToDo_skewAncestors = [],
                 boxToDo_startDeg = originalStartDeg,
                 boxToDo_form = originalForm,
                 boxToDo_prevSplitVar = 0,
@@ -221,10 +218,10 @@ tryToDecideFormOnBoxByPaving
                 | otherwise =
                     do
                     reportBoxSplit
-                    bisectAndRecur undecidedMaybeSimplerForm [boxL, boxR] False splitVar
+                    bisectAndRecur undecidedSimplerForm [boxL, boxR] False splitVar
     
 
-            BoxToDo depth _ skewAncestors startDeg formRaw prevSplitVar ppb@(_skewed, box, _, _) = boxToDo 
+            BoxToDo depth _ startDeg formRaw prevSplitVar ppb = boxToDo 
                 -- beware: "formRaw" above has ranges left over in it from a parent box - do not show them
             boxToDo = Q.index queue 0
             queueTail = Q.drop 1 queue
@@ -239,7 +236,7 @@ tryToDecideFormOnBoxByPaving
                     _ -> (False, False)
                 where
                 maybeFormTruth = L.decide value
-            (value, formWithRanges) = valueAndForm -- TODO: try to replace this pair with a strict pair in an attempt to resolve a space leak 
+            (value, _formWithRanges) = valueAndForm -- TODO: try to replace this pair with a strict pair in an attempt to resolve a space leak 
             valueAndForm =
                 evalForm 
                     currentDeg (maxSize args) ix minIntegrationStepSize ppb 
@@ -251,17 +248,9 @@ tryToDecideFormOnBoxByPaving
             currentDeg =  
                 case maybeCurrdeg of Just currentDeg2 -> currentDeg2; _ -> startDeg
    
-            newtruevol = truevol + (ppVolume ppb)    
+            newtruevol = truevol + (boxVolume ppb)    
 
-            undecidedMaybeSimplerForm
-                =
-                case maybeHP of
-                    Nothing -> undecidedSimplerForm
-                    _ -> originalForm
-                        -- when skewing, the new boxes are not sub-boxes of box and thus we cannot
-                        -- rely on the simplification of form performed while evaluating it over box
-
-            (L.TVMUndecided undecidedSimplerForm undecidedMeasure _ _) = value
+            (L.TVMUndecided undecidedSimplerForm undecidedMeasure _) = value
             undecidedMeasureImproved = 
                 case maybePrevMeasure of
                     Nothing -> True
@@ -271,23 +260,24 @@ tryToDecideFormOnBoxByPaving
     
             {- functions related to splitting the box -}
     
-            (splitSuccess, maybeHP, splitVar, (boxL,boxR))
-                = L.split thinVarsMaybeNonIntVars maybeVar ppb (boxSkewing args) maybeSplitGuessingLimit value
-            (_, _, splitVarNoHP, (boxLNoHP,boxRNoHP))
-                = L.split thinVarsMaybeNonIntVars maybeVar ppb False Nothing value
+            (splitSuccess, splitVar, (boxL,boxR))
+                = L.split thinVarsMaybeNonIntVars maybeVar ppb value
+            (_, splitVarNoHP, (boxLNoHP,boxRNoHP))
+                = L.split thinVarsMaybeNonIntVars maybeVar ppb value
             maybeVar =
-                case maybeSplitGuessingLimit of
-                    Nothing -> Nothing
-                    _ -> Just $ advanceVar thinVarsMaybeNonIntVars prevSplitVar
-                where
-                advanceVar forbiddenVars var
-                    | allVarsForbidden = var
-                    | newVar `elem` forbiddenVars = advanceVar forbiddenVars newVar
-                    | otherwise = newVar
-                    where
-                    allVarsForbidden = length forbiddenVars == dim
-                    newVar = (var + 1) `mod` dim
-            maybeSplitGuessingLimit = case splitGuessing args of -1 -> Nothing; n -> Just n
+                Nothing
+--                case maybeSplitGuessingLimit of
+--                    Nothing -> Nothing
+--                    _ -> Just $ advanceVar thinVarsMaybeNonIntVars prevSplitVar
+--                where
+--                advanceVar forbiddenVars var
+--                    | allVarsForbidden = var
+--                    | newVar `elem` forbiddenVars = advanceVar forbiddenVars newVar
+--                    | otherwise = newVar
+--                    where
+--                    allVarsForbidden = length forbiddenVars == dim
+--                    newVar = (var + 1) `mod` dim
+--            maybeSplitGuessingLimit = case splitGuessing args of -1 -> Nothing; n -> Just n
     
             thinVarsMaybeNonIntVars
                 | (splitIntFirst args) && canSplitIntVar = thinVarsAndNonIntVars
@@ -299,11 +289,8 @@ tryToDecideFormOnBoxByPaving
                     where
                     isIntV var = 
                         case IMap.lookup var varIsInts of Just res -> res; _ -> False
-                thickVars = DBox.keys thickbox 
-                thickbox = DBox.filter (not . ppCoeffsZero Nothing . snd) box -- thick projection of box
-            thinVars = DBox.keys thinbox
-                where
-                thinbox = DBox.filter (ppCoeffsZero Nothing . snd) box -- thin projection of box
+                
+            (thinVars, thickVars) = boxThinThickVars ppb
     
 
             {- processing of a split box -}
@@ -318,7 +305,7 @@ tryToDecideFormOnBoxByPaving
                 bisectAndRecurBFS =
                     pavingLoop
                         (max (depth+1) maxDepthReached) 
-                        (queueTail Q.>< (Q.fromList $ map prepareBox newBoxes2)) 
+                        (queueTail Q.>< (Q.fromList $ map prepareBox newBoxes)) 
                         newMaxQLength 
                         (computedboxes+1) 
                         newproblemvol 
@@ -327,27 +314,18 @@ tryToDecideFormOnBoxByPaving
                 bisectAndRecurDFS =
                     pavingLoop
                         (max (depth+1) maxDepthReached) 
-                        ((Q.fromList $ map prepareBox newBoxes2) Q.>< queueTail) 
+                        ((Q.fromList $ map prepareBox newBoxes) Q.>< queueTail) 
                         newMaxQLength 
                         (computedboxes+1) newproblemvol truevol 
                         Nothing Nothing
                 newMaxQLength = max newQLength maxQLengthReached
-                newQLength = qlength - 1 + newBoxes2length
-                newBoxes2length = length newBoxes2
-                newBoxes2
-                    = filter intersectsAllSkewAncestors newBoxes
-                    where
-                    intersectsAllSkewAncestors ppb2
-                        = and $ map couldIntersect skewAncestors
-                        where
-                        couldIntersect ancestor
-                            = ppIntersect ancestor ppb2 /= Just False
+                newQLength = qlength - 1 + newBoxesLength
+                newBoxesLength = length newBoxes
                 prepareBox ppb2 =
                     BoxToDo
                     {
                         boxToDo_depth = depth+1,
                         boxToDo_queueSize = newQLength,
-                        boxToDo_skewAncestors = newSkewAncestors,
                         boxToDo_startDeg = newstartDeg,
                         boxToDo_form = maybeSimplerForm,
                         boxToDo_prevSplitVar = splitVar2,
@@ -356,21 +334,13 @@ tryToDecideFormOnBoxByPaving
                 newstartDeg =
                     (originalStartDeg + currentDeg) `div` 2
 
-                newSkewAncestors
-                    | isSimpleSplit = skewAncestors
-                    | otherwise
-                        = case maybeHP of 
-                            Nothing -> skewAncestors
-                            _ -> ppb : skewAncestors 
-                        -- when skewing, part of the skewed box stretches outside of the original box - 
-                        -- when splitting this box and its subboxes, need to drop any that are completely outside this box
                 newproblemvol
                     | isSimpleSplit = problemvol
                     | otherwise
                         =
-                        case (maybeHP, newBoxes2length) of
-                            (Nothing, 2) -> problemvol -- no skewing or dropping of boxes - a clean split
-                            _ -> problemvol - (ppVolume ppb) + (sum $ map ppVolume newBoxes2)
+                        case newBoxesLength of
+                            2 -> problemvol -- no dropping of boxes - a clean split
+                            _ -> problemvol - (boxVolume ppb) + (sum $ map boxVolume newBoxes)
 
 
             {- functions related to reporting of progress: -}

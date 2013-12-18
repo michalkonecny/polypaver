@@ -8,7 +8,7 @@ module PolyPaver.Plot
 )
 where
 
-import PolyPaver.PPBox
+import PolyPaver.APBox
 
 import qualified Numeric.ER.Real.Approx as RA
 import Numeric.ER.Real.Base
@@ -29,7 +29,7 @@ type RGBA = (Double, Double, Double, Double)
 {-|
   sample usage: @addBox stateTV (1,0,0,0.9) box@
 -}
-addBox :: TVar [(PPBox b, RGBA)] -> RGBA -> PPBox b -> IO ()
+addBox :: TVar [(APBox b, RGBA)] -> RGBA -> APBox b -> IO ()
 addBox stateTV rgba box
     =
     do
@@ -39,7 +39,7 @@ addBox stateTV rgba box
         writeTVar stateTV ((box,rgba) : state)
 --    putStrLn $ "addBox completed"
 
---waitForClose :: TVar [(PPBox b, RGBA)] -> IO ()
+--waitForClose :: TVar [(APBox b, RGBA)] -> IO ()
 --waitForClose stateTV =
 --    atomically $
 --        do
@@ -50,10 +50,10 @@ addBox stateTV rgba box
 
 initPlot :: 
     ERRealBase b =>
-    PPBox b -> 
+    APBox b -> 
     Int -> 
     Int -> 
-    IO (TVar [(PPBox b, RGBA)])
+    IO (TVar [(APBox b, RGBA)])
 initPlot initbox w h =
     do
     stateTV <- atomically $ newTVar []
@@ -63,10 +63,10 @@ initPlot initbox w h =
     -- 4---3
     -- |   |
     -- 1---2
-    [_p1@[x1,y1], _p4@[_,y4], _p2@[x2,_], _p3] = ppCorners affines
-    (_isSkewed, affines, _varIsInts, varNamesMap) = initbox
+    [_p1@[x1,y1], _p4@[_,y4], _p2@[x2,_], _p3] = boxCorners initbox
+    (_box, _varIsInts, varNamesMap) = initbox
     varNames = map snd $ IMap.toAscList varNamesMap
-    initboxInfo = (ppCentre affines, x2 - x1, y4 - y1, varNames)
+    initboxInfo = (boxCentre initbox, x2 - x1, y4 - y1, varNames)
 
 myCanvas :: 
   (Fractional t1, Fractional t2) =>
@@ -118,7 +118,7 @@ draw ::
     ([IRA b], IRA b, IRA b, [String]) -> 
     Double -> 
     Double -> 
-    [(PPBox b, RGBA)] -> 
+    [(APBox b, RGBA)] -> 
     Render ()
 draw initboxInfo w h state  = 
     do
@@ -172,7 +172,7 @@ drawSubBox ::
     ([IRA b], IRA b, IRA b, t3) ->
     Double -> 
     Double -> 
-    (PPBox b, RGBA) -> 
+    (APBox b, RGBA) -> 
     Render ()
 drawSubBox initboxInfo w h (subbox,(r,g,b,a)) = 
     do
@@ -200,7 +200,7 @@ subBoxToCanvasBox ::
    ([IRA b], IRA b, IRA b, t3) -> 
    Double -> 
    Double -> 
-   PPBox b
+   APBox b
    -> [(Double, Double)]
 subBoxToCanvasBox initboxInfo w h subbox =
     thickenIfLine $ map converPt [p1,p2,p3,p4]
@@ -208,8 +208,7 @@ subBoxToCanvasBox initboxInfo w h subbox =
     converPt [x,y] =
         boxCoordsToCanvasCoords initboxInfo w h (x,y)
     converPt _ = error "subBoxToCanvasBox: converPt failed"
-    [p1,p4,p2,p3] = ppCorners subboxPP
-    (_, subboxPP, _, _) = subbox
+    [p1,p4,p2,p3] = boxCorners subbox
     
 
 thickenIfLine ::
