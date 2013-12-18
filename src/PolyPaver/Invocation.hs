@@ -24,7 +24,7 @@ module PolyPaver.Invocation
 where
 
 import PolyPaver.Args
-import PolyPaver.PPBox
+import PolyPaver.APBox
 import PolyPaver.Form
 import PolyPaver.ProverLoop
 import PolyPaver.Vars
@@ -175,7 +175,7 @@ runPaverReportingProgress problem args =
             initbox
     form = problem_form problem
     varNames = getFormVarNames form
-    initbox = ppBoxFromIntervals varIsInts varNames boxBounds 
+    initbox = boxFromIntervals varIsInts varNames boxBounds 
     varIsInts = IMap.fromList $ map (\(var,_,ii) -> (var, ii)) boxBoundsIsInts
     boxBounds = map (\(var,bounds,_) -> (var,bounds)) boxBoundsIsInts
     boxBoundsIsInts = problem_box problem
@@ -289,10 +289,10 @@ showPaverProgress progress =
     messageS = "\n" ++ paverProgress_message progress
     boxS = 
         case paverProgress_maybeCurrentBoxToDo progress of
-            Just currentBoxToDo -> showBox currentBoxToDo
+            Just currentBoxToDo -> showB currentBoxToDo
             _ -> ""
-    showBox currentBoxToDo =
-        "\n" ++ ppShow ppb
+    showB currentBoxToDo =
+        "\n" ++ showBox ppb
         ++ "(depth=" ++ show depth ++ ", queue=" ++ show queueSize ++ ")"            
         where
         depth = boxToDo_depth currentBoxToDo

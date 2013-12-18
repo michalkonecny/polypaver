@@ -1,7 +1,7 @@
 {-# LANGUAGE FlexibleInstances #-}
 
 {-|
-    Module      :  PolyPaver.Box
+    Module      :  PolyPaver.APBox
     Description :  axis-parallel boxes for paving the domain  
     Copyright   :  (c) Michal Konecny, Jan Duracz  
     License     :  BSD3
@@ -12,17 +12,20 @@
 
     Axis-parallel boxes for paving domains.
 -}
-module PolyPaver.Box 
+module PolyPaver.APBox 
 (
-    Box,
+    APBox,
     showBox,
-    constSlopeFromRA,
-    boxFromRAs,
+    centerRadiusFromEndpoints,
+    boxFromEndpoints,
     boxFromIntervals,
     boxVolume,
     shrinkIntervalToIntegerBounds,
---    centerRadiusToInterval,
-    boxEqual
+    centerRadiusToInterval,
+    boxEqual,
+    boxThinThickVars,
+    boxCentre,
+    boxCorners
 )
 where
 
@@ -41,7 +44,7 @@ import Data.List (intercalate)
 import Numeric.ER.Misc
 _ = unsafePrint
 
-type Box b = 
+type APBox b = 
     (IMap.IntMap (IRA b, IRA b), 
         -- for each variable, affine map from [-1,1] to its domain, ie (center, radius)
      IMap.IntMap Bool, -- whether the variable is restricted to integers
@@ -50,9 +53,9 @@ type Box b =
 
 showBox ::
     B.ERRealBase b =>
-    (Box b) -> String
+    (APBox b) -> String
 showBox (box, _, varNames) =
-        "Box{ "
+        "APBox{ "
         ++ (intercalate ", " $ map showVarInterval vars)
         ++ " }"
     where
@@ -63,36 +66,23 @@ showBox (box, _, varNames) =
                 showVar varNames var ++ " in " ++ show ((center - radius) RA.\/ (center + radius))
             _ -> error "ppShow: showVarInterval failed"
 
---type BoxHyperPlane b = Affine b
---type Affine b = (IRA b, Coeffs b)
---type Coeffs b = Map.Map Int (IRA b)
---
---showAffine ::
---    (B.ERRealBase b) =>
---    (Affine b) -> [Char]
---showAffine (c, coeffs)
---    = show c ++ " + " ++ (intercalate " + " $ map showVarCoeff $ Map.toAscList coeffs)
---    where
---    showVarCoeff (var, cf)
---        = "x" ++ show var ++ "*" ++ show cf
-
-boxFromRAs ::
+boxFromEndpoints ::
     (B.ERRealBase b) =>
     IMap.IntMap Bool ->
     IMap.IntMap String ->
     [(Int, (RA b, RA b))] ->
-    Box b
-boxFromRAs varIsInts varNames intervals = 
+    APBox b
+boxFromEndpoints varIsInts varNames intervals = 
     (IMap.fromList $ map readInterval $ intervals, varIsInts, varNames) 
     where
     readInterval (i,(lRA, rRA)) =
         (i, (constant,  slope))
         where
-        (constant, slope) = constSlopeFromRA (lRA, rRA)
+        (constant, slope) = centerRadiusFromEndpoints (lRA, rRA)
 
-constSlopeFromRA :: 
+centerRadiusFromEndpoints :: 
     Fractional t => (t, t) -> (t, t)
-constSlopeFromRA (lRA,rRA) =
+centerRadiusFromEndpoints (lRA,rRA) =
     (constant, slope)
     where
     slope = (rRA - lRA) / 2
@@ -103,9 +93,9 @@ boxFromIntervals ::
     IMap.IntMap Bool ->
     IMap.IntMap String ->
     [(Int, (Rational, Rational))] ->
-    Box b
+    APBox b
 boxFromIntervals varIsInts varNames intervals =
-    boxFromRAs varIsInts varNames ras
+    boxFromEndpoints varIsInts varNames ras
     where
     ras = map getRA intervals
     getRA (i, (l,r)) = (i, (lRA, rRA))
@@ -113,7 +103,7 @@ boxFromIntervals varIsInts varNames intervals =
         lRA = fromRational l
         rRA = fromRational r
 
-boxVolume :: (B.ERRealBase b) => Box b -> IRA b
+boxVolume :: (B.ERRealBase b) => APBox b -> IRA b
 boxVolume (box, varIsInts, _) =
     product $ checkLength $ IMap.elems $ IMap.intersectionWith getSize varIsInts box
     where
@@ -149,7 +139,7 @@ shrinkIntervalToIntegerBounds interval =
         
 --boxToIntervals :: 
 --    B.ERRealBase b =>
---    Box b -> 
+--    APBox b -> 
 --    [IRA b]
 --boxToIntervals (box, _, _) =
 --    map centerRadiusToInterval $ IMap.elems box
@@ -160,7 +150,9 @@ centerRadiusToInterval ::
 centerRadiusToInterval (center, slope) =
     (center - slope) RA.\/ (center + slope)
     
-boxEqual :: (B.ERRealBase b) => Box b -> Box b -> Bool
+boxEqual :: 
+    (B.ERRealBase b) => 
+    APBox b -> APBox b -> Bool
 boxEqual (box1, _, _) (box2, _, _) = 
     sizeCheck && (and $ IMap.elems varComparisons) 
     where
@@ -174,3 +166,35 @@ boxEqual (box1, _, _) (box2, _, _) =
     a `eq` b = 
         (a `RA.equalReals` b) == Just True
             
+boxThinThickVars :: 
+    B.ERRealBase b => 
+    APBox b -> ([Int], [Int])
+boxThinThickVars (box, _, _) =
+    (thinVars, thickVars)
+    where
+    thickVars = IMap.keys thickbox
+    thinVars = IMap.keys thinbox
+    thickbox = IMap.filter (not . radiusIsZero) box -- thick projection of box
+    thinbox = IMap.filter (radiusIsZero) box -- thick projection of box
+    radiusIsZero (_, r) = r `RA.equalReals` 0 == Just True 
+        
+boxCentre :: 
+    APBox b -> 
+    [IRA b]
+boxCentre (box, _, _) =
+    fst $ unzip $ snd $ unzip $ IMap.toAscList box
+
+boxCorners ::
+    B.ERRealBase b =>
+    APBox b -> 
+    [[IRA b]]
+boxCorners (box, _, _)
+    =
+    map (getCorner centre radii) signCombinations
+    where
+    (vars, centresRadii) = unzip $ IMap.toAscList box
+    (centre, radii) = unzip centresRadii
+    signCombinations
+        = map (map snd) $ allPairsCombinations $ zip vars $ repeat (-1,1)
+    getCorner centre radii signs =
+        zipWith (*) centre $ zipWith (*) radii signs  

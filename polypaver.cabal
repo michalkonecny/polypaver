@@ -152,7 +152,7 @@ Library
     PolyPaver.Vars,
     PolyPaver.Subterms,
     PolyPaver.Substitution,
-    PolyPaver.PPBox,
+    PolyPaver.APBox,
     PolyPaver.Plot,
     PolyPaver.DeriveBounds,
     Numeric.ER.ShowHTML,

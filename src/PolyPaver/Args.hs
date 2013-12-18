@@ -17,7 +17,7 @@ import qualified System.Console.CmdArgs as Args
 
 --import Data.Typeable
 --import Data.Data
-import Data.Maybe (catMaybes)
+--import Data.Maybe (catMaybes)
 
 type Args = PolyPaver
 
@@ -35,8 +35,8 @@ data PolyPaver = PolyPaver
     ,maxDepth :: Int -- maximum bisection depth
     ,maxQueueLength :: Int -- maximum queue length
     ,time :: Int -- timeout in seconds
-    ,boxSkewing :: Bool
-    ,splitGuessing :: Int
+--    ,boxSkewing :: Bool
+--    ,splitGuessing :: Int
     ,quiet :: Bool
     ,verbose :: Bool
     ,plotWidth :: Int
@@ -74,9 +74,9 @@ paverDefaultArgs =
                     ++ show maxQueueLengthDefaultDFS ++ " for depth-first and "
                     ++ show maxQueueLengthDefaultBFS ++ " for breadth-first order)")
     ,time = 7*24*3600 &= help "timeout in seconds (default = 7*24*3600 ie 1 week)"    
-    ,boxSkewing = False &= name "k" &= help "allow parallelepiped boxes, by default only coaxial rectangles" 
-        &= groupname "Experimental"
-    ,splitGuessing = -1 &= name "g" &= opt (20 :: Int) &= help "try guessing the best box splitting direction but do not allow a box in which a pair of box edge lengths exceeds a given ratio (default 20)"
+--    ,boxSkewing = False &= name "k" &= help "allow parallelepiped boxes, by default only coaxial rectangles" 
+--        &= groupname "Experimental"
+--    ,splitGuessing = -1 &= name "g" &= opt (20 :: Int) &= help "try guessing the best box splitting direction but do not allow a box in which a pair of box edge lengths exceeds a given ratio (default 20)"
 --    ,epsrelbits = 23 &= name "r" &= help "n to compute machine epsilon using 2^-n (default = 24)" &= groupname "Floating point rounding interpretation in conjectures"
 --    ,epsabsbits = 126 &= name "a" &= help "n to compute denormalised epsilon using 2^-n (default = 126)"
     ,quiet = False &= help "suppress all output except the final result (default off)" 
@@ -122,20 +122,21 @@ maxQueueLengthDefaultBFS :: Int
 maxQueueLengthDefaultBFS = 5000
 
 checkArgs :: Args -> [String]
-checkArgs args = 
-    catMaybes [checkSplitGuessing, checkSkewing]
-    where
-    checkSkewing
-        | boxSkewing args && startDegree args == 0 =
-            Just $
-                 "Box skewing is not compatible with polynomial degree 0."
-                 ++ "\n  Raise starting polynomial degree to a positive value."
-        | otherwise = Nothing
-    checkSplitGuessing 
-        | splitGuessing args /= -1 && startDegree args == 0 =
-            Just $
-                 "Guessing split direction is not compatible with polynomial degree 0."
-                 ++ "\n  Raise starting polynomial degree to a positive value."
-        | otherwise = Nothing
+checkArgs _args =
+    [] 
+--    catMaybes [checkSplitGuessing, checkSkewing]
+--    where
+--    checkSkewing
+--        | boxSkewing args && startDegree args == 0 =
+--            Just $
+--                 "Box skewing is not compatible with polynomial degree 0."
+--                 ++ "\n  Raise starting polynomial degree to a positive value."
+--        | otherwise = Nothing
+--    checkSplitGuessing 
+--        | splitGuessing args /= -1 && startDegree args == 0 =
+--            Just $
+--                 "Guessing split direction is not compatible with polynomial degree 0."
+--                 ++ "\n  Raise starting polynomial degree to a positive value."
+--        | otherwise = Nothing
         
 
