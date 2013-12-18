@@ -5,7 +5,7 @@
            *******************************************************
 
 
-                        DATE : 17-MAY-2013 19:02:19.07
+                        DATE : 18-DEC-2013 09:45:35.25
 
 Line
    1  --# inherit PolyPaver.Exact;
@@ -45,8 +45,14 @@ Line
   35  
   36      function Exp (X : Float) return Float;
   37      --# pre Exp(X) in Float;
-  38  	
-  39  end PolyPaver.Floats;
+  38      
+  39      function Sin (X : Float) return Float;
+  40      --# pre Sin(X) in Float;
+  41      
+  42      function Cos (X : Float) return Float;
+  43      --# pre Cos(X) in Float;
+  44      
+  45  end PolyPaver.Floats;
 
 Note: Flow analysis mode is automatic
 

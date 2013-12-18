@@ -5,7 +5,7 @@
 *****************************************************************************
 
 
-CREATED 17-MAY-2013, 19:02:19  SIMPLIFIED 17-MAY-2013, 19:02:26
+CREATED 18-DEC-2013, 09:45:35  SIMPLIFIED 18-DEC-2013, 09:45:51
 
 SPARK Simplifier GPL 2012
 Copyright (C) 2012 Altran Praxis Limited, Bath, U.K.
@@ -247,10 +247,10 @@ function Riemann.erfRiemann
 
 @@@@@@@@@@  VC: function_erfriemann_6.  @@@@@@@@@@
 %%%  Simplified H1 on reading formula in, to give:
-     %%%  H1:  polypaver__interval__contained_in(result - 
+     %%%  H1:  polypaver__interval__contained_in(result, 
           polypaver__exact__integral(0, stepstart, polypaver__exact__exp(- (
           polypaver__exact__integration_variable * 
-          polypaver__exact__integration_variable))), polypaver__interval__hull(
+          polypaver__exact__integration_variable))) + polypaver__interval__hull(
           - (1 / 10 * (step + 1)), (1 - polypaver__exact__exp(- (x * step / n * 
           (x * step / n)))) * x / n + 1 / 10 * (step + 1)))
 %%%  Simplified H2 on reading formula in, to give:
@@ -445,11 +445,11 @@ function Riemann.erfRiemann
 -S-  Eliminated hypothesis H5.
      This was achieved by replacing all occurrences of stepstart by:
           polypaver__floats__multiply(stepsize, step).
-<S>  New H1:  polypaver__interval__contained_in(result - 
+<S>  New H1:  polypaver__interval__contained_in(result, 
           polypaver__exact__integral(0, polypaver__floats__multiply(stepsize, 
           step), polypaver__exact__exp(- (
           polypaver__exact__integration_variable * 
-          polypaver__exact__integration_variable))), polypaver__interval__hull(
+          polypaver__exact__integration_variable))) + polypaver__interval__hull(
           - (1 / 10 * (step + 1)), (1 - polypaver__exact__exp(- (x * step / n * 
           (x * step / n)))) * x / n + 1 / 10 * (step + 1)))
 <S>  New H13:  polypaver__floats__multiply(stepsize, step) >= - 
@@ -495,11 +495,11 @@ function Riemann.erfRiemann
           340282000000000000000000000000000000000
 <S>  New H34:  polypaver__floats__divide(x, n) <= 
           340282000000000000000000000000000000000
-<S>  New H1:  polypaver__interval__contained_in(result - 
+<S>  New H1:  polypaver__interval__contained_in(result, 
           polypaver__exact__integral(0, polypaver__floats__multiply(
           polypaver__floats__divide(x, n), step), polypaver__exact__exp(- (
           polypaver__exact__integration_variable * 
-          polypaver__exact__integration_variable))), polypaver__interval__hull(
+          polypaver__exact__integration_variable))) + polypaver__interval__hull(
           - (1 / 10 * (step + 1)), (1 - polypaver__exact__exp(- (x * step / n * 
           (x * step / n)))) * x / n + 1 / 10 * (step + 1)))
 <S>  New H13:  polypaver__floats__multiply(polypaver__floats__divide(x, n), 
@@ -608,10 +608,10 @@ function Riemann.erfRiemann
 
 @@@@@@@@@@  VC: function_erfriemann_8.  @@@@@@@@@@
 %%%  Simplified H1 on reading formula in, to give:
-     %%%  H1:  polypaver__interval__contained_in(result - 
+     %%%  H1:  polypaver__interval__contained_in(result, 
           polypaver__exact__integral(0, stepstart, polypaver__exact__exp(- (
           polypaver__exact__integration_variable * 
-          polypaver__exact__integration_variable))), polypaver__interval__hull(
+          polypaver__exact__integration_variable))) + polypaver__interval__hull(
           - (1 / 10 * (step + 1)), (1 - polypaver__exact__exp(- (x * step / n * 
           (x * step / n)))) * x / n + 1 / 10 * (step + 1)))
 %%%  Simplified H2 on reading formula in, to give:
@@ -751,10 +751,10 @@ function Riemann.erfRiemann
 ---  Hypothesis H42 has been replaced by "true".  (It is already present, as 
           H32).
 %%%  Simplified C1 on reading formula in, to give:
-     %%%  C1:  polypaver__interval__contained_in(- polypaver__exact__integral(
+     %%%  C1:  polypaver__interval__contained_in(0, polypaver__exact__integral(
           0, polypaver__floats__multiply(polypaver__floats__divide(x, n), 0), 
           polypaver__exact__exp(- (polypaver__exact__integration_variable * 
-          polypaver__exact__integration_variable))), polypaver__interval__hull(
+          polypaver__exact__integration_variable))) + polypaver__interval__hull(
           - (1 / 10), (1 - polypaver__exact__exp(- (0 / n * (0 / n)))) * x / n 
           + 1 / 10))
 %%%  Simplified C2 on reading formula in, to give:
@@ -847,10 +847,10 @@ function Riemann.erfRiemann
 
 @@@@@@@@@@  VC: function_erfriemann_10.  @@@@@@@@@@
 %%%  Simplified H1 on reading formula in, to give:
-     %%%  H1:  polypaver__interval__contained_in(result - 
+     %%%  H1:  polypaver__interval__contained_in(result, 
           polypaver__exact__integral(0, stepstart, polypaver__exact__exp(- (
           polypaver__exact__integration_variable * 
-          polypaver__exact__integration_variable))), polypaver__interval__hull(
+          polypaver__exact__integration_variable))) + polypaver__interval__hull(
           - (1 / 10 * (step + 1)), (1 - polypaver__exact__exp(- (x * step / n * 
           (x * step / n)))) * x / n + 1 / 10 * (step + 1)))
 %%%  Simplified H2 on reading formula in, to give:
@@ -940,11 +940,11 @@ function Riemann.erfRiemann
 %%%  Simplified C1 on reading formula in, to give:
      %%%  C1:  polypaver__interval__contained_in(polypaver__floats__add(result, 
           polypaver__floats__multiply(stepsize, polypaver__floats__exp(- 
-          polypaver__floats__multiply(stepstart, stepstart)))) - 
+          polypaver__floats__multiply(stepstart, stepstart)))), 
           polypaver__exact__integral(0, polypaver__floats__multiply(stepsize, 
           step + 1), polypaver__exact__exp(- (
           polypaver__exact__integration_variable * 
-          polypaver__exact__integration_variable))), polypaver__interval__hull(
+          polypaver__exact__integration_variable))) + polypaver__interval__hull(
           - (1 / 10 * (step + 2)), (1 - polypaver__exact__exp(- (x * (step + 1) 
           / n * (x * (step + 1) / n)))) * x / n + 1 / 10 * (step + 2)))
 %%%  Simplified C2 on reading formula in, to give:
@@ -1090,11 +1090,11 @@ function Riemann.erfRiemann
 -S-  Eliminated hypothesis H5.
      This was achieved by replacing all occurrences of stepstart by:
           polypaver__floats__multiply(stepsize, step).
-<S>  New H1:  polypaver__interval__contained_in(result - 
+<S>  New H1:  polypaver__interval__contained_in(result, 
           polypaver__exact__integral(0, polypaver__floats__multiply(stepsize, 
           step), polypaver__exact__exp(- (
           polypaver__exact__integration_variable * 
-          polypaver__exact__integration_variable))), polypaver__interval__hull(
+          polypaver__exact__integration_variable))) + polypaver__interval__hull(
           - (1 / 10 * (step + 1)), (1 - polypaver__exact__exp(- (x * step / n * 
           (x * step / n)))) * x / n + 1 / 10 * (step + 1)))
 <S>  New H13:  polypaver__floats__multiply(stepsize, step) >= - 
@@ -1136,11 +1136,11 @@ function Riemann.erfRiemann
 <S>  New C1:  polypaver__interval__contained_in(polypaver__floats__add(result, 
           polypaver__floats__multiply(stepsize, polypaver__floats__exp(- 
           polypaver__floats__multiply(polypaver__floats__multiply(stepsize, 
-          step), polypaver__floats__multiply(stepsize, step))))) - 
+          step), polypaver__floats__multiply(stepsize, step))))), 
           polypaver__exact__integral(0, polypaver__floats__multiply(stepsize, 
           step + 1), polypaver__exact__exp(- (
           polypaver__exact__integration_variable * 
-          polypaver__exact__integration_variable))), polypaver__interval__hull(
+          polypaver__exact__integration_variable))) + polypaver__interval__hull(
           - (1 / 10 * (step + 2)), (1 - polypaver__exact__exp(- (x * (step + 1) 
           / n * (x * (step + 1) / n)))) * x / n + 1 / 10 * (step + 2)))
 <S>  New C2:  polypaver__floats__is_range(polypaver__floats__add(result, 
@@ -1158,11 +1158,11 @@ function Riemann.erfRiemann
           340282000000000000000000000000000000000
 <S>  New H69:  polypaver__floats__multiply(polypaver__floats__divide(x, n), 
           step + 1) <= 340282000000000000000000000000000000000
-<S>  New H1:  polypaver__interval__contained_in(result - 
+<S>  New H1:  polypaver__interval__contained_in(result, 
           polypaver__exact__integral(0, polypaver__floats__multiply(
           polypaver__floats__divide(x, n), step), polypaver__exact__exp(- (
           polypaver__exact__integration_variable * 
-          polypaver__exact__integration_variable))), polypaver__interval__hull(
+          polypaver__exact__integration_variable))) + polypaver__interval__hull(
           - (1 / 10 * (step + 1)), (1 - polypaver__exact__exp(- (x * step / n * 
           (x * step / n)))) * x / n + 1 / 10 * (step + 1)))
 <S>  New H13:  polypaver__floats__multiply(polypaver__floats__divide(x, n), 
@@ -1212,10 +1212,10 @@ function Riemann.erfRiemann
           polypaver__floats__exp(- polypaver__floats__multiply(
           polypaver__floats__multiply(polypaver__floats__divide(x, n), step), 
           polypaver__floats__multiply(polypaver__floats__divide(x, n), step)))))
-           - polypaver__exact__integral(0, polypaver__floats__multiply(
+          , polypaver__exact__integral(0, polypaver__floats__multiply(
           polypaver__floats__divide(x, n), step + 1), polypaver__exact__exp(- (
           polypaver__exact__integration_variable * 
-          polypaver__exact__integration_variable))), polypaver__interval__hull(
+          polypaver__exact__integration_variable))) + polypaver__interval__hull(
           - (1 / 10 * (step + 2)), (1 - polypaver__exact__exp(- (x * (step + 1) 
           / n * (x * (step + 1) / n)))) * x / n + 1 / 10 * (step + 2)))
 <S>  New C2:  polypaver__floats__is_range(polypaver__floats__add(result, 
@@ -1230,10 +1230,10 @@ function Riemann.erfRiemann
 
 @@@@@@@@@@  VC: function_erfriemann_11.  @@@@@@@@@@
 %%%  Simplified H1 on reading formula in, to give:
-     %%%  H1:  polypaver__interval__contained_in(result - 
+     %%%  H1:  polypaver__interval__contained_in(result, 
           polypaver__exact__integral(0, stepstart, polypaver__exact__exp(- (
           polypaver__exact__integration_variable * 
-          polypaver__exact__integration_variable))), polypaver__interval__hull(
+          polypaver__exact__integration_variable))) + polypaver__interval__hull(
           - (1 / 10 * (step + 1)), (1 - polypaver__exact__exp(- (x * step / n * 
           (x * step / n)))) * x / n + 1 / 10 * (step + 1)))
 %%%  Simplified H2 on reading formula in, to give:
@@ -1274,11 +1274,11 @@ function Riemann.erfRiemann
 -S-  Eliminated hypothesis H5.
      This was achieved by replacing all occurrences of stepstart by:
           polypaver__floats__multiply(stepsize, step).
-<S>  New H1:  polypaver__interval__contained_in(result - 
+<S>  New H1:  polypaver__interval__contained_in(result, 
           polypaver__exact__integral(0, polypaver__floats__multiply(stepsize, 
           step), polypaver__exact__exp(- (
           polypaver__exact__integration_variable * 
-          polypaver__exact__integration_variable))), polypaver__interval__hull(
+          polypaver__exact__integration_variable))) + polypaver__interval__hull(
           - (1 / 10 * (step + 1)), (1 - polypaver__exact__exp(- (x * step / n * 
           (x * step / n)))) * x / n + 1 / 10 * (step + 1)))
 <S>  New H13:  polypaver__floats__multiply(stepsize, step) >= - 
@@ -1294,11 +1294,11 @@ function Riemann.erfRiemann
 -S-  Eliminated hypothesis H6.
      This was achieved by replacing all occurrences of stepsize by:
           polypaver__floats__divide(x, n).
-<S>  New H1:  polypaver__interval__contained_in(result - 
+<S>  New H1:  polypaver__interval__contained_in(result, 
           polypaver__exact__integral(0, polypaver__floats__multiply(
           polypaver__floats__divide(x, n), step), polypaver__exact__exp(- (
           polypaver__exact__integration_variable * 
-          polypaver__exact__integration_variable))), polypaver__interval__hull(
+          polypaver__exact__integration_variable))) + polypaver__interval__hull(
           - (1 / 10 * (step + 1)), (1 - polypaver__exact__exp(- (x * step / n * 
           (x * step / n)))) * x / n + 1 / 10 * (step + 1)))
 <S>  New H13:  polypaver__floats__multiply(polypaver__floats__divide(x, n), 
@@ -1319,10 +1319,10 @@ function Riemann.erfRiemann
 
 @@@@@@@@@@  VC: function_erfriemann_12.  @@@@@@@@@@
 %%%  Simplified H1 on reading formula in, to give:
-     %%%  H1:  polypaver__interval__contained_in(result - 
+     %%%  H1:  polypaver__interval__contained_in(result, 
           polypaver__exact__integral(0, stepstart, polypaver__exact__exp(- (
           polypaver__exact__integration_variable * 
-          polypaver__exact__integration_variable))), polypaver__interval__hull(
+          polypaver__exact__integration_variable))) + polypaver__interval__hull(
           - (1 / 10 * (step + 1)), (1 - polypaver__exact__exp(- (x * step / n * 
           (x * step / n)))) * x / n + 1 / 10 * (step + 1)))
 %%%  Simplified H2 on reading formula in, to give:
@@ -1409,11 +1409,11 @@ function Riemann.erfRiemann
 -S-  Eliminated hypothesis H5.
      This was achieved by replacing all occurrences of stepstart by:
           polypaver__floats__multiply(stepsize, step).
-<S>  New H1:  polypaver__interval__contained_in(result - 
+<S>  New H1:  polypaver__interval__contained_in(result, 
           polypaver__exact__integral(0, polypaver__floats__multiply(stepsize, 
           step), polypaver__exact__exp(- (
           polypaver__exact__integration_variable * 
-          polypaver__exact__integration_variable))), polypaver__interval__hull(
+          polypaver__exact__integration_variable))) + polypaver__interval__hull(
           - (1 / 10 * (step + 1)), (1 - polypaver__exact__exp(- (x * step / n * 
           (x * step / n)))) * x / n + 1 / 10 * (step + 1)))
 <S>  New H13:  polypaver__floats__multiply(stepsize, step) >= - 
@@ -1437,11 +1437,11 @@ function Riemann.erfRiemann
 -S-  Eliminated hypothesis H6.
      This was achieved by replacing all occurrences of stepsize by:
           polypaver__floats__divide(x, n).
-<S>  New H1:  polypaver__interval__contained_in(result - 
+<S>  New H1:  polypaver__interval__contained_in(result, 
           polypaver__exact__integral(0, polypaver__floats__multiply(
           polypaver__floats__divide(x, n), step), polypaver__exact__exp(- (
           polypaver__exact__integration_variable * 
-          polypaver__exact__integration_variable))), polypaver__interval__hull(
+          polypaver__exact__integration_variable))) + polypaver__interval__hull(
           - (1 / 10 * (step + 1)), (1 - polypaver__exact__exp(- (x * step / n * 
           (x * step / n)))) * x / n + 1 / 10 * (step + 1)))
 <S>  New H13:  polypaver__floats__multiply(polypaver__floats__divide(x, n), 
@@ -1470,10 +1470,10 @@ function Riemann.erfRiemann
 
 @@@@@@@@@@  VC: function_erfriemann_13.  @@@@@@@@@@
 %%%  Simplified H1 on reading formula in, to give:
-     %%%  H1:  polypaver__interval__contained_in(result - 
+     %%%  H1:  polypaver__interval__contained_in(result, 
           polypaver__exact__integral(0, stepstart, polypaver__exact__exp(- (
           polypaver__exact__integration_variable * 
-          polypaver__exact__integration_variable))), polypaver__interval__hull(
+          polypaver__exact__integration_variable))) + polypaver__interval__hull(
           - (1 / 10 * (step + 1)), (1 - polypaver__exact__exp(- (x * step / n * 
           (x * step / n)))) * x / n + 1 / 10 * (step + 1)))
 %%%  Simplified H2 on reading formula in, to give:
@@ -1507,10 +1507,10 @@ function Riemann.erfRiemann
 
 @@@@@@@@@@  VC: function_erfriemann_14.  @@@@@@@@@@
 %%%  Simplified H1 on reading formula in, to give:
-     %%%  H1:  polypaver__interval__contained_in(result - 
+     %%%  H1:  polypaver__interval__contained_in(result, 
           polypaver__exact__integral(0, stepstart, polypaver__exact__exp(- (
           polypaver__exact__integration_variable * 
-          polypaver__exact__integration_variable))), polypaver__interval__hull(
+          polypaver__exact__integration_variable))) + polypaver__interval__hull(
           - (1 / 10 * (step + 1)), (1 - polypaver__exact__exp(- (x * step / n * 
           (x * step / n)))) * x / n + 1 / 10 * (step + 1)))
 %%%  Simplified H2 on reading formula in, to give:
@@ -1625,11 +1625,11 @@ function Riemann.erfRiemann
 -S-  Eliminated hypothesis H5.
      This was achieved by replacing all occurrences of stepstart by:
           polypaver__floats__multiply(stepsize, step).
-<S>  New H1:  polypaver__interval__contained_in(result - 
+<S>  New H1:  polypaver__interval__contained_in(result, 
           polypaver__exact__integral(0, polypaver__floats__multiply(stepsize, 
           step), polypaver__exact__exp(- (
           polypaver__exact__integration_variable * 
-          polypaver__exact__integration_variable))), polypaver__interval__hull(
+          polypaver__exact__integration_variable))) + polypaver__interval__hull(
           - (1 / 10 * (step + 1)), (1 - polypaver__exact__exp(- (x * step / n * 
           (x * step / n)))) * x / n + 1 / 10 * (step + 1)))
 <S>  New H13:  polypaver__floats__multiply(stepsize, step) >= - 
@@ -1665,11 +1665,11 @@ function Riemann.erfRiemann
           340282000000000000000000000000000000000
 <S>  New H34:  polypaver__floats__divide(x, n) <= 
           340282000000000000000000000000000000000
-<S>  New H1:  polypaver__interval__contained_in(result - 
+<S>  New H1:  polypaver__interval__contained_in(result, 
           polypaver__exact__integral(0, polypaver__floats__multiply(
           polypaver__floats__divide(x, n), step), polypaver__exact__exp(- (
           polypaver__exact__integration_variable * 
-          polypaver__exact__integration_variable))), polypaver__interval__hull(
+          polypaver__exact__integration_variable))) + polypaver__interval__hull(
           - (1 / 10 * (step + 1)), (1 - polypaver__exact__exp(- (x * step / n * 
           (x * step / n)))) * x / n + 1 / 10 * (step + 1)))
 <S>  New H13:  polypaver__floats__multiply(polypaver__floats__divide(x, n), 
@@ -1708,10 +1708,10 @@ function Riemann.erfRiemann
 
 @@@@@@@@@@  VC: function_erfriemann_15.  @@@@@@@@@@
 %%%  Simplified H1 on reading formula in, to give:
-     %%%  H1:  polypaver__interval__contained_in(result - 
+     %%%  H1:  polypaver__interval__contained_in(result, 
           polypaver__exact__integral(0, stepstart, polypaver__exact__exp(- (
           polypaver__exact__integration_variable * 
-          polypaver__exact__integration_variable))), polypaver__interval__hull(
+          polypaver__exact__integration_variable))) + polypaver__interval__hull(
           - (1 / 10 * (step + 1)), (1 - polypaver__exact__exp(- (x * step / n * 
           (x * step / n)))) * x / n + 1 / 10 * (step + 1)))
 %%%  Simplified H2 on reading formula in, to give:
@@ -1848,11 +1848,11 @@ function Riemann.erfRiemann
 -S-  Eliminated hypothesis H5.
      This was achieved by replacing all occurrences of stepstart by:
           polypaver__floats__multiply(stepsize, step).
-<S>  New H1:  polypaver__interval__contained_in(result - 
+<S>  New H1:  polypaver__interval__contained_in(result, 
           polypaver__exact__integral(0, polypaver__floats__multiply(stepsize, 
           step), polypaver__exact__exp(- (
           polypaver__exact__integration_variable * 
-          polypaver__exact__integration_variable))), polypaver__interval__hull(
+          polypaver__exact__integration_variable))) + polypaver__interval__hull(
           - (1 / 10 * (step + 1)), (1 - polypaver__exact__exp(- (x * step / n * 
           (x * step / n)))) * x / n + 1 / 10 * (step + 1)))
 <S>  New H13:  polypaver__floats__multiply(stepsize, step) >= - 
@@ -1898,11 +1898,11 @@ function Riemann.erfRiemann
           340282000000000000000000000000000000000
 <S>  New H34:  polypaver__floats__divide(x, n) <= 
           340282000000000000000000000000000000000
-<S>  New H1:  polypaver__interval__contained_in(result - 
+<S>  New H1:  polypaver__interval__contained_in(result, 
           polypaver__exact__integral(0, polypaver__floats__multiply(
           polypaver__floats__divide(x, n), step), polypaver__exact__exp(- (
           polypaver__exact__integration_variable * 
-          polypaver__exact__integration_variable))), polypaver__interval__hull(
+          polypaver__exact__integration_variable))) + polypaver__interval__hull(
           - (1 / 10 * (step + 1)), (1 - polypaver__exact__exp(- (x * step / n * 
           (x * step / n)))) * x / n + 1 / 10 * (step + 1)))
 <S>  New H13:  polypaver__floats__multiply(polypaver__floats__divide(x, n), 
@@ -1953,10 +1953,10 @@ function Riemann.erfRiemann
 
 @@@@@@@@@@  VC: function_erfriemann_16.  @@@@@@@@@@
 %%%  Simplified H1 on reading formula in, to give:
-     %%%  H1:  polypaver__interval__contained_in(result - 
+     %%%  H1:  polypaver__interval__contained_in(result, 
           polypaver__exact__integral(0, stepstart, polypaver__exact__exp(- (
           polypaver__exact__integration_variable * 
-          polypaver__exact__integration_variable))), polypaver__interval__hull(
+          polypaver__exact__integration_variable))) + polypaver__interval__hull(
           - (1 / 10 * (step + 1)), (1 - polypaver__exact__exp(- (x * step / n * 
           (x * step / n)))) * x / n + 1 / 10 * (step + 1)))
 %%%  Simplified H2 on reading formula in, to give:
@@ -2024,10 +2024,10 @@ function Riemann.erfRiemann
 
 @@@@@@@@@@  VC: function_erfriemann_17.  @@@@@@@@@@
 %%%  Simplified H1 on reading formula in, to give:
-     %%%  H1:  polypaver__interval__contained_in(result - 
+     %%%  H1:  polypaver__interval__contained_in(result, 
           polypaver__exact__integral(0, stepstart, polypaver__exact__exp(- (
           polypaver__exact__integration_variable * 
-          polypaver__exact__integration_variable))), polypaver__interval__hull(
+          polypaver__exact__integration_variable))) + polypaver__interval__hull(
           - (1 / 10 * (step + 1)), (1 - polypaver__exact__exp(- (x * step / n * 
           (x * step / n)))) * x / n + 1 / 10 * (step + 1)))
 %%%  Simplified H2 on reading formula in, to give:
@@ -2181,11 +2181,11 @@ function Riemann.erfRiemann
 -S-  Eliminated hypothesis H5.
      This was achieved by replacing all occurrences of stepstart by:
           polypaver__floats__multiply(stepsize, step).
-<S>  New H1:  polypaver__interval__contained_in(result - 
+<S>  New H1:  polypaver__interval__contained_in(result, 
           polypaver__exact__integral(0, polypaver__floats__multiply(stepsize, 
           step), polypaver__exact__exp(- (
           polypaver__exact__integration_variable * 
-          polypaver__exact__integration_variable))), polypaver__interval__hull(
+          polypaver__exact__integration_variable))) + polypaver__interval__hull(
           - (1 / 10 * (step + 1)), (1 - polypaver__exact__exp(- (x * step / n * 
           (x * step / n)))) * x / n + 1 / 10 * (step + 1)))
 <S>  New H13:  polypaver__floats__multiply(stepsize, step) >= - 
@@ -2231,11 +2231,11 @@ function Riemann.erfRiemann
           340282000000000000000000000000000000000
 <S>  New H34:  polypaver__floats__divide(x, n) <= 
           340282000000000000000000000000000000000
-<S>  New H1:  polypaver__interval__contained_in(result - 
+<S>  New H1:  polypaver__interval__contained_in(result, 
           polypaver__exact__integral(0, polypaver__floats__multiply(
           polypaver__floats__divide(x, n), step), polypaver__exact__exp(- (
           polypaver__exact__integration_variable * 
-          polypaver__exact__integration_variable))), polypaver__interval__hull(
+          polypaver__exact__integration_variable))) + polypaver__interval__hull(
           - (1 / 10 * (step + 1)), (1 - polypaver__exact__exp(- (x * step / n * 
           (x * step / n)))) * x / n + 1 / 10 * (step + 1)))
 <S>  New H13:  polypaver__floats__multiply(polypaver__floats__divide(x, n), 
@@ -2310,9 +2310,9 @@ function Riemann.erfRiemann
 ---  Hypothesis H28 has been replaced by "true".  (It is already present, as 
           H21).
 %%%  Simplified C1 on reading formula in, to give:
-     %%%  C1:  polypaver__interval__contained_in(- polypaver__exact__integral(
+     %%%  C1:  polypaver__interval__contained_in(0, polypaver__exact__integral(
           0, x, polypaver__exact__exp(- (polypaver__exact__integration_variable 
-          * polypaver__exact__integration_variable))), 
+          * polypaver__exact__integration_variable))) + 
           polypaver__interval__hull(- (1 / 10 * (n + 1)), (1 - 
           polypaver__exact__exp(- (x * x))) * x / n + 1 / 10 * (n + 1)))
 ***  Proved C2:  0 >= float__first
@@ -2375,10 +2375,10 @@ function Riemann.erfRiemann
 
 @@@@@@@@@@  VC: function_erfriemann_19.  @@@@@@@@@@
 %%%  Simplified H1 on reading formula in, to give:
-     %%%  H1:  polypaver__interval__contained_in(result - 
+     %%%  H1:  polypaver__interval__contained_in(result, 
           polypaver__exact__integral(0, stepstart, polypaver__exact__exp(- (
           polypaver__exact__integration_variable * 
-          polypaver__exact__integration_variable))), polypaver__interval__hull(
+          polypaver__exact__integration_variable))) + polypaver__interval__hull(
           - (1 / 10 * (step + 1)), (1 - polypaver__exact__exp(- (x * step / n * 
           (x * step / n)))) * x / n + 1 / 10 * (step + 1)))
 %%%  Simplified H2 on reading formula in, to give:
@@ -2448,10 +2448,10 @@ function Riemann.erfRiemann
 %%%  Simplified C1 on reading formula in, to give:
      %%%  C1:  polypaver__interval__contained_in(polypaver__floats__add(result, 
           polypaver__floats__multiply(stepsize, polypaver__floats__exp(- 
-          polypaver__floats__multiply(stepstart, stepstart)))) - 
+          polypaver__floats__multiply(stepstart, stepstart)))), 
           polypaver__exact__integral(0, x, polypaver__exact__exp(- (
           polypaver__exact__integration_variable * 
-          polypaver__exact__integration_variable))), polypaver__interval__hull(
+          polypaver__exact__integration_variable))) + polypaver__interval__hull(
           - (1 / 10 * (n + 1)), (1 - polypaver__exact__exp(- (x * x))) * x / n 
           + 1 / 10 * (n + 1)))
 ***  Proved C2:  polypaver__floats__add(result, polypaver__floats__multiply(
@@ -2564,11 +2564,11 @@ function Riemann.erfRiemann
 -S-  Eliminated hypothesis H5.
      This was achieved by replacing all occurrences of stepstart by:
           polypaver__floats__multiply(stepsize, step).
-<S>  New H1:  polypaver__interval__contained_in(result - 
+<S>  New H1:  polypaver__interval__contained_in(result, 
           polypaver__exact__integral(0, polypaver__floats__multiply(stepsize, 
           step), polypaver__exact__exp(- (
           polypaver__exact__integration_variable * 
-          polypaver__exact__integration_variable))), polypaver__interval__hull(
+          polypaver__exact__integration_variable))) + polypaver__interval__hull(
           - (1 / 10 * (step + 1)), (1 - polypaver__exact__exp(- (x * step / n * 
           (x * step / n)))) * x / n + 1 / 10 * (step + 1)))
 <S>  New H13:  polypaver__floats__multiply(stepsize, step) >= - 
@@ -2610,10 +2610,10 @@ function Riemann.erfRiemann
 <S>  New C1:  polypaver__interval__contained_in(polypaver__floats__add(result, 
           polypaver__floats__multiply(stepsize, polypaver__floats__exp(- 
           polypaver__floats__multiply(polypaver__floats__multiply(stepsize, 
-          step), polypaver__floats__multiply(stepsize, step))))) - 
+          step), polypaver__floats__multiply(stepsize, step))))), 
           polypaver__exact__integral(0, x, polypaver__exact__exp(- (
           polypaver__exact__integration_variable * 
-          polypaver__exact__integration_variable))), polypaver__interval__hull(
+          polypaver__exact__integration_variable))) + polypaver__interval__hull(
           - (1 / 10 * (n + 1)), (1 - polypaver__exact__exp(- (x * x))) * x / n 
           + 1 / 10 * (n + 1)))
 -S-  Eliminated hypothesis H6.
@@ -2623,11 +2623,11 @@ function Riemann.erfRiemann
           340282000000000000000000000000000000000
 <S>  New H34:  polypaver__floats__divide(x, n) <= 
           340282000000000000000000000000000000000
-<S>  New H1:  polypaver__interval__contained_in(result - 
+<S>  New H1:  polypaver__interval__contained_in(result, 
           polypaver__exact__integral(0, polypaver__floats__multiply(
           polypaver__floats__divide(x, n), step), polypaver__exact__exp(- (
           polypaver__exact__integration_variable * 
-          polypaver__exact__integration_variable))), polypaver__interval__hull(
+          polypaver__exact__integration_variable))) + polypaver__interval__hull(
           - (1 / 10 * (step + 1)), (1 - polypaver__exact__exp(- (x * step / n * 
           (x * step / n)))) * x / n + 1 / 10 * (step + 1)))
 <S>  New H13:  polypaver__floats__multiply(polypaver__floats__divide(x, n), 
@@ -2677,9 +2677,9 @@ function Riemann.erfRiemann
           polypaver__floats__exp(- polypaver__floats__multiply(
           polypaver__floats__multiply(polypaver__floats__divide(x, n), step), 
           polypaver__floats__multiply(polypaver__floats__divide(x, n), step)))))
-           - polypaver__exact__integral(0, x, polypaver__exact__exp(- (
+          , polypaver__exact__integral(0, x, polypaver__exact__exp(- (
           polypaver__exact__integration_variable * 
-          polypaver__exact__integration_variable))), polypaver__interval__hull(
+          polypaver__exact__integration_variable))) + polypaver__interval__hull(
           - (1 / 10 * (n + 1)), (1 - polypaver__exact__exp(- (x * x))) * x / n 
           + 1 / 10 * (n + 1)))
      +++  New H66:  integer__size >= 0
