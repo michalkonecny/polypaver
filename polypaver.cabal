@@ -210,7 +210,7 @@ Library
 
 Executable polypaver
   hs-source-dirs: src
-  ghc-options:     -O2 -Wall -rtsopts
+  ghc-options:     -O2 -Wall -rtsopts -prof -auto-all
   main-is: Main.hs
   if flag(DynamicLoading)
     cpp-options: -DDynamicLoading

@@ -258,7 +258,7 @@ makeSplit ::
     Maybe Int ->
     APBox b ->
     (Bool, (APBox b, APBox b), Int)
-makeSplit varsNotToSplit maybeSplitVar ppb@(box, varIsInts, varNames)
+makeSplit varsNotToSplit maybeSplitVar ppb@(APBox box varIsInts varNames)
     = (success, (ppbL, ppbR), splitVar)
     where
     success = Prelude.not $ (ppb `boxEqual` ppbL) Prelude.|| (ppb `boxEqual` ppbR)
@@ -276,40 +276,40 @@ makeSplit varsNotToSplit maybeSplitVar ppb@(box, varIsInts, varNames)
             | otherwise = (currWidth, var)
     widths 
         = 
-            map (\(var,(_c,r)) -> (var, abs r)) $ IMap.toList splittablesubbox
+            map (\(var,(_c,r2)) -> (var, abs r2)) $ IMap.toList splittablesubbox
     splittablesubbox =
         foldr IMap.delete box varsNotToSplit
-    (ppbL, ppbR) =
-        ((IMap.insert splitVar splitVarCenterRadiusL box, varIsInts, varNames),
-         (IMap.insert splitVar splitVarCenterRadiusR box, varIsInts, varNames))
-        where
-        splitVarCenterRadiusL = centerRadiusFromEndpoints (ll, lr)
-        splitVarCenterRadiusR = centerRadiusFromEndpoints (rl, rr)
-        
-        ((ll, lr), (rl, rr))
-            | splitVarIsIntvar = ((lCeilRA, mFloorRA), (mCeilRA, rFloorRA))
-            | otherwise = ((l,mR),(mL,r))
-        splitVarIsIntvar =
-            IMap.lookup splitVar varIsInts == Just True
-        
-        -- normal split:
-        (mL, mR) = RA.bounds m
-        m = (l + r) /2
-        (l,r) = RA.bounds splitVarInterval
-        
-        -- integer split:
-        mCeilRA
-            | (mCeil == mFloor) Prelude.&& (mCeil + 1 <= rFloor) = fromInteger $ mCeil + 1
-            | otherwise = fromInteger mCeil
-        mFloorRA = fromInteger mFloor
-        (mCeil, mFloor) = shrinkIntervalToIntegerBounds mRA
-        mRA = (lCeilRA + rFloorRA) / 2
-        lCeilRA = fromInteger lCeil
-        rFloorRA = fromInteger rFloor
-        (lCeil, rFloor) = shrinkIntervalToIntegerBounds splitVarInterval
-        
-        splitVarInterval = centerRadiusToInterval splitVarCenterRadius 
-        Just splitVarCenterRadius = IMap.lookup splitVar box
+
+    ppbL = APBox (IMap.insert splitVar splitVarCenterRadiusL box) varIsInts varNames
+    ppbR = APBox (IMap.insert splitVar splitVarCenterRadiusR box) varIsInts varNames
+
+    splitVarCenterRadiusL = centerRadiusFromEndpoints (ll, lr)
+    splitVarCenterRadiusR = centerRadiusFromEndpoints (rl, rr)
+    
+    [ll, lr, rl, rr]
+        | splitVarIsIntvar = [lCeilRA, mFloorRA, mCeilRA, rFloorRA]
+        | otherwise = [l,mR,mL,r]
+    splitVarIsIntvar =
+        IMap.lookup splitVar varIsInts == Just True
+    
+    -- normal split:
+    (mL, mR) = RA.bounds m
+    m = (l + r) /2
+    (l,r) = RA.bounds splitVarInterval
+    
+    -- integer split:
+    mCeilRA
+        | (mCeil == mFloor) Prelude.&& (mCeil + 1 <= rFloor) = fromInteger $ mCeil + 1
+        | otherwise = fromInteger mCeil
+    mFloorRA = fromInteger mFloor
+    (mCeil, mFloor) = shrinkIntervalToIntegerBounds mRA
+    mRA = (lCeilRA + rFloorRA) / 2
+    lCeilRA = fromInteger lCeil
+    rFloorRA = fromInteger rFloor
+    (lCeil, rFloor) = shrinkIntervalToIntegerBounds splitVarInterval
+    
+    splitVarInterval = centerRadiusToInterval splitVarCenterRadius 
+    Just splitVarCenterRadius = IMap.lookup splitVar box
 
 data TVDebugReport = TVDebugReport String
     

@@ -14,7 +14,7 @@
 -}
 module PolyPaver.APBox 
 (
-    APBox,
+    APBox(..),
     showBox,
     centerRadiusFromEndpoints,
     boxFromEndpoints,
@@ -44,17 +44,17 @@ import Data.List (intercalate)
 import Numeric.ER.Misc
 _ = unsafePrint
 
-type APBox b = 
-    (IMap.IntMap (IRA b, IRA b), 
+data APBox b = 
+    APBox
+    !(IMap.IntMap (IRA b, IRA b)) 
         -- for each variable, affine map from [-1,1] to its domain, ie (center, radius)
-     IMap.IntMap Bool, -- whether the variable is restricted to integers
-     IMap.IntMap String -- human-friendly variable names
-    )
+    !(IMap.IntMap Bool) -- whether the variable is restricted to integers
+    !(IMap.IntMap String) -- human-friendly variable names
 
 showBox ::
     B.ERRealBase b =>
     (APBox b) -> String
-showBox (box, _, varNames) =
+showBox (APBox box _ varNames) =
         "APBox{ "
         ++ (intercalate ", " $ map showVarInterval vars)
         ++ " }"
@@ -73,7 +73,7 @@ boxFromEndpoints ::
     [(Int, (RA b, RA b))] ->
     APBox b
 boxFromEndpoints varIsInts varNames intervals = 
-    (IMap.fromList $ map readInterval $ intervals, varIsInts, varNames) 
+    APBox (IMap.fromList $ map readInterval $ intervals) varIsInts varNames 
     where
     readInterval (i,(lRA, rRA)) =
         (i, (constant,  slope))
@@ -104,7 +104,7 @@ boxFromIntervals varIsInts varNames intervals =
         rRA = fromRational r
 
 boxVolume :: (B.ERRealBase b) => APBox b -> IRA b
-boxVolume (box, varIsInts, _) =
+boxVolume (APBox box varIsInts _) =
     product $ checkLength $ IMap.elems $ IMap.intersectionWith getSize varIsInts box
     where
     getSize isIntVar (center, radius)
@@ -153,7 +153,7 @@ centerRadiusToInterval (center, slope) =
 boxEqual :: 
     (B.ERRealBase b) => 
     APBox b -> APBox b -> Bool
-boxEqual (box1, _, _) (box2, _, _) = 
+boxEqual (APBox box1 _ _) (APBox box2 _ _) = 
     sizeCheck && (and $ IMap.elems varComparisons) 
     where
     sizeCheck = 
@@ -169,7 +169,7 @@ boxEqual (box1, _, _) (box2, _, _) =
 boxThinThickVars :: 
     B.ERRealBase b => 
     APBox b -> ([Int], [Int])
-boxThinThickVars (box, _, _) =
+boxThinThickVars (APBox box _ _) =
     (thinVars, thickVars)
     where
     thickVars = IMap.keys thickbox
@@ -181,20 +181,20 @@ boxThinThickVars (box, _, _) =
 boxCentre :: 
     APBox b -> 
     [IRA b]
-boxCentre (box, _, _) =
+boxCentre (APBox box _ _) =
     fst $ unzip $ snd $ unzip $ IMap.toAscList box
 
 boxCorners ::
     B.ERRealBase b =>
     APBox b -> 
     [[IRA b]]
-boxCorners (box, _, _)
+boxCorners (APBox box _ _)
     =
-    map (getCorner centre radii) signCombinations
+    map getCorner signCombinations
     where
     (vars, centresRadii) = unzip $ IMap.toAscList box
     (centre, radii) = unzip centresRadii
     signCombinations
         = map (map snd) $ allPairsCombinations $ zip vars $ repeat (-1,1)
-    getCorner centre radii signs =
+    getCorner signs =
         zipWith (*) centre $ zipWith (*) radii signs  

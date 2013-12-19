@@ -64,7 +64,7 @@ initPlot initbox w h =
     -- |   |
     -- 1---2
     [_p1@[x1,y1], _p4@[_,y4], _p2@[x2,_], _p3] = boxCorners initbox
-    (_box, _varIsInts, varNamesMap) = initbox
+    (APBox _box _varIsInts varNamesMap) = initbox
     varNames = map snd $ IMap.toAscList varNamesMap
     initboxInfo = (boxCentre initbox, x2 - x1, y4 - y1, varNames)
 

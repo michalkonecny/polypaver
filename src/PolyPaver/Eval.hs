@@ -74,7 +74,7 @@ evalForm ::
     Form TermHash {-^ form to evaluate, with hashes in all sub-terms -} -> 
     (tv,
      (Form (Maybe (IRA BM)))) {-^ form with added range bounds in all terms -}
-evalForm maxdeg maxsize ix minIntegrationStepSize apb@(_, isIntVarMap, _) origForm =
+evalForm maxdeg maxsize ix minIntegrationStepSize apb@(APBox _ isIntVarMap _) origForm =
     SP.snd $! evForm IMap.empty origForm
     where
     evTerm = evalTerm maxdeg maxsize ix minIntegrationStepSize apb 
@@ -227,7 +227,7 @@ evalTerm
         [valueRAOuter] = FA.getRangeApprox valueFA
         ((_ol, _oh), (il, ih)) = RA.oiBounds valueFA
         (newValuesMap SP.:!: (valueFA, term')) = evTermBox' apb prevValuesMap term
-    evTermBox' apb@(box, isIntVarMap, namesMap) prevValuesMap (Term (term', _)) =
+    evTermBox' apb@(APBox box isIntVarMap namesMap) prevValuesMap (Term (term', _)) =
             case term' of
                 Pi -> (prevValuesMap SP.:!: (setSizes $ RAEL.pi 10, Pi))
                 Lit val -> (prevValuesMap SP.:!: (rationalToFA val, Lit val))
@@ -401,15 +401,15 @@ evalTerm
                 where
                 segmentAPB = 
 --                    | skewed = error "Paralellepiped solving not yet supported for the integral operator."
-                    (segmentBox, 
-                     IMap.insert ivarId False isIntVarMap,
-                     IMap.insert ivarId ivarName namesMap)
+                    (APBox segmentBox 
+                     (IMap.insert ivarId False isIntVarMap)
+                     (IMap.insert ivarId ivarName namesMap))
                 segmentBox =
                     DBox.insert ivarId segmentCenterRadius box
                 segmentCenterRadius = centerRadius
                     where
                     [(_, centerRadius)] = IMap.toList ivbox
-                    (ivbox, _, _) =
+                    (APBox ivbox _ _) =
                         boxFromEndpoints isIntVarMap namesMap [(ivarId, RA.bounds segment)]
             segments 
                 | loRangeIntersectsHiRange = [integrationDom]
