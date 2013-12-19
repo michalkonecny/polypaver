@@ -10,4 +10,11 @@ polypaver -d 0 -I 4 aroundloop-subst-noresult.pp
 >>>>>>>>>>> SUMMARY <<<<<<<<<<<
 erfriemann_aroundloop conclusion 1: Conjecture proved TRUE in 11457.42s (0d, 3h, 10min, 57s) with (size = 164531, queue = 19, depth = 20)
 
+polypaver -d 1 -I 2 -e 13 aroundloop-subst-noresult.pp
+>>>>>>>>>>> SUMMARY <<<<<<<<<<<
+erfriemann_aroundloop conclusion 1: Conjecture proved TRUE in 13809.77s (0d, 3h, 50min, 9s) with (size = 29995, queue = 17, depth = 17)
+
+polypaver -d 1 -I 2 -m 13 aroundloop-subst-noresult.pp
+>>>>>>>>>>> SUMMARY <<<<<<<<<<<
+erfriemann_aroundloop conclusion 1: Conjecture proved TRUE in 7639.96s (0d, 2h, 7min, 19s) with (size = 37863, queue = 17, depth = 17)
 

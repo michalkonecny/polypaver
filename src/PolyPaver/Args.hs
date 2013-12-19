@@ -66,7 +66,7 @@ paverDefaultArgs =
         &= groupname "Box subdivision strategy"
         &= help "sub-problem processing order, bfs for breadth-first or dfs for depth-first, (default = dfs)"
     ,splitIntFirst = False &= name "f" 
-        &= help "whether to split integer valued domains until they are exact before splitting the continuous domains"
+        &= help "split integer valued domains until they are exact before splitting the continuous domains"
     ,minDepth = 0 &= help "minimum bisection depth (default = 0)"
     ,maxDepth = 1000 &= name "b" &= help "maximum bisection depth (default = 1000)"
     ,maxQueueLength = -1 &= name "u" 

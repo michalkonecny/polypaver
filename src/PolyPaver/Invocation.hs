@@ -41,6 +41,9 @@ import qualified Numeric.ER.Real.Approx as RA
 import qualified Data.IntMap as IMap
 import Data.List (intercalate)
 
+import qualified Data.Strict.Maybe as SM
+import qualified Data.Strict.Tuple as SP
+
 import Data.Typeable
 --import Data.Data
 
@@ -203,7 +206,7 @@ runPaverReportingProgress problem args =
         where
         plotBox stateTV _ (Left progress) =
             case paverProgress_maybeNewBoxDone progress of
-                Just (ppb, maybeTruth, _) ->
+                SM.Just (ppb SP.:!: maybeTruth) ->
                     do
                     Plot.addBox stateTV colour ppb
                     return ()
@@ -238,7 +241,7 @@ monitorLoop progressChannel handleNextReport =
             case progressOrResult of
                 (Left progress) ->
                     case paverProgress_maybeState progress of
-                        Just state -> Just state
+                        SM.Just state -> Just state
                         _ -> maybePrevState
                 _ -> maybePrevState
 
@@ -289,7 +292,7 @@ showPaverProgress progress =
     messageS = "\n" ++ paverProgress_message progress
     boxS = 
         case paverProgress_maybeCurrentBoxToDo progress of
-            Just currentBoxToDo -> showB currentBoxToDo
+            SM.Just currentBoxToDo -> showB currentBoxToDo
             _ -> ""
     showB currentBoxToDo =
         "\n" ++ showBox ppb
@@ -300,7 +303,7 @@ showPaverProgress progress =
         ppb = boxToDo_ppb currentBoxToDo
     stateS = 
         case paverProgress_maybeState progress of
-            Just state -> showState state
+            SM.Just state -> showState state
             _ -> ""
 
 showPaverProgressMini ::
@@ -309,8 +312,8 @@ showPaverProgressMini ::
     String
 showPaverProgressMini maybePrevState progress =
     case paverProgress_maybeState progress of
-        Nothing -> ""
-        Just state ->
+        SM.Nothing -> ""
+        SM.Just state ->
             case maybePrevState of
                 (Just prevState) | differentTrueFraction prevState ->
                     miniReport

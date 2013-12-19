@@ -43,6 +43,9 @@ import Data.List
 --import qualified Data.Map as Map
 import qualified Data.IntMap as IMap
 
+import qualified Data.Strict.Maybe as SM
+import qualified Data.Strict.Tuple as SP
+
 import Control.Concurrent.STM (atomically)
 import Control.Concurrent.STM.TBQueue
 
@@ -61,31 +64,31 @@ data PaverResult =
 data PaverProgress =
     PaverProgress
     {
-        paverProgress_message :: String,
-        paverProgress_durationInPicosecs :: Integer,
-        paverProgress_maybeState :: Maybe (PavingState Double),
-        paverProgress_maybeCurrentBoxToDo :: Maybe (BoxToDo Double),
-        paverProgress_maybeNewBoxDone :: Maybe (APBox Double, Maybe Bool, Form (Maybe (IRA BM)))
+        paverProgress_message :: ! String,
+        paverProgress_durationInPicosecs :: ! Integer,
+        paverProgress_maybeState :: ! (SM.Maybe (PavingState Double)),
+        paverProgress_maybeCurrentBoxToDo :: ! (SM.Maybe (BoxToDo Double)),
+        paverProgress_maybeNewBoxDone :: ! (SM.Maybe (SP.Pair (APBox Double) (Maybe Bool)))
     }
     
 data PavingState b =
     PavingState
     {
-        pavingState_trueFraction :: IRA b,
-        pavingState_computedBoxes :: Int,
-        pavingState_maxQLengthReached :: Int,
-        pavingState_maxDepthReached :: Int 
+        pavingState_trueFraction :: ! (IRA b),
+        pavingState_computedBoxes :: ! Int,
+        pavingState_maxQLengthReached :: ! Int,
+        pavingState_maxDepthReached :: ! Int 
     }
     
 data BoxToDo b =
     BoxToDo
     {
-        boxToDo_depth :: Int,
-        boxToDo_queueSize :: Int,
-        boxToDo_startDeg :: Int,
-        boxToDo_form :: Form Int,
-        boxToDo_prevSplitVar :: Int,
-        boxToDo_ppb :: APBox b    
+        boxToDo_depth :: ! Int,
+        boxToDo_queueSize :: ! Int,
+        boxToDo_startDeg :: ! Int,
+        boxToDo_form :: ! (Form Int),
+        boxToDo_prevSplitVar :: ! Int,
+        boxToDo_ppb :: ! (APBox b)
     }
 
 {-|
@@ -105,7 +108,7 @@ tryToDecideFormOnBoxByPaving
     outChannels
     args
     originalFormRaw 
-    initppb@(initbox, varIsInts, _varNames)
+    initppb@(APBox initbox varIsInts _varNames)
     =
     do
     inittime <- getCPUTime
@@ -221,7 +224,7 @@ tryToDecideFormOnBoxByPaving
                     bisectAndRecur undecidedSimplerForm [boxL, boxR] False splitVar
     
 
-            BoxToDo depth _ startDeg formRaw prevSplitVar ppb = boxToDo 
+            BoxToDo depth _ startDeg formRaw _prevSplitVar ppb = boxToDo 
                 -- beware: "formRaw" above has ranges left over in it from a parent box - do not show them
             boxToDo = Q.index queue 0
             queueTail = Q.drop 1 queue
@@ -229,14 +232,14 @@ tryToDecideFormOnBoxByPaving
 
             {- definitions related to evaluating the formula over the box -}
     
-            (decided, decidedAndTrue) = 
+            [decided, decidedAndTrue] = 
                 case maybeFormTruth of
-                    Just True -> (True, True)
-                    Just _ -> (True, False)
-                    _ -> (False, False)
+                    Just True -> [True, True]
+                    Just _ -> [True, False]
+                    _ -> [False, False]
                 where
                 maybeFormTruth = L.decide value
-            (value, _formWithRanges) = valueAndForm -- TODO: try to replace this pair with a strict pair in an attempt to resolve a space leak 
+            (value, _formWithRanges) = valueAndForm 
             valueAndForm =
                 evalForm 
                     currentDeg (maxSize args) ix minIntegrationStepSize ppb 
@@ -372,15 +375,15 @@ tryToDecideFormOnBoxByPaving
                             paverProgress_maybeNewBoxDone = maybeNewBoxDone  
                         }
                 maybeState 
-                    | reportState = Just $ pavingState takeCurrentBoxIntoAccount
-                    | otherwise = Nothing
+                    | reportState = SM.Just $ pavingState takeCurrentBoxIntoAccount
+                    | otherwise = SM.Nothing
                 maybeBoxToDo
-                    | reportBox = Just boxToDo
-                    | otherwise = Nothing
+                    | reportBox = SM.Just boxToDo
+                    | otherwise = SM.Nothing
                 maybeNewBoxDone =
                     case maybeBoxResult of
-                        Just boxResult -> Just (ppb, boxResult, verum) -- formWithRanges) -- TODO: this formula passing causes a space leak
-                        _ -> Nothing
+                        Just boxResult -> SM.Just (ppb SP.:!: boxResult)
+                        _ -> SM.Nothing
         
             pavingState takeCurrentBoxIntoAccount =
                 PavingState
