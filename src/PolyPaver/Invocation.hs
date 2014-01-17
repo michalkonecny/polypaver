@@ -213,9 +213,9 @@ runPaverReportingProgress problem args =
                     where
                     colour =
                         case maybeTruth of
-                            Just False -> red
-                            Just True -> green
-                            Nothing -> yellow
+                            SM.Just False -> red
+                            SM.Just True -> green
+                            SM.Nothing -> yellow
                 _ -> return () 
         plotBox _ _ _ = return ()
         green = (0.1,0.6,0.1,0.4)

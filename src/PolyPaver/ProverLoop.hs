@@ -68,7 +68,7 @@ data PaverProgress =
         paverProgress_durationInPicosecs :: ! Integer,
         paverProgress_maybeState :: ! (SM.Maybe (PavingState Double)),
         paverProgress_maybeCurrentBoxToDo :: ! (SM.Maybe (BoxToDo Double)),
-        paverProgress_maybeNewBoxDone :: ! (SM.Maybe (SP.Pair (APBox Double) (Maybe Bool)))
+        paverProgress_maybeNewBoxDone :: ! (SM.Maybe (SP.Pair (APBox Double) (SM.Maybe Bool)))
     }
     
 data PavingState b =
@@ -186,7 +186,7 @@ tryToDecideFormOnBoxByPaving
                 | depth < minDepth args = 
                     do
                     reportBoxInitSplit
-                    bisectAndRecur formRaw [boxLNoHP, boxRNoHP] True splitVarNoHP
+                    bisectAndRecur formRaw [boxL, boxR] True splitVar
                 -- formula is true on this box:
                 | decidedAndTrue =
                     do
@@ -264,8 +264,6 @@ tryToDecideFormOnBoxByPaving
             {- functions related to splitting the box -}
     
             (splitSuccess, splitVar, (boxL,boxR))
-                = L.split thinVarsMaybeNonIntVars maybeVar ppb value
-            (_, splitVarNoHP, (boxLNoHP,boxRNoHP))
                 = L.split thinVarsMaybeNonIntVars maybeVar ppb value
             maybeVar =
                 Nothing
@@ -349,13 +347,13 @@ tryToDecideFormOnBoxByPaving
             {- functions related to reporting of progress: -}
     
             reportBoxInitSplit =
-                reportProgress False "Not reached minimum depth, splitting." False True (Just Nothing)
+                reportProgress False "Not reached minimum depth, splitting." False True (Just SM.Nothing)
             reportBoxStart =
                 reportProgress False "Examining another box." True False Nothing
             reportBoxProved =
-                reportProgress True "Formula proved on this box." False True (Just (Just True))
+                reportProgress True "Formula proved on this box." False True (Just (SM.Just True))
             reportBoxSplit =
-                reportProgress True "Formula undecided on this box, splitting." False True (Just Nothing)
+                reportProgress True "Formula undecided on this box, splitting." False True (Just SM.Nothing)
             reportRaiseDegree =
                 reportProgress True ("Raising polynomial degree to " ++ show (currentDeg + 1) ++ ".") False False Nothing
 

@@ -58,14 +58,14 @@ class (Eq l, Show l) => TruthValue tv l | tv -> l where
 data TVM l
     = TVMDecided 
         {
-            tvmAtomicResults :: [(FormLabel, (Maybe Bool, Double, Double))] -- result, distance, vagueness
-        ,   tvmResult :: Bool 
+            tvmAtomicResults :: ! [(FormLabel, (Maybe Bool, Double, Double))] -- result, distance, vagueness
+        ,   tvmResult :: ! Bool 
         } 
     | TVMUndecided 
         { 
-            tvmSimplifiedFormula :: Form l
-        ,   tvmDistanceFromTruth :: Double
-        ,   tvmAtomicResults :: [(FormLabel, (Maybe Bool, Double, Double))] -- result, distance, vagueness
+            tvmSimplifiedFormula :: ! (Form l)
+        ,   tvmDistanceFromTruth :: ! Double
+        ,   tvmAtomicResults :: ! [(FormLabel, (Maybe Bool, Double, Double))] -- result, distance, vagueness
         }
     
 instance (Eq l, Show l) => Show (TVM l) where
@@ -160,11 +160,7 @@ instance (Eq l, Show l) => TruthValue (TVM l) l where
     decide (TVMUndecided _ _ _) = Nothing
     
     split varsNotToSplit maybeVar box _tv
-        = 
-        (success, splitVar, boxes)
-        where
-        (success, boxes, splitVar)    
-            = makeSplit varsNotToSplit maybeVar box
+        = makeSplit varsNotToSplit maybeVar box
             
 tvmNot :: TVM l -> TVM l
 tvmNot (TVMDecided ares x) = TVMDecided ares (Prelude.not x)
@@ -257,9 +253,11 @@ makeSplit ::
     [IMap.Key] -> 
     Maybe Int ->
     APBox b ->
-    (Bool, (APBox b, APBox b), Int)
+    (Bool, Int, (APBox b, APBox b))
 makeSplit varsNotToSplit maybeSplitVar ppb@(APBox box varIsInts varNames)
-    = (success, (ppbL, ppbR), splitVar)
+    = 
+    ppbL `seq` ppbR `seq`
+    (success, splitVar, (ppbL, ppbR))
     where
     success = Prelude.not $ (ppb `boxEqual` ppbL) Prelude.|| (ppb `boxEqual` ppbR)
     splitVar =
