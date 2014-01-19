@@ -1,0 +1,1 @@
+-vcg -language=2005 -conf=gnat.cfg -output_directory=out 

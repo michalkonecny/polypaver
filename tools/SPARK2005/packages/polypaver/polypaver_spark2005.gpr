@@ -1,0 +1,5 @@
+project PolyPaver_SPARK2005 is
+   for Object_Dir use "build";
+
+end PolyPaver_SPARK2005;
+
