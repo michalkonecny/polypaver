@@ -32,10 +32,10 @@ package body Riemann is
          --#            )
          --#         +
          --#         PP_F_Exact.Interval(
-         --#              - 0.1*Float(step+1)
+         --#              - c*Float(step+1)
          --#              ,
          --#              (1.0-PP_F_Exact.Exp(-(x * Float(step)/Float(n))**2))*x/Float(n)
-         --#              + 0.1*Float(step+1)
+         --#              + c*Float(step+1)
          --#         )
          --#     )
          --#     and PP_F_Exact.Is_Range(result,-10, 100.0)
