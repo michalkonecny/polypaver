@@ -1,13 +1,22 @@
 project ERF_Riemann is
 
    for Object_Dir use "build";
+   for Main use ("main.adb");
+   type Target_Type is
+      ("Executable", "ADT");
+   Target : Target_Type := external ("Target", "ADT");
 
    package Compiler is
       for Default_Switches ("ada") use ("-g", "-O2");
    end Compiler;
 
    package Builder is
-      for Default_Switches ("ada") use ("-gnatct");
+   case Target is
+      when "ADT" =>
+        for Default_Switches ("ada") use ("-gnatct");
+      when "Executable" =>
+        for Default_Switches ("ada") use ("");
+   end case;
    end Builder;
 
 end ERF_Riemann;
