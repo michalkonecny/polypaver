@@ -18,7 +18,6 @@ module PolyPaver.Invocation
     batchMain,
     getTightnessValues,
     Problem(..),
-    module PolyPaver.Form,
     reportCmdLine
 )
 where
@@ -190,8 +189,9 @@ runPaverReportingProgress problem args =
             do
             putStr $ format maybePrevState progressOrResult
         format 
-            | quiet args = showIfResult 
-            | otherwise = showProgressOrResult
+            | quiet args = showProgressOrResult 0
+            | verbose args = showProgressOrResult 2
+            | otherwise = showProgressOrResult 1
             
 
     shouldPlot = dim == 2 && w > 0 && h > 0
@@ -249,18 +249,16 @@ monitorLoop progressChannel handleNextReport =
 
 
 showProgressOrResult :: 
+    Int ->
     Maybe (PavingState Double) -> 
     Either PaverProgress PaverResult -> 
     String
-showProgressOrResult _ (Right result) = showPaverResult result
-showProgressOrResult _ (Left progress) = showPaverProgress progress
-
-showIfResult :: 
-    Maybe (PavingState Double) -> 
-    Either PaverProgress PaverResult -> 
-    String
-showIfResult _ (Right result) = showPaverResult result
-showIfResult maybePrevState (Left progress) = showPaverProgressMini maybePrevState progress 
+showProgressOrResult _ _ (Right result) = 
+    showPaverResult result
+showProgressOrResult verbosity maybePrevState (Left progress) 
+    | verbosity == 0 = ""
+    | verbosity == 1 = showPaverProgressMini maybePrevState progress
+    | otherwise = showPaverProgress progress
 
 showPaverResult :: PaverResult -> String
 showPaverResult result =
