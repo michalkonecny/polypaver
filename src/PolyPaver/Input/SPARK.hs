@@ -284,6 +284,7 @@ termTable :: [[Operator String () Identity (Term ())]]
 termTable = 
     [ [prefix "-" negate]
     , [binary "^" (termOp2 IntPower) AssocLeft]
+    , [binary "**" (termOp2 IntPower) AssocLeft]
     , [binary "/" (/) AssocLeft] ++ (binaryV ["(/)","/:"] (/:) AssocLeft)
     , [binary "*" (*) AssocLeft] ++ (binaryV ["(*)","*:"] (*:) AssocLeft)
     , [binary "-" (-) AssocLeft] ++ (binaryV ["(-)","-:"] (-:) AssocLeft)
