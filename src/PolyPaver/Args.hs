@@ -79,9 +79,9 @@ paverDefaultArgs =
 --    ,splitGuessing = -1 &= name "g" &= opt (20 :: Int) &= help "try guessing the best box splitting direction but do not allow a box in which a pair of box edge lengths exceeds a given ratio (default 20)"
 --    ,epsrelbits = 23 &= name "r" &= help "n to compute machine epsilon using 2^-n (default = 24)" &= groupname "Floating point rounding interpretation in conjectures"
 --    ,epsabsbits = 126 &= name "a" &= help "n to compute denormalised epsilon using 2^-n (default = 126)"
-    ,quiet = False &= help "suppress all output except the final result (default off)" 
+    ,quiet = False &= help "no reporting of progress on the console (default off)" 
         &= groupname "Verbosity"
-    ,verbose = False &= help "output extra details while paving (default off)"
+    ,verbose = False &= help "report extra progress details on the console (default off)"
     ,plotWidth = 0 &= name "w" &= help "plot width for 2D problems, 0 mean no plotting (default)" 
         &= groupname "Plotting"
     ,plotHeight = 0 &= name "h" &= help "plot height for 2D problems, 0 mean no plotting (default)"
@@ -97,7 +97,7 @@ paverDefaultArgs =
                  "  <name>.hs [<identifier name>]: Haskell constant of type Problem            "
 #endif
                  ])
-    &= summary "PolyPaver 0.2 (c) 2011, 2013 Jan Duracz and Michal Konecny (Aston University)"
+    &= summary "PolyPaver 0.3 (c) 2014 Jan Duracz and Michal Konecny (Aston University)"
     &= name "polypaver"
 
 setDefaults :: PolyPaver -> PolyPaver
