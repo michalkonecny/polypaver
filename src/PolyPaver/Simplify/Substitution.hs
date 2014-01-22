@@ -1,4 +1,4 @@
-module PolyPaver.Substitution 
+module PolyPaver.Simplify.Substitution 
 --(
 --    getAllStrentheningSubstitutions
 --)
@@ -23,7 +23,7 @@ getAllStrentheningSubstitutions form =
         
         4. Regenerate hashes in every modified formula.
         
-        4. Note substitutions that have an effect and, in particular, those that reduce the formula arity.
+        5. Note substitutions that have an effect and, in particular, those that reduce the formula arity.
         -- TODO
     -}
     map removeDisjointHypotheses strongerConclusions

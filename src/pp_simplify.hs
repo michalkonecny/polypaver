@@ -1,100 +1,57 @@
-{-# LANGUAGE CPP #-}
-{-# LANGUAGE DeriveDataTypeable #-}
-
 {-|
     Module      :  Main
-    Description :  the polypaver executable  
-    Copyright   :  (c) Jan Duracz, Michal Konecny 
+    Description :  the pp_simplify executable  
+    Copyright   :  (c) Michal Konecny 
     License     :  BSD3
 
-    Maintainer  :  jan@duracz.net
+    Maintainer  :  mikkonecny@gmail.com
     Stability   :  experimental
     Portability :  portable
 
-    The polypaver executable.
+    The pp_simplify executable for simplifying PolyPaver problems.
 -}
 module Main where
 
-import PolyPaver.Args
-import PolyPaver.Invocation
+import PolyPaver.Simplify.Args
+import PolyPaver.Invocation (Problem(..), reportCmdLine)
+import PolyPaver.Form (Form, splitConclusion)
 import PolyPaver.Input.SPARK
---import PolyPaver.Input.TPTP
+import PolyPaver.DeriveBounds (getBox)
 
 --import Numeric.ER.Real.DefaultRepr
 
-
-#ifdef DynamicLoading 
-import PolyPaver.Input.Haskell
-#endif
-import PolyPaver.DeriveBounds (getBox)
-import PolyPaver.Vars (substituteVarsForm,getFormVarNames)
-
---import System.Console.CmdArgs
-
-import qualified Data.IntMap as IMap
+--import qualified Data.IntMap as IMap
 import Data.List
 
 main :: IO ()
 main 
-    = batchMain lookupFile
+    = undefined
+--    = simplifyMain lookupFile
     
-lookupFile :: Args -> [FilePath] -> IO [(String, Problem)]
-lookupFile args otherArgs@(inputPath : _)
-#ifdef DynamicLoading 
-    | hasHsExtension inputPath = lookupHaskell otherArgs
-#endif
-    | hasFormExtension inputPath = lookupForm args otherArgs
+lookupFile :: [FilePath] -> IO [(String, Problem)]
+lookupFile otherArgs@(inputPath : _)
+    | hasFormExtension inputPath = lookupForm otherArgs
     | hasPPExtension inputPath = lookupPP otherArgs
     | hasSivExtension inputPath = lookupSiv otherArgs
     | hasTptpExtension inputPath =
         error "Input of TPTP files not supported yet"  
 --        lookupTptp args
-lookupFile _ _ =
+lookupFile _ =
     do 
     reportCmdLine
     error "No problem specified."
 
-#ifdef DynamicLoading     
-lookupHaskell :: [FilePath] -> IO [(String, Problem)]
-lookupHaskell [inputPath] = lookupHaskell [inputPath, "problem"]
-lookupHaskell (inputPath : problemNames) =
-    do
-    problems <- loadHaskellProblems inputPath problemNames
-    return $ zip problemNames problems
-lookupHaskell _ = return []
-#endif
-    
-lookupForm :: Args -> [FilePath] -> IO [(String, Problem)]
-lookupForm args [inputPath] =
+lookupForm :: [FilePath] -> IO [(String, Problem)]
+lookupForm [inputPath] =
     do
     fileContents <- readFile inputPath
     return $ form2problems $ read fileContents
     where
-    tightnessVals = getTightnessValues args
     form2problems form =
         case getBox form of
             Right box -> mkProblems (inputPath, form, box)
-            Left msg ->
-                case tryWithT of
-                    Just problems -> problems
-                    Nothing -> error $ "PolyPaver: " ++ show msg
-        where
-        tryWithT = 
-            case IMap.lookup 0 varNames of
-                Just name | name == "T" ->
-                    Just $ concat $ map mkProblems $ map substT tightnessVals
-                _ -> Nothing
-        varNames = getFormVarNames form
-        substT t =
-            case getBox formT of
-                Right box -> (inputPath ++ "-T=" ++ show t, formT, box)
-                Left msg -> error $ "PolyPaver: " ++ show msg
-            where
-            formT = substituteVarsForm s form
-            s varId | varId == 0 = Just $ Lit $ fromInteger t
-            s _ = Nothing
---        ts = reverse $ take 11 $ iterate (*2) 1
-lookupForm _ _ = return []
+            Left msg -> error $ "PolyPaver: " ++ show msg
+lookupForm _ = return []
 
 lookupPP :: [FilePath] -> IO [(String, Problem)]
 lookupPP [inputPath] =

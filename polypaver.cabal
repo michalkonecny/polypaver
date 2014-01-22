@@ -41,70 +41,6 @@ Extra-Source-Files:
     examples/pp/skewing2.pp
     examples/haskell/sqrtexp.hs
     examples/form/true.form
-    examples/SPARK/README
-    examples/SPARK/packages/polypaver.ads
-    examples/SPARK/packages/polypaver-exact.ads
-    examples/SPARK/packages/polypaver-floats.ads
-    examples/SPARK/packages/polypaver-floats.adb
-    examples/SPARK/packages/polypaver-long_floats.ads
-    examples/SPARK/packages/polypaver-long_floats.adb
-    examples/SPARK/packages/polypaver-integers.ads
-    examples/SPARK/packages/polypaver-interval.ads
-    examples/SPARK/peak/src/peak.adb
-    examples/SPARK/peak/src/peak.ads
-    examples/SPARK/peak/peak.smf
-    examples/SPARK/peak/gnat.cfg
-    examples/SPARK/peak/spark.sw
-    examples/SPARK/peak/out/peak.sli
-    examples/SPARK/peak/out/peak.lst
-    examples/SPARK/peak/out/spark.rep
-    examples/SPARK/peak/out/peak/max.fdl
-    examples/SPARK/peak/out/peak/peakunit.slg
-    examples/SPARK/peak/out/peak/peakunit.rls
-    examples/SPARK/peak/out/peak/peakunit.vcg
-    examples/SPARK/peak/out/peak/coeffs.rls
-    examples/SPARK/peak/out/peak/peakunit.siv
-    examples/SPARK/peak/out/peak/peakq.slg
-    examples/SPARK/peak/out/peak/coeffs.slg
-    examples/SPARK/peak/out/peak/peakq.vcg
-    examples/SPARK/peak/out/peak/peakq.rls
-    examples/SPARK/peak/out/peak/coeffs.fdl
-    examples/SPARK/peak/out/peak/coeffs.vcg
-    examples/SPARK/peak/out/peak/peakq.fdl
-    examples/SPARK/peak/out/peak/peakunit.fdl
-    examples/SPARK/peak/out/peak/max.vcg
-    examples/SPARK/peak/out/peak/coeffs.siv
-    examples/SPARK/peak/out/peak/max.rls
-    examples/SPARK/peak/out/peak/max.siv
-    examples/SPARK/peak/out/peak/max.slg
-    examples/SPARK/peak/out/peak/peakq.siv
-    examples/SPARK/sqrt/src/sqrt.adb
-    examples/SPARK/sqrt/src/sqrt.ads
-    examples/SPARK/sqrt/sqrt.smf
-    examples/SPARK/sqrt/gnat.cfg
-    examples/SPARK/sqrt/spark.sw
-    examples/SPARK/sqrt/out/example/sqrt.siv
-    examples/SPARK/sqrt/out/example/sqrt.slg
-    examples/SPARK/sqrt/out/example/sqrt.vcg
-    examples/SPARK/sqrt/out/example/sqrt.rls
-    examples/SPARK/sqrt/out/example/sqrt.fdl
-    examples/SPARK/sqrt/out/sqrt.sli
-    examples/SPARK/sqrt/out/sqrt.lst
-    examples/SPARK/sqrt/out/spark.rep
-    examples/SPARK/erfriemann/src/riemann.adb
-    examples/SPARK/erfriemann/src/riemann.ads
-    examples/SPARK/erfriemann/riemann.smf
-    examples/SPARK/erfriemann/spark.sw
-    examples/SPARK/erfriemann/gnat.cfg
-    examples/SPARK/erfriemann/out/riemann/erfriemann.fdl
-    examples/SPARK/erfriemann/out/riemann/erfriemann.rls
-    examples/SPARK/erfriemann/out/riemann/erfriemann.siv
-    examples/SPARK/erfriemann/out/riemann/erfriemann.slg
-    examples/SPARK/erfriemann/out/riemann/erfriemann.vcg
-    examples/SPARK/erfriemann/out/riemann.lst
-    examples/SPARK/erfriemann/out/riemann.sli
-    examples/SPARK/erfriemann/out/spark.rep
-
 
 source-repository this
   type:     mercurial
@@ -153,10 +89,10 @@ Library
     PolyPaver.Form,
     PolyPaver.Vars,
     PolyPaver.Subterms,
-    PolyPaver.Substitution,
     PolyPaver.APBox,
     PolyPaver.Plot,
     PolyPaver.DeriveBounds,
+    PolyPaver.Simplify.Substitution,
     Numeric.ER.ShowHTML,
     Numeric.ER.BasicTypes.PlusMinus,
     Numeric.ER.Misc,
@@ -210,8 +146,8 @@ Library
 
 Executable polypaver
   hs-source-dirs: src
-  ghc-options:     -O2 -Wall -rtsopts -prof -auto-all
-  main-is: Main.hs
+  ghc-options:     -O2 -Wall -rtsopts
+  main-is: polypaver.hs
   if flag(DynamicLoading)
     cpp-options: -DDynamicLoading
     Build-Depends:
@@ -236,6 +172,29 @@ Executable polypaver
           ghc-paths >= 0.1
   else
     Build-Depends:
+          base >= 4 && < 5,
+          containers >= 0.3.0.0,
+          gtk >= 0.12.0,
+          cairo >= 0.12.0,
+          stm >= 2,
+          cmdargs >= 0.7,
+          filepath >= 1.1,
+          regex-compat >= 0.93.1,
+          html >= 1.0.1.2,
+          binary >= 0.5,
+          syb >= 0.1,
+          time >= 1.1,
+          convertible >= 1.0,
+          parsec >= 3.1.1,
+          transformers,
+          hashable >= 1.2,
+          strict >= 0.3.2
+
+Executable pp_simplify
+  hs-source-dirs: src
+  ghc-options:     -O2 -Wall -rtsopts
+  main-is: pp_simplify.hs
+  Build-Depends:
           base >= 4 && < 5,
           containers >= 0.3.0.0,
           gtk >= 0.12.0,
