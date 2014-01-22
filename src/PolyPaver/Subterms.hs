@@ -8,6 +8,8 @@ where
 
 import PolyPaver.Form
 
+import qualified Data.IntMap as IMap
+
 import Data.Hashable
 
 --import Data.Data (Data, Typeable)
@@ -16,7 +18,7 @@ import Data.Hashable
 type TermHash = Int
 
 addHashesInForm :: 
-    (Hashable l) =>
+    (Hashable l, Eq l) =>
     Form l -> Form TermHash
 addHashesInForm form =
     case form of
@@ -42,53 +44,78 @@ addHashesInForm form =
     expT3 op lab t1 t2 t3 = op lab (addHashesInTerm t1) (addHashesInTerm t2) (addHashesInTerm t3)
 
 addHashesInTerm ::
-    Hashable l =>
+    (Hashable l, Eq l) =>
     Term l -> Term TermHash
-addHashesInTerm (Term (term', _l)) =
-    (Term (termWithHashes, hash term'))
+addHashesInTerm term =
+    fst $ addHashesInTermAux term 
     where
-    termWithHashes =
+    addHashesInTermAux (Term (term', _l)) =
+        (Term (termWithHashes, theHash), IMap.insert theHash term' termIndex)
+        where
+        theHash = hash term'
+        (termWithHashes, termIndex) = addHashesInTerm' term'
+    addHashesInTerm' term' =
         case term' of
-            Lit r -> Lit r
-            MinusInfinity -> MinusInfinity
-            PlusInfinity -> PlusInfinity 
-            Var n s -> Var n s
+            Lit r -> addHashes0 (Lit r)
+            MinusInfinity -> addHashes0 MinusInfinity
+            PlusInfinity -> addHashes0 PlusInfinity 
+            Var n s -> addHashes0 (Var n s)
             Hull t1 t2 -> addHashes2 Hull t1 t2
             Plus t1 t2 -> addHashes2 Plus t1 t2
             Minus t1 t2 -> addHashes2 Minus t1 t2
-            Neg t -> Neg (addHashesInTerm t)
+            Neg t -> addHashes1 Neg t
             Times t1 t2 -> addHashes2 Times t1 t2
-            Square t -> Square (addHashesInTerm t)
+            Square t -> addHashes1 Square t
             IntPower t1 t2 -> addHashes2 IntPower t1 t2
-            Recip t -> Recip (addHashesInTerm t)
+            Recip t -> addHashes1 Recip t
             Over t1 t2 -> addHashes2 Over t1 t2
-            Abs t -> Abs (addHashesInTerm t)
+            Abs t -> addHashes1 Abs t
             Min t1 t2 -> addHashes2 Min t1 t2
             Max t1 t2 -> addHashes2 Max t1 t2
-            Pi -> Pi
-            Sqrt t -> Sqrt (addHashesInTerm t)
-            Exp t -> Exp (addHashesInTerm t)
-            Sin t -> Sin (addHashesInTerm t)
-            Cos t -> Cos (addHashesInTerm t)
-            Atan t -> Atan (addHashesInTerm t)
+            Pi -> addHashes0 Pi
+            Sqrt t -> addHashes1 Sqrt t
+            Exp t -> addHashes1 Exp t
+            Sin t -> addHashes1 Sin t
+            Cos t -> addHashes1 Cos t
+            Atan t -> addHashes1 Atan t
             Integral ivarId ivarName lower upper integrand ->
-                Integral ivarId ivarName (addHashesInTerm lower) (addHashesInTerm upper) (addHashesInTerm integrand) 
-            FEpsAbs a r -> FEpsAbs a r
-            FEpsRel a r -> FEpsRel a r
-            FEpsiAbs a r -> FEpsiAbs a r
-            FEpsiRel a r -> FEpsiRel a r
-            FRound a r t -> FRound a r (addHashesInTerm t)
+                addHashes3 (Integral ivarId ivarName) lower upper integrand 
+            FEpsAbs a r -> addHashes0 $ FEpsAbs a r
+            FEpsRel a r -> addHashes0 $ FEpsRel a r
+            FEpsiAbs a r -> addHashes0 $ FEpsiAbs a r
+            FEpsiRel a r -> addHashes0 $ FEpsiRel a r
+            FRound a r t -> addHashes1 (FRound a r) t
             FPlus a r t1 t2 -> addHashes2 (FPlus a r) t1 t2
             FMinus a r t1 t2 -> addHashes2 (FMinus a r) t1 t2
             FTimes a r t1 t2 -> addHashes2 (FTimes a r) t1 t2
             FOver a r t1 t2 -> addHashes2 (FOver a r) t1 t2
-            FSquare a r t -> FSquare a r (addHashesInTerm t)
-            FSqrt a r t -> FSqrt a r(addHashesInTerm t)
-            FSin a r t -> FSin a r (addHashesInTerm t)
-            FCos a r t -> FCos a r (addHashesInTerm t)
-            FExp a r t -> FExp a r (addHashesInTerm t)
-    addHashes2 op t1 t2 =
-        op t1H t2H
+            FSquare a r t -> addHashes1 (FSquare a r) t
+            FSqrt a r t -> addHashes1 (FSqrt a r) t
+            FSin a r t -> addHashes1 (FSin a r) t
+            FCos a r t -> addHashes1 (FCos a r) t
+            FExp a r t -> addHashes1 (FExp a r) t
+    addHashes0 op = 
+        (op, IMap.empty)
+    addHashes1 op t1 =
+        (op t1H, termIndex1)
         where
-        t1H = addHashesInTerm t1
-        t2H = addHashesInTerm t2            
+        (t1H, termIndex1) = addHashesInTermAux t1
+    addHashes2 op t1 t2 =
+        (op t1H t2H, termIndex)
+        where
+        (t1H, termIndex1) = addHashesInTermAux t1
+        (t2H, termIndex2) = addHashesInTermAux t2
+        termIndex = IMap.unionWith checkSame termIndex1 termIndex2
+    addHashes3 op t1 t2 t3 =
+        (op t1H t2H t3H, termIndex)
+        where
+        (t1H, termIndex1) = addHashesInTermAux t1
+        (t2H, termIndex2) = addHashesInTermAux t2
+        (t3H, termIndex3) = addHashesInTermAux t3
+        termIndex =
+            IMap.unionWith checkSame termIndex1 $
+                IMap.unionWith checkSame termIndex2 termIndex3
+    checkSame t1 t2 
+        | t1 == t2 = t1
+        | otherwise = 
+            error $ "A very rare internal error has occurred.  Two different terms have the same hash."             
