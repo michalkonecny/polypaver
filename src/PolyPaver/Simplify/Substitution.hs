@@ -1,19 +1,20 @@
+{-# LANGUAGE TupleSections #-}
 module PolyPaver.Simplify.Substitution 
 --(
---    getAllStrentheningSubstitutions
+--    simplifyUsingSubstitutions
 --)
 where
 
 import PolyPaver.Form
 import PolyPaver.Subterms
-import PolyPaver.Vars (removeDisjointHypotheses, getTermFreeVars)
+import PolyPaver.Vars (getFormFreeVars)
 
 import qualified Data.Set as Set
 
 
-getAllStrentheningSubstitutions :: 
-    Form TermHash -> [Form TermHash]
-getAllStrentheningSubstitutions form =
+simplifyUsingSubstitutions :: 
+    Form TermHash -> [(Form TermHash, String)]
+simplifyUsingSubstitutions form =
     {-
         1. Identify all hypotheses that are inclusions or inequalities.
         
@@ -21,25 +22,70 @@ getAllStrentheningSubstitutions form =
         
         3. Try to apply each substitution to the conclusion.
         
-        4. Regenerate hashes in every modified formula.
+        4. Ignore substitutions that do not reduce the conclusion arity.
         
-        5. Note substitutions that have an effect and, in particular, those that reduce the formula arity.
-        -- TODO
+        5. Remove all hypotheses that feature a removed variable.
+        
+        6. Assemble the simplified conjectures, regenerating hashes.
     -}
-    map removeDisjointHypotheses strongerConclusions
+    strongerForms
     where
-    strongerConclusions = concat $ map (makeStrengtheningSubstitution conclusion) substitutionsAndGaps2
-    substitutionsAndGaps2 = filter (eliminatesVar . fst) substitutionsAndGaps 
-    substitutionsAndGaps = concat $ zipWith addToAll hypothesesGaps (map extractSubstitutionsFromHypothesis hypotheses)
-    addToAll e2 l = [(e1,e2) | e1 <- l]
-    hypothesesGaps = f hypotheses []
+    strongerForms =
+        map buildFormFromConclusion conclusionsWithDescriptions
         where
-        f [] _ = []
-        f (h:t) p = ((reverse p) ++ t) : f t (h:p)
+        buildFormFromConclusion (c, reducedVars, description) 
+            =
+            (addHashesInForm reducedForm, description2)
+            where
+            description2 =
+                description
+                ++ "\n simplified formula:\n"
+                ++ showForm 10000 const reducedForm
+                ++ "\n"  
+            reducedForm = 
+                joinHypothesesAndConclusion (hypothesesWithoutReducedVars, c)
+            hypothesesWithoutReducedVars =
+                filter hasNoReducedVar hypotheses -- remove hypotheses that feature a removed variable
+            hasNoReducedVar h =
+                Set.null $ reducedVars `Set.intersection` (getFormFreeVars h)
+    conclusionsWithDescriptions = 
+        map addDescription $
+            filter hasReducedTheArity $ -- ignoring substitutions that do not reduce arity 
+                map addReducedVariables strongerConclusionsAndSubstitutions
+        where
+        addDescription ((c,s), reducedVars) =
+            (c, reducedVars, description)
+            where
+            description =
+                "substitution:\n" ++ showSubstitution s -- ++ "; reducedVars = " ++ show reducedVars
+                ++ "\n\n original formula:\n"
+                ++ showForm 10000 const form  
+                ++ "\n"  
+        hasReducedTheArity (_, reducedVars) = not $ Set.null reducedVars
+        addReducedVariables (c,s) = ((c,s), conclusionVars `Set.difference` getFormFreeVars c)
+    strongerConclusionsAndSubstitutions =
+        concat $ map (\(s, cs) -> map (,s) cs) $ zip substitutions strongerConclusionsLists 
+    strongerConclusionsLists =
+        -- apply each substitution onto the conclusion, ignoring those that have no effect: 
+        map (makeStrengtheningSubstitution conclusion) substitutions
+    -- identify substitutions from hypotheses:
+    substitutions = concat $ map extractSubstitutionsFromHypothesis hypotheses
+    conclusionVars = getFormFreeVars conclusion
     (hypotheses, conclusion) = getHypothesesAndConclusion form
-    eliminatesVar subst =
-        not $ Set.null $
-        (getTermFreeVars $ subst_source subst) `Set.difference` (getTermFreeVars $ subst_target subst)
+
+-- Old code that tested for elimination only at the substitution level and removed only the hypothesis that
+-- gave birth to the substitution:
+--    strongerConclusions = concat $ map (makeStrengtheningSubstitution conclusion) substitutionsAndGaps2
+--    substitutionsAndGaps2 = filter (eliminatesVar . fst) substitutionsAndGaps 
+--    substitutionsAndGaps = concat $ zipWith addToAll hypothesesGaps (map extractSubstitutionsFromHypothesis hypotheses)
+--    addToAll e2 l = [(e1,e2) | e1 <- l]
+--    hypothesesGaps = f hypotheses []
+--        where
+--        f [] _ = []
+--        f (h:t) p = ((reverse p) ++ t) : f t (h:p)
+--    eliminatesVar subst =
+--        not $ Set.null $
+--        (getTermFreeVars $ subst_source subst) `Set.difference` (getTermFreeVars $ subst_target subst)
     
 data Substitution =
     Substitution
@@ -48,6 +94,15 @@ data Substitution =
         subst_target :: Term TermHash,
         subst_monotonicityType :: MonotonicityType
     }
+    
+showSubstitution :: Substitution -> String
+showSubstitution substitution =
+    "[" ++ sourceS ++ " -> " ++ targetS ++ "]"
+    where
+    sourceS = showTerm const source
+    targetS = showTerm const target
+    source = subst_source substitution
+    target = subst_target substitution
     
 data MonotonicityType = 
     Equal | Increasing | Decreasing | Expanding
@@ -90,9 +145,9 @@ extractSubstitutionsFromHypothesis form =
     substFromContained l r =
         [Substitution l r Expanding]
     
-makeStrengtheningSubstitution :: Form TermHash -> (Substitution, [Form TermHash]) -> [Form TermHash]
-makeStrengtheningSubstitution form (substitution, hypotheses) 
-    | formHasChanged = [joinHypothesesAndConclusion (hypotheses, addHashesInForm formS)]
+makeStrengtheningSubstitution :: Form TermHash -> Substitution -> [Form TermHash]
+makeStrengtheningSubstitution form substitution
+    | formHasChanged = [addHashesInForm formS]
     | otherwise = []
     where
     Term (_, sourceHash) = subst_source substitution
@@ -158,7 +213,7 @@ makeStrengtheningSubstitution form (substitution, hypotheses)
             IsRange lab arg1 arg2 arg3 -> 
                 (IsRange lab arg1S arg2S arg3S, ch1 || ch2 || ch3)
                 where
-                (arg1S, ch1) = subT Equal arg1
+                (arg1S, ch1) = subT Expanding arg1
                 (arg2S, ch2) = subT Increasing arg2
                 (arg3S, ch3) = subT Decreasing arg3
             IsIntRange lab arg1 arg2 arg3 -> 
@@ -246,27 +301,27 @@ makeStrengtheningSubstitution form (substitution, hypotheses)
             (arg3S, ch3) = subT mt3 arg3
             
             
-test1 :: [Form TermHash]
-test1 =
-    getAllStrentheningSubstitutions $
-        addHashesInForm formEx1
-    
-formEx1 :: Form ()
-formEx1 =
-    x |>=| 1 ---> x |>=| 0
-    where
-    x = termVar 0 "x"
-    
-test2 :: [Form TermHash]
-test2 =
-    getAllStrentheningSubstitutions $
-        addHashesInForm formEx2
-    
-formEx2 :: Form ()
-formEx2 =
-    y |<=| 1 ---> x |<-| (hull 1 y) ---> x |<-| (hull 0 (y + 1))
-    where
-    x = termVar 0 "x"
-    y = termVar 1 "y"
-    
+--test1 :: [(Form TermHash, Set.Set Int)]
+--test1 =
+--    simplifyUsingSubstitutions $
+--        addHashesInForm formEx1
+--    
+--formEx1 :: Form ()
+--formEx1 =
+--    x |>=| 1 ---> x |>=| 0
+--    where
+--    x = termVar 0 "x"
+--    
+--test2 :: [(Form TermHash, Set.Set Int)]
+--test2 =
+--    simplifyUsingSubstitutions $
+--        addHashesInForm formEx2
+--    
+--formEx2 :: Form ()
+--formEx2 =
+--    y |<=| 1 ---> x |<-| (hull 1 y) ---> x |<-| (hull 0 (y + 1))
+--    where
+--    x = termVar 0 "x"
+--    y = termVar 1 "y"
+--    
     

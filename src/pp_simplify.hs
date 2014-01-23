@@ -13,10 +13,15 @@
 module Main where
 
 import PolyPaver.Simplify.Args
+import PolyPaver.Simplify.Substitution
+
+import PolyPaver.Subterms (TermHash, addHashesInForm)
 import PolyPaver.Invocation (Problem(..), reportCmdLine)
 import PolyPaver.Form (Form, splitConclusion)
 import PolyPaver.Input.SPARK
 import PolyPaver.DeriveBounds (getBox)
+
+import System.Console.CmdArgs (cmdArgs)
 
 --import Numeric.ER.Real.DefaultRepr
 
@@ -25,17 +30,83 @@ import Data.List
 
 main :: IO ()
 main 
-    = undefined
---    = simplifyMain lookupFile
+    = simplifyMain lookupFile
     
-lookupFile :: [FilePath] -> IO [(String, Problem)]
-lookupFile otherArgs@(inputPath : _)
-    | hasFormExtension inputPath = lookupForm otherArgs
-    | hasPPExtension inputPath = lookupPP otherArgs
-    | hasSivExtension inputPath = lookupSiv otherArgs
-    | hasTptpExtension inputPath =
-        error "Input of TPTP files not supported yet"  
---        lookupTptp args
+simplifyMain :: 
+    ([String] -> IO [(FilePath, String, Problem)]) -> 
+    IO ()
+simplifyMain problemFactory =
+    do
+    reportCmdLine
+    argsPre <- cmdArgs paverDefaultArgs
+    let args = setDefaults argsPre
+    case checkArgs args of
+        [] -> 
+            do
+            let problemIdOpt = problemId args
+            problems <- problemFactory problemIdOpt
+            _results <- mapM (runProblem args) problems
+            return ()
+        msgs -> 
+            do
+            mapM_ putStrLn msgs
+            error "The above errors have been identified in the command-line arguments."
+    where
+    runProblem args (origFilePath, name, problem)
+        =
+        do
+        putStrLn banner
+        putStrLn $ "*** applying pp_simplify on conjecture " ++ name
+        _ <- mapM saveSimplification simplifications
+        putStrLn $ "total simplifications count: " ++ show (length simplifications) 
+        putStrLn banner
+        where
+        simplifications = simplifyProblem args (name, problem)
+        saveSimplification (name2, form, description) =
+            do
+            putStrLn $ "writing file: " ++ filePath
+            writeFile filePath (descriptionAsComment ++ show form)
+            where
+            filePath = origFilePath ++ "-" ++ name2 ++ ".form"
+            descriptionAsComment =
+                unlines $ map makeLineAComment $ lines description
+            makeLineAComment line = "-- " ++ line
+    banner = replicate 100 '*'
+        
+        
+simplifyProblem :: Args -> (String, Problem) -> [(String, Form TermHash, String)]
+simplifyProblem _args (name, problem) =
+    map addName $ zip [1..] formsAndDescriptions
+    where
+    addName (n, (form2, description)) =
+        (name ++ "-simplified" ++ show (n :: Int), form2, description)
+--        where
+--        reducedVarsS = 
+--            concat $ map showVarName $ Set.toAscList reducedVars
+--        showVarName varId =
+--            map (\(_,_,_) -> )
+--            $ filter (\(i,_,_) -> i == varId) box
+    formsAndDescriptions = simplifyUsingSubstitutions form
+    form = addHashesInForm $ problem_form problem
+--    box = problem_box problem
+        
+    
+lookupFile :: [FilePath] -> IO [(FilePath, String, Problem)]
+lookupFile otherArgs@(inputPath : _) =
+    do
+    problems <- getProblems
+    return $ map addPath problems
+    where
+    addPath (name, problem) = (inputPath, name, problem)
+    getProblems
+        | hasFormExtension inputPath = lookupForm otherArgs
+        | hasPPExtension inputPath = lookupPP otherArgs
+        | hasSivExtension inputPath = lookupSiv otherArgs
+        | hasTptpExtension inputPath =
+            error "TPTP files not supported yet"
+        | otherwise =
+            error $ "Unsupported file type: " ++ inputPath
+              
 lookupFile _ =
     do 
     reportCmdLine
@@ -45,8 +116,13 @@ lookupForm :: [FilePath] -> IO [(String, Problem)]
 lookupForm [inputPath] =
     do
     fileContents <- readFile inputPath
-    return $ form2problems $ read fileContents
+    return $ form2problems $ read $ removeComments fileContents
     where
+    removeComments s =
+        unlines $ filter (not . isCommentLine) $ lines s
+        where
+        isCommentLine ('-' : '-' : _) = True
+        isCommentLine _ = False
     form2problems form =
         case getBox form of
             Right box -> mkProblems (inputPath, form, box)
@@ -114,7 +190,7 @@ mkProblems (name, vc, box) =
     map mkProb $ zip [1..] subvcs
     where
     mkProb (conclusionNumber, subvc) = 
-        (name ++ " conclusion " ++ show (conclusionNumber :: Int), Problem box subvc)
+        (name ++ "-" ++ show (conclusionNumber :: Int), Problem box subvc)
     subvcs = splitConclusion vc 
     
 
