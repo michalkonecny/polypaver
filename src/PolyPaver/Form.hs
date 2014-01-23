@@ -534,9 +534,9 @@ showTermIL showLabel = st
         indentedOpenCloseT open close optional term
             | optional && isAtomicTerm term = st maybeIndentLevel term
             | optional = 
-                open ++ indentNext ++ stNext term ++ indent ++ close
+                open ++ stNext term ++ indent ++ close
             | otherwise = 
-                open ++ labIfIndented ++ indentNext ++ stNext term ++ indent ++ addLabel close
+                open ++ labIfIndented ++ stNext term ++ indent ++ addLabel close
             where
             labIfIndented =
                 case (maybeNextIndentLevel) of
