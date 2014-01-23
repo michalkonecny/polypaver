@@ -69,8 +69,13 @@ lookupForm :: Args -> [FilePath] -> IO [(String, Problem)]
 lookupForm args [inputPath] =
     do
     fileContents <- readFile inputPath
-    return $ form2problems $ read fileContents
+    return $ form2problems $ read $ removeComments fileContents
     where
+    removeComments s =
+        unlines $ filter (not . isCommentLine) $ lines s
+        where
+        isCommentLine ('-' : '-' : _) = True
+        isCommentLine _ = False
     tightnessVals = getTightnessValues args
     form2problems form =
         case getBox form of
