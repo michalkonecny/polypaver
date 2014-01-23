@@ -31,23 +31,54 @@ simplifyUsingSubstitutions form =
     strongerForms
     where
     strongerForms =
-        map buildFormFromConclusion conclusionsWithDescriptions
+        maybeFormWithoutNonConclusionVars ++
+        (concat $ map buildFormFromConclusion conclusionsWithDescriptions)
         where
-        buildFormFromConclusion (c, reducedVars, description) 
-            =
-            (addHashesInForm reducedForm, description2)
+        maybeFormWithoutNonConclusionVars 
+            | length hypotheses == length hypothesesWithOnlyConclusionVars = []
+            | otherwise = [(addHashesInForm reducedForm, description)]
             where
-            description2 =
-                description
-                ++ "\n simplified formula:\n"
-                ++ showForm 10000 const reducedForm
+            description =
+                "removed hypotheses that contain variables not in the conclusion"
+                ++ "\n\n original formula:\n"
+                ++ showForm 2000 const form  
                 ++ "\n"  
+                ++ "\n simplified formula:\n"
+                ++ showForm 2000 const reducedForm
+                ++ "\n"
             reducedForm = 
+                joinHypothesesAndConclusion (hypothesesWithOnlyConclusionVars, conclusion)
+            hypothesesWithOnlyConclusionVars =
+                filter (hasOnlyVars conclusionVars) hypotheses
+        buildFormFromConclusion (c, reducedVars, description) 
+            | length hypothesesWithoutReducedVars == length hypothesesWithOnlyConclusionVars =
+                [(addHashesInForm reducedForm1, description1)]
+            | otherwise =
+                [(addHashesInForm reducedForm1, description1),
+                 (addHashesInForm reducedForm2, description2)]
+            where
+            description1 =
+                description ++ "; removed hypotheses that contain a reduced variable"
+                ++ "\n simplified formula:\n"
+                ++ showForm 2000 const reducedForm1
+                ++ "\n"
+            description2 =
+                description ++ "; removed hypotheses that contain variables not in the conclusion"
+                ++ "\n simplified formula:\n"
+                ++ showForm 2000 const reducedForm2
+                ++ "\n"
+            reducedForm1 = 
                 joinHypothesesAndConclusion (hypothesesWithoutReducedVars, c)
+            reducedForm2 = 
+                joinHypothesesAndConclusion (hypothesesWithOnlyConclusionVars, c)
+            hypothesesWithOnlyConclusionVars =
+                filter (hasOnlyVars $ getFormFreeVars c) hypotheses
             hypothesesWithoutReducedVars =
                 filter hasNoReducedVar hypotheses -- remove hypotheses that feature a removed variable
             hasNoReducedVar h =
                 Set.null $ reducedVars `Set.intersection` (getFormFreeVars h)
+    hasOnlyVars vars h =
+        getFormFreeVars h `Set.isSubsetOf` vars
     conclusionsWithDescriptions = 
         map addDescription $
             filter hasReducedTheArity $ -- ignoring substitutions that do not reduce arity 
@@ -59,7 +90,7 @@ simplifyUsingSubstitutions form =
             description =
                 "substitution:\n" ++ showSubstitution s -- ++ "; reducedVars = " ++ show reducedVars
                 ++ "\n\n original formula:\n"
-                ++ showForm 10000 const form  
+                ++ showForm 2000 const form  
                 ++ "\n"  
         hasReducedTheArity (_, reducedVars) = not $ Set.null reducedVars
         addReducedVariables (c,s) = ((c,s), conclusionVars `Set.difference` getFormFreeVars c)
