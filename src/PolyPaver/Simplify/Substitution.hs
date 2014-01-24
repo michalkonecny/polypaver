@@ -41,10 +41,10 @@ simplifyUsingSubstitutions form =
             description =
                 "removed hypotheses that contain variables not in the conclusion"
                 ++ "\n\n original formula:\n"
-                ++ showForm 2000 const form  
+                ++ showForm 1000000 const form  
                 ++ "\n"  
                 ++ "\n simplified formula:\n"
-                ++ showForm 2000 const reducedForm
+                ++ showForm 1000000 const reducedForm
                 ++ "\n"
             reducedForm = 
                 joinHypothesesAndConclusion (hypothesesWithOnlyConclusionVars, conclusion)
@@ -60,12 +60,12 @@ simplifyUsingSubstitutions form =
             description1 =
                 description ++ "; removed hypotheses that contain a reduced variable"
                 ++ "\n simplified formula:\n"
-                ++ showForm 2000 const reducedForm1
+                ++ showForm 1000000 const reducedForm1
                 ++ "\n"
             description2 =
                 description ++ "; removed hypotheses that contain variables not in the conclusion"
                 ++ "\n simplified formula:\n"
-                ++ showForm 2000 const reducedForm2
+                ++ showForm 1000000 const reducedForm2
                 ++ "\n"
             reducedForm1 = 
                 joinHypothesesAndConclusion (hypothesesWithoutReducedVars, c)
@@ -90,7 +90,7 @@ simplifyUsingSubstitutions form =
             description =
                 "substitution:\n" ++ showSubstitution s -- ++ "; reducedVars = " ++ show reducedVars
                 ++ "\n\n original formula:\n"
-                ++ showForm 2000 const form  
+                ++ showForm 1000000 const form  
                 ++ "\n"  
         hasReducedTheArity (_, reducedVars) = not $ Set.null reducedVars
         addReducedVariables (c,s) = ((c,s), conclusionVars `Set.difference` getFormFreeVars c)

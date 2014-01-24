@@ -175,7 +175,7 @@ runPaverReportingProgress problem args =
             args
             form -- the formula that needs deciding
             initbox
-    form = problem_form problem
+    form = sortHypothesesBySize $ problem_form problem
     varNames = getFormVarNames form
     initbox = boxFromIntervals varIsInts varNames boxBounds 
     varIsInts = IMap.fromList $ map (\(var,_,ii) -> (var, ii)) boxBoundsIsInts
