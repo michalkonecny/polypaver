@@ -170,7 +170,7 @@ vcHypothesesAndConclusions =
     m_reservedOp "->"
     m_whiteSpace
     cs <- many1 (try conclusion)
-    return $ foldr (--->) (foldl1 (/\) cs) $ sortFormulasBySize hs 
+    return $ foldr (--->) (foldl1 (/\) cs) $ hs 
 
 vcConclusionsOnly :: Parser (Form ())
 vcConclusionsOnly = 

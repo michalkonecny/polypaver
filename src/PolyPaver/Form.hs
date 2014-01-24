@@ -72,6 +72,19 @@ splitFormulaByAnds (And f1 f2) =
     splitFormulaByAnds f1 ++ splitFormulaByAnds f2
 splitFormulaByAnds f = [f] 
 
+sortHypothesesBySize :: Form l -> Form l
+sortHypothesesBySize form =
+    joinHypothesesAndConclusion 
+        (sortFormulasBySize hypotheses, conclusion)
+    where
+    (hypotheses, conclusion) = getHypothesesAndConclusion form
+
+sortFormulasBySize :: [Form l] -> [Form l]
+sortFormulasBySize formulas =
+    map snd $ sortBy (\a b -> compare (fst a) (fst b)) $ map addSize formulas
+    where
+    addSize formula = (getFormulaSize formula, formula)
+
 getFormulaSize :: Form l -> Int
 getFormulaSize form =
     case form of
@@ -89,12 +102,6 @@ getFormulaSize form =
         IsRange _ t1 t2 t3 -> 1 + (getTermSize t1) + (getTermSize t2) + (getTermSize t3)
         IsIntRange _ t1 t2 t3 -> 1 + (getTermSize t1) + (getTermSize t2) + (getTermSize t3)
         IsInt _ t -> 1 + (getTermSize t)
-
-sortFormulasBySize :: [Form l] -> [Form l]
-sortFormulasBySize formulas =
-    map snd $ sortBy (\a b -> compare (fst a) (fst b)) $ map addSize formulas
-    where
-    addSize formula = (getFormulaSize formula, formula)
 
 (/\) :: Form l -> Form l -> Form l
 (/\) = And
@@ -397,16 +404,17 @@ showForm maxLength showLabel origForm =
                 _ -> ""
         showOpF op f1 f2 =
             indentedBracketsF f1 
-            ++ indent ++ padIfInline op ++ indent ++
-            indentedBracketsF f2
+            ++ indent ++ padIfInline op
+            ++ indent ++ indentedBracketsF f2
         showPred lab predicate ts =
             labelIfInline lab
-            ++ predicate ++ "("
-            ++ (intercalate (indent ++ ", ") $ map (\t -> stNext t) ts)
+            ++ predicate 
+            ++ indent ++ "("
+            ++ (intercalate (indent ++ ", ") $ map (\t -> indentNext ++ stNext t) ts)
             ++ indent ++ ")"
         showOpT op lab t1 t2 =
             "[" ++ show lab ++ "] "
-            ++ st maybeIndentLevel t1 
+            ++ indent ++ st maybeIndentLevel t1 
             ++ indent ++ padIfInline op ++ labelIfSeparateLine lab 
             ++ indent ++ st maybeIndentLevel t2
         padIfInline op = 
@@ -490,9 +498,7 @@ showTermIL showLabel = st
                 (Term (Lit n, _)) | denominator n == 1 -> 
                     indentedOpenCloseT "(" (")^" ++ show (numerator n)) False t1 
                 _ ->
-                    (indentedOpenCloseT "(" ")^" False t1)
-                    ++
-                    (indentedOpenCloseT "(" ")" False t2)
+                    showOpT "^" "power" t1 t2
         stNext = st maybeNextIndentLevel
         indent = 
             case maybeIndentLevel of 
@@ -503,11 +509,12 @@ showTermIL showLabel = st
                 Just indentLevel -> "\n" ++ replicate indentLevel ' '
                 _ -> ""
         addLabel s = showLabel s label2
+        isLabelEmpty = showLabel "" label2 == "" 
         showOpT op _opname t1 t2 =
             case maybeNextIndentLevel of
                 Just _ ->
-                    indent ++ showLabel "" label2
-                    ++ indent ++ indentedBracketsT t1
+                    (if isLabelEmpty then "" else (showLabel "" label2 ++ indent))
+                    ++ indentedBracketsT t1
                     ++ indent ++ op
                     ++ indent ++ indentedBracketsT t2
                 _ -> 
@@ -517,11 +524,12 @@ showTermIL showLabel = st
                     ++ indentedBracketsT t2
                     ++ inlineClose
             where
-            inlineOpen = "(" 
-            inlineClose = ")" ++ showLabel "" label2 
+            (inlineOpen, inlineClose)
+                | isLabelEmpty = ("","")
+                | otherwise = ("(", ")" ++ showLabel "" label2) 
         showFnT fn ts =
             fn ++ labIfIndented ++ "("
-            ++ (intercalate (indent ++ ", ") $ map (\t -> stNext t) ts)
+            ++ (intercalate (indent ++ ", ") $ map (\t -> indentNext ++ stNext t) ts)
             ++ indent ++ ")"
             ++ showLabel "" label2
             where
@@ -534,9 +542,9 @@ showTermIL showLabel = st
         indentedOpenCloseT open close optional term
             | optional && isAtomicTerm term = st maybeIndentLevel term
             | optional = 
-                open ++ stNext term ++ indent ++ close
+                open ++ indentNext ++ stNext term ++ indent ++ close
             | otherwise = 
-                open ++ labIfIndented ++ stNext term ++ indent ++ addLabel close
+                open ++ labIfIndented ++ indentNext ++ stNext term ++ indent ++ addLabel close
             where
             labIfIndented =
                 case (maybeNextIndentLevel) of
