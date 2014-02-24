@@ -26,6 +26,8 @@ postCtx =
   `mappend` mathCtx
   `mappend` defaultContext
 
+bitCtx = postCtx
+
 mathCtx :: Context String
 mathCtx = field "mathjax" $ \item -> do
   metadata <- getMetadata $ itemIdentifier item
@@ -53,7 +55,8 @@ indexCtx posts bits =
   defaultContext
 
 bitsContext bits =
-    mconcat $ map setBit bits
+    mathCtx `mappend` 
+    (mconcat $ map setBit bits) 
     where
     setBit (Item bitId bitBody) =
         constField bitName bitBody
@@ -140,7 +143,10 @@ templates =
 
 bits :: Rules ()
 bits = 
-    match "bits/*" $ compile compiler
+    match "bits/*" $ 
+    compile $ compiler
+--      >>= loadAndApplyTemplate "templates/bit.html" bitCtx
+      >>= relativizeUrls
 
 --------------------------------------------------------------------
 -- Configuration

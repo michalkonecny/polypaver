@@ -8,8 +8,10 @@
     <title>PolyPaver | Home</title>
     <link href="./css/bootstrap.css" rel="stylesheet">
     <link href="./css/syntax.css" rel="stylesheet">
+    <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
 <!--     <link href="/css/carousel.css" rel="stylesheet"> -->
     <link href="http://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet" type="text/css">
+    
     <style>
         body { 
             font-family: 'Open Sans', sans-serif;
@@ -96,15 +98,55 @@
       <hr class="featurette-divider">
 
       <div class="row featurette">
-        <div class="col-md-7">
+        <div class="col-md-8">
           <h2 class="featurette-heading">About</h2>
 				<p class="lead">PolyPaver is an application for deciding systems of real
 					inequalities and interval inclusions over bounded real domains.</p>
-          <p>PolyPaver was first developed by Jan Duracz and Michal Konečný during Jan’s PhD study under Michal’s supervision.</p>
-<p>PolyPaver uses (a version of) Michal’s <a href="https://code.google.com/p/aern/">AERN library</a> under the hood.</p>
+          <p>Example problems that PolyPaver solves:</p>
+<p><span class="math">\[
+e^{x+y}
+ - e^{x}\in
+    [-0.01, 0.01] +
+    \int_x^{x + y} e^t\,\mathrm{d}t
+\]</span></p>
+<h4 id="features">Features:</h4>
+<ul>
+<li>Expressions with
+<ul>
+<li>The operations +,-,*,/, abs, sqrt, exp <!--, sin, cos --></li>
+<li>Explicit <strong>intervals</strong> and <strong>interval operations</strong></li>
+<li>Definite <strong>integrals</strong> (with arbitrary expressions for endpoints)</li>
+<li>Floating-point <strong>rounded operations</strong> (with adjustable precision)</li>
+</ul></li>
+<li>Verification of <strong>floating-point</strong> <a href="http://en.wikipedia.org/wiki/SPARK_(programming_language)">SPARK Ada</a> programs
+<ul>
+<li>Effective for procedures and functions with up to 4-6 floating-point variables</li>
+<li>Specifications can contain interval operations and integrals</li>
+<li>Arrays are not supported yet</li>
+</ul></li>
+<li>Live graphical progress update for 2D problems</li>
+</ul>
+<h4 id="planned">Planned:</h4>
+<ul>
+<li>Support for other elementary real functions</li>
+<li>Integration with SPARK 2014</li>
+<li>Problems in TPTP format as used in <a href="http://www.cl.cam.ac.uk/~lp15/papers/Arith/">MetiTarski</a></li>
+<li>Integration with symbolic theorem provers, SMT</li>
+<li>Proofs checkable by a widely trusted theorem prover</li>
+</ul>
+<h4 id="under-the-hood">Under the hood:</h4>
+<ul>
+<li>Multi-variate correctly rounded polynomial interval arithmetic for automatically reducing dependency effects</li>
+<li>Uses (a version of) the <a href="https://code.google.com/p/aern/">AERN library</a></li>
+</ul>
+<h4 id="origin">Origin:</h4>
+<ul>
+<li>PolyPaver was first developed by Jan Duracz and Michal Konečný during Jan’s PhD study under Michal’s supervision.</li>
+<li>Sponsored by EPSRC and Altran Praxis</li>
+</ul>
 			</div>
-        <div class="col-md-5">
-          <img class="featurette-image img-responsive" src="img/skewing-d0.jpg" alt="Example PolyPaver plot">
+        <div class="col-md-4">
+          <img class="featurette-image img-responsive" src="img/skewing-d0.jpg" alt="Example PolyPaver plot" width="300">
 <!--           <img class="featurette-image img-responsive" data-src="holder.js/300x300/auto" alt="Example PolyPaver plot"> -->
         </div>
       </div>
