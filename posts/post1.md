@@ -8,7 +8,7 @@ mathjax: on
 PolyPaver has been slowly settling on GitHub.  Today, these pages have been added as a part of this process.
 The pages are built using Hakyll and Bootstrap.
 
-I plan to soon add also:
+The following is planned to be added soon:
  
   * Tutorials
   * Reference help pages

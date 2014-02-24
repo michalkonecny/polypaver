@@ -1,5 +1,5 @@
 ---
-title: Features
+title: PolyPaver | Features
 author: Michal Konečný
 date: 2014-02-24
 mathjax: on
