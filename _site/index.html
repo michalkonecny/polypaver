@@ -102,13 +102,44 @@
           <h2 class="featurette-heading">About</h2>
 				<p class="lead">PolyPaver is an application for deciding systems of real
 					inequalities and interval inclusions over bounded real domains.</p>
-          <p>Example problems that PolyPaver solves:</p>
+          <p>Some statements that PolyPaver proves automatically in a few seconds or minutes:</p>
 <p><span class="math">\[
+\left(
+\begin{array}{l}
+a \in [-10, 10]\\
+b \in [-10, 10]\\
+b &gt; a + 0.1
+\end{array}
+\right)
+\implies
+e^{a} - e^{b} &gt; (b - a) e^{\frac{a+b}{2}}
+\]</span></p>
+<p><span class="math">\[
+\left(
+\begin{array}{l}
+x \in [0, 1]\\
+y \in [0, 1]\\
+\end{array}
+\right)
+\implies
 e^{x+y}
  - e^{x}\in
     [-0.01, 0.01] +
     \int_x^{x + y} e^t\,\mathrm{d}t
 \]</span></p>
+<p><span class="math">\[
+\left(
+\begin{array}{l}
+x \in [0.5, 2]\\
+r \in [0, 3]\\
+r \in [-x^2/4+x, x^2/4+1]\\
+r = (0.5 \otimes (r \oplus x \oslash r))\\
+\end{array}
+\right)
+\implies
+0.5 \otimes (r \oplus x \oslash r) \in (1+4\varepsilon)\sqrt{x}
+\]</span></p>
+<p>where <span class="math">\(\otimes, \oplus, \oslash\)</span> are double-precision floating-point operations and <span class="math">\(\varepsilon\)</span> is the corresponding floating-point epsilon.</p>
 <h4 id="features">Features:</h4>
 <ul>
 <li>Expressions with
@@ -129,7 +160,7 @@ e^{x+y}
 <h4 id="planned">Planned:</h4>
 <ul>
 <li>Support for other elementary real functions</li>
-<li>Integration with SPARK 2014</li>
+<li>Integration with <a href="http://www.spark-2014.org/">SPARK 2014</a></li>
 <li>Problems in TPTP format as used in <a href="http://www.cl.cam.ac.uk/~lp15/papers/Arith/">MetiTarski</a></li>
 <li>Integration with symbolic theorem provers, SMT</li>
 <li>Proofs checkable by a widely trusted theorem prover</li>

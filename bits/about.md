@@ -5,15 +5,49 @@ date: 2014-02-24
 mathjax: on
 ---
 
-Example problems that PolyPaver solves:
+Some statements that PolyPaver proves automatically in a few seconds or minutes:
 
 $$
+\left(
+\begin{array}{l}
+a \in [-10, 10]\\
+b \in [-10, 10]\\
+b > a + 0.1
+\end{array}
+\right)
+\implies
+e^{a} - e^{b} > (b - a) e^{\frac{a+b}{2}}
+$$
+
+$$
+\left(
+\begin{array}{l}
+x \in [0, 1]\\
+y \in [0, 1]\\
+\end{array}
+\right)
+\implies
 e^{x+y}
  - e^{x}\in
     [-0.01, 0.01] +
     \int_x^{x + y} e^t\,\mathrm{d}t
 $$ 
 
+$$
+\left(
+\begin{array}{l}
+x \in [0.5, 2]\\
+r \in [0, 3]\\
+r \in [-x^2/4+x, x^2/4+1]\\
+r = (0.5 \otimes (r \oplus x \oslash r))\\
+\end{array}
+\right)
+\implies
+0.5 \otimes (r \oplus x \oslash r) \in (1+4\varepsilon)\sqrt{x}
+$$
+
+where $\otimes, \oplus, \oslash$ are double-precision floating-point operations
+and $\varepsilon$ is the corresponding floating-point epsilon. 
 
 #### Features:
 
@@ -31,7 +65,7 @@ $$
 #### Planned:
 
   * Support for other elementary real functions
-  * Integration with SPARK 2014
+  * Integration with [SPARK 2014](http://www.spark-2014.org/)
   * Problems in TPTP format as used in [MetiTarski](http://www.cl.cam.ac.uk/~lp15/papers/Arith/)
   * Integration with symbolic theorem provers, SMT
   * Proofs checkable by a widely trusted theorem prover
