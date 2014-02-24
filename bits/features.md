@@ -10,7 +10,7 @@ mathjax: on
     * Explicit **intervals** and **interval operations**
     * Definite **integrals** (with arbitrary expressions for endpoints)
     * Floating-point **rounded operations** (with adjustable precision)
-  * Verification of **floating-point** [SPARK Ada](http://en.wikipedia.org/wiki/SPARK_(programming_language)) programs
+  * Verification of **floating-point** [SPARK/Ada 2005](http://en.wikipedia.org/wiki/SPARK_(programming_language)) programs
     * Effective for procedures and functions with up to 4-6 floating-point variables
     * Specifications can contain interval operations and integrals
     * Arrays are not supported yet
