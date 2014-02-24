@@ -5,7 +5,7 @@ date: 2014-02-24
 mathjax: on
 ---
 
-Some statements that PolyPaver proves automatically in a few seconds or minutes:
+Some statements that PolyPaver proves **automatically** in a few seconds or minutes:
 
 $$
 \left(
@@ -46,15 +46,15 @@ r = (0.5 \otimes (r \oplus x \oslash r))\\
 0.5 \otimes (r \oplus x \oslash r) \in (1+4[-\varepsilon, \varepsilon])\sqrt{x}
 $$
 
-where $\otimes, \oplus, \oslash$ are double-precision floating-point operations
+where $\otimes, \oplus, \oslash$ are single-precision floating-point operations
 and $\varepsilon$ is the corresponding floating-point epsilon. 
 
-#### Under the hood:
+### Under the hood:
 
   * Multi-variate correctly rounded polynomial interval arithmetic for automatically reducing dependency effects
   * Uses (a version of) the [AERN library](https://code.google.com/p/aern/)
   
-#### Origin:
+### Origin:
 
   * PolyPaver was first developed by Jan Duracz and Michal Konečný during Jan's PhD study under Michal's supervision.
   * Sponsored by EPSRC and Altran Praxis 

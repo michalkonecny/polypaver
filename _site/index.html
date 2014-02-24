@@ -20,12 +20,7 @@
     </script>    
 <!--     <link href="/css/carousel.css" rel="stylesheet"> -->
     <link href="http://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet" type="text/css">
-    
-    <style>
-        body { 
-            font-family: 'Open Sans', sans-serif;
-        }
-    </style>
+    <link href="./css/polypaver.css" rel="stylesheet">
   </head>
   <body>
     <div class="navbar-wrapper">
@@ -70,7 +65,10 @@
     <!-- Marketing messaging and featurettes
     ================================================== -->
 
+
     <div class="container marketing">
+    
+    <h2>PolyPaver | Home</h2>
 
 <!--
       <div class="row">
@@ -115,7 +113,7 @@
                     <a href="http://en.wikipedia.org/wiki/SPARK_(programming_language)">SPARK/Ada 2005</a> 
                     programs.
                 </p>
-          <p>Some statements that PolyPaver proves automatically in a few seconds or minutes:</p>
+          <p>Some statements that PolyPaver proves <strong>automatically</strong> in a few seconds or minutes:</p>
 <p><span class="math">\[
 \left(
 \begin{array}{l}
@@ -152,13 +150,13 @@ r = (0.5 \otimes (r \oplus x \oslash r))\\
 \implies
 0.5 \otimes (r \oplus x \oslash r) \in (1+4[-\varepsilon, \varepsilon])\sqrt{x}
 \]</span></p>
-<p>where <span class="math">\(\otimes, \oplus, \oslash\)</span> are double-precision floating-point operations and <span class="math">\(\varepsilon\)</span> is the corresponding floating-point epsilon.</p>
-<h4 id="under-the-hood">Under the hood:</h4>
+<p>where <span class="math">\(\otimes, \oplus, \oslash\)</span> are single-precision floating-point operations and <span class="math">\(\varepsilon\)</span> is the corresponding floating-point epsilon.</p>
+<h3 id="under-the-hood">Under the hood:</h3>
 <ul>
 <li>Multi-variate correctly rounded polynomial interval arithmetic for automatically reducing dependency effects</li>
 <li>Uses (a version of) the <a href="https://code.google.com/p/aern/">AERN library</a></li>
 </ul>
-<h4 id="origin">Origin:</h4>
+<h3 id="origin">Origin:</h3>
 <ul>
 <li>PolyPaver was first developed by Jan Duracz and Michal Konečný during Jan’s PhD study under Michal’s supervision.</li>
 <li>Sponsored by EPSRC and Altran Praxis</li>

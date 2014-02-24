@@ -8,7 +8,7 @@
     <title>features</title>
     <link href="../css/bootstrap.css" rel="stylesheet">
     <link href="../css/syntax.css" rel="stylesheet">
-    <link href="../css/carousel.css" rel="stylesheet">
+<!--     <link href="/css/carousel.css" rel="stylesheet"> -->
     <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
     <link href="http://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet" type="text/css">
     <script>
@@ -20,13 +20,7 @@
       ga('create', 'UA-48373296-1', 'michalkonecny.github.io');
       ga('send', 'pageview');
     </script>    
-    <style>
-        body { 
-            font-family: 'Open Sans', sans-serif;
-        }
-        body { margin-top: 80px; }
-        footer { margin-top: 80px; }
-    </style>
+    <link href="../css/polypaver.css" rel="stylesheet">
   </head>
   <body>
 
@@ -75,28 +69,37 @@
 <hr class="divider">
 
 <div class="marketing">
-    <h2>Features</h2>
-    <ul>
-<li>Expressions with
+        <h3 id="in-version-0.3">In version 0.3:</h3>
+<ul>
+<li>Deciding conjectures with expressions that contain
 <ul>
 <li>The operations +,-,*,/, abs, sqrt, exp <!--, sin, cos --></li>
 <li>Explicit <strong>intervals</strong> and <strong>interval operations</strong></li>
 <li>Definite <strong>integrals</strong> (with arbitrary expressions for endpoints)</li>
 <li>Floating-point <strong>rounded operations</strong> (with adjustable precision)</li>
 </ul></li>
-<li>Verification of <strong>floating-point</strong> <a href="http://en.wikipedia.org/wiki/SPARK_(programming_language)">SPARK/Ada 2005</a> programs
+<li>Verification of <strong>floating-point</strong> <a href="http://en.wikipedia.org/wiki/SPARK_(programming_language)">SPARK/Ada 2005</a> code
 <ul>
-<li>Effective for procedures and functions with up to 4-6 floating-point variables</li>
+<li>Full verification of floating-point code in cooperation with the official SPARK tools
+<ul>
+<li>Functional correctness</li>
+<li>Freedom from numerical exceptions</li>
+</ul></li>
+<li>Annotations can specify
+<ul>
+<li>a bound on rounding errors, as a function of input values</li>
+<li>a relation of floating-point results with intuitive mathematical meaning<br /></li>
+</ul></li>
 <li>Specifications can contain interval operations and integrals</li>
-<li>Arrays are not supported yet</li>
+<li>Effective for procedures and functions with up to 4-6 floating-point variables <em>(arrays are not supported yet)</em></li>
 </ul></li>
 <li>Live graphical progress update for 2D problems</li>
 </ul>
-<h4 id="planned">Planned:</h4>
+<h3 id="planned">Planned:</h3>
 <ul>
 <li>Support for other elementary real functions</li>
 <li>Integration with <a href="http://www.spark-2014.org/">SPARK 2014</a></li>
-<li>Problems in TPTP format as used in <a href="http://www.cl.cam.ac.uk/~lp15/papers/Arith/">MetiTarski</a></li>
+<li>Support for formulas in TPTP format as used in <a href="http://www.cl.cam.ac.uk/~lp15/papers/Arith/">MetiTarski</a></li>
 <li>Integration with symbolic theorem provers, SMT</li>
 <li>Proofs checkable by a widely trusted theorem prover</li>
 </ul>
