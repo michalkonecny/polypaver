@@ -43,7 +43,7 @@ r = (0.5 \otimes (r \oplus x \oslash r))\\
 \end{array}
 \right)
 \implies
-0.5 \otimes (r \oplus x \oslash r) \in (1+4\varepsilon)\sqrt{x}
+0.5 \otimes (r \oplus x \oslash r) \in (1+4[-\varepsilon, \varepsilon])\sqrt{x}
 $$
 
 where $\otimes, \oplus, \oslash$ are double-precision floating-point operations
