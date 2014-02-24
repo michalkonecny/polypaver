@@ -51,8 +51,8 @@ and $\varepsilon$ is the corresponding floating-point epsilon.
 
 ### Under the hood:
 
-  * Multi-variate correctly rounded polynomial interval arithmetic for automatically reducing dependency effects
-  * Uses (a version of) the [AERN library](https://code.google.com/p/aern/)
+  * PolyPaver relies on a multi-variate correctly rounded function interval arithmetic
+  * It currently uses (a version of) the polynomial interval arithmetic from the [AERN library](https://code.google.com/p/aern/)
   
 ### Origin:
 
