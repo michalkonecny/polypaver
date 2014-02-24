@@ -1,5 +1,9 @@
 
-PolyPaver is an application for deciding systems of real
-inequalities and interval inclusions over bounded real domains.
+PolyPaver is a theorem prover specialised in real number
+inequalities and interval inclusions over bounded domains.
+
+Verifier of floating-point 
+[SPARK/Ada 2005](http://en.wikipedia.org/wiki/SPARK_(programming_language)) programs.
+
                     
 ## [PolyPaver homepage](http://michalkonecny.github.io/polypaver/_site/)
