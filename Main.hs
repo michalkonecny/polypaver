@@ -13,7 +13,7 @@ module Main where
 
 import Hakyll
 import Text.Pandoc
-import Data.Monoid (mappend)
+import Data.Monoid (mappend, mconcat)
 import qualified Data.Map as M
 
 --------------------------------------------------------------------
@@ -43,10 +43,22 @@ tutorialsCtx posts =
   `mappend` constField "title" "PolyPaver | Tutorials"
   `mappend` defaultContext
 
-indexCtx posts =
+indexCtx posts bits =
   listField "posts" postCtx (return posts)
-  `mappend` constField "title" "PolyPaver | Home"
-  `mappend` defaultContext
+  `mappend` 
+  constField "title" "PolyPaver | Home"
+  `mappend`
+  bitsContext bits
+  `mappend` 
+  defaultContext
+
+bitsContext bits =
+    mconcat $ map setBit bits
+    where
+    setBit (Item bitId bitBody) =
+        constField bitName bitBody
+        where
+        bitName = drop 5 $ toFilePath bitId
 
 --------------------------------------------------------------------
 -- Rules
@@ -117,12 +129,18 @@ index = do
     route idRoute
     compile $ do
       posts <- recentFirst =<< loadAll "posts/*"
+      bits <- recentFirst =<< loadAll "bits/*"
       getResourceBody
-        >>= applyAsTemplate (indexCtx posts)
+        >>= applyAsTemplate (indexCtx posts bits)
         >>= relativizeUrls
 
 templates :: Rules ()
-templates = match "templates/*" $ compile templateCompiler
+templates = 
+    match "templates/*" $ compile templateCompiler
+
+bits :: Rules ()
+bits = 
+    match "bits/*" $ compile compiler
 
 --------------------------------------------------------------------
 -- Configuration
@@ -146,3 +164,4 @@ main = hakyllWith cfg $ do
   tutorialsIndex
   index
   templates
+  bits
