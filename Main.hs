@@ -86,9 +86,14 @@ pages :: Rules ()
 pages = do
   match "pages/*" $ do
     route $ setExtension "html"
-    compile $ getResourceBody
-      >>= loadAndApplyTemplate "templates/page.html"    postCtx
-      >>= relativizeUrls
+    compile $ do
+      posts <- recentFirst =<< loadAll "posts/*"
+      bits <- recentFirst =<< loadAll "bits/*"
+      getResourceBody
+        >>= loadAndApplyTemplate "templates/page.html"    postCtx
+        >>= applyAsTemplate (indexCtx posts bits)
+        >>= relativizeUrls
+
 
 newsPosts :: Rules ()
 newsPosts = do
