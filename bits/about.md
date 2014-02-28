@@ -57,7 +57,7 @@ and $\varepsilon$ is the corresponding floating-point epsilon.
 ### Origin:
 
   * PolyPaver was first developed by Jan Duracz and Michal Konečný during Jan's PhD study under Michal's supervision.
-  * Sponsored by EPSRC and Altran Praxis 
+  * The project has been sponsored by EPSRC and Altran Praxis.
 
 
 
