@@ -80,8 +80,52 @@
 </ol>
 <hr />
 <h3 id="the-ada-program">The Ada program</h3>
-<h3 id="the-preconditions">The preconditions</h3>
-<h3 id="the-postcondition">The postcondition</h3>
+<p>The program computes an approximation of the integral</p>
+<p><span class="math">\[
+\int_0^x e^{-t^2}\;\mathrm{d}t
+\]</span></p>
+<p>using the left Riemann sum over a partition of equal size.</p>
+<p>This integral is an essential part of the <a href="http://en.wikipedia.org/wiki/Error_function">Gauss error function</a> and it has no closed algebraic solution.</p>
+<p>The Ada specification and body are as follows:</p>
+<pre class="sourceCode ada"><code class="sourceCode ada"><span class="kw">package</span> Riemann <span class="kw">is</span> 
+
+   <span class="kw">function</span> erf_Riemann(x : <span class="dt">Float</span>; n : <span class="dt">Integer</span>) <span class="kw">return</span> <span class="dt">Float</span>;
+
+<span class="kw">end</span> Riemann;</code></pre>
+<p>The parameter <span class="math">\(n\)</span> determines the number of segments to be used in the partition. The partition has <span class="math">\(2^n\)</span> segments.</p>
+<pre class="sourceCode ada"><code class="sourceCode ada"><span class="kw">with</span> PP_F_Elementary;
+
+<span class="kw">package</span> <span class="kw">body</span> Riemann <span class="kw">is</span>
+
+   <span class="kw">function</span> erf_Riemann(x : <span class="dt">Float</span>; n : <span class="dt">Integer</span>) <span class="kw">return</span> <span class="dt">Float</span>
+   <span class="kw">is</span>
+      partitionSize : <span class="dt">Integer</span>;
+      stepSize : <span class="dt">Float</span>;
+      stepStart : <span class="dt">Float</span>;
+      valueStart : <span class="dt">Float</span>;
+      result : <span class="dt">Float</span>;
+      step : <span class="dt">Integer</span>;
+   <span class="kw">begin</span>
+      partitionSize := <span class="dv">2</span> ** n;
+      stepSize := x/<span class="dt">Float</span>(partitionSize);
+      result := <span class="fl">0.0</span>;
+      <span class="kw">for</span> step <span class="kw">in</span> <span class="dv">0</span>..((<span class="dv">2</span>^n)-<span class="dv">1</span>) <span class="kw">loop</span>
+         stepStart := stepSize * <span class="dt">Float</span>(step);
+         valueStart :=
+           PP_F_Elementary.Exp(-(stepStart * stepStart));
+         result := 
+           result + stepSize * valueStart;
+         step := step + <span class="dv">1</span>;
+      <span class="kw">end loop</span>;
+      <span class="kw">return</span> result;
+   <span class="kw">end</span> erf_Riemann;
+
+<span class="kw">end</span> Riemann;</code></pre>
+<p>The package <code>PP_F_Elementary</code> is a PolyPaver-friendly alternative to <code>Ada.Numeric.Elementary_Functions</code>.<br />This package is included in the PolyPaver download bundle.</p>
+<h3 id="precondition-and-postcondition">Precondition and postcondition</h3>
+<p><em>bounds for variables</em></p>
+<p><em>bounds on model error</em></p>
+<p><em>bounds on rounding error</em></p>
 <h3 id="the-loop-invariant">The loop invariant</h3>
 <!--
 Some math:
@@ -169,7 +213,7 @@ Fin.
       <footer>
   <p class="pull-right"><a href="#">Back to top</a></p>
   <p>
-    © 2014 Michal Konečný 
+    © 2009-2014 Michal Konečný, Jan Duracz
 <!--     &middot;  -->
 <!--     <a href="/pages/privacy.html">Privacy</a>  -->
 <!--     &middot;  -->
