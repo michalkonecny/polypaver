@@ -172,6 +172,7 @@ main = hakyllWith cfg $ do
   pages
   newsPosts
   newsIndex
+  tutorials
   tutorialsIndex
   index
   templates

@@ -1,0 +1,186 @@
+<!DOCTYPE HTML>
+<html lang="en">
+  <head>
+    <title>Verifying a SPARK FP program, Part 1: Annotations</title>
+        <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content>
+    <meta name="author" content>
+    <link href="../css/bootstrap.css" rel="stylesheet">
+    <link href="../css/syntax.css" rel="stylesheet">
+    <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link href="http://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet" type="text/css">
+    <script>
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+      })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+    
+      ga('create', 'UA-48373296-1', 'michalkonecny.github.io');
+      ga('send', 'pageview');
+    </script>    
+    <link href="../css/polypaver.css" rel="stylesheet">
+    <link href="../img/logo-24.ico" rel="shortcut icon" />
+  </head>
+  <body>
+    <div class="navbar-wrapper">
+  <div class="container">
+    <div class="navbar navbar-inverse navbar-static-top" role="navigation">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="../index.html">
+            <img src="../img/logo.png" width="24" />
+            PolyPaver
+          </a>
+        </div>
+        <div class="navbar-collapse collapse">
+          <ul class="nav navbar-nav">
+            <li><a href="../index.html">Home</a></li>
+<!--             <li class="dropdown"> -->
+<!--               <a href="#" class="dropdown-toggle" data-toggle="dropdown">Products <b class="caret"></b></a> -->
+<!--               <ul class="dropdown-menu"> -->
+<!--                 <li><a href="#">Warp Drive</a></li> -->
+<!--                 <li><a href="#">Fusion Reactor</a></li> -->
+<!--                 <li><a href="#">Sufficiently Smart Compiler</a></li> -->
+<!--                 <li class="divider"></li> -->
+<!--                 <li class="dropdown-header">Services</li> -->
+<!--                 <li><a href="#">Enlightenment</a></li> -->
+<!--               </ul> -->
+<!--             </li> -->
+            <li><a href="../pages/features.html">Features</a></li>
+<!--             <li><a href="/tutorials.html">Tutorials</a></li> -->
+            <li><a href="../news.html">News</a></li>
+            <li><a href="https://github.com/michalkonecny/polypaver">on GitHub</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+    <div class="container">
+      <h2>Verifying a SPARK FP program, Part 1: Annotations</h2>
+      <hr class="divider" />
+      
+      <p>This tutorial shows the steps of writing a floating-point SPARK 2005 program and proving it computes numbers that correspond to its intuitive meaning as well as proving the absence of numerical exceptions.</p>
+<p>The tutorial is divided into the following parts:</p>
+<ol style="list-style-type: decimal">
+<li><strong>Annotations: Annotating a SPARK floating-point program</strong> <em>(this page)</em></li>
+<li>Generation: Generating valid VCs <em>(coming soon)</em></li>
+<li>Proving easier VCs: Proving most of the VCs and identifying challenging VCs <em>(coming soon)</em></li>
+<li>Proving harder VCs: Attempting to prove the harder VCs <em>(coming soon)</em></li>
+<li>Debugging: Detecting and locating mistakes in SPARK floating-point programs <em>(coming soon)</em></li>
+</ol>
+<hr />
+<h3 id="the-ada-program">The Ada program</h3>
+<h3 id="the-preconditions">The preconditions</h3>
+<h3 id="the-postcondition">The postcondition</h3>
+<h3 id="the-loop-invariant">The loop invariant</h3>
+<!--
+Some math:
+
+$$
+\begin{aligned}
+\nabla \times \vec{\mathbf{B}} -\, \frac1c\, \frac{\partial\vec{\mathbf{E}}}{\partial t} & = \frac{4\pi}{c}\vec{\mathbf{j}} \\   \nabla \cdot \vec{\mathbf{E}} & = 4 \pi \rho \\
+\nabla \times \vec{\mathbf{E}}\, +\, \frac1c\, \frac{\partial\vec{\mathbf{B}}}{\partial t} & = \vec{\mathbf{0}} \\
+\nabla \cdot \vec{\mathbf{B}} & = 0 \end{aligned}
+$$
+
+Some Hakell code:
+
+```haskell
+newtype MonadMonoid m a = MonadMonoid { unMonad :: a -> m a }
+
+instance Monad m => Monoid (MonadMonoid m a) where
+  mempty = MonadMonoid return
+  mappend f g = MonadMonoid (f >=> g)
+```
+
+Some SPARK code:
+
+```ada
+with PP_F_Elementary;
+with PP_LF_Elementary;
+
+package body Riemann is
+
+   function erf_Riemann(x : Float; n : Integer) return Float
+   is
+      partitionSize : Integer;
+      stepSize : Float;
+      stepStart : Float;
+      valueStart : Float;
+      result : Float;
+      step : Integer;
+   begin
+      partitionSize := 2 ** n;
+      stepSize := x/Float(partitionSize);
+      result := 0.0;
+      step := 0;
+      while step < partitionSize loop -- for step = 0..((2^n)-1) loop
+         stepStart := stepSize * Float(step);
+         --# assert 
+         --#     PP_F_Exact.Contained_In(
+         --#         result
+         --#         ,
+         --#         PP_F_Exact.Integral
+         --#            (0.0, stepStart,
+         --#             PP_F_Exact.Exp(-PP_F_Exact.Integration_Variable**2)
+         --#            )
+         --#         +
+         --#         PP_F_Exact.Interval(
+         --#              - c*Float(step+1)
+         --#              ,
+         --#              (1.0-PP_F_Exact.Exp(-(x * Float(step)/Float(partitionSize))**2))*x/Float(partitionSize)
+         --#              + c*Float(step+1)
+         --#         )
+         --#     )
+         --#     and PP_F_Exact.Is_Range(result,-10, 100.0)
+         --#     and PP_Integer.Is_Range(n, 1, 10) 
+         --#     and PP_Integer.Is_Range(step, 0, partitionSize-1)
+         --#     and partitionSize = 2 ** n
+         --#     and stepStart = PP_F_Rounded.Multiply(6, stepSize, Float(step))
+         --#     and stepSize = PP_F_Rounded.Divide(6, x, Float(partitionSize));
+
+         valueStart :=
+           PP_F_Elementary.Exp(-(stepStart * stepStart));
+         result := 
+           result + stepSize * valueStart;
+         step := step + 1;
+      end loop;
+      return result;
+   end erf_Riemann;
+
+end Riemann;
+```
+
+Fin.
+-->
+
+
+      <hr class="divider" />
+      <footer>
+  <p class="pull-right"><a href="#">Back to top</a></p>
+  <p>
+    © 2014 Michal Konečný 
+<!--     &middot;  -->
+<!--     <a href="/pages/privacy.html">Privacy</a>  -->
+<!--     &middot;  -->
+<!--     <a href="/pages/tos.html">Terms</a></p> -->
+</footer>
+
+    </div>
+
+    </div><!-- /.container -->
+    <script src="../js/jquery.js"></script>
+    <script src="../js/bootstrap.js"></script>
+    <script src="../js/holder.js"></script>
+  </body>
+</html>
