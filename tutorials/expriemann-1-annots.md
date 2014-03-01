@@ -20,7 +20,11 @@ The tutorial is divided into the following parts:
 
 ---
 
-### The Ada program
+**TODO**: *Add TOC*
+
+
+
+## The Ada program
 
 The program computes an approximation of the integral
 
@@ -98,15 +102,9 @@ the integral for x = 1.0: 0.746824
 With a partition of size 1024, the result agrees with the integral in the first two
 significant digits.
 
-<!--
-The package `PP_F_Elementary` is a PolyPaver-friendly alternative
-to `Ada.Numeric.Elementary_Functions`.  
-This package is included in the PolyPaver download bundle.  
--->
+## Precondition and postcondition
 
-### Precondition and postcondition
-
-#### Bounding the method error
+### Bounding the method error
 
 Let us defer reasoning about rounding errors for later and first consider the
 algorithm as if it was performed in exact real arithmetic and analyse its method error.
@@ -124,14 +122,61 @@ $$
 \frac{x}{n}\left(1-e^{-x^2}\right)
 $$
 
-**TODO**: *Add SPARK specification with a postcondition expressing the method error*
+Base on this observation, one can construct the following post-condition for erf_Riemann:
 
-#### Bounding the rounding error
+$$  
+\mathtt{result} 
+\in  
+\int_0^x e^{-t^2}\;\mathrm{d}t
++
+\left[0, \frac{x}{n}\left(1-e^{-x^2}\right)\right]
+$$
 
-#### Bounding the domain
+### Adapting for SPARK 
 
-### The loop invariant
+Let us now enter the above postcondition into the Ada specification
+as a SPARK 2005 annotation:
+
+```Ada
+--# inherit PP_F_Exact;
+package Riemann is 
+
+   function erf_Riemann(x : Float; n : Integer) return Float;
+   --# return result => 
+   --#     PP_F_Exact.Contained_In(
+   --#         result
+   --#         ,
+   --#         PP_F_Exact.Integral(0.0,x,PP_F_Exact.Exp(-PP_F_Exact.Integration_Variable**2))
+   --#         +
+   --#         PP_F_Exact.Interval(
+   --#              0.0
+   --#              ,
+   --#              (1.0-PP_F_Exact.Exp(-x**2))*x/Float(2**n)
+   --#         )
+   --#     );
+
+end Riemann;
+```
+
+**TODO**: *Explain PP_F_Exact*
+
+**TODO**: *Show also the refactoring of the function body necessary to satisfy the Examiner*
+
+<!--
+The package `PP_F_Elementary` is a PolyPaver-friendly alternative
+to `Ada.Numeric.Elementary_Functions`.  
+This package is included in the PolyPaver download bundle.  
+-->
+
+
+### Bounding the rounding error
+
+### Bounding the domain
+
+## The loop invariant
 
 *incremental version of the postcondition*
 
 *bounding local variables*
+
+
