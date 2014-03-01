@@ -35,38 +35,74 @@ The integral is approximated using the left Riemann sum over a partition with $2
 The following is an Ada implementation of this method.
 
 ```ada
-with PP_F_Elementary;
+with Ada.Numerics.Elementary_Functions;
+use Ada.Numerics.Elementary_Functions;
 
 package body Riemann is
 
    function erf_Riemann(x : Float; n : Integer) return Float
    is
-      partitionSize : Integer;
-      stepSize : Float;
-      stepStart : Float;
-      valueStart : Float;
+      partitionSize : Integer := 2 ** n;
+      stepSize : Float := x/Float(partitionSize);
+      tLeft : Float;
+      valueLeft : Float;
       result : Float;
    begin
-      partitionSize := 2 ** n;
-      stepSize := x/Float(partitionSize);
+
       result := 0.0;
-      for step in 0..((2^n)-1) loop
-         stepStart := stepSize * Float(step);
-         valueStart :=
-           PP_F_Elementary.Exp(-(stepStart * stepStart));
-         result := 
-           result + stepSize * valueStart;
-         step := step + 1;
+
+      for step in 0..((2**n)-1) loop
+         tLeft := stepSize * Float(step);
+         valueLeft := Exp(-(tLeft * tLeft));
+         result := result + stepSize * valueLeft;
       end loop;
+
       return result;
    end erf_Riemann;
 
 end Riemann;
 ```
 
+The above code is available in a ready-to-compile form in 
+[this folder](https://github.com/michalkonecny/polypaver/tree/master/tools/SPARK2005/examples/erfRiemann/tutorial-steps/01-noSPARK).
+
+To get an idea of how close the function is to the exact interval, there is a main procedure that prints
+the results of the `erf_Riemann` function for a number of different `x` and `n`.  To execute this program,
+issue the following commands:
+
+```
+> cd tools/SPARK2005/examples/erfRiemann/tutorial-steps/01-noSPARK
+> mkdir -p build
+> gnatmake -P erf_riemann.gpr
+> build/main
+```  
+
+The output should start with the following:
+
+```
+erf_Riemann(1.0,  1) = 0.889400
+erf_Riemann(1.0,  2) = 0.821999
+erf_Riemann(1.0,  3) = 0.785373
+erf_Riemann(1.0,  4) = 0.766338
+erf_Riemann(1.0,  5) = 0.756641
+erf_Riemann(1.0,  6) = 0.751748
+erf_Riemann(1.0,  7) = 0.749290
+erf_Riemann(1.0,  8) = 0.748058
+erf_Riemann(1.0,  9) = 0.747441
+erf_Riemann(1.0, 10) = 0.747132
+
+the integral for x = 1.0: 0.746824
+--------------------------------------------------------
+```
+
+With a partition of size 1024, the result agrees with the integral in the first two
+significant digits.
+
+<!--
 The package `PP_F_Elementary` is a PolyPaver-friendly alternative
 to `Ada.Numeric.Elementary_Functions`.  
 This package is included in the PolyPaver download bundle.  
+-->
 
 ### Precondition and postcondition
 
@@ -79,14 +115,14 @@ How does the Riemann sum relate to the integral?  We first restrict the domain o
 Thus the integrand $e^{-t^2}$ is considered only for non-negative $t$, where it is a decreasing function.
 The left Riemann sum is therefore an *upper bound* on the exact integral.  
 
+**TODO**: *Add diagram illustrating the sums*
+
 Moreover, the difference between the left Riemann sum and the integral can be bounded by the difference
 between the left and rigth Riemann sums, which happens to be exactly 
 
 $$
 \frac{x}{n}\left(1-e^{-x^2}\right)
 $$
-
-**TODO**: *Add diagram illustrating the sums*
 
 **TODO**: *Add SPARK specification with a postcondition expressing the method error*
 

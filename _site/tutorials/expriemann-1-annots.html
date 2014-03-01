@@ -87,43 +87,68 @@
 <p>This integral is an essential part of the <a href="http://en.wikipedia.org/wiki/Error_function">Gauss error function</a> and it has no closed algebraic solution.</p>
 <p>The integral is approximated using the left Riemann sum over a partition with <span class="math">\(2^n\)</span> segments of equal size.</p>
 <p>The following is an Ada implementation of this method.</p>
-<pre class="sourceCode ada"><code class="sourceCode ada"><span class="kw">with</span> PP_F_Elementary;
+<pre class="sourceCode ada"><code class="sourceCode ada"><span class="kw">with</span> Ada.Numerics.Elementary_Functions;
+<span class="kw">use</span> Ada.Numerics.Elementary_Functions;
 
 <span class="kw">package</span> <span class="kw">body</span> Riemann <span class="kw">is</span>
 
    <span class="kw">function</span> erf_Riemann(x : <span class="dt">Float</span>; n : <span class="dt">Integer</span>) <span class="kw">return</span> <span class="dt">Float</span>
    <span class="kw">is</span>
-      partitionSize : <span class="dt">Integer</span>;
-      stepSize : <span class="dt">Float</span>;
-      stepStart : <span class="dt">Float</span>;
-      valueStart : <span class="dt">Float</span>;
+      partitionSize : <span class="dt">Integer</span> := <span class="dv">2</span> ** n;
+      stepSize : <span class="dt">Float</span> := x/<span class="dt">Float</span>(partitionSize);
+      tLeft : <span class="dt">Float</span>;
+      valueLeft : <span class="dt">Float</span>;
       result : <span class="dt">Float</span>;
    <span class="kw">begin</span>
-      partitionSize := <span class="dv">2</span> ** n;
-      stepSize := x/<span class="dt">Float</span>(partitionSize);
+
       result := <span class="fl">0.0</span>;
-      <span class="kw">for</span> step <span class="kw">in</span> <span class="dv">0</span>..((<span class="dv">2</span>^n)-<span class="dv">1</span>) <span class="kw">loop</span>
-         stepStart := stepSize * <span class="dt">Float</span>(step);
-         valueStart :=
-           PP_F_Elementary.Exp(-(stepStart * stepStart));
-         result := 
-           result + stepSize * valueStart;
-         step := step + <span class="dv">1</span>;
+
+      <span class="kw">for</span> step <span class="kw">in</span> <span class="dv">0</span>..((<span class="dv">2</span>**n)-<span class="dv">1</span>) <span class="kw">loop</span>
+         tLeft := stepSize * <span class="dt">Float</span>(step);
+         valueLeft := Exp(-(tLeft * tLeft));
+         result := result + stepSize * valueLeft;
       <span class="kw">end loop</span>;
+
       <span class="kw">return</span> result;
    <span class="kw">end</span> erf_Riemann;
 
 <span class="kw">end</span> Riemann;</code></pre>
-<p>The package <code>PP_F_Elementary</code> is a PolyPaver-friendly alternative to <code>Ada.Numeric.Elementary_Functions</code>.<br />This package is included in the PolyPaver download bundle.</p>
+<p>The above code is available in a ready-to-compile form in <a href="https://github.com/michalkonecny/polypaver/tree/master/tools/SPARK2005/examples/erfRiemann/tutorial-steps/01-noSPARK">this folder</a>.</p>
+<p>To get an idea of how close the function is to the exact interval, there is a main procedure that prints the results of the <code>erf_Riemann</code> function for a number of different <code>x</code> and <code>n</code>. To execute this program, issue the following commands:</p>
+<pre><code>&gt; cd tools/SPARK2005/examples/erfRiemann/tutorial-steps/01-noSPARK
+&gt; mkdir -p build
+&gt; gnatmake -P erf_riemann.gpr
+&gt; build/main</code></pre>
+<p>The output should start with the following:</p>
+<pre><code>erf_Riemann(1.0,  1) = 0.889400
+erf_Riemann(1.0,  2) = 0.821999
+erf_Riemann(1.0,  3) = 0.785373
+erf_Riemann(1.0,  4) = 0.766338
+erf_Riemann(1.0,  5) = 0.756641
+erf_Riemann(1.0,  6) = 0.751748
+erf_Riemann(1.0,  7) = 0.749290
+erf_Riemann(1.0,  8) = 0.748058
+erf_Riemann(1.0,  9) = 0.747441
+erf_Riemann(1.0, 10) = 0.747132
+
+the integral for x = 1.0: 0.746824
+--------------------------------------------------------</code></pre>
+<p>With a partition of size 1024, the result agrees with the integral in the first two significant digits.</p>
+<!--
+The package `PP_F_Elementary` is a PolyPaver-friendly alternative
+to `Ada.Numeric.Elementary_Functions`.  
+This package is included in the PolyPaver download bundle.  
+-->
+
 <h3 id="precondition-and-postcondition">Precondition and postcondition</h3>
 <h4 id="bounding-the-method-error">Bounding the method error</h4>
 <p>Let us defer reasoning about rounding errors for later and first consider the algorithm as if it was performed in exact real arithmetic and analyse its method error.</p>
 <p>How does the Riemann sum relate to the integral? We first restrict the domain of <span class="math">\(x\)</span> to non-negative numbers. Thus the integrand <span class="math">\(e^{-t^2}\)</span> is considered only for non-negative <span class="math">\(t\)</span>, where it is a decreasing function. The left Riemann sum is therefore an <em>upper bound</em> on the exact integral.</p>
+<p><strong>TODO</strong>: <em>Add diagram illustrating the sums</em></p>
 <p>Moreover, the difference between the left Riemann sum and the integral can be bounded by the difference between the left and rigth Riemann sums, which happens to be exactly</p>
 <p><span class="math">\[
 \frac{x}{n}\left(1-e^{-x^2}\right)
 \]</span></p>
-<p><strong>TODO</strong>: <em>Add diagram illustrating the sums</em></p>
 <p><strong>TODO</strong>: <em>Add SPARK specification with a postcondition expressing the method error</em></p>
 <h4 id="bounding-the-rounding-error">Bounding the rounding error</h4>
 <h4 id="bounding-the-domain">Bounding the domain</h4>
