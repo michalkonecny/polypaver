@@ -1,0 +1,47 @@
+           *******************************************************
+                            Listing of SPARK Text
+                              Examiner GPL 2012
+             Copyright (C) 2012 Altran Praxis Limited, Bath, U.K.
+           *******************************************************
+
+
+                        DATE : 01-MAR-2014 15:51:21.48
+
+Line
+   1  package PP_F_Exact is
+   2     -- Various SPARK functions for use in SPARK assertions.
+   3     -- These functions are then featured in VCs and PolyPaver will
+   4     -- understand their meaning.  For each of these functions,
+   5     -- its semantics is the exact real interpretation of its name.
+   6     --
+   7     -- The F in the package name stands for the Float type.
+   8     --
+   9     -- Ideally all occurences of Float in this package would be
+  10     -- replaced with Real and all floating point types would
+  11     -- be subtypes of Real.  
+  12     -- Unfortunately, such type Real is not available in SPARK.
+  13  	
+  14      --# function Square (X : Float) return Float;
+  15      --# function Int_Power (X : Float; N : Integer) return Float;
+  16      --# function Sqrt (X : Float) return Float;
+  17      --# function Exp (X : Float) return Float;
+  18      --# function Pi return Float;
+  19  
+  20      --# function Integral (Lo,Hi,Integrand : Float) return Float;
+  21      --# function Integration_Variable return Float;
+  22  
+  23      --# function Interval(Low, High : Float) return Float;
+  24      --# function Contained_In(Inner, Outer : Float) return Boolean;
+  25  
+  26      --# function Is_Range(Variable : Float; Min : Float; Max : Float) return Boolean;
+  27      --# function Eps_Abs(Prec : Integer) return Float;
+  28      --# function Eps_Rel(Prec : Integer) return Float;
+  29      --# function Plus_Minus_Eps_Abs(Prec : Integer) return Float;
+  30      --# function Plus_Minus_Eps_Rel(Prec : Integer) return Float;
+  31     
+  32  end PP_F_Exact;
+
+Note: Flow analysis mode is automatic
+
+
+--End of file--------------------------------------------------

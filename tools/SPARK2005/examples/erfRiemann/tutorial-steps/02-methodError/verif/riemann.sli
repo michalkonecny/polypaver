@@ -1,0 +1,48 @@
+V "SPARK 2012"
+A -noswitch
+A -noindex_file
+A -nowarning_file
+A -notarget_compiler_data
+A -noconfig_file
+A -source_extension=ada
+A -listing_extension=lst
+A -nodictionary_file
+A -report_file=spark.rep
+A -nohtml
+A -nostatistics
+A -fdl_identifiers=accept
+A -flow_analysis=auto
+A -language=95
+A -profile=sequential
+A -annotation_character=#
+A -rules=lazy
+A -error_explanations=off
+A -justification_option=full
+A -output_directory=.
+A -output_directory (actual)=/home/mik/research/cca/realproving/polypaver/code-git/tools/SPARK2005/examples/erfRiemann/tutorial-steps/02-methodError/verif/
+P
+R
+
+U Riemann%b riemann.adb
+U Riemann%s riemann.ads
+W PP_F_Elementary%s pp_f_elementary.ads pp_f_elementary.sli
+W PP_F_Exact%s pp_f_exact.ads pp_f_exact.sli
+
+D pp_f_elementary.ads 00000000000000 00000000
+D pp_f_exact.ads 00000000000000 00000000
+D riemann.ads 00000000000000 00000000
+D riemann.adb 00000000000000 00000000
+
+X 1 pp_f_elementary.ads
+5K9 PP_F_Elementary 3|1w25
+X 2 pp_f_exact.ads
+1K9 PP_F_Exact 3|13r12 16r16 16r42 16r58 18r16 21r26 1w13
+17V18 Exp 3|16r53 21r37
+20V18 Integral 3|16r27
+21V18 Integration_Variable 3|16r69
+23V18 Interval 3|18r27
+24V18 Contained_In 3|13r23
+X 3 riemann.ads
+11f25 x 16r40 21r42 21r49
+11i36 n 21r60
+12f15 result 14r16
