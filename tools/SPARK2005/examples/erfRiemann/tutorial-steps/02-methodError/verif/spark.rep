@@ -1,0 +1,101 @@
+           *******************************************************
+                         Report of SPARK Examination
+                              Examiner GPL 2012
+             Copyright (C) 2012 Altran Praxis Limited, Bath, U.K.
+           *******************************************************
+
+
+                        DATE : 01-MAR-2014 15:51:21.48
+
+Options:
+    noswitch
+    noindex_file
+    nowarning_file
+    notarget_compiler_data
+    noconfig_file
+    source_extension=ada
+    listing_extension=lst
+    nodictionary_file
+    report_file=spark.rep
+    nohtml
+    nostatistics
+    fdl_identifiers=accept
+    flow_analysis=auto
+    language=95
+    profile=sequential
+    annotation_character=#
+    rules=lazy
+    error_explanations=off
+    justification_option=full
+    output_directory=.
+    output_directory (actual)=/home/mik/research/cca/realproving/polypaver/code-git/tools/SPARK2005/examples/erfRiemann/tutorial-steps/02-methodError/verif/
+
+Selected files:
+   @riemann.smf
+
+
+No Index files were used
+
+
+Meta File(s) used were:
+   riemann.smf
+      /home/mik/research/cca/realproving/polypaver/code-git/tools/SPARK2005/packages/polypaver/pp_f_elementary.ads
+      /home/mik/research/cca/realproving/polypaver/code-git/tools/SPARK2005/packages/polypaver/pp_f_exact.ads
+      /home/mik/research/cca/realproving/polypaver/code-git/tools/SPARK2005/examples/erfRiemann/tutorial-steps/02-methodError/riemann.ads
+      /home/mik/research/cca/realproving/polypaver/code-git/tools/SPARK2005/examples/erfRiemann/tutorial-steps/02-methodError/riemann.adb
+
+
+Full warning reporting selected
+
+
+Source Filename(s) used were:
+   /home/mik/research/cca/realproving/polypaver/code-git/tools/SPARK2005/packages/polypaver/pp_f_elementary.ads
+   /home/mik/research/cca/realproving/polypaver/code-git/tools/SPARK2005/packages/polypaver/pp_f_exact.ads
+   /home/mik/research/cca/realproving/polypaver/code-git/tools/SPARK2005/examples/erfRiemann/tutorial-steps/02-methodError/riemann.ads
+   /home/mik/research/cca/realproving/polypaver/code-git/tools/SPARK2005/examples/erfRiemann/tutorial-steps/02-methodError/riemann.adb
+
+
+
+Source Filename:   /home/mik/research/cca/realproving/polypaver/code-git/tools/SPARK2005/packages/polypaver/pp_f_elementary.ads
+Listing Filename:  /home/mik/research/cca/realproving/polypaver/code-git/tools/SPARK2005/examples/erfRiemann/tutorial-steps/02-methodError/verif/pp_f_elementary.lst
+
+   Unit name:  PP_F_Elementary
+   Unit type:  package specification
+   Unit has been analysed, any errors are listed below.
+
+No errors found
+
+
+Source Filename:   /home/mik/research/cca/realproving/polypaver/code-git/tools/SPARK2005/packages/polypaver/pp_f_exact.ads
+Listing Filename:  /home/mik/research/cca/realproving/polypaver/code-git/tools/SPARK2005/examples/erfRiemann/tutorial-steps/02-methodError/verif/pp_f_exact.lst
+
+   Unit name:  PP_F_Exact
+   Unit type:  package specification
+   Unit has been analysed, any errors are listed below.
+
+No errors found
+
+
+Source Filename:   /home/mik/research/cca/realproving/polypaver/code-git/tools/SPARK2005/examples/erfRiemann/tutorial-steps/02-methodError/riemann.ads
+Listing Filename:  /home/mik/research/cca/realproving/polypaver/code-git/tools/SPARK2005/examples/erfRiemann/tutorial-steps/02-methodError/verif/riemann.lst
+
+   Unit name:  Riemann
+   Unit type:  package specification
+   Unit has been analysed, any errors are listed below.
+
+No errors found
+
+
+Source Filename:   /home/mik/research/cca/realproving/polypaver/code-git/tools/SPARK2005/examples/erfRiemann/tutorial-steps/02-methodError/riemann.adb
+Listing Filename:  /home/mik/research/cca/realproving/polypaver/code-git/tools/SPARK2005/examples/erfRiemann/tutorial-steps/02-methodError/verif/riemann.lst
+
+   Unit name:  Riemann
+   Unit type:  package body
+   Unit has been analysed, any errors are listed below.
+
+No errors found
+
+Note: Automatic flow analysis mode selected
+
+
+--End of file--------------------------------------------------

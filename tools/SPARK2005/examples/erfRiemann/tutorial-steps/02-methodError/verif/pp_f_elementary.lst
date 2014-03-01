@@ -1,0 +1,28 @@
+           *******************************************************
+                            Listing of SPARK Text
+                              Examiner GPL 2012
+             Copyright (C) 2012 Altran Praxis Limited, Bath, U.K.
+           *******************************************************
+
+
+                        DATE : 01-MAR-2014 15:51:21.48
+
+Line
+   1  -- A SPARK wrapper for some elementary functions.
+   2  -- The PolyPaver SPARK pre-processor will replace any call
+   3  -- of these functions with their equivalent from package
+   4  -- PP_F_Rounded, supplying a value for the additional Prec parameter.
+   5  package PP_F_Elementary is
+   6  
+   7     function Pi return Float;
+   8  
+   9     function Exp (X : Float) return Float;
+  10  
+  11     function Sqrt (X : Float) return Float;
+  12  
+  13  end PP_F_Elementary;
+
+Note: Flow analysis mode is automatic
+
+
+--End of file--------------------------------------------------

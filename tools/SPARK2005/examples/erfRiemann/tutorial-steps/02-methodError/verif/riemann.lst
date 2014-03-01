@@ -1,0 +1,49 @@
+           *******************************************************
+                            Listing of SPARK Text
+                              Examiner GPL 2012
+             Copyright (C) 2012 Altran Praxis Limited, Bath, U.K.
+           *******************************************************
+
+
+                        DATE : 01-MAR-2014 15:51:21.48
+
+Line
+   1  with PP_F_Elementary;
+   2  
+   3  package body Riemann is
+   4  
+   5     function erf_Riemann(x : Float; n : Integer) return Float
+   6     is
+   7        partitionSize : Integer;
+   8        stepSize : Float;
+   9        tLeft : Float;
+  10        valueLeft : Float;
+  11        result : Float;
+  12        step : Integer;
+  13     begin
+  14        partitionSize := 2 ** n;
+  15        stepSize := x/Float(partitionSize);
+  16  
+  17        result := 0.0;
+  18  
+  19        step := 0;
+  20        while step < (2**n) loop
+  21           tLeft := stepSize * Float(step);
+  22           valueLeft := PP_F_Elementary.Exp(-(tLeft * tLeft));
+  23           result := result + stepSize * valueLeft;
+  24           step := step + 1;
+  25        end loop;
+  26  
+  27        return result;
+  28     end erf_Riemann;
+
++++        Flow analysis of subprogram erf_Riemann 
+           performed (information-flow mode): no errors found.
+
+  29  
+  30  end Riemann;
+
+Note: Flow analysis mode is automatic
+
+
+--End of file--------------------------------------------------
