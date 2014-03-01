@@ -84,15 +84,9 @@
 <p><span class="math">\[
 \int_0^x e^{-t^2}\;\mathrm{d}t
 \]</span></p>
-<p>using the left Riemann sum over a partition of equal size.</p>
 <p>This integral is an essential part of the <a href="http://en.wikipedia.org/wiki/Error_function">Gauss error function</a> and it has no closed algebraic solution.</p>
-<p>The Ada specification and body are as follows:</p>
-<pre class="sourceCode ada"><code class="sourceCode ada"><span class="kw">package</span> Riemann <span class="kw">is</span> 
-
-   <span class="kw">function</span> erf_Riemann(x : <span class="dt">Float</span>; n : <span class="dt">Integer</span>) <span class="kw">return</span> <span class="dt">Float</span>;
-
-<span class="kw">end</span> Riemann;</code></pre>
-<p>The parameter <span class="math">\(n\)</span> determines the number of segments to be used in the partition. The partition has <span class="math">\(2^n\)</span> segments.</p>
+<p>The integral is approximated using the left Riemann sum over a partition with <span class="math">\(2^n\)</span> segments of equal size.</p>
+<p>The following is an Ada implementation of this method.</p>
 <pre class="sourceCode ada"><code class="sourceCode ada"><span class="kw">with</span> PP_F_Elementary;
 
 <span class="kw">package</span> <span class="kw">body</span> Riemann <span class="kw">is</span>
@@ -104,7 +98,6 @@
       stepStart : <span class="dt">Float</span>;
       valueStart : <span class="dt">Float</span>;
       result : <span class="dt">Float</span>;
-      step : <span class="dt">Integer</span>;
    <span class="kw">begin</span>
       partitionSize := <span class="dv">2</span> ** n;
       stepSize := x/<span class="dt">Float</span>(partitionSize);
@@ -123,9 +116,17 @@
 <span class="kw">end</span> Riemann;</code></pre>
 <p>The package <code>PP_F_Elementary</code> is a PolyPaver-friendly alternative to <code>Ada.Numeric.Elementary_Functions</code>.<br />This package is included in the PolyPaver download bundle.</p>
 <h3 id="precondition-and-postcondition">Precondition and postcondition</h3>
-<p><em>bounds for variables</em></p>
-<p><em>bounds on model error</em></p>
-<p><em>bounds on rounding error</em></p>
+<h4 id="bounding-the-method-error">Bounding the method error</h4>
+<p>Let us defer reasoning about rounding errors for later and first consider the algorithm as if it was performed in exact real arithmetic and analyse its method error.</p>
+<p>How does the Riemann sum relate to the integral? We first restrict the domain of <span class="math">\(x\)</span> to non-negative numbers. Thus the integrand <span class="math">\(e^{-t^2}\)</span> is considered only for non-negative <span class="math">\(t\)</span>, where it is a decreasing function. The left Riemann sum is therefore an <em>upper bound</em> on the exact integral.</p>
+<p>Moreover, the difference between the left Riemann sum and the integral can be bounded by the difference between the left and rigth Riemann sums, which happens to be exactly</p>
+<p><span class="math">\[
+\frac{x}{n}\left(1-e^{-x^2}\right)
+\]</span></p>
+<p><strong>TODO</strong>: <em>Add diagram illustrating the sums</em></p>
+<p><strong>TODO</strong>: <em>Add SPARK specification with a postcondition expressing the method error</em></p>
+<h4 id="bounding-the-rounding-error">Bounding the rounding error</h4>
+<h4 id="bounding-the-domain">Bounding the domain</h4>
 <h3 id="the-loop-invariant">The loop invariant</h3>
 <p><em>incremental version of the postcondition</em></p>
 <p><em>bounding local variables</em></p>

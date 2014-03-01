@@ -28,21 +28,11 @@ $$
 \int_0^x e^{-t^2}\;\mathrm{d}t
 $$
 
-using the left Riemann sum over a partition of equal size.
-
 This integral is an essential part of the [Gauss error function](http://en.wikipedia.org/wiki/Error_function) and it has no closed algebraic solution.
 
-The Ada specification and body are as follows:
+The integral is approximated using the left Riemann sum over a partition with $2^n$ segments of equal size.  
 
-```ada
-package Riemann is 
-
-   function erf_Riemann(x : Float; n : Integer) return Float;
-
-end Riemann;
-```
-
-The parameter $n$ determines the number of segments to be used in the partition.  The partition has $2^n$ segments.
+The following is an Ada implementation of this method.
 
 ```ada
 with PP_F_Elementary;
@@ -56,7 +46,6 @@ package body Riemann is
       stepStart : Float;
       valueStart : Float;
       result : Float;
-      step : Integer;
    begin
       partitionSize := 2 ** n;
       stepSize := x/Float(partitionSize);
@@ -81,11 +70,29 @@ This package is included in the PolyPaver download bundle.
 
 ### Precondition and postcondition
 
-*bounds for variables*
+#### Bounding the method error
 
-*bounds on model error*
+Let us defer reasoning about rounding errors for later and first consider the
+algorithm as if it was performed in exact real arithmetic and analyse its method error.
 
-*bounds on rounding error* 
+How does the Riemann sum relate to the integral?  We first restrict the domain of $x$ to non-negative numbers.
+Thus the integrand $e^{-t^2}$ is considered only for non-negative $t$, where it is a decreasing function.
+The left Riemann sum is therefore an *upper bound* on the exact integral.  
+
+Moreover, the difference between the left Riemann sum and the integral can be bounded by the difference
+between the left and rigth Riemann sums, which happens to be exactly 
+
+$$
+\frac{x}{n}\left(1-e^{-x^2}\right)
+$$
+
+**TODO**: *Add diagram illustrating the sums*
+
+**TODO**: *Add SPARK specification with a postcondition expressing the method error*
+
+#### Bounding the rounding error
+
+#### Bounding the domain
 
 ### The loop invariant
 
