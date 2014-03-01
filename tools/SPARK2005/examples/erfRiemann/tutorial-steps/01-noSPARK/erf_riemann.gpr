@@ -1,0 +1,32 @@
+project ERF_Riemann is
+
+   for Object_Dir use "build";
+   for Main use ("main.adb");
+   type Target_Type is
+      ("Executable", "ADT");
+   Target : Target_Type := external ("Target", "Executable");
+
+   package Compiler is
+      for Default_Switches ("ada") use ("-g", "-O2");
+   end Compiler;
+
+   package Builder is
+
+      case Target is
+
+         when "Executable" =>
+            for Default_Switches ("ada") use ("");
+
+         when "ADT" =>
+            for Default_Switches ("ada") use ("-gnatct");
+      end case;
+   end Builder;
+
+   package Ide is
+
+      for Vcs_Kind use "Git";
+
+   end Ide;
+
+end ERF_Riemann;
+
