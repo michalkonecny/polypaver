@@ -10,8 +10,8 @@ package Riemann is
    -- have a closed algebraic solution.  This function uses a simple
    -- Riemann sum to approximate the integral.
    -- 
-   -- The parameter n gives the number of segments to be used in the
-   -- Riemann sum equidistant partition.
+   -- The parameter n determines the number of segments to be used in the
+   -- partition of equal size.  There are 2^n segments.
    function erf_Riemann(x : Float; n : Integer) return Float;
    --# pre PP_F_Exact.Is_Range(x, 0.0, 4.0)
    --#     and PP_Integer.Is_Range(n, 1, 10);
