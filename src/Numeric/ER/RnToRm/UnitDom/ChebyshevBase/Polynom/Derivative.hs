@@ -62,7 +62,7 @@ ballDifferentiate (ERChebPoly coeffs) diffVar =
         addDiffTerms degreeToAdd ball@(coeffs, radius)
             | degreeToAdd < 0 = ball
             | degreeToAdd == 0 =
-                addTermWithDegree 0 cConstDown cConstErr
+                addTermWithDegree (0 :: Int) cConstDown cConstErr
             | otherwise =
                 addDiffTerms (degreeToAdd - 2) $
                     addTermWithDegree degreeToAdd cNonconstUp cNonconstErr

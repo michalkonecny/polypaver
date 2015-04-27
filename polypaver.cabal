@@ -5,14 +5,14 @@ Build-Type:     Simple
 License:        BSD3
 License-File:   LICENCE
 Author:         Jan Duracz and Michal Konecny (Aston University)
-Copyright:      (c) 2011,2013 Jan Duracz, Michal Konecny
+Copyright:      (c) 2015-2008 Jan Duracz, Michal Konecny
 Maintainer:     mikkonecny@gmail.com
 Homepage:       http://code.google.com/p/polypaver/
 Stability:      experimental
 Category:       Numerical, Theorem Provers
 Synopsis:       Numerical theorem prover based on polynomial interval arithmetic
 Tested-with:    
-                GHC ==7.6.3
+                GHC ==7.8.4
 Description:
     Tools for deciding systems of real inequalities and interval inclusions over bounded domains, featuring:
     .    

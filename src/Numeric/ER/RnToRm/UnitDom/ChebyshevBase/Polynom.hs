@@ -1,6 +1,7 @@
 {-# LANGUAGE MultiParamTypeClasses #-}
 {-# LANGUAGE FlexibleInstances #-}
 {-# LANGUAGE UndecidableInstances #-}
+
 {-|
     Module      :  Numeric.ER.RnToRm.UnitDom.ChebyshevBase.Polynom
     Description :  multivariate polynomials in the Chebyshev basis
@@ -81,6 +82,7 @@ ix0 = ienclThin x0
 instance 
     (B.ERRealBase rb, RealFrac rb,
      DomainBox box varid Int, Ord box, Show varid,
+     DomainBox boxb varid rb,
      DomainBoxMappable boxb boxras varid rb [ERInterval rb],
      DomainBoxMappable boxra boxras varid (ERInterval rb) [ERInterval rb],
      DomainIntBox boxra varid (ERInterval rb)) =>
@@ -164,6 +166,7 @@ instance
 instance
     (B.ERRealBase rb, RealFrac rb,
      DomainBox box varid Int, Ord box, Show varid,
+     DomainBox boxb varid rb,
      DomainBoxMappable boxb boxras varid rb [ERInterval rb],
      DomainBoxMappable boxra boxras varid (ERInterval rb) [ERInterval rb],
      DomainIntBox boxra varid (ERInterval rb)) =>
@@ -184,6 +187,7 @@ instance
 instance
     (B.ERRealBase rb, RealFrac rb,
      DomainBox box varid Int, Ord box, Show varid,
+     DomainBox boxb varid rb,
      DomainBoxMappable boxb boxras varid rb [ERInterval rb],
      DomainBoxMappable boxra boxras varid (ERInterval rb) [ERInterval rb],
      DomainIntBox boxra varid (ERInterval rb)) =>
@@ -200,6 +204,7 @@ instance
 instance 
     (B.ERRealBase rb, RealFrac rb,
      DomainBox box varid Int, Ord box, Show varid,
+     DomainBox boxb varid rb,
      DomainBoxMappable boxb boxras varid rb [ERInterval rb],
      DomainBoxMappable boxra boxras varid (ERInterval rb) [ERInterval rb],
      DomainIntBox boxra varid (ERInterval rb)) =>
@@ -215,6 +220,7 @@ instance
 instance 
     (B.ERRealBase rb, RealFrac rb,
      DomainBox box varid Int, Ord box, Show varid,
+     DomainBox boxb varid rb,
      DomainBoxMappable boxb boxras varid rb [ERInterval rb],
      DomainBoxMappable boxra boxras varid (ERInterval rb) [ERInterval rb],
      DomainIntBox boxra varid (ERInterval rb)) =>
