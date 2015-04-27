@@ -97,7 +97,7 @@ paverDefaultArgs =
                  "  <name>.hs [<identifier name>]: Haskell constant of type Problem            "
 #endif
                  ])
-    &= summary "PolyPaver 0.3 (c) 2014 Jan Duracz and Michal Konecny (Aston University)"
+    &= summary "PolyPaver 0.3 (c) 2015 Jan Duracz and Michal Konecny (Aston University)"
     &= name "polypaver"
 
 setDefaults :: PolyPaver -> PolyPaver
