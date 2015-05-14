@@ -16,11 +16,12 @@ import Numeric.ER.Real.Base
 import Numeric.ER.Real.DefaultRepr
 --import Numeric.ER.Misc
 
-import Graphics.UI.Gtk hiding (drawPolygon)
-import Graphics.Rendering.Cairo
+import qualified Graphics.UI.Gtk as Gtk
+import Graphics.UI.Gtk (AttrOp((:=)))
+import qualified Graphics.Rendering.Cairo as Cairo
 
-import Control.Concurrent
-import Control.Concurrent.STM
+import Control.Concurrent (forkIO, yield, threadDelay)
+import Control.Concurrent.STM (TVar, writeTVar, readTVar, newTVar, atomically)
 
 --import qualified Data.Map as Map
 import qualified Data.IntMap as IMap
@@ -35,20 +36,12 @@ addBox :: TVar (State b) -> RGBA -> APBox b -> IO ()
 addBox stateTV rgba box
     =
     do
---    putStrLn $ "addBox called" -- ++ ppShow box
+--    putStrLn $ "addBox called" -- ++ showBox box
     atomically $ do
         state <- readTVar stateTV
         writeTVar stateTV ((box,rgba) : state)
 --    putStrLn $ "addBox completed"
 
---waitForClose :: TVar [(APBox b, RGBA)] -> IO ()
---waitForClose stateTV =
---    atomically $
---        do
---        state <- readTVar stateTV
---        case state of
---            [] -> return ()
---            _ -> retry
 
 initPlot :: 
     ERRealBase b =>
@@ -58,10 +51,6 @@ initPlot ::
     IO (TVar (State b))
 initPlot initbox w h =
     do
---    putStrLn $ "initbox = " ++ showBox initbox
---    putStrLn $ "initbox = " ++ show initbox
---    putStrLn $ "initboxInfo = " ++ show initboxInfo
---    putStrLn $ "boxCorners initbox = " ++ show (boxCorners initbox)
     stateTV <- atomically $ newTVar []
     _ <- forkIO $ myCanvasThread stateTV initboxInfo w h
     return stateTV
@@ -74,13 +63,6 @@ initPlot initbox w h =
     varNames = map snd $ IMap.toAscList varNamesMap
     initboxInfo = (boxCentre initbox, x2 - x1, y4 - y1, varNames)
 
---myCanvasThread :: 
---  (Fractional t1, Fractional t2) =>
---  TVar [a]
---  -> t5
---  -> Int
---  -> Int
---  -> IO ()
 myCanvasThread :: 
     (ERRealBase b) 
     =>
@@ -91,21 +73,21 @@ myCanvasThread ::
 myCanvasThread stateTV initboxInfo w h = 
     do
 --    unsafeInitGUIForThreadedRTS
-    _ <- initGUI
-    window <- windowNew
-    da <- drawingAreaNew
-    set window [ containerChild := da ]
-    windowSetDefaultSize window w h
-    _ <- onExpose da (myExposeHandler stateTV da initboxInfo)
-    timeoutAdd (widgetQueueDraw da >> return True) 500 >> return ()
-    idleAdd (yield >> threadDelay 10000 >> return True) priorityDefaultIdle >> return ()
-    _ <- onDestroy window mainQuit
-    widgetShowAll window
-    mainGUI
+    _ <- Gtk.initGUI
+    window <- Gtk.windowNew
+    da <- Gtk.drawingAreaNew
+    Gtk.set window [ Gtk.containerChild := da ]
+    Gtk.windowSetDefaultSize window w h
+    _ <- Gtk.onExpose da (myExposeHandler stateTV da initboxInfo)
+    Gtk.timeoutAdd (Gtk.widgetQueueDraw da >> return True) 500 >> return ()
+    Gtk.idleAdd (yield >> threadDelay 10000 >> return True) Gtk.priorityDefaultIdle >> return ()
+    _ <- Gtk.onDestroy window Gtk.mainQuit
+    Gtk.widgetShowAll window
+    Gtk.mainGUI
     atomically $ writeTVar stateTV []
 
 myExposeHandler :: 
-     (WidgetClass widget, ERRealBase b) 
+     (Gtk.WidgetClass widget, ERRealBase b) 
      =>
      TVar (State b) -> 
      widget -> 
@@ -114,11 +96,11 @@ myExposeHandler ::
 myExposeHandler stateTV widget initboxInfo _event = 
     do
 --    putStrLn $ "myExposeHandler called"
-    drawWin <- widgetGetDrawWindow widget
-    (wi,hi) <- widgetGetSize widget
+    drawWin <- Gtk.widgetGetDrawWindow widget
+    (wi,hi) <- Gtk.widgetGetSize widget
     let (w,h) = (realToFrac wi, realToFrac hi)
     state <- atomically $ readTVar stateTV
-    _ <- renderWithDrawable drawWin $ 
+    _ <- Gtk.renderWithDrawable drawWin $ 
         do
         draw initboxInfo w h state
 --    putStrLn $ "myExposeHandler completed"
@@ -130,7 +112,7 @@ draw ::
     Double -> 
     Double -> 
     State b -> 
-    Render ()
+    Cairo.Render ()
 draw initboxInfo w h state  = 
     do
     drawAxisLabels initboxInfo w h
@@ -141,24 +123,24 @@ drawAxisLabels ::
     ([ira], ira, ira, [String]) -> 
     Double -> 
     Double -> 
-    Render ()
+    Cairo.Render ()
 drawAxisLabels initboxInfo w h =
     do
-    setFontSize 17
+    Cairo.setFontSize 17
     -- draw variable names:
-    moveTo centreX (botLeftY + 10)
+    Cairo.moveTo centreX (botLeftY + 10)
     showTextCenteredAndShiftedBy (0,0.5) var1
-    moveTo (botLeftX - 10) centreY
+    Cairo.moveTo (botLeftX - 10) centreY
     showTextCenteredAndShiftedBy (-0.5,0) var2
     -- draw domain endpoints on X axis:
-    moveTo botLeftX (botLeftY + 10)
+    Cairo.moveTo botLeftX (botLeftY + 10)
     showTextCenteredAndShiftedBy (0,0.5) (showAsD $ xIO - wI/2)
-    moveTo topRightX (botLeftY + 10)
+    Cairo.moveTo topRightX (botLeftY + 10)
     showTextCenteredAndShiftedBy (0,0.5) (showAsD $ xIO + wI/2)
     -- draw domain endpoints on Y axis:
-    moveTo (botLeftX - 10) botLeftY
+    Cairo.moveTo (botLeftX - 10) botLeftY
     showTextCenteredAndShiftedBy (-0.5,0) (showAsD $ yIO - hI/2)
-    moveTo (botLeftX - 10) topRightY
+    Cairo.moveTo (botLeftX - 10) topRightY
     showTextCenteredAndShiftedBy (-0.5,0) (showAsD $ yIO + hI/2)
     where
     (centreX, centreY) = boxCoordsToCanvasCoords initboxInfo w h (xIO,yIO)
@@ -168,15 +150,15 @@ drawAxisLabels initboxInfo w h =
     showAsD aI = show aD where (_, aD) = RA.doubleBounds aI
     showTextCenteredAndShiftedBy (xShiftInWidths, yShiftInHeights) text =
         do
-        extents <- textExtents text
-        uncurry relMoveTo $ getPos extents
-        showText text
+        extents <- Cairo.textExtents text
+        uncurry Cairo.relMoveTo $ getPos extents
+        Cairo.showText text
         where
         getPos extents =
              (-ww/2 +ww*xShiftInWidths,hh/2 + hh*yShiftInHeights)
              where
-             ww = textExtentsWidth extents
-             hh = textExtentsHeight extents
+             ww = Cairo.textExtentsWidth extents
+             hh = Cairo.textExtentsHeight extents
 
 drawSubBox ::
     ERRealBase b =>
@@ -184,24 +166,24 @@ drawSubBox ::
     Double -> 
     Double -> 
     (APBox b, RGBA) -> 
-    Render ()
+    Cairo.Render ()
 drawSubBox initboxInfo w h (subbox,(r,g,b,a)) = 
     do
 --    liftIO $ putStrLn $ "drawSubBox: subbox = " ++ showBox subbox
 --    liftIO $ putStrLn $ "drawSubBox: initboxInfo = " ++ show initboxInfo
-    setSourceRGBA r g b a -- 0 1 0 0.4 light green
+    Cairo.setSourceRGBA r g b a -- 0 1 0 0.4 light green
     rectanglePath
-    fill
-    setSourceRGBA 0 0 0 1 -- black border
-    setLineWidth 0.5
+    Cairo.fill
+    Cairo.setSourceRGBA 0 0 0 1 -- black border
+    Cairo.setLineWidth 0.5
     rectanglePath
-    stroke
+    Cairo.stroke
     where
     rectanglePath =
         do
-        (uncurry moveTo) p1
-        mapM_ (uncurry lineTo) [p2,p3,p4]
-        closePath
+        (uncurry Cairo.moveTo) p1
+        mapM_ (uncurry Cairo.lineTo) [p2,p3,p4]
+        Cairo.closePath
     [p1,p2,p3,p4] = subBoxToCanvasBox initboxInfo w h subbox
 
 {-
