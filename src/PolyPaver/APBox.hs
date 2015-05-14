@@ -50,6 +50,7 @@ data APBox b =
         -- for each variable, affine map from [-1,1] to its domain, ie (center, radius)
     !(IMap.IntMap Bool) -- whether the variable is restricted to integers
     !(IMap.IntMap String) -- human-friendly variable names
+    deriving Show
 
 showBox ::
     B.ERRealBase b =>
@@ -197,4 +198,4 @@ boxCorners (APBox box _ _)
     signCombinations
         = map (map snd) $ allPairsCombinations $ zip vars $ repeat (-1,1)
     getCorner signs =
-        zipWith (*) centre $ zipWith (*) radii signs  
+        zipWith (+) centre $ zipWith (*) radii signs  

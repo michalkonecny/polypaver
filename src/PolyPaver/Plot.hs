@@ -2,7 +2,8 @@
 module PolyPaver.Plot 
 (
     initPlot,
-    addBox
+    addBox,
+    State,
 --    ,
 --    waitForClose
 )
@@ -25,11 +26,12 @@ import Control.Concurrent.STM
 import qualified Data.IntMap as IMap
 
 type RGBA = (Double, Double, Double, Double)
+type State b = [(APBox b, RGBA)]
 
 {-|
   sample usage: @addBox stateTV (1,0,0,0.9) box@
 -}
-addBox :: TVar [(APBox b, RGBA)] -> RGBA -> APBox b -> IO ()
+addBox :: TVar (State b) -> RGBA -> APBox b -> IO ()
 addBox stateTV rgba box
     =
     do
@@ -53,11 +55,15 @@ initPlot ::
     APBox b -> 
     Int -> 
     Int -> 
-    IO (TVar [(APBox b, RGBA)])
+    IO (TVar (State b))
 initPlot initbox w h =
     do
+--    putStrLn $ "initbox = " ++ showBox initbox
+--    putStrLn $ "initbox = " ++ show initbox
+--    putStrLn $ "initboxInfo = " ++ show initboxInfo
+--    putStrLn $ "boxCorners initbox = " ++ show (boxCorners initbox)
     stateTV <- atomically $ newTVar []
-    _ <- forkIO $ myCanvas stateTV draw initboxInfo w h
+    _ <- forkIO $ myCanvasThread stateTV initboxInfo w h
     return stateTV
     where
     -- 4---3
@@ -68,15 +74,21 @@ initPlot initbox w h =
     varNames = map snd $ IMap.toAscList varNamesMap
     initboxInfo = (boxCentre initbox, x2 - x1, y4 - y1, varNames)
 
-myCanvas :: 
-  (Fractional t1, Fractional t2) =>
-  TVar [a]
-  -> (t5 -> t1 -> t2 -> [a] -> Render t4)
-  -> t5
-  -> Int
-  -> Int
-  -> IO ()
-myCanvas stateTV draw2 initboxInfo w h = 
+--myCanvasThread :: 
+--  (Fractional t1, Fractional t2) =>
+--  TVar [a]
+--  -> t5
+--  -> Int
+--  -> Int
+--  -> IO ()
+myCanvasThread :: 
+    (ERRealBase b) 
+    =>
+    TVar (State b) -> 
+    ([IRA b], IRA b, IRA b, [String]) -> 
+    Int -> Int -> 
+    IO ()
+myCanvasThread stateTV initboxInfo w h = 
     do
 --    unsafeInitGUIForThreadedRTS
     _ <- initGUI
@@ -84,7 +96,7 @@ myCanvas stateTV draw2 initboxInfo w h =
     da <- drawingAreaNew
     set window [ containerChild := da ]
     windowSetDefaultSize window w h
-    _ <- onExpose da (myExposeHandler stateTV da draw2 initboxInfo)
+    _ <- onExpose da (myExposeHandler stateTV da initboxInfo)
     timeoutAdd (widgetQueueDraw da >> return True) 500 >> return ()
     idleAdd (yield >> threadDelay 10000 >> return True) priorityDefaultIdle >> return ()
     _ <- onDestroy window mainQuit
@@ -92,15 +104,14 @@ myCanvas stateTV draw2 initboxInfo w h =
     mainGUI
     atomically $ writeTVar stateTV []
 
-myExposeHandler ::
-     (Fractional t1, Fractional t2, WidgetClass widget) =>
-     TVar t3 -> 
+myExposeHandler :: 
+     (WidgetClass widget, ERRealBase b) 
+     =>
+     TVar (State b) -> 
      widget -> 
-     (t5 -> t1 -> t2 -> t3 -> Render t4) -> 
-     t5 -> 
-     t -> 
-     IO Bool
-myExposeHandler stateTV widget draw2 initboxInfo _event = 
+     ([IRA b], IRA b, IRA b, [String]) -> 
+     event -> IO Bool
+myExposeHandler stateTV widget initboxInfo _event = 
     do
 --    putStrLn $ "myExposeHandler called"
     drawWin <- widgetGetDrawWindow widget
@@ -109,7 +120,7 @@ myExposeHandler stateTV widget draw2 initboxInfo _event =
     state <- atomically $ readTVar stateTV
     _ <- renderWithDrawable drawWin $ 
         do
-        draw2 initboxInfo w h state
+        draw initboxInfo w h state
 --    putStrLn $ "myExposeHandler completed"
     return True
 
@@ -118,7 +129,7 @@ draw ::
     ([IRA b], IRA b, IRA b, [String]) -> 
     Double -> 
     Double -> 
-    [(APBox b, RGBA)] -> 
+    State b -> 
     Render ()
 draw initboxInfo w h state  = 
     do
@@ -169,22 +180,24 @@ drawAxisLabels initboxInfo w h =
 
 drawSubBox ::
     ERRealBase b =>
-    ([IRA b], IRA b, IRA b, t3) ->
+    ([IRA b], IRA b, IRA b, [String]) ->
     Double -> 
     Double -> 
     (APBox b, RGBA) -> 
     Render ()
 drawSubBox initboxInfo w h (subbox,(r,g,b,a)) = 
     do
+--    liftIO $ putStrLn $ "drawSubBox: subbox = " ++ showBox subbox
+--    liftIO $ putStrLn $ "drawSubBox: initboxInfo = " ++ show initboxInfo
     setSourceRGBA r g b a -- 0 1 0 0.4 light green
-    parallelepiped
+    rectanglePath
     fill
     setSourceRGBA 0 0 0 1 -- black border
     setLineWidth 0.5
-    parallelepiped
+    rectanglePath
     stroke
     where
-    parallelepiped =
+    rectanglePath =
         do
         (uncurry moveTo) p1
         mapM_ (uncurry lineTo) [p2,p3,p4]
@@ -272,8 +285,8 @@ boxCoordsToCanvasCoords initboxInfo w h (xB,yB) =
     -- |  |  |  | 
     -- ----------
     
-    xC = w*(0.5 + 0.75*xL)
-    yC = h*(0.5 - 0.75*yL) -- cairo's origin is the top left corner
+    xC = w*(0.5 + 0.35*xL)
+    yC = h*(0.5 - 0.35*yL) -- cairo's origin is the top left corner
     -- convert relative coords from IRA to Double:
     [(xL,_xR), (yL,_yR)] = map RA.doubleBounds [xU, yU]
     -- translate box coords to unit square coord relative to initbox:

@@ -89,7 +89,7 @@ paverDefaultArgs =
     &= help (unlines 
                 ["Tries to decide numerical conjectures (problems) using polynomial enclosures.",
                  "[PROBLEM_ID] specifies one or more conjectures as follows:                   ",
-                 "  <name>.vc [<conclusion number>]: like a VC in SPARK .siv                   ",
+                 "  <name>.pp [<conclusion number>]: like a single VC in SPARK .siv            ",
                  "  <name>.siv [<vc name> [<conclusion number>]]: SPARK-generated VCs          ",
                  "  <name>.form: using internal syntax (machine generated)                     "
 #ifdef DynamicLoading 
