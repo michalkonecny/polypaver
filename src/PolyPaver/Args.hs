@@ -1,4 +1,3 @@
-{-# LANGUAGE CPP #-}
 {-# LANGUAGE DeriveDataTypeable #-}
 
 module PolyPaver.Args 
@@ -92,10 +91,6 @@ paverDefaultArgs =
                  "  <name>.pp [<conclusion number>]: like a single VC in SPARK .siv            ",
                  "  <name>.siv [<vc name> [<conclusion number>]]: SPARK-generated VCs          ",
                  "  <name>.form: using internal syntax (machine generated)                     "
-#ifdef DynamicLoading 
-                 , 
-                 "  <name>.hs [<identifier name>]: Haskell constant of type Problem            "
-#endif
                  ])
     &= summary "PolyPaver 0.3 (c) 2015 Jan Duracz and Michal Konecny (Aston University)"
     &= name "polypaver"

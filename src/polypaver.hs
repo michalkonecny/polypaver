@@ -1,4 +1,3 @@
-{-# LANGUAGE CPP #-}
 {-# LANGUAGE DeriveDataTypeable #-}
 
 {-|
@@ -23,10 +22,6 @@ import PolyPaver.Input.SPARK
 
 --import Numeric.ER.Real.DefaultRepr
 
-
-#ifdef DynamicLoading 
-import PolyPaver.Input.Haskell
-#endif
 import PolyPaver.DeriveBounds (getBox)
 import PolyPaver.Vars (substituteVarsForm,getFormVarNames)
 
@@ -41,9 +36,6 @@ main
     
 lookupFile :: Args -> [FilePath] -> IO [(String, Problem)]
 lookupFile args otherArgs@(inputPath : _)
-#ifdef DynamicLoading 
-    | hasHsExtension inputPath = lookupHaskell otherArgs
-#endif
     | hasFormExtension inputPath = lookupForm args otherArgs
     | hasPPExtension inputPath = lookupPP otherArgs
     | hasSivExtension inputPath = lookupSiv otherArgs
@@ -55,16 +47,7 @@ lookupFile _ _ =
     reportCmdLine
     error "No problem specified."
 
-#ifdef DynamicLoading     
-lookupHaskell :: [FilePath] -> IO [(String, Problem)]
-lookupHaskell [inputPath] = lookupHaskell [inputPath, "problem"]
-lookupHaskell (inputPath : problemNames) =
-    do
-    problems <- loadHaskellProblems inputPath problemNames
-    return $ zip problemNames problems
-lookupHaskell _ = return []
-#endif
-    
+
 lookupForm :: Args -> [FilePath] -> IO [(String, Problem)]
 lookupForm args [inputPath] =
     do
