@@ -23,8 +23,6 @@ import PolyPaver.Form
 import PolyPaver.Vars
 import PolyPaver.DeriveBounds
 
-import qualified Codec.TPTP as TPTP (parse)
-
 --import Data.Char (ord)
 --import Data.List (intercalate, partition)
 --import qualified Data.IntMap as IMap
@@ -34,14 +32,9 @@ parseTPTP ::
     String {-^ the contents of the TPTP file -} -> 
     (String, Form (), [(Int, (Rational, Rational), Bool)])
     {-^ the formula and the bounding box for its variables -}
-parseTPTP _sourceDescription s =
-    case TPTP.parse s of
-        items -> 
-            error $ "TPTP: found " ++ (show $ length items) ++ " items"
---            addBox (goalName, formula )
---            where
---            (formula, goalName) = tptp_formula_2_PP_formula items
-
+parseTPTP sourceDescription s =
+    undefined 
+    
 --tptp_file =
 --    many tptp_input
 --    

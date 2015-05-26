@@ -65,8 +65,7 @@ Library
         parsec == 3.1.*,
         transformers == 0.3.*,
         hashable == 1.2.*,
-        strict == 0.3.*,
-        logic-TPTP == 0.4.*
+        strict == 0.3.*
 
   Exposed-modules:
     PolyPaver,
