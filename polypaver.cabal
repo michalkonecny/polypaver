@@ -49,23 +49,24 @@ Library
   hs-source-dirs: src
   ghc-options:     -O2 -Wall
   Build-Depends:
-        base >= 4 && < 5,
-        containers >= 0.3.0.0,
-        gtk >= 0.13.0,
-        cairo >= 0.13.0,
-        stm >= 2,
-        cmdargs >= 0.7,
-        filepath >= 1.1,
-        regex-compat >= 0.93.1,
-        html >= 1.0.1.2,
-        binary >= 0.5,
-        syb >= 0.1,
-        time >= 1.1,
-        convertible >= 1.0,
-        parsec >= 3.1.1,
-        transformers,
-        hashable >= 1.2,
-        strict >= 0.3.2
+        base == 4.*,
+        containers == 0.5.*,
+        gtk == 0.13.*,
+        cairo == 0.13.*,
+        stm == 2.4.*,
+        cmdargs == 0.10.*,
+        filepath == 1.3.*,
+        regex-compat == 0.95.*,
+        html == 1.0.*,
+        binary == 0.7.*,
+        syb == 0.4.*,
+        time == 1.4.*,
+        convertible == 1.1.*,
+        parsec == 3.1.*,
+        transformers == 0.3.*,
+        hashable == 1.2.*,
+        strict == 0.3.*,
+        logic-TPTP == 0.4.*
 
   Exposed-modules:
     PolyPaver,
@@ -143,8 +144,8 @@ Executable polypaver
   main-is: polypaver.hs
   Build-Depends:
           polypaver,
-          base >= 4 && < 5,
-          containers >= 0.3.0.0
+          base == 4.*,
+          containers == 0.5.*
 
 Executable pp_simplify
   hs-source-dirs: main
@@ -152,5 +153,5 @@ Executable pp_simplify
   main-is: pp_simplify.hs
   Build-Depends:
           polypaver,
-          base >= 4 && < 5,
-          cmdargs >= 0.7
+          base == 4.*,
+          cmdargs == 0.10.*

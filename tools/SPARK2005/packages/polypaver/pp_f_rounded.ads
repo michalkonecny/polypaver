@@ -30,6 +30,12 @@ package PP_F_Rounded is
     function Exp (Prec : Integer; X : Float) return Float;
     --# pre Exp(Prec,X) in Float;
     
+    function Sin (Prec : Integer; X : Float) return Float;
+    --# pre Sin(Prec,X) in Float;
+    
+    function Cos (Prec : Integer; X : Float) return Float;
+    --# pre Cos(Prec,X) in Float;
+    
     function Sqrt (Prec : Integer; X : Float) return Float;
     --# pre X >= 0.0 and
     --#     Sqrt(Prec,X) in Float;
