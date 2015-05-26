@@ -13,24 +13,34 @@
     Based on http://www.cs.miami.edu/~tptp/TPTP/SyntaxBNF.html. 
 -}
 
-module PolyPaver.Input.TPTP where
+module PolyPaver.Input.TPTP 
+(
+    parseTPTP
+)
+where
 
 import PolyPaver.Form
 import PolyPaver.Vars
 import PolyPaver.DeriveBounds
 
-import Numeric.ER.Misc
+import qualified Codec.TPTP as TPTP (parse)
 
-import Data.Char (ord)
-import Data.List (intercalate, partition)
-import qualified Data.IntMap as IMap
+--import Data.Char (ord)
+--import Data.List (intercalate, partition)
+--import qualified Data.IntMap as IMap
 
-import Text.Parsec
-import Text.Parsec.String
-import Text.Parsec.Token
-import Text.Parsec.Expr
---import Text.Parsec.Prim
-import Text.Parsec.Language
+parseTPTP ::
+    String {-^ description of the source (eg file name) for error reporting -} ->
+    String {-^ the contents of the TPTP file -} -> 
+    (String, Form (), [(Int, (Rational, Rational), Bool)])
+    {-^ the formula and the bounding box for its variables -}
+parseTPTP _sourceDescription s =
+    case TPTP.parse s of
+        items -> 
+            error $ "TPTP: found " ++ (show $ length items) ++ " items"
+--            addBox (goalName, formula )
+--            where
+--            (formula, goalName) = tptp_formula_2_PP_formula items
 
 --tptp_file =
 --    many tptp_input

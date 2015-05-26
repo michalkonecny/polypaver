@@ -18,7 +18,7 @@ import PolyPaver.Args
 import PolyPaver.Invocation
 import PolyPaver.Form
 import PolyPaver.Input.SPARK
---import PolyPaver.Input.TPTP
+import PolyPaver.Input.TPTP (parseTPTP)
 
 --import Numeric.ER.Real.DefaultRepr
 
@@ -39,9 +39,7 @@ lookupFile args otherArgs@(inputPath : _)
     | hasFormExtension inputPath = lookupForm args otherArgs
     | hasPPExtension inputPath = lookupPP otherArgs
     | hasSivExtension inputPath = lookupSiv otherArgs
-    | hasTptpExtension inputPath =
-        error "Input of TPTP files not supported yet"  
---        lookupTptp args
+    | hasTptpExtension inputPath = lookupTptp otherArgs
 lookupFile _ _ =
     do 
     reportCmdLine
@@ -101,6 +99,14 @@ lookupPP [inputPath, conclNumberS] =
             return $ [mkProblems pp !! (conclNumber - 1)]
         _ -> ppArgsError
 lookupPP _ = ppArgsError 
+
+lookupTptp :: [FilePath] -> IO [(String, Problem)]
+lookupTptp [inputPath] =
+    do
+    fileContents <- readFile inputPath
+    let tptp = parseTPTP inputPath fileContents
+    return $ mkProblems tptp
+lookupTptp _ = ppArgsError 
 
 ppArgsError :: IO a
 ppArgsError =
