@@ -41,10 +41,9 @@ Extra-Source-Files:
     examples/pp/skewing2.pp
     examples/form/true.form
 
-source-repository this
-  type:     mercurial
-  location: https://code.google.com/p/polypaver/
-  tag:      polypaver-0.2
+source-repository head
+  type:     git
+  location: https://github.com/michalkonecny/polypaver
 
 Library
   hs-source-dirs: src
@@ -142,6 +141,7 @@ Executable polypaver
   Build-Depends:
           base >= 4 && < 5,
           containers >= 0.3.0.0,
+          polypaver,
           gtk >= 0.13.0,
           cairo >= 0.13.0,
           stm >= 2,
