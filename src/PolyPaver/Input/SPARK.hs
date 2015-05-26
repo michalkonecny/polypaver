@@ -25,8 +25,7 @@ import PolyPaver.Form
 import PolyPaver.Vars
 import PolyPaver.DeriveBounds
 
-import Numeric.ER.Misc
---import Numeric.ER.Real.DefaultRepr
+import Debug.Trace
 
 import Data.Char (ord, isSpace)
 import Data.List (intercalate, partition)
@@ -407,7 +406,7 @@ decodeFnAux _ "exact__exp" [arg1] = exp arg1
 decodeFnAux original "exact__integral" args = decodeIntegral original args
 
 decodeFnAux original fn _args =
-    unsafePrint
+    trace
     (
         "\nWarning: treating the term " ++ show originalNoSpaces ++ " as a variable\n" ++
         "         because the function " ++ show fn ++ " is not recognised by PolyPaver." 
@@ -502,7 +501,7 @@ m_dot :: Parser String
 m_reserved :: String -> Parser ()
 m_whiteSpace :: Parser ()
 m_float :: Parser Double
---m_parens :: Parser a -> Parser a -- MK: this line fails with type a error, no idea why
+m_parens :: ParsecT String t Identity a -> ParsecT String t Identity a
 TokenParser{ parens = m_parens
             , identifier = m_identifier
             , reservedOp = m_reservedOp
