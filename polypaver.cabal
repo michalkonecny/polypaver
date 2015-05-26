@@ -39,7 +39,6 @@ Extra-Source-Files:
     examples/pp/integral.pp
     examples/pp/skewing.pp
     examples/pp/skewing2.pp
-    examples/haskell/sqrtexp.hs
     examples/form/true.form
 
 source-repository this
@@ -47,22 +46,14 @@ source-repository this
   location: https://code.google.com/p/polypaver/
   tag:      polypaver-0.2
 
-
-Flag DynamicLoading
-  Description: Enable dynamically loading problems defined in Haskell.  Requires installed PolyPaver library.
-  Default: True
-
-
 Library
   hs-source-dirs: src
   ghc-options:     -O2 -Wall
-  if flag(DynamicLoading)
-    cpp-options: -DDynamicLoading
   Build-Depends:
         base >= 4 && < 5,
         containers >= 0.3.0.0,
-        gtk >= 0.12.0,
-        cairo >= 0.12.0,
+        gtk >= 0.13.0,
+        cairo >= 0.13.0,
         stm >= 2,
         cmdargs >= 0.7,
         filepath >= 1.1,
@@ -78,9 +69,7 @@ Library
         strict >= 0.3.2
 
   Exposed-modules:
-    PolyPaver
-
-  Other-modules:
+    PolyPaver,
     PolyPaver.Args,
     PolyPaver.Invocation,
     PolyPaver.ProverLoop,
@@ -92,7 +81,9 @@ Library
     PolyPaver.APBox,
     PolyPaver.Plot,
     PolyPaver.DeriveBounds,
-    PolyPaver.Simplify.Substitution,
+    PolyPaver.Simplify.Substitution
+
+  Other-modules:
     Numeric.ER.ShowHTML,
     Numeric.ER.BasicTypes.PlusMinus,
     Numeric.ER.Misc,
@@ -148,34 +139,11 @@ Executable polypaver
   hs-source-dirs: src
   ghc-options:     -O2 -Wall -rtsopts
   main-is: polypaver.hs
-  if flag(DynamicLoading)
-    cpp-options: -DDynamicLoading
-    Build-Depends:
+  Build-Depends:
           base >= 4 && < 5,
           containers >= 0.3.0.0,
-          gtk >= 0.12.0,
-          cairo >= 0.12.0,
-          stm >= 2,
-          cmdargs >= 0.7,
-          filepath >= 1.1,
-          regex-compat >= 0.93.1,
-          html >= 1.0.1.2,
-          binary >= 0.5,
-          syb >= 0.1,
-          time >= 1.1,
-          convertible >= 1.0,
-          parsec >= 3.1.1,
-          transformers,
-          hashable >= 1.2,
-          strict >= 0.3.2,
-          ghc >= 7.4,
-          ghc-paths >= 0.1
-  else
-    Build-Depends:
-          base >= 4 && < 5,
-          containers >= 0.3.0.0,
-          gtk >= 0.12.0,
-          cairo >= 0.12.0,
+          gtk >= 0.13.0,
+          cairo >= 0.13.0,
           stm >= 2,
           cmdargs >= 0.7,
           filepath >= 1.1,
@@ -197,8 +165,8 @@ Executable pp_simplify
   Build-Depends:
           base >= 4 && < 5,
           containers >= 0.3.0.0,
-          gtk >= 0.12.0,
-          cairo >= 0.12.0,
+          gtk >= 0.13.0,
+          cairo >= 0.13.0,
           stm >= 2,
           cmdargs >= 0.7,
           filepath >= 1.1,
