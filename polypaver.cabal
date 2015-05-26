@@ -80,6 +80,9 @@ Library
     PolyPaver.APBox,
     PolyPaver.Plot,
     PolyPaver.DeriveBounds,
+    PolyPaver.Input.SPARK,
+    PolyPaver.Input.TPTP,
+    PolyPaver.Simplify.Args,
     PolyPaver.Simplify.Substitution
 
   Other-modules:
@@ -135,48 +138,19 @@ Library
     Numeric.ER.RnToRm.DefaultRepr
 
 Executable polypaver
-  hs-source-dirs: src
+  hs-source-dirs: main
   ghc-options:     -O2 -Wall -rtsopts
   main-is: polypaver.hs
   Build-Depends:
-          base >= 4 && < 5,
-          containers >= 0.3.0.0,
           polypaver,
-          gtk >= 0.13.0,
-          cairo >= 0.13.0,
-          stm >= 2,
-          cmdargs >= 0.7,
-          filepath >= 1.1,
-          regex-compat >= 0.93.1,
-          html >= 1.0.1.2,
-          binary >= 0.5,
-          syb >= 0.1,
-          time >= 1.1,
-          convertible >= 1.0,
-          parsec >= 3.1.1,
-          transformers,
-          hashable >= 1.2,
-          strict >= 0.3.2
+          base >= 4 && < 5,
+          containers >= 0.3.0.0
 
 Executable pp_simplify
-  hs-source-dirs: src
+  hs-source-dirs: main
   ghc-options:     -O2 -Wall -rtsopts
   main-is: pp_simplify.hs
   Build-Depends:
+          polypaver,
           base >= 4 && < 5,
-          containers >= 0.3.0.0,
-          gtk >= 0.13.0,
-          cairo >= 0.13.0,
-          stm >= 2,
-          cmdargs >= 0.7,
-          filepath >= 1.1,
-          regex-compat >= 0.93.1,
-          html >= 1.0.1.2,
-          binary >= 0.5,
-          syb >= 0.1,
-          time >= 1.1,
-          convertible >= 1.0,
-          parsec >= 3.1.1,
-          transformers,
-          hashable >= 1.2,
-          strict >= 0.3.2
+          cmdargs >= 0.7
