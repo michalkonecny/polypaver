@@ -105,7 +105,7 @@ lookupTptp [inputPath] =
     do
     fileContents <- readFile inputPath
     let tptp = parseTPTP inputPath fileContents
-    return $ mkProblems tptp
+    return $ concat $ map mkProblems tptp
 lookupTptp _ = ppArgsError 
 
 ppArgsError :: IO a

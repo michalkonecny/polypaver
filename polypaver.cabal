@@ -47,7 +47,8 @@ source-repository head
 
 Library
   hs-source-dirs: src
-  ghc-options:     -O2 -Wall
+--  ghc-options:     -O2
+  ghc-options:     -Wall
   Build-Depends:
         base == 4.*,
         containers == 0.5.*,
@@ -86,6 +87,7 @@ Library
     PolyPaver.Simplify.Substitution
 
   Other-modules:
+    PolyPaver.Input.Misc,  
     Numeric.ER.ShowHTML,
     Numeric.ER.BasicTypes.PlusMinus,
     Numeric.ER.Misc,
