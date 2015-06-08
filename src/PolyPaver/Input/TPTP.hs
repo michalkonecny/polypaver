@@ -25,6 +25,7 @@ import PolyPaver.Form
 import PolyPaver.Input.Misc (withConsumed, addBox, traceRuleDoIt)
 
 import Data.Char (ord, isUpper, isLower, isSpace)
+import qualified Data.List as List (partition)
 
 import Data.Functor.Identity (Identity)
 import Text.Parsec
@@ -49,12 +50,27 @@ parseTPTP ::
     {-^ the formula and the bounding box for its variables -}
 parseTPTP sourceDescription s =
     case parse tptp_file sourceDescription s of
-        Right formulas -> map addBoxFR formulas
+        Right formulas -> map addBox $ mergeHypothesesIntoConjectures $ map insertNameToForm formulas
         Left err -> error $ "parse error in " ++ show err
         where
-        addBoxFR (name, _formrole, form) =
-            trace (name ++ ": " ++ showForm 0 const form) $ 
-            addBox (name, form)
+        insertNameToForm (name, formrole, form) =
+            (name, formrole, insertLabel name form)
+        mergeHypothesesIntoConjectures formulas =
+            map addHypotheses conjecturesNRF
+            where
+            addHypotheses (name, "negated_conjecture", anticonj) = 
+                (name, joinHypothesesAndConclusion (hypotheses, Not anticonj))
+            addHypotheses (name, _formrole, conj) = 
+                (name, joinHypothesesAndConclusion (hypotheses, conj))
+            hypotheses = map dropNameRole hypothesesNRF
+                where
+                dropNameRole (_name , _formrole , form) = form
+            (hypothesesNRF, conjecturesNRF) = List.partition canAssume formulas
+                where
+                canAssume (_name, formrole, _form) =
+                    formrole `elem` 
+                        ["axiom", "hypothesis", "definition", "assumption",
+                         "fi_domain", "fi_functors", "fi_predicates", "type"]
          
     
 tptp_file :: Parser [(String, String, Form ())]
@@ -383,7 +399,8 @@ predicate =
 
 decodePred :: String -> [Term ()] -> Form ()
 decodePred pname _args =
-    error $ "decodePred: unknown predicate " ++ pname
+--    error $ "decodePred: unknown predicate " ++ pname
+    IsInt "" (var pname) -- TODO: change IsInt -> IsTrue
 
 term :: Parser (Term ())
 term = -- deviating from TPTP in a manner similar to Metitarski
@@ -464,6 +481,7 @@ constant name =
 
 
 decodeFn :: String -> String -> [Term ()] -> Term ()
+decodeFn _ "exp" [arg1] = exp arg1
 decodeFn original fn _args =
     trace
     (

@@ -103,6 +103,39 @@ getFormulaSize form =
         IsIntRange _ t1 t2 t3 -> 1 + (getTermSize t1) + (getTermSize t2) + (getTermSize t3)
         IsInt _ t -> 1 + (getTermSize t)
 
+insertLabel :: String -> Form l -> Form l
+insertLabel labOrig = insLab labOrig
+    where
+    insLab lab form =
+        case form of
+            Not arg -> Not $ insLab (lab ++ ".!") arg
+            Or left right ->
+                Or (insLab (lab ++ ".orL") left) (insLab (lab ++ ".orR") right)
+            And left right ->
+                And (insLab (lab ++ ".andL") left) (insLab (lab ++ ".andR") right)
+            Implies left right ->
+                Implies (insLab (lab ++ ".implL") left) (insLab (lab ++ ".implR") right)
+            Le _lab left right ->
+                Le lab left right
+            Leq _lab left right ->
+                Leq lab left right
+            Ge _lab left right ->
+                Ge lab left right
+            Geq _lab left right ->
+                Geq lab left right
+            Eq _lab left right ->
+                Eq lab left right
+            Neq _lab left right ->
+                Neq lab left right
+            ContainedIn _lab left right -> 
+                ContainedIn lab left right
+            IsRange _lab arg1 arg2 arg3 -> 
+                IsRange lab arg1 arg2 arg3
+            IsIntRange _lab arg1 arg2 arg3 -> 
+                IsIntRange lab arg1 arg2 arg3
+            IsInt _lab arg -> 
+                IsInt lab arg
+
 (/\) :: Form l -> Form l -> Form l
 (/\) = And
 (\/) :: Form l -> Form l -> Form l
