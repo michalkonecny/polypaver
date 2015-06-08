@@ -20,9 +20,9 @@ module PolyPaver.Input.TPTP
 )
 where
 
-import PolyPaver.Input.Misc (withConsumed, addBox)
-
 import PolyPaver.Form
+
+import PolyPaver.Input.Misc (withConsumed, addBox, traceRuleDoIt)
 
 import Data.Char (ord, isUpper, isLower, isSpace)
 
@@ -36,27 +36,11 @@ import Text.Parsec.Language (emptyDef)
 
 import Debug.Trace (trace)
 _ = trace -- prevent unused import warning
+_ = traceRuleDoIt
 
 traceRule :: String -> Parser a -> Parser a
 traceRule _ = id
 --traceRule = traceRuleDoIt
-
-traceRuleDoIt ::
-    String ->
-    Parser a -> Parser a
-traceRuleDoIt rulename parser =
-    do 
-    trace ("v " ++ rulename) $ return ()
---    (try parserAssumeSucceds) <|> parserIfFails
-    parserAssumeSucceds
-    where
-    parserAssumeSucceds =
-        do 
-        (result, consumed) <- withConsumed parser
-        trace ("^ " ++ rulename ++ ": " ++ consumed) $ return result
---    parserIfFails =
---        do
---        trace ("x " ++ rulename) $ parser
 
 parseTPTP ::
     String {-^ description of the source (eg file name) for error reporting -} ->

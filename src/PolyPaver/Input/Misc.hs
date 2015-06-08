@@ -25,6 +25,25 @@ import qualified Data.IntMap as IMap
 
 import Data.Hashable (Hashable)
 
+import Debug.Trace (trace)
+
+traceRuleDoIt ::
+    String ->
+    Parser a -> Parser a
+traceRuleDoIt rulename parser =
+    do 
+    trace ("v " ++ rulename) $ return ()
+--    (try parserAssumeSucceds) <|> parserIfFails
+    parserAssumeSucceds
+    where
+    parserAssumeSucceds =
+        do 
+        (result, consumed) <- withConsumed parser
+        trace ("^ " ++ rulename ++ ": " ++ consumed) $ return result
+--    parserIfFails =
+--        do
+--        trace ("x " ++ rulename) $ parser
+
 
 {-|
     This function amends the result of a Parsec parser with
