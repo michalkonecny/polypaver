@@ -22,7 +22,7 @@ module PolyPaver.Vars
     normaliseVars,
     substituteVarsForm,
     substituteVarsTerm,
-    removeDisjointHypotheses
+    pruneHypotheses
 )
 where
 
@@ -33,6 +33,8 @@ import PolyPaver.Form
 import qualified Data.Set as Set
 import qualified Data.Map as Map
 import qualified Data.IntMap as IMap
+import Debug.Trace (trace)
+_ = trace
 
 showVar :: IMap.IntMap [Char] -> IMap.Key -> [Char]
 showVar varNames var =
@@ -342,6 +344,97 @@ substituteVarsTerm old2new = subst
             FExp rel abse arg -> FExp rel abse $ subst arg
             t -> t
 
+pruneHypotheses :: (Eq l) => Form l -> Form l
+pruneHypotheses = removeSingletonHypotheses . removeDisjointHypotheses
+
+{- |
+   Remove hypotheses that compare a term with a variable that does
+   not appear anywhere else in the whole formula.
+-}
+removeSingletonHypotheses :: (Eq l) => Form l -> Form l
+removeSingletonHypotheses formOrig
+    =
+    rmHyps Set.empty formOrig
+    where
+    rmHyps otherVars (Implies h c)
+        | isSingleton otherVarsAndC h = rmHyps otherVars c 
+        | otherwise = (Implies (rmConj otherVarsAndC h) (rmHyps otherVarsAndH c))
+        where
+        otherVarsAndH = otherVars `Set.union` (getFormFreeVars h)
+        otherVarsAndC = otherVars `Set.union` (getFormFreeVars c)
+    rmHyps _ f = f
+    rmConj otherVars (And h1 h2)
+        | isSingleton otherVarsAndH2 h1 = rmConj otherVars h2
+        | isSingleton otherVarsAndH1 h2 = rmConj otherVars h1
+        | otherwise = And (rmConj otherVarsAndH2 h1) (rmConj otherVarsAndH1 h2)
+        where
+        otherVarsAndH1 = otherVars `Set.union` (getFormFreeVars h1)
+        otherVarsAndH2 = otherVars `Set.union` (getFormFreeVars h2)
+    rmConj _ f = f
+    isSingleton otherVars form =
+--        trace 
+--        (
+--            "isSingleton: "
+--            ++ "\n  form = " ++ showForm 0 const form
+--            ++ "\n  form = " ++ show form
+--            ++ "\n  otherVars = " ++ show otherVars
+--            ++ "\n  result = " ++ show result
+--        ) 
+--        $ 
+        result
+        where
+        result =
+            case form of
+                Le _lab (Term (Var l _, _)) (Term (Var r _, _)) ->
+                    l `Set.notMember` otherVars || r `Set.notMember` otherVars
+                Le _lab left (Term (Var i _, _)) ->
+                    i `Set.notMember` (getTermFreeVars left `Set.union` otherVars)
+                Le _lab (Term (Var i _, _)) right ->
+                    i `Set.notMember`  (getTermFreeVars right `Set.union` otherVars)
+                Leq _lab (Term (Var l _, _)) (Term (Var r _, _)) ->
+                    l `Set.notMember` otherVars || r `Set.notMember` otherVars
+                Leq _lab left (Term (Var i _, _)) ->
+                    i `Set.notMember`  (getTermFreeVars left `Set.union` otherVars)
+                Leq _lab (Term (Var i _, _)) right ->
+                    i `Set.notMember`  (getTermFreeVars right `Set.union` otherVars)
+                Ge _lab (Term (Var l _, _)) (Term (Var r _, _)) ->
+                    l `Set.notMember` otherVars || r `Set.notMember` otherVars
+                Ge _lab left (Term (Var i _, _)) ->
+                    i `Set.notMember`  (getTermFreeVars left `Set.union` otherVars)
+                Ge _lab (Term (Var i _, _)) right ->
+                    i `Set.notMember`  (getTermFreeVars right `Set.union` otherVars)
+                Geq _lab (Term (Var l _, _)) (Term (Var r _, _)) ->
+                    l `Set.notMember` otherVars || r `Set.notMember` otherVars
+                Geq _lab left (Term (Var i _, _)) ->
+                    i `Set.notMember`  (getTermFreeVars left `Set.union` otherVars)
+                Geq _lab (Term (Var i _, _)) right ->
+                    i `Set.notMember`  (getTermFreeVars right `Set.union` otherVars)
+                Eq _lab (Term (Var l _, _)) (Term (Var r _, _)) ->
+                    l `Set.notMember` otherVars || r `Set.notMember` otherVars
+                Eq _lab left (Term (Var i _, _)) ->
+                    i `Set.notMember`  (getTermFreeVars left `Set.union` otherVars)
+                Eq _lab (Term (Var i _, _)) right ->
+                    i `Set.notMember`  (getTermFreeVars right `Set.union` otherVars)
+                Neq _lab (Term (Var l _, _)) (Term (Var r _, _)) ->
+                    l `Set.notMember` otherVars || r `Set.notMember` otherVars
+                Neq _lab left (Term (Var i _, _)) ->
+                    i `Set.notMember`  (getTermFreeVars left `Set.union` otherVars)
+                Neq _lab (Term (Var i _, _)) right ->
+                    i `Set.notMember`  (getTermFreeVars right `Set.union` otherVars)
+                ContainedIn _lab (Term (Var l _, _)) (Term (Var r _, _)) ->
+                    l `Set.notMember` otherVars || r `Set.notMember` otherVars
+                ContainedIn _lab left (Term (Var i _, _)) ->
+                    i `Set.notMember`  (getTermFreeVars left `Set.union` otherVars)
+                ContainedIn _lab (Term (Var i _, _)) right ->
+                    i `Set.notMember`  (getTermFreeVars right `Set.union` otherVars)
+                IsRange lab term left right ->
+                    isSingleton otherVars (Leq lab left term) 
+                    && 
+                    isSingleton otherVars (Leq lab term right) 
+                    && 
+                    isSingleton otherVars (Leq lab left right) 
+                _ -> False
+
 {- |
    Remove hypotheses that feature only variables that are not in the conclusion
    nor are connected to the conclusion indirectly via other hypotheses.
@@ -352,15 +445,15 @@ removeDisjointHypotheses form
     rmHyps form
     where
     rmHyps (Implies h c)
-        | disjoint h = rmHyps c 
+        | isDisjoint h = rmHyps c 
         | otherwise = (Implies (rmConj h) (rmHyps c))
     rmHyps f = f
     rmConj (And h1 h2)
-        | disjoint h1 = rmConj h2
-        | disjoint h2 = rmConj h1
+        | isDisjoint h1 = rmConj h2
+        | isDisjoint h2 = rmConj h1
         | otherwise = And (rmConj h1) (rmConj h2)
     rmConj f = f 
-    disjoint h 
+    isDisjoint h 
         = Set.null $ Set.intersection conclusionTransVars (getFormFreeVars h)
     conclusionTransVars
         =

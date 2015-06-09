@@ -14,7 +14,7 @@ module PolyPaver.Input.Misc where
 import PolyPaver.DeriveBounds (getBox)
 
 import PolyPaver.Form (Form, Term'(Lit), HasDefaultValue)
-import PolyPaver.Vars (substituteVarsForm, removeDisjointHypotheses, normaliseVars)
+import PolyPaver.Vars (substituteVarsForm, pruneHypotheses, normaliseVars)
 
 
 import Text.Parsec (getInput, getPosition, SourcePos, sourceLine, sourceColumn)
@@ -93,11 +93,11 @@ unIntercalate sep s = aux [] [] s
         | otherwise = aux doneRev (e : partNext) es
     
 
-addBox ::
+removeDisjointHypothesesAddBox ::
     (Eq l, HasDefaultValue l, Hashable l) =>
     (String, Form l) -> 
     (String, Form l, [(Int, (Rational, Rational), Bool)])
-addBox (name, form) =
+removeDisjointHypothesesAddBox (name, form) =
     (name, formNoSingletonVars, boxNoSingletonVars)
     where
     formNoSingletonVars =
@@ -115,7 +115,7 @@ addBox (name, form) =
     box =
         case getBox formN of
             Left err -> 
-                error $ "PolyPaver.Input.SPARK: addBox: problem with VC " ++ name ++ ":\n" ++ err
+                error $ "PolyPaver.Input.SPARK: removeDisjointHypothesesAddBox: problem with VC " ++ name ++ ":\n" ++ err
             Right box2 -> box2
-    formN = removeDisjointHypotheses $ normaliseVars form
+    formN = pruneHypotheses $ normaliseVars form
   

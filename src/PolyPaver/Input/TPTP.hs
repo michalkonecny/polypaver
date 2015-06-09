@@ -22,7 +22,7 @@ where
 
 import PolyPaver.Form
 
-import PolyPaver.Input.Misc (withConsumed, addBox, traceRuleDoIt)
+import PolyPaver.Input.Misc (withConsumed, removeDisjointHypothesesAddBox, traceRuleDoIt)
 
 import Data.Char (ord, isUpper, isLower, isSpace)
 import qualified Data.List as List (partition)
@@ -50,7 +50,7 @@ parseTPTP ::
     {-^ the formula and the bounding box for its variables -}
 parseTPTP sourceDescription s =
     case parse tptp_file sourceDescription s of
-        Right formulas -> map addBox $ mergeHypothesesIntoConjectures $ map insertNameToForm formulas
+        Right formulas -> map removeDisjointHypothesesAddBox $ mergeHypothesesIntoConjectures $ map insertNameToForm formulas
         Left err -> error $ "parse error in " ++ show err
         where
         insertNameToForm (name, formrole, form) =

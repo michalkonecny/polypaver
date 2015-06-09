@@ -21,7 +21,7 @@ module PolyPaver.Input.SPARK
 )
 where
 
-import PolyPaver.Input.Misc (withConsumed, addBox)
+import PolyPaver.Input.Misc (withConsumed, removeDisjointHypothesesAddBox)
 
 import PolyPaver.Form
 
@@ -41,7 +41,7 @@ import Text.Parsec.Language (emptyDef)
 --  inputPathS : outputFolder : _ <- getArgs
 --  fileS <- readFile inputPathS
 --  let vcs = parseSiv inputPathS fileS
---  let vcBoxes = map (addBox inputPathS) $ filter (notVerum . snd) vcs
+--  let vcBoxes = map (removeDisjointHypothesesAddBox inputPathS) $ filter (notVerum . snd) vcs
 --  mapM_ (writePolyPaverMain outputFolder) $ vcBoxes
   
 parseVCInFile ::
@@ -51,7 +51,7 @@ parseVCInFile ::
     {-^ the VC and the bounding box for its variables -}
 parseVCInFile sourceDescription s =
     case parse vcInFile sourceDescription s of
-        Right (vcName, t) -> addBox (vcName, t)
+        Right (vcName, t) -> removeDisjointHypothesesAddBox (vcName, t)
         Left err -> error $ "parse error in " ++ show err 
 
 parseSivVC ::
@@ -62,7 +62,7 @@ parseSivVC ::
     {-^ the VC and the bounding box for its variables -}
 parseSivVC sourceDescription s vcName =
     case parse (sivVC vcName) "siv" s of
-        Right t -> addBox (vcName, t)
+        Right t -> removeDisjointHypothesesAddBox (vcName, t)
         Left err -> error $ "parse error in " ++ sourceDescription ++ ":" ++ show err 
   
 parseSivAll ::
@@ -72,7 +72,7 @@ parseSivAll ::
     {-^ the VC and the bounding box for its variables -}
 parseSivAll sourceDescription s =
     case parse sivAll "siv" s of
-        Right t -> map addBox t
+        Right t -> map removeDisjointHypothesesAddBox t
         Left err -> error $ "parse error in " ++ sourceDescription ++ ":" ++ show err 
         
 sivAll :: Parser [(String, Form ())]
