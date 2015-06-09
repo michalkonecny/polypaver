@@ -27,13 +27,15 @@ import PolyPaver.Input.Misc (withConsumed, removeDisjointHypothesesAddBox, trace
 import Data.Char (ord, isUpper, isLower, isSpace)
 import qualified Data.List as List (partition)
 
-import Data.Functor.Identity (Identity)
 import Text.Parsec
 import Text.Parsec.String (Parser)
 import Text.Parsec.Token
 import Text.Parsec.Expr (buildExpressionParser, Operator(..), Assoc(..))
 --import Text.Parsec.Prim
 import Text.Parsec.Language (emptyDef)
+
+import Data.Functor.Identity (Identity)
+import Data.Maybe (catMaybes)
 
 import Debug.Trace (trace)
 _ = trace -- prevent unused import warning
@@ -76,24 +78,37 @@ parseTPTP sourceDescription s =
 tptp_file :: Parser [(String, String, Form ())]
 tptp_file =
     traceRule ("tptp_file") $
-    many tptp_input
+    do
+    maybeFormulas <- many1 tptp_input
+    optional m_whiteSpace
+    eof
+    return $ catMaybes maybeFormulas
     
-tptp_input :: Parser (String, String, Form ())
+tptp_input :: Parser (Maybe (String, String, Form ()))
 tptp_input =
     traceRule ("tptp_input") $
-    annotated_formula <|> include
+    do
+    optional m_whiteSpace
+    (include <|> (fmap Just annotated_formula)) 
     
-include :: Parser a
+include :: Parser (Maybe a)
 include =
     traceRule ("include") $
     do
-    string "include("
-    parserFail $ "include not supported"
+    (_, original) <- withConsumed includeAux
+    trace ("Warning: ignoring " ++ original) $ return Nothing
+    where
+    includeAux =
+        do
+        string "include"
+        m_parens term
+        m_dot
+        return Nothing
     
 annotated_formula :: Parser (String, String, Form ())
 annotated_formula =
     traceRule ("annotated_formula") $
-    thf_annotated <|> tff_annotated <|> fof_annotated <|> cnf_annotated <|> tpi_annotated
+    (try thf_annotated) <|> (try tff_annotated) <|> fof_annotated <|> cnf_annotated <|> tpi_annotated
 
 tpi_annotated, thf_annotated, tff_annotated, fof_annotated, cnf_annotated :: Parser (String, String, Form ())
     
@@ -511,7 +526,14 @@ m_LowerWord =
     
 m_AtomicWord :: Parser String
 m_AtomicWord =
-    m_LowerWord <|> (do string "'"; m_identifier)
+    m_LowerWord <|> single_quoted
+    where
+    single_quoted =
+        do 
+        string "'"
+        name <- many $ noneOf "'\n\r"
+        string "'"
+        return name
     
 m_integer :: Parser Integer
 m_identifier :: Parser String
