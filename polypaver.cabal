@@ -47,8 +47,7 @@ source-repository head
 
 Library
   hs-source-dirs: src
---  ghc-options:     -O2
-  ghc-options:     -Wall
+  ghc-options:     -O2 -Wall
   Build-Depends:
         base == 4.*,
         containers == 0.5.*,
