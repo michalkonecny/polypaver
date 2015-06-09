@@ -108,7 +108,7 @@ include =
 annotated_formula :: Parser (String, String, Form ())
 annotated_formula =
     traceRule ("annotated_formula") $
-    (try thf_annotated) <|> (try tff_annotated) <|> fof_annotated <|> cnf_annotated <|> tpi_annotated
+    ((try thf_annotated) <|> (try tff_annotated) <|> fof_annotated <|> cnf_annotated <|> tpi_annotated)
 
 tpi_annotated, thf_annotated, tff_annotated, fof_annotated, cnf_annotated :: Parser (String, String, Form ())
     
@@ -158,7 +158,7 @@ formula_role =
 fof_formula_allow_quant :: Parser (Form ())
 fof_formula_allow_quant =
     traceRule ("fof_formula_allow_quant") $
-    (try $ fof_logic_formula_allow_quant) <|> fof_sequent
+    (try fof_logic_formula_allow_quant <|> fof_sequent)
     
 fof_sequent :: Parser (Form ())
 fof_sequent =
@@ -170,17 +170,17 @@ fof_sequent =
 fof_logic_formula_allow_quant :: Parser (Form ())
 fof_logic_formula_allow_quant =
     traceRule ("fof_logic_formula_allow_quant") $
-    (try $ fof_binary_formula) <|> fof_unitary_formula_allow_quant
+    (try fof_binary_formula <|> fof_unitary_formula_allow_quant)
 
 fof_logic_formula :: Parser (Form ())
 fof_logic_formula =
     traceRule ("fof_logic_formula") $
-    (try $ fof_binary_formula) <|> fof_unitary_formula
+    (try fof_binary_formula <|> fof_unitary_formula)
 
 fof_binary_formula :: Parser (Form ())
 fof_binary_formula =
     traceRule ("fof_binary_formula") $
-    (try $ fof_binary_nonassoc) <|> fof_binary_assoc
+    (try fof_binary_nonassoc <|> fof_binary_assoc)
     
 fof_binary_nonassoc :: Parser (Form ())
 fof_binary_nonassoc =
@@ -196,8 +196,8 @@ fof_binary_nonassoc =
 binary_connective :: Parser (Form l -> Form l -> Form l)
 binary_connective =
     traceRule ("binary_connective") $
-    foldr (<|>) (parserFail "Expecting a TPTP binary logical connective.") $ 
-        map connective_parser connectives
+    (foldr (<|>) (parserFail "Expecting a TPTP binary logical connective.") $ 
+        map connective_parser connectives)
     where
     connectives =
         [("<=>", Nothing), 
@@ -218,8 +218,8 @@ binary_connective =
 unary_connective :: Parser (Form l -> Form l)
 unary_connective =
     traceRule ("unary_connective") $
-    foldr (<|>) (parserFail "Expecting a TPTP unary logical connective.") $ 
-        map connective_parser connectives
+    (foldr (<|>) (parserFail "Expecting a TPTP unary logical connective.") $ 
+        map connective_parser connectives)
     where
     connectives =
         [("~", Just Not)]
@@ -270,20 +270,20 @@ fof_binary_assoc_op opSymbol binOp =
 fof_unitary_formula_allow_quant :: Parser (Form ())
 fof_unitary_formula_allow_quant =
     traceRule ("fof_unitary_formula_allow_quant") $
-    fof_quantified_formula
+    (fof_quantified_formula
     <|> fof_quantified_formula_error "?"
     <|> try (fof_unary_formula)
     <|> try (atomic_formula)
-    <|> m_parens fof_logic_formula
+    <|> m_parens fof_logic_formula)
     
 fof_unitary_formula :: Parser (Form ())
 fof_unitary_formula =
     traceRule ("fof_unitary_formula") $
-    fof_quantified_formula_error "!"
+    (fof_quantified_formula_error "!"
     <|> fof_quantified_formula_error "?"
     <|> try (fof_unary_formula)
     <|> try (atomic_formula)
-    <|> m_parens fof_logic_formula
+    <|> m_parens fof_logic_formula)
     
 fof_quantified_formula_error :: String -> Parser (Form ())
 fof_quantified_formula_error quantifier =
@@ -304,7 +304,7 @@ fof_quantified_formula =
     m_reservedOp ":"
 --    trace ("fof_quantified_formula: `:'") $ return ()
     optional m_whiteSpace
-    f <- fof_unitary_formula
+    f <- fof_unitary_formula_allow_quant
     return $ f
     
 fof_variable_list :: Parser [String] 
