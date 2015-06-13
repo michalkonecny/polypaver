@@ -1,0 +1,20 @@
+%--------------------------------------------------------------------------
+% File     : exp-hyperbolic-1.tptp
+% Syntax   : Dimension                 	:    1
+% Syntax   : Number of Skolem constants	:    1
+% Source   :
+% Comments :
+%--------------------------------------------------------------------------
+fof(exp_hyp, conjecture, ![X] : ((0.01 < X & X < 5.1785) => (3 + X^2/11)*((exp(X)-exp(-X))/2) < X * (2 + ((exp(X)+exp(-X))/2) + X^2/11))).
+
+% Analytic Inequalities, D.S.Mitrinovic, 3.6.12, page 270.
+% Derived from cosh-3612a by expanding the definitions of sinh and cosh.
+% Should hold up to X < 5.178611617
+
+% Modified by Michal Konecny to make the conjecture easier to handle by PolyPaver.
+%   Separated X from 0 as there is touching at X=0.
+%   Multiplied the formula by the (positive) denominator to eliminate the division.
+%   Removed all includes.
+
+% To prove this with PolyPaver, use eg the following switches:
+%   -d 3
