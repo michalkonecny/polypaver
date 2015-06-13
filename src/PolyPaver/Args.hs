@@ -90,6 +90,7 @@ paverDefaultArgs =
                  "[PROBLEM_ID] specifies one or more conjectures as follows:                   ",
                  "  <name>.pp [<conclusion number>]: like a single VC in SPARK .siv            ",
                  "  <name>.siv [<vc name> [<conclusion number>]]: SPARK-generated VCs          ",
+                 "  <name>.tptp: TPTP file with fof formulas (ignoring includes)               ",
                  "  <name>.form: using internal syntax (machine generated)                     "
                  ])
     &= summary "PolyPaver 0.3 (c) 2015 Jan Duracz and Michal Konecny (Aston University)"
