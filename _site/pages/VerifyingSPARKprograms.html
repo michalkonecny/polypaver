@@ -1,0 +1,348 @@
+<!DOCTYPE HTML>
+<html lang="en">
+  <head>
+    <title>PolyPaver | Documentation | Verifying SPARK 2005 Programs</title>
+        <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content>
+    <meta name="author" content>
+    <link href="../css/bootstrap.css" rel="stylesheet">
+    <link href="../css/syntax.css" rel="stylesheet">
+    <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link href="http://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet" type="text/css">
+    <script>
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+      })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+    
+      ga('create', 'UA-48373296-1', 'michalkonecny.github.io');
+      ga('send', 'pageview');
+    </script>    
+    <link href="../css/polypaver.css" rel="stylesheet">
+    <link href="../img/logo-24.ico" rel="shortcut icon" />
+  </head>
+  <body>
+    <div class="navbar-wrapper">
+  <div class="container">
+    <div class="navbar navbar-inverse navbar-static-top" role="navigation">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="../index.html">
+            <img src="../img/logo.png" width="24" />
+            PolyPaver
+          </a>
+        </div>
+        <div class="navbar-collapse collapse">
+          <ul class="nav navbar-nav">
+            <li><a href="../index.html">Home</a></li>
+<!--             <li class="dropdown"> -->
+<!--               <a href="#" class="dropdown-toggle" data-toggle="dropdown">Products <b class="caret"></b></a> -->
+<!--               <ul class="dropdown-menu"> -->
+<!--                 <li><a href="#">Warp Drive</a></li> -->
+<!--                 <li><a href="#">Fusion Reactor</a></li> -->
+<!--                 <li><a href="#">Sufficiently Smart Compiler</a></li> -->
+<!--                 <li class="divider"></li> -->
+<!--                 <li class="dropdown-header">Services</li> -->
+<!--                 <li><a href="#">Enlightenment</a></li> -->
+<!--               </ul> -->
+<!--             </li> -->
+            <li><a href="../pages/features.html">Features</a></li>
+            <li class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown">Documentation <b class="caret"></b></a>
+              <ul class="dropdown-menu">
+                <li><a href="../pages/QuickStart.html">Quick start</a></li>
+                <li><a href="../pages/SyntaxPP.html">.pp language</a></li>
+                <li><a href="../pages/VerifyingSPARKprograms.html">SPARK 2005 support</a></li>
+                <li><a href="../tutorials.html">Tutorials</a></li>
+                <li><a href="../pages/CommandLineOptions.html">Command-line options</a></li>
+                <li class="divider"></li>
+                <li><a href="../pages/Installation.html">Installation</a></li>
+                <li><a href="../pages/Changelog.html">Changelog</a></li>
+              </ul>
+            </li>
+            <li><a href="../news.html">News</a></li>
+            <li><a href="https://github.com/michalkonecny/polypaver">on GitHub</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+    <div class="container">
+    <h2>PolyPaver | Documentation | Verifying SPARK 2005 Programs</h2>
+    
+    <hr class="divider">
+
+    <p><strong>Table of contents</strong></p>
+<p>PolyPaver provides facilities for automatically verifying <a href="http://www.adacore.com/sparkpro/language-toolsuite/">SPARK Ada</a> programs with floating-point arithmetic. The cabal package includes three SPARK Ada numerical programs that can be verified using PolyPaver (except one which is verified only partially, to illustrate some of the limits of the current version).</p>
+<p>This page documents a method to approach verifying the provided programs and also gives some guidance for the process of implementing and verifying numerical SPARK Ada programs.</p>
+<h1 id="spark-ada-and-polypaver">SPARK Ada and PolyPaver</h1>
+<p><a href="http://www.adacore.com/sparkpro/language-toolsuite/">SPARK Ada</a> is a programming language and associated tools for efficiently developing extremely reliable software systems. SPARK 2014 differs substantially from previous versions of SPARK. This page is about the older versions of SPARK, usually referred to as SPARK 2005.</p>
+<p>The SPARK 2005 programming language is a subset of Ada with annotations that allow the programmer to formally express a specification of the program using first-order logic. Such annotations can be used, for example, to encode information about the intended mathematical interpretation of the program and to give bounds on how the program deviates from it.</p>
+<p>The SPARK 2005 Examiner tool checks some easier aspects of the specification and produces a correctness theorem in the form of a collection of verification conditions (VCs). Such a correctness theorem implies that the program adheres to its specification, which, in SPARK, includes exception freedom by default. To complete the verification, it is necessary to prove all the VCs. If the programs are of a certain kind and adhere to certain restrictions (specified later), the VCs are generally numerical theorems that PolyPaver can read and try to prove.</p>
+<p>Section <a href="#Proving_the_generated_problems">Proving the generated problems</a> below demonstrates a simple strategy how to work with some of the PolyPaver switches to guide and control the proof effort when working with SPARK-generated VC collections.</p>
+<h1 id="overview-of-included-example-spark-ada-programs">Overview of included example SPARK Ada programs</h1>
+<h2 id="sqrt">sqrt</h2>
+<p><em>Code</em>: <a href="https://github.com/michalkonecny/polypaver/tree/master/examples/SPARK2005/sqrt/src">examples/SPARK2005/sqrt/src</a></p>
+<p><em>Main procedure</em>: <code>Example.Sqrt</code></p>
+<p><em>Input</em>: real value <code>X</code></p>
+<p><em>Intended output</em>: the square root of <code>X</code></p>
+<h2 id="erfriemann">erfriemann</h2>
+<p><em>Code</em>: <a href="https://github.com/michalkonecny/polypaver/tree/master/examples/SPARK2005/erfriemann/src">examples/SPARK2005/erfriemann/src</a></p>
+<p><em>Main procedure</em>: <code>erfRiemann</code></p>
+<p><em>Input</em>: real value <code>X</code> and integer <code>n</code></p>
+<p><em>Intended output</em>: a Riemann sum over <code>n</code> segments, approximating the value of (a scaled version of) the Gaussian error function for <code>X</code></p>
+<h2 id="peak">peak</h2>
+<p><em>Code</em>: <a href="https://github.com/michalkonecny/polypaver/tree/master/examples/SPARK2005/peak/src">examples/SPARK2005/peak/src</a></p>
+<p><em>Main procedure</em>: <code>PeakUnit</code></p>
+<p><em>Input</em>: real values <code>Y1</code>, <code>Y2</code>, <code>Y3</code></p>
+<p><em>Intended output</em>: the peak value of the <em>quadratic</em> interpolation of <code>(-1,Y1), (0,Y2), (1,Y3)</code></p>
+<h1 id="generation-of-verification-conditions-vcs">Generation of verification conditions (VCs)</h1>
+<p>In the program main folder, execute:</p>
+<p>``sh</p>
+<blockquote>
+<p>spark <span class="citation">@peak</span> sparksimp ```</p>
+</blockquote>
+<p>The first command above produces VCs in <code>.vcg</code> files. The second command applies symbolic reasoning to simplify the VCs and saves them in <code>.siv</code> files. One file is generated for each procedure or function to be verified. For example, the VCs in the following files together form the correctness theorem for the peak program:</p>
+<p>```sh</p>
+<p>out/peak/max.siv out/peak/coeffs.siv out/peak/peakunit.siv out/peak/peakq.siv```</p>
+<p>In these four files, there are altogether 63 VC conclusions that result in 63 problems to try to prove.</p>
+<p>The following table summarises the numbers of polypaver problems generated for the example programs:</p>
+<table>
+<thead>
+<tr class="header">
+<th align="left"><strong>Program</strong></th>
+<th align="left"><strong>VCs</strong></th>
+<th align="left"><strong>Problems</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">sqrt</td>
+<td align="left">19</td>
+<td align="left">31</td>
+</tr>
+<tr class="even">
+<td align="left">erfriemann</td>
+<td align="left">19</td>
+<td align="left">31</td>
+</tr>
+<tr class="odd">
+<td align="left">peak</td>
+<td align="left">31</td>
+<td align="left">63</td>
+</tr>
+</tbody>
+</table>
+<h1 id="proving-the-generated-problems">Proving the generated problems</h1>
+<p>The majority of the problems are usually trivial. To categorise the problems, first run</p>
+<pre class="sh"><code>&gt;polypaver peak/out/peak/max.siv -t 1 -q</code></pre>
+<p>and analogously for all the other <code>.siv</code> files. The above command applies PolyPaver for 1s on default settings to each VC conclusion in the file.</p>
+<p>PolyPaver will output a summary in the end where we can find out which VC conclusions have been proved and which not.</p>
+<h2 id="proving-the-easy-problems">Proving the easy problems</h2>
+<p>With the above statement, PolyPaver typically proves 42 out of the 63 problems in the peak program.</p>
+<p>We list below the 21 conclusions that have not been proved by the above statement, together with other information provided by PolyPaver:</p>
+<div class="sourceCode"><pre class="sourceCode xml"><code class="sourceCode xml">coeffs\_10 conclusion 1: GAVE UP: REACHED MAXIMUM QUEUE SIZE after
+6.4004e-2 s (0d, 0h, 0min, 0s) (proved fraction: -0.0)
+coeffs\_10 conclusion 2: GAVE UP: REACHED MAXIMUM QUEUE SIZE after
+6.0004e-2 s (0d, 0h, 0min, 0s) (proved fraction: -0.0)
+coeffs\_10 conclusion 3: GAVE UP: REACHED MAXIMUM QUEUE SIZE after
+6.0003e-2 s (0d, 0h, 0min, 0s) (proved fraction: -0.0)
+coeffs\_10 conclusion 4: GAVE UP: REACHED MAXIMUM QUEUE SIZE after
+6.0004e-2 s (0d, 0h, 0min, 0s) (proved fraction: -0.0)</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode xml"><code class="sourceCode xml">peakq\_6 conclusion 1: GAVE UP: TIMED OUT after 1.0000630000000001 s
+(0d, 0h, 0min, 1s) (proved fraction: 0.10546874999999502)
+peakq\_6 conclusion 2: GAVE UP: TIMED OUT after 1.000062 s (0d, 0h,
+0min, 1s) (proved fraction: 0.10876464843749406)
+peakq\_6 conclusion 3: GAVE UP: TIMED OUT after 1.0000630000000001 s
+(0d, 0h, 0min, 1s) (proved fraction: 0.10888671874999392)
+peakq\_7 conclusion 1: GAVE UP: TIMED OUT after 1.0000630000000001 s
+(0d, 0h, 0min, 1s) (proved fraction: 1.6708374023437313e-2)
+peakq\_7 conclusion 2: GAVE UP: TIMED OUT after 1.0000630000000001 s
+(0d, 0h, 0min, 1s) (proved fraction: 1.6708374023437313e-2)
+peakq\_8 conclusion 1: GAVE UP: TIMED OUT after 1.000062 s (0d, 0h,
+0min, 1s) (proved fraction: 7.069110870361201e-5)
+peakq\_8 conclusion 2: GAVE UP: TIMED OUT after 1.0000630000000001 s
+(0d, 0h, 0min, 1s) (proved fraction: 1.667630672454823e-2)</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode xml"><code class="sourceCode xml">peakunit\_11 conclusion 1: GAVE UP: TIMED OUT after 1.0000630000000001 s
+(0d, 0h, 0min, 1s) (proved fraction: 1.4705919020343043e-3)
+peakunit\_11 conclusion 2: GAVE UP: TIMED OUT after 1.0000630000000001 s
+(0d, 0h, 0min, 1s) (proved fraction: 1.1273574054939286e-3)
+peakunit\_11 conclusion 3: GAVE UP: TIMED OUT after 1.0000630000000001 s
+(0d, 0h, 0min, 1s) (proved fraction: 1.4707697555422319e-3)
+peakunit\_12 conclusion 1: GAVE UP: TIMED OUT after 1.000062 s (0d, 0h,
+0min, 1s) (proved fraction: 0.1913355886936148)
+peakunit\_12 conclusion 2: GAVE UP: TIMED OUT after 1.000062 s (0d, 0h,
+0min, 1s) (proved fraction: 0.1912115626037071)
+peakunit\_12 conclusion 3: GAVE UP: TIMED OUT after 1.000062 s (0d, 0h,
+0min, 1s) (proved fraction: 0.20239257812499625)</code></pre></div>
+<p>Those problems that were not decided due to reaching a maximum require increasing some parameters other than time. The success rate is improved by switching from the default degree 0 enclosures to affine enclosures:</p>
+<pre class="sh"><code>&gt;polypaver out/peak/max.siv -t 10 -d 1 -q</code></pre>
+<p>and its analogues for the other files result in having only the following 8 out of 63 problems left to decide:</p>
+<div class="sourceCode"><pre class="sourceCode xml"><code class="sourceCode xml">peakq\_8 conclusion 1: GAVE UP: TIMED OUT after 10.000625000000001 s
+(0d, 0h, 0min, 10s) (proved fraction: 1.647949218749915e-3)
+peakq\_8 conclusion 2: GAVE UP: TIMED OUT after 10.004626 s (0d, 0h,
+0min, 10s) (proved fraction: 0.14423370361327945)</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode xml"><code class="sourceCode xml">peakunit\_11 conclusion 1: GAVE UP: TIMED OUT after 10.052628 s (0d, 0h,
+0min, 10s) (proved fraction: 1.1472702026367049e-3)
+peakunit\_11 conclusion 2: GAVE UP: TIMED OUT after 10.008626000000001 s
+(0d, 0h, 0min, 10s) (proved fraction: 1.119848340749728e-3)
+peakunit\_11 conclusion 3: GAVE UP: TIMED OUT after 10.056627 s (0d, 0h,
+0min, 10s) (proved fraction: 1.4683846384286679e-3)
+peakunit\_12 conclusion 1: GAVE UP: TIMED OUT after 10.000626 s (0d, 0h,
+0min, 10s) (proved fraction: 0.24522590637204436)
+peakunit\_12 conclusion 2: GAVE UP: TIMED OUT after 10.000625000000001 s
+(0d, 0h, 0min, 10s) (proved fraction: 0.24930596351619966)
+peakunit\_12 conclusion 3: GAVE UP: TIMED OUT after 10.000625000000001 s
+(0d, 0h, 0min, 10s) (proved fraction: 0.3779017329215653)</code></pre></div>
+<p>For those problems where PolyPaver timed out, the output shows how far it got at proving it. Typically, if the fraction is above 1 percent, it is possible to decide the problem in reasonably time using the same settings. For example, running</p>
+<pre class="sh"><code>&gt;polypaver out/peak/peakunit.siv peakunit\_12</code></pre>
+<p>results in:</p>
+<pre><code>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt; SUMMARY &lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;
+&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt; peakunit_12 conclusion 1: PROVED in 32.142009 s
+&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt; (0d, 0h, 0min, 32s)
+&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt; peakunit_12 conclusion 2: PROVED in 17.073067 s
+&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt; (0d, 0h, 0min, 17s)
+&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt; peakunit_12 conclusion 3: PROVED in 49.231076 s
+&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt; (0d, 0h, 0min, 49s)</code></pre>
+<p>Similarly, <code>peakq_8</code> conclusion 2 is proved in 87s using the default setting, which leaves only 4 conclusions unproved.</p>
+<h3 id="summary-of-easy-problems">Summary of easy problems</h3>
+<table>
+<thead>
+<tr class="header">
+<th align="left"><strong>Program</strong></th>
+<th align="left"><strong>Problem</strong></th>
+<th align="left"><strong>Easy problems (ie proved with <code>-d 0 -t 120 -f or -d 1 -t 120 -f</code>)</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">sqrt</td>
+<td align="left">21</td>
+<td align="left">20</td>
+</tr>
+<tr class="even">
+<td align="left">erfriemann</td>
+<td align="left">31</td>
+<td align="left">28</td>
+</tr>
+<tr class="odd">
+<td align="left">peak</td>
+<td align="left">63</td>
+<td align="left">59</td>
+</tr>
+</tbody>
+</table>
+<h2 id="proving-the-hard-problems">Proving the hard problems</h2>
+<h3 id="sqrt-1">sqrt</h3>
+<p><code>sqrt_13</code> conclusion 1</p>
+<ul>
+<li><p>using switches: <code>-d 7 -z 5 -e 10</code></p></li>
+<li><p>proved in &lt;10min, using &lt;20000 boxes</p></li>
+</ul>
+<h3 id="erfriemann-1">erfriemann</h3>
+<p><code>erfriemann_10</code> conclusion 1</p>
+<ul>
+<li><p>using switches: <code>-d 0 -I 4 -f</code></p></li>
+<li><p>proved in &lt;31h</p></li>
+</ul>
+<p><code>erfriemann_10</code> conclusion 2</p>
+<ul>
+<li><p>using switches: <code>-d 0 -I 4 -f</code></p></li>
+<li><p>proved in &lt;7min</p></li>
+</ul>
+<p><code>erfriemann_19</code> conclusion 1</p>
+<ul>
+<li><p>using switches: <code>-d 0 -I 4 -f</code></p></li>
+<li><p>proved in &lt;80min</p></li>
+</ul>
+<h3 id="peak-1">peak</h3>
+<p><code>peakq_8</code> conclusion 1</p>
+<ul>
+<li><p>using switches: <code>-d 1</code></p></li>
+<li><p>proved in &lt; 23min, using &lt;230000 boxes</p></li>
+</ul>
+<p><code>peakunit_11</code> conclusions 1,2,3</p>
+<ul>
+<li><p>These are statements of a similar nature as <a href="https://github.com/michalkonecny/polypaver/blob/master/examples/pp/skewing2.pp">examples/pp/skewing2.pp</a> but with 8 variables.</p></li>
+<li><p>PolyPaver has not managed to prove any of them within a timeout of 3 days.</p></li>
+<li><p>Such problems can be solved using PolyPaver after a substitution that strengthens the formula. A result of such substitution made manually is in <a href="https://github.com/michalkonecny/polypaver/blob/master/examples/pp/skewing.pp">examples/pp/skewing.pp</a>. The tool <code>pp_simplify</code> (included in the PolyPaver package) finds and makes such substitutions automatically.</p></li>
+</ul>
+<h1 id="how-to-write-spark-programs-that-can-be-verified-using-polypaver">How to write SPARK programs that can be verified using PolyPaver</h1>
+<p>PolyPaver is best suited for verifying procedures and functions that have a small number of input and output floating-point parameters. It does not yet support verifying programs with arrays. Moreover, the types or preconditions for the variables should specify ranges for these variables. To be able to verify tight accuracy properties, these ranges should be much smaller than the full range of the floating-point type.</p>
+<h2 id="programming-floating-point-operations">Programming floating-point operations</h2>
+<p><em>TODO</em></p>
+<!--
+
+At present, the SPARK tools treat floating-point operations in SPARK
+code as
+exact real operations. To prevent this, it is currently necessary to
+refrain
+from using operations such as `*`, +, / and - with floating-point
+types.
+Instead, one has to use the functions defined in the `PolyPaver.Floats`
+and
+`PolyPaver.Long_Floats` packages that are included in folder
+[examples/SPARK2005/packages](https://github.com/michalkonecny/polypaver/tree/master/examples/SPARK2005/packages).
+The standard floating-point operators should be replaced with the
+following:
+
+  **operator**   **IEEE Single precision**<br />(any rounding mode)   **IEEE Double precision** <br />(any rounding mode)
+  -------------- ---------------------------------------------------- -----------------------------------------------------
+  `+`            `PolyPaver.Float.Add`                                `PolyPaver.Long_Float.Add`
+  `-`            `PolyPaver.Float.Subtract`                           `PolyPaver.Long_Float.Subtract`
+  `*`            `PolyPaver.Float.Multiply`                           `PolyPaver.Long_Float.Multiply`
+  `/`            `PolyPaver.Float.Divide`                             `PolyPaver.Long_Float.Divide`
+
+In future, it is planned to provide a pre-processor for
+SPARK Ada programs that will automatically replace all occurrences
+of these operators for floating-point types with PolyPaver
+functions such as above. At the same time, it is envisaged that
+the precision (and other parameters) of the floating point type will be
+automatically
+inferred by the pre-processor so that other base floating-point types
+than
+the IEEE Single and Double will be supported.
+
+In addition to the floating-point operators,
+the packages also contain wrappers for the Ada library
+floating-point square root, exponentiation, sine and cosine.
+It is important to use these variants instead of the standard
+Ada functions. Otherwise, these functions will not be recogised
+by Polypaver and the whole expression that start with such a function
+treated as a variable.
+
+-->
+<h2 id="operations-and-functions-in-annotations">Operations and functions in annotations</h2>
+<p>PolyPaver provides a number of abstract operations (so-called proof functions) that may be used in annotations to encode accuracy properties of SPARK floating-point programs.</p>
+<p>To express the exact real operations <code>*</code>, /, +, - in SPARK annotations, simply use these operators directly as the SPARK tools treat these operators as exact real operators. No substitutes for these exact operators are therefore needed.</p>
+<p>PolyPaver does however provide a number of functions with intended exact real semantics, which extend the expressiveness of the SPARK annotation language. These functions are defined in packages <code>PolyPaver.Interval</code> and <code>PolyPaver.Exact</code> in folder <a href="https://github.com/michalkonecny/polypaver/tree/master/examples/SPARK2005/packages">examples/SPARK2005/packages</a>. Among them are the interval constructor, the integral operator for continuous functions defined by algebraic expressions and the interval containment relation. The interval operators make it more convenient to express accuracy constraints. The integral operator facilitates verifying specifications with special functions that have an integral form.</p>
+<p>Ada type information is mostly lost during VC generation. PolyPaver assumes by default that all variables are real. To let PolyPaver know that a variable <code>n</code> is an integer variable, add the proposition <code>PolyPaver.Integers.Is_Integer(n)</code> to the precondition or loop invariant.</p>
+    
+    <hr class="divider">
+    <footer>
+  <p class="pull-right"><a href="#">Back to top</a></p>
+  <p>
+    &copy; 2009-2014 Michal Konečný, Jan Duracz
+<!--     &middot;  -->
+<!--     <a href="/pages/privacy.html">Privacy</a>  -->
+<!--     &middot;  -->
+<!--     <a href="/pages/tos.html">Terms</a></p> -->
+</footer>
+
+    </div>
+
+    <script src="../js/jquery.js"></script>
+    <script src="../js/bootstrap.js"></script>
+    <script src="../js/holder.js"></script>
+  </body>
+</html>

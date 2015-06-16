@@ -1,3 +1,10 @@
+---
+title: PolyPaver | Documentation | Command Line Invocation
+author: Michal Konečný
+date: 2015-06-16
+mathjax: on
+---
+
 ```
 polypaver [OPTIONS] [PROBLEM_ID]
   Tries to decide numerical conjectures (problems) using polynomial enclosures.
