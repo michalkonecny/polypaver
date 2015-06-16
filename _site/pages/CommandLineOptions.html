@@ -1,7 +1,7 @@
 <!DOCTYPE HTML>
 <html lang="en">
   <head>
-    <title>PolyPaver | Features</title>
+    <title>CommandLineOptions</title>
         <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content>
@@ -72,63 +72,56 @@
 
 
     <div class="container">
-    <h2>PolyPaver | Features</h2>
+    <h2>CommandLineOptions</h2>
     
     <hr class="divider">
 
-    <h3 id="the-master-branch">The master branch:</h3>
-<ul>
-<li>Deciding conjectures with expressions that contain
-<ul>
-<li>The operations +,-,*,/, abs, sqrt, exp <!--, sin, cos --></li>
-<li>Explicit <strong>intervals</strong> and <strong>interval operations</strong></li>
-<li>Definite <strong>integrals</strong> (with arbitrary expressions for endpoints)</li>
-<li>Floating-point <strong>rounded operations</strong> (with adjustable precision)</li>
-</ul></li>
-<li>Supported input formats:
-<ul>
-<li>pp: based on fld language used in SPARK 2005 verification conditions</li>
-<li>a modified tptp: only fof formulas, extended with common infix relations (eg &lt;=, &gt;=) and operations (eg +, *, /)
-<ul>
-<li>similar to the modified tptp supported by <a href="http://www.cl.cam.ac.uk/~lp15/papers/Arith/">MetiTarski</a></li>
-</ul></li>
-</ul></li>
-<li>Verification of <strong>floating-point</strong> <a href="http://en.wikipedia.org/wiki/SPARK_(programming_language)">SPARK/Ada 2005</a> code
-<ul>
-<li>Full verification of floating-point code in cooperation with the official SPARK tools
-<ul>
-<li>Functional correctness</li>
-<li>Freedom from numerical exceptions</li>
-</ul></li>
-<li>Annotations can specify
-<ul>
-<li>a bound on rounding errors, as a function of input values</li>
-<li>a relation of floating-point results with intuitive mathematical meaning<br /></li>
-</ul></li>
-<li>Specifications can contain interval operations and integrals</li>
-<li>Effective for procedures and functions with up to 4-6 floating-point variables <em>(arrays are not supported yet)</em></li>
-</ul></li>
-<li>Live graphical progress update for 2D problems</li>
-</ul>
-<h3 id="planned">Planned:</h3>
-<ul>
-<li>Support for other elementary real functions</li>
-<li>Support for calling from <a href="http://why3.lri.fr/">Why3</a>
-<ul>
-<li>This will facilitate integration with <a href="http://www.spark-2014.org/">SPARK 2014</a></li>
-</ul></li>
-<li>Integration with symbolic theorem provers, SMT</li>
-<li>Increase trust in PolyPaver results
-<ul>
-<li>Verify the underlying function arithmetic
-<ul>
-<li>Fully specify this arithmetic <em>(almost done)</em></li>
-<li>Exhaustively property-test the arithmetic against its specification <em>(almost done)</em></li>
-<li>Verify the arithmetic against the specification</li>
-</ul></li>
-<li>Generate independently verifiable proofs</li>
-</ul></li>
-</ul>
+    <pre><code>polypaver [OPTIONS] [PROBLEM_ID]
+  Tries to decide numerical conjectures (problems) using polynomial enclosures.
+  [PROBLEM_ID] specifies one or more conjectures as follows:
+  &lt;name&gt;.pp [&lt;conclusion number&gt;]: like a single VC in SPARK .siv
+  &lt;name&gt;.siv [&lt;vc name&gt; [&lt;conclusion number&gt;]]: SPARK-generated VCs
+  &lt;name&gt;.tptp: TPTP file with fof formulas (ignoring includes)
+  &lt;name&gt;.form: using internal syntax (machine generated)
+
+Problem parameters:
+  -i --tightnessvalues=ITEM  value(s) of T to try (if the formula has an
+                             unbound variable T) (eg &quot;2^0..10&quot; or &quot;1..10&quot; or
+                             &quot;1,10,100&quot;) (default = 1)
+Box solving effort:
+  -s --startdegree=INT       first polynomial degree to try on each box
+                             (default = degree)
+  -d --degree=INT            maximum polynomial degree (default = 0)
+  -z --maxsize=INT           maximum polynomial term size (default = 100)
+  -e --effort=INT            for approximating point-wise sqrt and exp
+                             (default = 10)
+  -I --minintegrexp=INT      n to compute approximate integration step using
+                             2^(-n)
+Box subdivision strategy:
+  -o --order=ORDER           sub-problem processing order, bfs for
+                             breadth-first or dfs for depth-first, (default =
+                             dfs)
+  -f --splitintfirst         split integer valued domains until they are
+                             exact before splitting the continuous domains
+  -m --mindepth=INT          minimum bisection depth (default = 0)
+  -b --maxdepth=INT          maximum bisection depth (default = 1000)
+  -u --maxqueuelength=INT    maximum queue size (default = 50 for depth-first
+                             and 5000 for breadth-first order)
+  -t --time=INT              timeout in seconds (default = 7*24*3600 ie 1
+                             week)                                                                                                                                          
+Verbosity:
+  -q --quiet                 no reporting of progress on the console (default
+                             off)
+  -v --verbose               report extra progress details on the console
+                             (default off)
+Plotting:
+  -w --plotwidth=INT         plot width for 2D problems, 0 mean no plotting
+                             (default)
+  -h --plotheight=INT        plot height for 2D problems, 0 mean no plotting
+                             (default)
+  -? --help                  Display help message
+  -V --version               Print version information
+     --numeric-version       Print just the version number</code></pre>
     
     <hr class="divider">
     <footer>
