@@ -71,4 +71,4 @@ Expressions
   `Cos(x)`              exact cosine
   `Integral(a,b,f,x)`   exact integral from `a` to `b` of `f(x)dx`
 
-Please note that in the above, `x` and `y` can be arbitrary expressions.
+Please note that in the above, `x`, `y`, `a` and `b` are arbitrary expressions.
