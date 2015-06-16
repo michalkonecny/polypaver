@@ -97,10 +97,9 @@ Generation of verification conditions (VCs)
 
 In the program main folder, execute:
 
-``sh
-
->spark @peak
->sparksimp
+```sh
+> spark @peak
+> sparksimp
 ```
 
 The first command above produces VCs in `.vcg` files.
@@ -112,11 +111,11 @@ correctness theorem
 for the peak program:
 
 ```sh
-
 out/peak/max.siv
 out/peak/coeffs.siv
 out/peak/peakunit.siv
-out/peak/peakq.siv```
+out/peak/peakq.siv
+```
 
 In these four files, there are altogether 63 VC conclusions that result
 in 63 problems to try to prove.
@@ -137,7 +136,7 @@ The majority of the problems are usually trivial. To categorise the
 problems, first run
 
 ```sh
->polypaver peak/out/peak/max.siv -t 1 -q
+> polypaver peak/out/peak/max.siv -t 1 -q
 ```
 
 and analogously for all the other `.siv` files.
@@ -207,7 +206,7 @@ enclosures
 to affine enclosures:
 
 ```sh
->polypaver out/peak/max.siv -t 10 -d 1 -q
+> polypaver out/peak/max.siv -t 10 -d 1 -q
 ```
 
 and its analogues for the other files result in having only the
@@ -242,7 +241,7 @@ the problem in reasonably time
 using the same settings. For example, running
 
 ```sh
->polypaver out/peak/peakunit.siv peakunit\_12
+> polypaver out/peak/peakunit.siv peakunit\_12
 ```
 
 results in:

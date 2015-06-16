@@ -108,13 +108,13 @@
 <p><em>Intended output</em>: the peak value of the <em>quadratic</em> interpolation of <code>(-1,Y1), (0,Y2), (1,Y3)</code></p>
 <h1 id="generation-of-verification-conditions-vcs">Generation of verification conditions (VCs)</h1>
 <p>In the program main folder, execute:</p>
-<p>``sh</p>
-<blockquote>
-<p>spark <span class="citation">@peak</span> sparksimp ```</p>
-</blockquote>
+<pre class="sh"><code>&gt; spark @peak
+&gt; sparksimp</code></pre>
 <p>The first command above produces VCs in <code>.vcg</code> files. The second command applies symbolic reasoning to simplify the VCs and saves them in <code>.siv</code> files. One file is generated for each procedure or function to be verified. For example, the VCs in the following files together form the correctness theorem for the peak program:</p>
-<p>```sh</p>
-<p>out/peak/max.siv out/peak/coeffs.siv out/peak/peakunit.siv out/peak/peakq.siv```</p>
+<pre class="sh"><code>out/peak/max.siv
+out/peak/coeffs.siv
+out/peak/peakunit.siv
+out/peak/peakq.siv</code></pre>
 <p>In these four files, there are altogether 63 VC conclusions that result in 63 problems to try to prove.</p>
 <p>The following table summarises the numbers of polypaver problems generated for the example programs:</p>
 <table>
@@ -145,7 +145,7 @@
 </table>
 <h1 id="proving-the-generated-problems">Proving the generated problems</h1>
 <p>The majority of the problems are usually trivial. To categorise the problems, first run</p>
-<pre class="sh"><code>&gt;polypaver peak/out/peak/max.siv -t 1 -q</code></pre>
+<pre class="sh"><code>&gt; polypaver peak/out/peak/max.siv -t 1 -q</code></pre>
 <p>and analogously for all the other <code>.siv</code> files. The above command applies PolyPaver for 1s on default settings to each VC conclusion in the file.</p>
 <p>PolyPaver will output a summary in the end where we can find out which VC conclusions have been proved and which not.</p>
 <h2 id="proving-the-easy-problems">Proving the easy problems</h2>
@@ -186,7 +186,7 @@ peakunit\_12 conclusion 2: GAVE UP: TIMED OUT after 1.000062 s (0d, 0h,
 peakunit\_12 conclusion 3: GAVE UP: TIMED OUT after 1.000062 s (0d, 0h,
 0min, 1s) (proved fraction: 0.20239257812499625)</code></pre></div>
 <p>Those problems that were not decided due to reaching a maximum require increasing some parameters other than time. The success rate is improved by switching from the default degree 0 enclosures to affine enclosures:</p>
-<pre class="sh"><code>&gt;polypaver out/peak/max.siv -t 10 -d 1 -q</code></pre>
+<pre class="sh"><code>&gt; polypaver out/peak/max.siv -t 10 -d 1 -q</code></pre>
 <p>and its analogues for the other files result in having only the following 8 out of 63 problems left to decide:</p>
 <div class="sourceCode"><pre class="sourceCode xml"><code class="sourceCode xml">peakq\_8 conclusion 1: GAVE UP: TIMED OUT after 10.000625000000001 s
 (0d, 0h, 0min, 10s) (proved fraction: 1.647949218749915e-3)
@@ -205,7 +205,7 @@ peakunit\_12 conclusion 2: GAVE UP: TIMED OUT after 10.000625000000001 s
 peakunit\_12 conclusion 3: GAVE UP: TIMED OUT after 10.000625000000001 s
 (0d, 0h, 0min, 10s) (proved fraction: 0.3779017329215653)</code></pre></div>
 <p>For those problems where PolyPaver timed out, the output shows how far it got at proving it. Typically, if the fraction is above 1 percent, it is possible to decide the problem in reasonably time using the same settings. For example, running</p>
-<pre class="sh"><code>&gt;polypaver out/peak/peakunit.siv peakunit\_12</code></pre>
+<pre class="sh"><code>&gt; polypaver out/peak/peakunit.siv peakunit\_12</code></pre>
 <p>results in:</p>
 <pre><code>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt; SUMMARY &lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;
 &gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt; peakunit_12 conclusion 1: PROVED in 32.142009 s
