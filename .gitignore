@@ -11,3 +11,5 @@ cabal-dev
 _cache
 cabal.sandbox.config
 .cabal-sandbox/
+/pages_imported/
+polypaver-pages

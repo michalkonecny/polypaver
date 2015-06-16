@@ -5,6 +5,8 @@ date: 2014-02-24
 mathjax: on
 ---
 
+*(See also [Changelog](Changelog.html))*
+
 ### The master branch:
 
 * Deciding conjectures with expressions that contain
