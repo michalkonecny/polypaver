@@ -1,0 +1,167 @@
+<!DOCTYPE HTML>
+<html lang="en">
+  <head>
+    <title>Installation</title>
+        <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content>
+    <meta name="author" content>
+    <link href="../css/bootstrap.css" rel="stylesheet">
+    <link href="../css/syntax.css" rel="stylesheet">
+    <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link href="http://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet" type="text/css">
+    <script>
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+      })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+    
+      ga('create', 'UA-48373296-1', 'michalkonecny.github.io');
+      ga('send', 'pageview');
+    </script>    
+    <link href="../css/polypaver.css" rel="stylesheet">
+    <link href="../img/logo-24.ico" rel="shortcut icon" />
+  </head>
+  <body>
+    <div class="navbar-wrapper">
+  <div class="container">
+    <div class="navbar navbar-inverse navbar-static-top" role="navigation">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="../index.html">
+            <img src="../img/logo.png" width="24" />
+            PolyPaver
+          </a>
+        </div>
+        <div class="navbar-collapse collapse">
+          <ul class="nav navbar-nav">
+            <li><a href="../index.html">Home</a></li>
+<!--             <li class="dropdown"> -->
+<!--               <a href="#" class="dropdown-toggle" data-toggle="dropdown">Products <b class="caret"></b></a> -->
+<!--               <ul class="dropdown-menu"> -->
+<!--                 <li><a href="#">Warp Drive</a></li> -->
+<!--                 <li><a href="#">Fusion Reactor</a></li> -->
+<!--                 <li><a href="#">Sufficiently Smart Compiler</a></li> -->
+<!--                 <li class="divider"></li> -->
+<!--                 <li class="dropdown-header">Services</li> -->
+<!--                 <li><a href="#">Enlightenment</a></li> -->
+<!--               </ul> -->
+<!--             </li> -->
+            <li><a href="../pages/features.html">Features</a></li>
+            <li class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown">Documentation <b class="caret"></b></a>
+              <ul class="dropdown-menu">
+                <li><a href="../pages/Installation.html">Installation</a></li>
+                <li><a href="../tutorials.html">Tutorials</a></li>
+                <li><a href="../pages/CommandLineOptions.html">Command-line options</a></li>
+                <li><a href="../pages/Changelog.html">Changelog</a></li>
+              </ul>
+            </li>
+            <li><a href="../news.html">News</a></li>
+            <li><a href="https://github.com/michalkonecny/polypaver">on GitHub</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+    <div class="container">
+    <h2>Installation</h2>
+    
+    <hr class="divider">
+
+    <h1 id="installation-version-0.2">Installation (version 0.2)</h1>
+<h2 id="binary-installation">Binary installation</h2>
+<h3 id="on-x86-ubuntu-12.04">On x86 Ubuntu 12.04</h3>
+<ol style="list-style-type: decimal">
+<li>Ensure the prerequisite packages are installed: libgtk2.0-0</li>
+<li><p>Download one of the following executables and place is somewhere on your PATH.</p>
+<ul>
+<li><a href="http://code.google.com/p/polypaver/downloads/detail?name=polypaver-0.2-linux-i386-glibc215">polypaver-0.2-linux-i386-glibc215</a></li>
+<li><a href="http://code.google.com/p/polypaver/downloads/detail?name=polypaver-0.2-linux-x86_64-glibc215">polypaver-0.2-linux-x86_64-glibc215</a></li>
+</ul></li>
+</ol>
+<p>Similar steps should work on newer versions of Ubuntu and on other Linux systems with <code>libc6</code> version 2.15.</p>
+<h3 id="on-windows-78">On Windows 7/8</h3>
+<ol style="list-style-type: decimal">
+<li>Download <a href="http://downloads.sourceforge.net/gtk-win/gtk2-runtime-2.24.10-2012-10-10-ash.exe?download">gtk-win redistributable</a></li>
+<li>Run the gtk-win installer, selecting “Compatibility DLLs” for installation.</li>
+<li><p>Download one of the following executable and place is somewhere on your PATH.</p>
+<ul>
+<li><a href="http://code.google.com/p/polypaver/downloads/detail?name=polypaver-0.2-win7-32bit.exe">polypaver-0.2-win7-32bit.exe</a></li>
+<li><a href="http://code.google.com/p/polypaver/downloads/detail?name=polypaver-0.2-win8-64bit.exe">polypaver-0.2-win8-64bit.exe</a></li>
+</ul></li>
+</ol>
+<h2 id="source-installation">Source installation</h2>
+<p>Note that by installing from source, you also install the PolyPaver Haskell library, which allows one to define PolyPaver problems using Haskell. An example of such a problem is in the folder <a href="http://code.google.com/p/polypaver/source/browse/#hg%2Fexamples%2Fhaskell">examples/haskell</a>.</p>
+<h3 id="on-ubuntu-12.04">On Ubuntu 12.04</h3>
+<p><strong>Warning</strong> These instructions are for a vanilla installation of the operating system. You need to modify the steps accordingly if ghc or the haskell-platform is already installed. The package has been tested with ghc versions 7.4.1 and 7.4.2.</p>
+<pre class="sh"><code>sudo apt-get install libgtk2.0-dev
+sudo apt-get install ghc
+sudo apt-get install cabal-install
+cabal update
+export PATH=\~/.cabal/bin:$PATH
+cabal install alex
+cabal install happy
+cabal install gtk2hs-buildtools
+wget http://polypaver.googlecode.com/files/polypaver-0.2.tar.gz
+tar xvf polypaver-0.2.tar.gz
+cd polypaver-0.2
+cabal install</code></pre>
+<p>If you replace the last command with:</p>
+<pre class="sh"><code>cabal install -f DynamicLoading</code></pre>
+<p>you will be able to apply PolyPaver on problems defined in Haskell as follows:</p>
+<pre class="sh"><code>polypaver examples/haskell/sqrtexp.hs</code></pre>
+<h3 id="on-windows-78-1">On Windows 7/8</h3>
+<ol style="list-style-type: decimal">
+<li>Install the <a href="http://lambda.haskell.org/platform/download/2012.4.0.0/HaskellPlatform-2012.4.0.0-setup.exe">Haskell Platform</a> or ensure that the corresponding Haskell build environment (with GHC 7.4.2 or later) is installed.</li>
+<li>Download and unpack <a href="http://ftp.gnome.org/pub/gnome/binaries/win32/gtk+/2.24/gtk+-bundle_2.24.10-20120208_win32.zip">GTK+ 2.24.10 32bit</a> into some directory. If this directory is <code>c:\opt\gtk</code> then prepend <code>c:\opt\gtk\bin</code> to your <code>PATH</code> environment variable.</li>
+<li>Run the following commands to install the <code>gtk2hs</code> build tools:</li>
+</ol>
+<pre class="sh"><code>cabal update
+cabal install gtk2hs-buildtools</code></pre>
+<ol start="4" style="list-style-type: decimal">
+<li>Download the <a href="http://polypaver.googlecode.com/files/polypaver-0.2.tar.gz">PolyPaver 0.2 source code</a> archive and extract it to a directory, e.g. <code>c:\opt\polypaver-0.2</code>. You can use a program such as <a href="http://www.7-zip.org/">7zip</a> to extract the archive. Run the following command to build and install:</li>
+</ol>
+<pre class="sh"><code>cd c:\opt\polypaver-0.2
+cabal install</code></pre>
+<hr />
+<h1 id="installation-version-0.1">Installation (version 0.1)</h1>
+<h2 id="linux-executable">Linux executable</h2>
+<p>We provide a 32-bit Ubuntu 11.04 Linux binary of the main <a href="http://code.google.com/p/polypaver/downloads/detail?name=polypaver-0.1">polypaver executable</a>. Downloading and running it may be the easiest way to get started. Nevertheless, the binary currently requires problems to be in the SPARK vcg/siv format. The source code archive <a href="http://code.google.com/p/polypaver/downloads/detail?name=polypaver-0.1.tar.gz">polypaver-0.1.tar.gz</a> contains several siv files in <code>examples/SPARK/*/out/**.siv</code>.</p>
+<h2 id="polypaver-haskell-library">polypaver Haskell library</h2>
+<p>The easiest way to apply PolyPaver on specific numerical conjectures is to encode them in a simple Haskell file, based on the examples provided, and as explained in the Tutorial. This method requires installation of the polypaver Haskell library.</p>
+<ol style="list-style-type: decimal">
+<li>Prerequisites: <a href="http://www.haskell.org/ghc/download_ghc_6_12_3">ghc 6.12.3</a> and <a href="http://www.haskell.org/haskellwiki/Cabal-Install">cabal-install</a>, both parts of <a href="http://hackage.haskell.org/platform/">Haskell Platform</a> 2010.2.0.0 (beware, <strong>not</strong> the latest version)</li>
+<li>Download and extract the archive <a href="http://code.google.com/p/polypaver/downloads/detail?name=polypaver-0.1.tar.gz">polypaver-0.1.tar.gz</a>.</li>
+<li>In the extracted folder <code>polypaver-0.1</code> execute: <code>cabal install</code></li>
+<li>If all went well, you are ready to compile and execute a PolyPaver Haskell main module, such as the provided <code>examples/mini.hs</code>. Beware, <code>polypaver</code> command line arguments do not work reliably when executed in <code>ghci</code>.</li>
+<li>The above installation steps will automatically compile and install the <code>polypaver</code> executable besides the library.</li>
+</ol>
+    
+    <hr class="divider">
+    <footer>
+  <p class="pull-right"><a href="#">Back to top</a></p>
+  <p>
+    &copy; 2009-2014 Michal Konečný, Jan Duracz
+<!--     &middot;  -->
+<!--     <a href="/pages/privacy.html">Privacy</a>  -->
+<!--     &middot;  -->
+<!--     <a href="/pages/tos.html">Terms</a></p> -->
+</footer>
+
+    </div>
+
+    <script src="../js/jquery.js"></script>
+    <script src="../js/bootstrap.js"></script>
+    <script src="../js/holder.js"></script>
+  </body>
+</html>
