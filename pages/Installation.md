@@ -1,3 +1,28 @@
+Installation (from master branch)
+=================================
+
+### On Ubuntu
+
+**Warning** These instructions are for a vanilla installation of the operating system.
+You need to modify the steps accordingly if ghc or the haskell-platform is already installed.
+The package is regularly tested on Ubuntu 14.04 64-bit with a self-installed ghc 7.8.4.  
+
+```sh
+sudo apt-get install libgtk2.0-dev
+sudo apt-get install ghc
+sudo apt-get install cabal-install
+sudo apt-get install git
+cabal update
+export PATH=\~/.cabal/bin:$$PATH
+cabal install alex
+cabal install happy
+cabal install gtk2hs-buildtools
+git clone https://github.com/michalkonecny/polypaver.git
+cd polypaver
+cabal install
+```
+
+
 Installation (version 0.2)
 =========================
 

@@ -57,9 +57,11 @@
             <li class="dropdown">
               <a href="#" class="dropdown-toggle" data-toggle="dropdown">Documentation <b class="caret"></b></a>
               <ul class="dropdown-menu">
+                <li><a href="../pages/QuickStart.html">Quick start</a></li>
                 <li><a href="../pages/Installation.html">Installation</a></li>
                 <li><a href="../tutorials.html">Tutorials</a></li>
                 <li><a href="../pages/CommandLineOptions.html">Command-line options</a></li>
+                <li class="divider"></li>
                 <li><a href="../pages/Changelog.html">Changelog</a></li>
               </ul>
             </li>
@@ -78,7 +80,22 @@
     
     <hr class="divider">
 
-    <h1 id="installation-version-0.2">Installation (version 0.2)</h1>
+    <h1 id="installation-from-master-branch">Installation (from master branch)</h1>
+<h3 id="on-ubuntu">On Ubuntu</h3>
+<p><strong>Warning</strong> These instructions are for a vanilla installation of the operating system. You need to modify the steps accordingly if ghc or the haskell-platform is already installed. The package is regularly tested on Ubuntu 14.04 64-bit with a self-installed ghc 7.8.4.</p>
+<pre class="sh"><code>sudo apt-get install libgtk2.0-dev
+sudo apt-get install ghc
+sudo apt-get install cabal-install
+sudo apt-get install git
+cabal update
+export PATH=\~/.cabal/bin:$PATH
+cabal install alex
+cabal install happy
+cabal install gtk2hs-buildtools
+git clone https://github.com/michalkonecny/polypaver.git
+cd polypaver
+cabal install</code></pre>
+<h1 id="installation-version-0.2">Installation (version 0.2)</h1>
 <h2 id="binary-installation">Binary installation</h2>
 <h3 id="on-x86-ubuntu-12.04">On x86 Ubuntu 12.04</h3>
 <ol style="list-style-type: decimal">
