@@ -81,7 +81,19 @@
       <h2>Verifying a SPARK FP program, Part 1: Annotations (under construction)</h2>
       <hr class="divider" />
       
-      <p>This tutorial shows the steps of writing a floating-point SPARK 2005 program and proving it computes numbers that correspond to its intuitive meaning as well as proving the absence of numerical exceptions. The complete code for this program is available <a href="https://github.com/michalkonecny/polypaver/tree/master/tools/SPARK2005/examples/erfRiemann">here</a>.</p>
+      <h3>Table of contents</h3>
+<ul>
+<li><a href="#the-ada-program">The Ada program</a></li>
+<li><a href="#precondition-and-postcondition">Precondition and postcondition</a><ul>
+<li><a href="#bounding-the-method-error">Bounding the method error</a></li>
+<li><a href="#adapting-for-spark">Adapting for SPARK</a></li>
+<li><a href="#bounding-the-rounding-error">Bounding the rounding error</a></li>
+<li><a href="#bounding-the-domain">Bounding the domain</a></li>
+</ul></li>
+<li><a href="#the-loop-invariant">The loop invariant</a></li>
+</ul>
+<hr class="divider">
+<p>This tutorial shows the steps of writing a floating-point SPARK 2005 program and proving it computes numbers that correspond to its intuitive meaning as well as proving the absence of numerical exceptions. The complete code for this program is available <a href="https://github.com/michalkonecny/polypaver/tree/master/tools/SPARK2005/examples/erfRiemann">here</a>.</p>
 <p>The tutorial is divided into the following parts:</p>
 <ol style="list-style-type: decimal">
 <li><strong>Annotations: Annotating a SPARK floating-point program</strong> <em>(this page, under construction)</em></li>
@@ -92,7 +104,8 @@
 </ol>
 <hr />
 <p><strong>TODO</strong>: <em>Add TOC</em></p>
-<h2 id="the-ada-program">The Ada program</h2>
+<div id="the-ada-program" class="section level2">
+<h2>The Ada program</h2>
 <p>The program computes an approximation of the integral</p>
 <p><span class="math">\[
 \int_0^x e^{-t^2}\;\mathrm{d}t
@@ -147,8 +160,11 @@ erf_Riemann(1.0, 10) = 0.747132
 the integral for x = 1.0: 0.746824
 --------------------------------------------------------</code></pre>
 <p>With a partition of size 1024, the result agrees with the integral in the first two significant digits.</p>
-<h2 id="precondition-and-postcondition">Precondition and postcondition</h2>
-<h3 id="bounding-the-method-error">Bounding the method error</h3>
+</div>
+<div id="precondition-and-postcondition" class="section level2">
+<h2>Precondition and postcondition</h2>
+<div id="bounding-the-method-error" class="section level3">
+<h3>Bounding the method error</h3>
 <p>Let us defer reasoning about rounding errors for later and first consider the algorithm as if it was performed in exact real arithmetic and analyse its method error.</p>
 <p>How does the Riemann sum relate to the integral? We first restrict the domain of <span class="math">\(x\)</span> to non-negative numbers. Thus the integrand <span class="math">\(e^{-t^2}\)</span> is considered only for non-negative <span class="math">\(t\)</span>, where it is a decreasing function. The left Riemann sum is therefore an <em>upper bound</em> on the exact integral.</p>
 <p><strong>TODO</strong>: <em>Add diagram illustrating the sums</em></p>
@@ -164,7 +180,9 @@ the integral for x = 1.0: 0.746824
 +
 \left[0, \frac{x}{n}\left(1-e^{-x^2}\right)\right]
 \]</span></p>
-<h3 id="adapting-for-spark">Adapting for SPARK</h3>
+</div>
+<div id="adapting-for-spark" class="section level3">
+<h3>Adapting for SPARK</h3>
 <p>Let us now enter the above postcondition into the Ada specification as a SPARK 2005 annotation:</p>
 <div class="sourceCode"><pre class="sourceCode ada"><code class="sourceCode ada"><span class="co">--# inherit PP_F_Exact;</span>
 <span class="kw">package</span> Riemann <span class="kw">is</span> 
@@ -191,11 +209,20 @@ The package `PP_F_Elementary` is a PolyPaver-friendly alternative
 to `Ada.Numeric.Elementary_Functions`.  
 This package is included in the PolyPaver download bundle.  
 -->
-<h3 id="bounding-the-rounding-error">Bounding the rounding error</h3>
-<h3 id="bounding-the-domain">Bounding the domain</h3>
-<h2 id="the-loop-invariant">The loop invariant</h2>
+</div>
+<div id="bounding-the-rounding-error" class="section level3">
+<h3>Bounding the rounding error</h3>
+</div>
+<div id="bounding-the-domain" class="section level3">
+<h3>Bounding the domain</h3>
+</div>
+</div>
+<div id="the-loop-invariant" class="section level2">
+<h2>The loop invariant</h2>
 <p><em>incremental version of the postcondition</em></p>
 <p><em>bounding local variables</em></p>
+</div>
+
 
       <hr class="divider" />
       <footer>

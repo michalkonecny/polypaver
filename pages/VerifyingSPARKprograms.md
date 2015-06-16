@@ -5,8 +5,6 @@ date: 2015-06-16
 mathjax: on
 ---
 
-**Table of contents**
-
 PolyPaver provides facilities for automatically verifying
 [SPARK Ada](http://www.adacore.com/sparkpro/language-toolsuite/)
 programs with floating-point arithmetic.
@@ -332,10 +330,8 @@ specify ranges for these variables. To be able to verify
 tight accuracy properties, these ranges should be
 much smaller than the full range of the floating-point type.
 
-Programming floating-point operations
+Programming floating-point operations (TODO)
 -------------------------------------
-
-*TODO*
 
 <!--
 

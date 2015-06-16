@@ -7,7 +7,7 @@ mathjax: on
 
 *(See also [Changelog](Changelog.html))*
 
-### The master branch:
+### The master branch
 
 * Deciding conjectures with expressions that contain
     * The operations +,-,*,/, abs, sqrt, exp <!--, sin, cos -->
@@ -30,7 +30,7 @@ mathjax: on
        *(arrays are not supported yet)*
 * Live graphical progress update for 2D problems
 
-### Planned:
+### Planned
 
   * Support for other elementary real functions
   * Support for calling from [Why3](http://why3.lri.fr/)

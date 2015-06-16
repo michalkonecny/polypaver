@@ -61,7 +61,7 @@ bitsContext bits =
     setBit (Item bitId bitBody) =
         constField bitName bitBody
         where
-        bitName = drop 5 $ toFilePath bitId
+        bitName = drop (length ("bits/" :: String)) $ toFilePath bitId
 
 --------------------------------------------------------------------
 -- Rules
@@ -161,7 +161,27 @@ compiler :: Compiler (Item String)
 compiler = pandocCompilerWith defaultHakyllReaderOptions pandocOptions
 
 pandocOptions :: WriterOptions
-pandocOptions = defaultHakyllWriterOptions{ writerHTMLMathMethod = MathJax "" }
+pandocOptions = 
+    defaultHakyllWriterOptions
+    { 
+        writerSectionDivs = True,
+        writerStandalone = True,
+        writerTableOfContents = True,
+        writerTemplate = tocTemplate,
+        writerHTMLMathMethod = MathJax ""
+    }
+
+tocTemplate =
+    unlines $
+    [ 
+        "$if(toc)$",
+        "<h3>Table of contents</h3>",
+        "$toc$",
+        "<hr class=\"divider\">",
+        "$endif$",
+        "$body$"
+    ]
+    
 
 cfg :: Configuration
 cfg = defaultConfiguration

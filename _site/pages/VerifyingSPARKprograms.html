@@ -81,32 +81,67 @@
     <h2>PolyPaver | Documentation | Verifying SPARK 2005 Programs</h2>
     
     <hr class="divider">
-
-    <p><strong>Table of contents</strong></p>
+    
+    <h3>Table of contents</h3>
+<ul>
+<li><a href="#spark-ada-and-polypaver">SPARK Ada and PolyPaver</a></li>
+<li><a href="#overview-of-included-example-spark-ada-programs">Overview of included example SPARK Ada programs</a><ul>
+<li><a href="#sqrt">sqrt</a></li>
+<li><a href="#erfriemann">erfriemann</a></li>
+<li><a href="#peak">peak</a></li>
+</ul></li>
+<li><a href="#generation-of-verification-conditions-vcs">Generation of verification conditions (VCs)</a></li>
+<li><a href="#proving-the-generated-problems">Proving the generated problems</a><ul>
+<li><a href="#proving-the-easy-problems">Proving the easy problems</a><ul>
+<li><a href="#summary-of-easy-problems">Summary of easy problems</a></li>
+</ul></li>
+<li><a href="#proving-the-hard-problems">Proving the hard problems</a><ul>
+<li><a href="#sqrt-1">sqrt</a></li>
+<li><a href="#erfriemann-1">erfriemann</a></li>
+<li><a href="#peak-1">peak</a></li>
+</ul></li>
+</ul></li>
+<li><a href="#how-to-write-spark-programs-that-can-be-verified-using-polypaver">How to write SPARK programs that can be verified using PolyPaver</a><ul>
+<li><a href="#programming-floating-point-operations-todo">Programming floating-point operations (TODO)</a></li>
+<li><a href="#operations-and-functions-in-annotations">Operations and functions in annotations</a></li>
+</ul></li>
+</ul>
+<hr class="divider">
 <p>PolyPaver provides facilities for automatically verifying <a href="http://www.adacore.com/sparkpro/language-toolsuite/">SPARK Ada</a> programs with floating-point arithmetic. The cabal package includes three SPARK Ada numerical programs that can be verified using PolyPaver (except one which is verified only partially, to illustrate some of the limits of the current version).</p>
 <p>This page documents a method to approach verifying the provided programs and also gives some guidance for the process of implementing and verifying numerical SPARK Ada programs.</p>
-<h1 id="spark-ada-and-polypaver">SPARK Ada and PolyPaver</h1>
+<div id="spark-ada-and-polypaver" class="section level1">
+<h1>SPARK Ada and PolyPaver</h1>
 <p><a href="http://www.adacore.com/sparkpro/language-toolsuite/">SPARK Ada</a> is a programming language and associated tools for efficiently developing extremely reliable software systems. SPARK 2014 differs substantially from previous versions of SPARK. This page is about the older versions of SPARK, usually referred to as SPARK 2005.</p>
 <p>The SPARK 2005 programming language is a subset of Ada with annotations that allow the programmer to formally express a specification of the program using first-order logic. Such annotations can be used, for example, to encode information about the intended mathematical interpretation of the program and to give bounds on how the program deviates from it.</p>
 <p>The SPARK 2005 Examiner tool checks some easier aspects of the specification and produces a correctness theorem in the form of a collection of verification conditions (VCs). Such a correctness theorem implies that the program adheres to its specification, which, in SPARK, includes exception freedom by default. To complete the verification, it is necessary to prove all the VCs. If the programs are of a certain kind and adhere to certain restrictions (specified later), the VCs are generally numerical theorems that PolyPaver can read and try to prove.</p>
 <p>Section <a href="#Proving_the_generated_problems">Proving the generated problems</a> below demonstrates a simple strategy how to work with some of the PolyPaver switches to guide and control the proof effort when working with SPARK-generated VC collections.</p>
-<h1 id="overview-of-included-example-spark-ada-programs">Overview of included example SPARK Ada programs</h1>
-<h2 id="sqrt">sqrt</h2>
+</div>
+<div id="overview-of-included-example-spark-ada-programs" class="section level1">
+<h1>Overview of included example SPARK Ada programs</h1>
+<div id="sqrt" class="section level2">
+<h2>sqrt</h2>
 <p><em>Code</em>: <a href="https://github.com/michalkonecny/polypaver/tree/master/examples/SPARK2005/sqrt/src">examples/SPARK2005/sqrt/src</a></p>
 <p><em>Main procedure</em>: <code>Example.Sqrt</code></p>
 <p><em>Input</em>: real value <code>X</code></p>
 <p><em>Intended output</em>: the square root of <code>X</code></p>
-<h2 id="erfriemann">erfriemann</h2>
+</div>
+<div id="erfriemann" class="section level2">
+<h2>erfriemann</h2>
 <p><em>Code</em>: <a href="https://github.com/michalkonecny/polypaver/tree/master/examples/SPARK2005/erfriemann/src">examples/SPARK2005/erfriemann/src</a></p>
 <p><em>Main procedure</em>: <code>erfRiemann</code></p>
 <p><em>Input</em>: real value <code>X</code> and integer <code>n</code></p>
 <p><em>Intended output</em>: a Riemann sum over <code>n</code> segments, approximating the value of (a scaled version of) the Gaussian error function for <code>X</code></p>
-<h2 id="peak">peak</h2>
+</div>
+<div id="peak" class="section level2">
+<h2>peak</h2>
 <p><em>Code</em>: <a href="https://github.com/michalkonecny/polypaver/tree/master/examples/SPARK2005/peak/src">examples/SPARK2005/peak/src</a></p>
 <p><em>Main procedure</em>: <code>PeakUnit</code></p>
 <p><em>Input</em>: real values <code>Y1</code>, <code>Y2</code>, <code>Y3</code></p>
 <p><em>Intended output</em>: the peak value of the <em>quadratic</em> interpolation of <code>(-1,Y1), (0,Y2), (1,Y3)</code></p>
-<h1 id="generation-of-verification-conditions-vcs">Generation of verification conditions (VCs)</h1>
+</div>
+</div>
+<div id="generation-of-verification-conditions-vcs" class="section level1">
+<h1>Generation of verification conditions (VCs)</h1>
 <p>In the program main folder, execute:</p>
 <pre class="sh"><code>&gt; spark @peak
 &gt; sparksimp</code></pre>
@@ -143,12 +178,15 @@ out/peak/peakq.siv</code></pre>
 </tr>
 </tbody>
 </table>
-<h1 id="proving-the-generated-problems">Proving the generated problems</h1>
+</div>
+<div id="proving-the-generated-problems" class="section level1">
+<h1>Proving the generated problems</h1>
 <p>The majority of the problems are usually trivial. To categorise the problems, first run</p>
 <pre class="sh"><code>&gt; polypaver peak/out/peak/max.siv -t 1 -q</code></pre>
 <p>and analogously for all the other <code>.siv</code> files. The above command applies PolyPaver for 1s on default settings to each VC conclusion in the file.</p>
 <p>PolyPaver will output a summary in the end where we can find out which VC conclusions have been proved and which not.</p>
-<h2 id="proving-the-easy-problems">Proving the easy problems</h2>
+<div id="proving-the-easy-problems" class="section level2">
+<h2>Proving the easy problems</h2>
 <p>With the above statement, PolyPaver typically proves 42 out of the 63 problems in the peak program.</p>
 <p>We list below the 21 conclusions that have not been proved by the above statement, together with other information provided by PolyPaver:</p>
 <div class="sourceCode"><pre class="sourceCode xml"><code class="sourceCode xml">coeffs\_10 conclusion 1: GAVE UP: REACHED MAXIMUM QUEUE SIZE after
@@ -215,7 +253,8 @@ peakunit\_12 conclusion 3: GAVE UP: TIMED OUT after 10.000625000000001 s
 &gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt; peakunit_12 conclusion 3: PROVED in 49.231076 s
 &gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt; (0d, 0h, 0min, 49s)</code></pre>
 <p>Similarly, <code>peakq_8</code> conclusion 2 is proved in 87s using the default setting, which leaves only 4 conclusions unproved.</p>
-<h3 id="summary-of-easy-problems">Summary of easy problems</h3>
+<div id="summary-of-easy-problems" class="section level3">
+<h3>Summary of easy problems</h3>
 <table>
 <thead>
 <tr class="header">
@@ -242,14 +281,20 @@ peakunit\_12 conclusion 3: GAVE UP: TIMED OUT after 10.000625000000001 s
 </tr>
 </tbody>
 </table>
-<h2 id="proving-the-hard-problems">Proving the hard problems</h2>
-<h3 id="sqrt-1">sqrt</h3>
+</div>
+</div>
+<div id="proving-the-hard-problems" class="section level2">
+<h2>Proving the hard problems</h2>
+<div id="sqrt-1" class="section level3">
+<h3>sqrt</h3>
 <p><code>sqrt_13</code> conclusion 1</p>
 <ul>
 <li><p>using switches: <code>-d 7 -z 5 -e 10</code></p></li>
 <li><p>proved in &lt;10min, using &lt;20000 boxes</p></li>
 </ul>
-<h3 id="erfriemann-1">erfriemann</h3>
+</div>
+<div id="erfriemann-1" class="section level3">
+<h3>erfriemann</h3>
 <p><code>erfriemann_10</code> conclusion 1</p>
 <ul>
 <li><p>using switches: <code>-d 0 -I 4 -f</code></p></li>
@@ -265,7 +310,9 @@ peakunit\_12 conclusion 3: GAVE UP: TIMED OUT after 10.000625000000001 s
 <li><p>using switches: <code>-d 0 -I 4 -f</code></p></li>
 <li><p>proved in &lt;80min</p></li>
 </ul>
-<h3 id="peak-1">peak</h3>
+</div>
+<div id="peak-1" class="section level3">
+<h3>peak</h3>
 <p><code>peakq_8</code> conclusion 1</p>
 <ul>
 <li><p>using switches: <code>-d 1</code></p></li>
@@ -277,10 +324,14 @@ peakunit\_12 conclusion 3: GAVE UP: TIMED OUT after 10.000625000000001 s
 <li><p>PolyPaver has not managed to prove any of them within a timeout of 3 days.</p></li>
 <li><p>Such problems can be solved using PolyPaver after a substitution that strengthens the formula. A result of such substitution made manually is in <a href="https://github.com/michalkonecny/polypaver/blob/master/examples/pp/skewing.pp">examples/pp/skewing.pp</a>. The tool <code>pp_simplify</code> (included in the PolyPaver package) finds and makes such substitutions automatically.</p></li>
 </ul>
-<h1 id="how-to-write-spark-programs-that-can-be-verified-using-polypaver">How to write SPARK programs that can be verified using PolyPaver</h1>
+</div>
+</div>
+</div>
+<div id="how-to-write-spark-programs-that-can-be-verified-using-polypaver" class="section level1">
+<h1>How to write SPARK programs that can be verified using PolyPaver</h1>
 <p>PolyPaver is best suited for verifying procedures and functions that have a small number of input and output floating-point parameters. It does not yet support verifying programs with arrays. Moreover, the types or preconditions for the variables should specify ranges for these variables. To be able to verify tight accuracy properties, these ranges should be much smaller than the full range of the floating-point type.</p>
-<h2 id="programming-floating-point-operations">Programming floating-point operations</h2>
-<p><em>TODO</em></p>
+<div id="programming-floating-point-operations-todo" class="section level2">
+<h2>Programming floating-point operations (TODO)</h2>
 <!--
 
 At present, the SPARK tools treat floating-point operations in SPARK
@@ -322,11 +373,16 @@ by Polypaver and the whole expression that start with such a function
 treated as a variable.
 
 -->
-<h2 id="operations-and-functions-in-annotations">Operations and functions in annotations</h2>
+</div>
+<div id="operations-and-functions-in-annotations" class="section level2">
+<h2>Operations and functions in annotations</h2>
 <p>PolyPaver provides a number of abstract operations (so-called proof functions) that may be used in annotations to encode accuracy properties of SPARK floating-point programs.</p>
 <p>To express the exact real operations <code>*</code>, /, +, - in SPARK annotations, simply use these operators directly as the SPARK tools treat these operators as exact real operators. No substitutes for these exact operators are therefore needed.</p>
 <p>PolyPaver does however provide a number of functions with intended exact real semantics, which extend the expressiveness of the SPARK annotation language. These functions are defined in packages <code>PolyPaver.Interval</code> and <code>PolyPaver.Exact</code> in folder <a href="https://github.com/michalkonecny/polypaver/tree/master/examples/SPARK2005/packages">examples/SPARK2005/packages</a>. Among them are the interval constructor, the integral operator for continuous functions defined by algebraic expressions and the interval containment relation. The interval operators make it more convenient to express accuracy constraints. The integral operator facilitates verifying specifications with special functions that have an integral form.</p>
 <p>Ada type information is mostly lost during VC generation. PolyPaver assumes by default that all variables are real. To let PolyPaver know that a variable <code>n</code> is an integer variable, add the proposition <code>PolyPaver.Integers.Is_Integer(n)</code> to the precondition or loop invariant.</p>
+</div>
+</div>
+
     
     <hr class="divider">
     <footer>

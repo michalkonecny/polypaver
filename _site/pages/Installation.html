@@ -81,9 +81,32 @@
     <h2>PolyPaver | Documentation | Installation</h2>
     
     <hr class="divider">
-
-    <h1 id="installation-from-master-branch">Installation (from master branch)</h1>
-<h3 id="on-ubuntu">On Ubuntu</h3>
+    
+    <h3>Table of contents</h3>
+<ul>
+<li><a href="#installation-from-master-branch">Installation (from master branch)</a><ul>
+<li><a href="#on-ubuntu">On Ubuntu</a></li>
+</ul></li>
+<li><a href="#installation-version-0.2">Installation (version 0.2)</a><ul>
+<li><a href="#binary-installation">Binary installation</a><ul>
+<li><a href="#on-x86-ubuntu-12.04">On x86 Ubuntu 12.04</a></li>
+<li><a href="#on-windows-78">On Windows 7/8</a></li>
+</ul></li>
+<li><a href="#source-installation">Source installation</a><ul>
+<li><a href="#on-ubuntu-12.04">On Ubuntu 12.04</a></li>
+<li><a href="#on-windows-78-1">On Windows 7/8</a></li>
+</ul></li>
+</ul></li>
+<li><a href="#installation-version-0.1">Installation (version 0.1)</a><ul>
+<li><a href="#linux-executable">Linux executable</a></li>
+<li><a href="#polypaver-haskell-library">polypaver Haskell library</a></li>
+</ul></li>
+</ul>
+<hr class="divider">
+<div id="installation-from-master-branch" class="section level1">
+<h1>Installation (from master branch)</h1>
+<div id="on-ubuntu" class="section level3">
+<h3>On Ubuntu</h3>
 <p><strong>Warning</strong> These instructions are for a vanilla installation of the operating system. You need to modify the steps accordingly if ghc or the haskell-platform is already installed. The package is regularly tested on Ubuntu 14.04 64-bit with a self-installed ghc 7.8.4.</p>
 <pre class="sh"><code>sudo apt-get install libgtk2.0-dev
 sudo apt-get install ghc
@@ -97,9 +120,14 @@ cabal install gtk2hs-buildtools
 git clone https://github.com/michalkonecny/polypaver.git
 cd polypaver
 cabal install</code></pre>
-<h1 id="installation-version-0.2">Installation (version 0.2)</h1>
-<h2 id="binary-installation">Binary installation</h2>
-<h3 id="on-x86-ubuntu-12.04">On x86 Ubuntu 12.04</h3>
+</div>
+</div>
+<div id="installation-version-0.2" class="section level1">
+<h1>Installation (version 0.2)</h1>
+<div id="binary-installation" class="section level2">
+<h2>Binary installation</h2>
+<div id="on-x86-ubuntu-12.04" class="section level3">
+<h3>On x86 Ubuntu 12.04</h3>
 <ol style="list-style-type: decimal">
 <li>Ensure the prerequisite packages are installed: libgtk2.0-0</li>
 <li><p>Download one of the following executables and place is somewhere on your PATH.</p>
@@ -109,7 +137,9 @@ cabal install</code></pre>
 </ul></li>
 </ol>
 <p>Similar steps should work on newer versions of Ubuntu and on other Linux systems with <code>libc6</code> version 2.15.</p>
-<h3 id="on-windows-78">On Windows 7/8</h3>
+</div>
+<div id="on-windows-78" class="section level3">
+<h3>On Windows 7/8</h3>
 <ol style="list-style-type: decimal">
 <li>Download <a href="http://downloads.sourceforge.net/gtk-win/gtk2-runtime-2.24.10-2012-10-10-ash.exe?download">gtk-win redistributable</a></li>
 <li>Run the gtk-win installer, selecting “Compatibility DLLs” for installation.</li>
@@ -119,9 +149,13 @@ cabal install</code></pre>
 <li><a href="http://code.google.com/p/polypaver/downloads/detail?name=polypaver-0.2-win8-64bit.exe">polypaver-0.2-win8-64bit.exe</a></li>
 </ul></li>
 </ol>
-<h2 id="source-installation">Source installation</h2>
+</div>
+</div>
+<div id="source-installation" class="section level2">
+<h2>Source installation</h2>
 <p>Note that by installing from source, you also install the PolyPaver Haskell library, which allows one to define PolyPaver problems using Haskell. An example of such a problem is in the folder <a href="http://code.google.com/p/polypaver/source/browse/#hg%2Fexamples%2Fhaskell">examples/haskell</a>.</p>
-<h3 id="on-ubuntu-12.04">On Ubuntu 12.04</h3>
+<div id="on-ubuntu-12.04" class="section level3">
+<h3>On Ubuntu 12.04</h3>
 <p><strong>Warning</strong> These instructions are for a vanilla installation of the operating system. You need to modify the steps accordingly if ghc or the haskell-platform is already installed. The package has been tested with ghc versions 7.4.1 and 7.4.2.</p>
 <pre class="sh"><code>sudo apt-get install libgtk2.0-dev
 sudo apt-get install ghc
@@ -139,7 +173,9 @@ cabal install</code></pre>
 <pre class="sh"><code>cabal install -f DynamicLoading</code></pre>
 <p>you will be able to apply PolyPaver on problems defined in Haskell as follows:</p>
 <pre class="sh"><code>polypaver examples/haskell/sqrtexp.hs</code></pre>
-<h3 id="on-windows-78-1">On Windows 7/8</h3>
+</div>
+<div id="on-windows-78-1" class="section level3">
+<h3>On Windows 7/8</h3>
 <ol style="list-style-type: decimal">
 <li>Install the <a href="http://lambda.haskell.org/platform/download/2012.4.0.0/HaskellPlatform-2012.4.0.0-setup.exe">Haskell Platform</a> or ensure that the corresponding Haskell build environment (with GHC 7.4.2 or later) is installed.</li>
 <li>Download and unpack <a href="http://ftp.gnome.org/pub/gnome/binaries/win32/gtk+/2.24/gtk+-bundle_2.24.10-20120208_win32.zip">GTK+ 2.24.10 32bit</a> into some directory. If this directory is <code>c:\opt\gtk</code> then prepend <code>c:\opt\gtk\bin</code> to your <code>PATH</code> environment variable.</li>
@@ -153,10 +189,17 @@ cabal install gtk2hs-buildtools</code></pre>
 <pre class="sh"><code>cd c:\opt\polypaver-0.2
 cabal install</code></pre>
 <hr />
-<h1 id="installation-version-0.1">Installation (version 0.1)</h1>
-<h2 id="linux-executable">Linux executable</h2>
+</div>
+</div>
+</div>
+<div id="installation-version-0.1" class="section level1">
+<h1>Installation (version 0.1)</h1>
+<div id="linux-executable" class="section level2">
+<h2>Linux executable</h2>
 <p>We provide a 32-bit Ubuntu 11.04 Linux binary of the main <a href="http://code.google.com/p/polypaver/downloads/detail?name=polypaver-0.1">polypaver executable</a>. Downloading and running it may be the easiest way to get started. Nevertheless, the binary currently requires problems to be in the SPARK vcg/siv format. The source code archive <a href="http://code.google.com/p/polypaver/downloads/detail?name=polypaver-0.1.tar.gz">polypaver-0.1.tar.gz</a> contains several siv files in <code>examples/SPARK/*/out/**.siv</code>.</p>
-<h2 id="polypaver-haskell-library">polypaver Haskell library</h2>
+</div>
+<div id="polypaver-haskell-library" class="section level2">
+<h2>polypaver Haskell library</h2>
 <p>The easiest way to apply PolyPaver on specific numerical conjectures is to encode them in a simple Haskell file, based on the examples provided, and as explained in the Tutorial. This method requires installation of the polypaver Haskell library.</p>
 <ol style="list-style-type: decimal">
 <li>Prerequisites: <a href="http://www.haskell.org/ghc/download_ghc_6_12_3">ghc 6.12.3</a> and <a href="http://www.haskell.org/haskellwiki/Cabal-Install">cabal-install</a>, both parts of <a href="http://hackage.haskell.org/platform/">Haskell Platform</a> 2010.2.0.0 (beware, <strong>not</strong> the latest version)</li>
@@ -165,6 +208,9 @@ cabal install</code></pre>
 <li>If all went well, you are ready to compile and execute a PolyPaver Haskell main module, such as the provided <code>examples/mini.hs</code>. Beware, <code>polypaver</code> command line arguments do not work reliably when executed in <code>ghci</code>.</li>
 <li>The above installation steps will automatically compile and install the <code>polypaver</code> executable besides the library.</li>
 </ol>
+</div>
+</div>
+
     
     <hr class="divider">
     <footer>

@@ -81,23 +81,39 @@
     <h2>PolyPaver | Documentation | .pp Language</h2>
     
     <hr class="divider">
-
-    <p><strong>Warning</strong> <em>This file currently documents a subset of the language, some newer features are not yet included.</em></p>
-<h1 id="example">Example</h1>
+    
+    <h3>Table of contents</h3>
+<ul>
+<li><a href="#example">Example</a></li>
+<li><a href="#grammar">Grammar</a><ul>
+<li><a href="#top-level">Top level</a></li>
+<li><a href="#relations">Relations</a></li>
+<li><a href="#expressions">Expressions</a></li>
+</ul></li>
+</ul>
+<hr class="divider">
+<p><strong>Warning</strong> <em>This file currently documents a subset of the language, some newer features are not yet included.</em></p>
+<div id="example" class="section level1">
+<h1>Example</h1>
 <pre><code>power.
 H1: x &lt;- [1 .. 10].
 H2: n &lt;- [1 .. 10].
 H3: integer(n).
 -&gt;
 C1: x^2 &lt;= x^(n+1) + 0.000000001.</code></pre>
-<h1 id="grammar">Grammar</h1>
-<h2 id="top-level">Top level</h2>
+</div>
+<div id="grammar" class="section level1">
+<h1>Grammar</h1>
+<div id="top-level" class="section level2">
+<h2>Top level</h2>
 <pre><code>&lt;conjecture&gt;       ::= &lt;identifier&gt; &quot;.&quot; [ { &lt;hypothesis&gt; } &quot;-&gt;&quot; ] &lt;conclusion&gt; { &lt;conclusion&gt; }
 &lt;hypothesis&gt;       ::= &quot;H&quot; { &lt;id&gt; } &quot;:&quot; &lt;predicate&gt; &quot;.&quot;
 &lt;conclusion&gt;       ::= &quot;C&quot; { &lt;id&gt; } &quot;:&quot; &lt;predicate&gt; &quot;.&quot;
 &lt;predicate&gt;        ::= &lt;type_declaration&gt; | &lt;expression&gt; &lt;relation_symbol&gt; &lt;expression&gt; | ...
 &lt;type_declaration&gt; ::= &quot;integer(&quot; &lt;identifier&gt; &quot;)&quot;</code></pre>
-<h2 id="relations">Relations</h2>
+</div>
+<div id="relations" class="section level2">
+<h2>Relations</h2>
 <table>
 <thead>
 <tr class="header">
@@ -116,7 +132,9 @@ C1: x^2 &lt;= x^(n+1) + 0.000000001.</code></pre>
 </tr>
 </tbody>
 </table>
-<h2 id="expressions">Expressions</h2>
+</div>
+<div id="expressions" class="section level2">
+<h2>Expressions</h2>
 <table>
 <thead>
 <tr class="header">
@@ -212,6 +230,9 @@ C1: x^2 &lt;= x^(n+1) + 0.000000001.</code></pre>
 </tbody>
 </table>
 <p>Please note that in the above, <code>x</code>, <code>y</code>, <code>a</code> and <code>b</code> are arbitrary expressions.</p>
+</div>
+</div>
+
     
     <hr class="divider">
     <footer>
