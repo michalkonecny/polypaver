@@ -88,7 +88,7 @@
 <p>This integral is an essential part of the <a href="http://en.wikipedia.org/wiki/Error_function">Gauss error function</a> and it has no closed algebraic solution.</p>
 <p>The integral is approximated using the left Riemann sum over a partition with <span class="math">\(2^n\)</span> segments of equal size.</p>
 <p>The following is an Ada implementation of this method.</p>
-<pre class="sourceCode ada"><code class="sourceCode ada"><span class="kw">with</span> Ada.Numerics.Elementary_Functions;
+<div class="sourceCode"><pre class="sourceCode ada"><code class="sourceCode ada"><span class="kw">with</span> Ada.Numerics.Elementary_Functions;
 <span class="kw">use</span> Ada.Numerics.Elementary_Functions;
 
 <span class="kw">package</span> <span class="kw">body</span> Riemann <span class="kw">is</span>
@@ -113,7 +113,7 @@
       <span class="kw">return</span> result;
    <span class="kw">end</span> erf_Riemann;
 
-<span class="kw">end</span> Riemann;</code></pre>
+<span class="kw">end</span> Riemann;</code></pre></div>
 <p>The above code is available in a ready-to-compile form in <a href="https://github.com/michalkonecny/polypaver/tree/master/tools/SPARK2005/examples/erfRiemann/tutorial-steps/01-noSPARK">this folder</a>.</p>
 <p>To get an idea of how close the function is to the exact interval, there is a main procedure that prints the results of the <code>erf_Riemann</code> function for a number of different <code>x</code> and <code>n</code>. To execute this program, issue the following commands:</p>
 <pre><code>&gt; cd tools/SPARK2005/examples/erfRiemann/tutorial-steps/01-noSPARK
@@ -154,7 +154,7 @@ the integral for x = 1.0: 0.746824
 \]</span></p>
 <h3 id="adapting-for-spark">Adapting for SPARK</h3>
 <p>Let us now enter the above postcondition into the Ada specification as a SPARK 2005 annotation:</p>
-<pre class="sourceCode Ada"><code class="sourceCode ada"><span class="co">--# inherit PP_F_Exact;</span>
+<div class="sourceCode"><pre class="sourceCode ada"><code class="sourceCode ada"><span class="co">--# inherit PP_F_Exact;</span>
 <span class="kw">package</span> Riemann <span class="kw">is</span> 
 
    <span class="kw">function</span> erf_Riemann(x : <span class="dt">Float</span>; n : <span class="dt">Integer</span>) <span class="kw">return</span> <span class="dt">Float</span>;
@@ -171,7 +171,7 @@ the integral for x = 1.0: 0.746824
    <span class="co">--#         )</span>
    <span class="co">--#     );</span>
 
-<span class="kw">end</span> Riemann;</code></pre>
+<span class="kw">end</span> Riemann;</code></pre></div>
 <p><strong>TODO</strong>: <em>Explain PP_F_Exact</em></p>
 <p><strong>TODO</strong>: <em>Show also the refactoring of the function body necessary to satisfy the Examiner</em></p>
 <!--
@@ -179,8 +179,6 @@ The package `PP_F_Elementary` is a PolyPaver-friendly alternative
 to `Ada.Numeric.Elementary_Functions`.  
 This package is included in the PolyPaver download bundle.  
 -->
-
-
 <h3 id="bounding-the-rounding-error">Bounding the rounding error</h3>
 <h3 id="bounding-the-domain">Bounding the domain</h3>
 <h2 id="the-loop-invariant">The loop invariant</h2>
@@ -191,7 +189,7 @@ This package is included in the PolyPaver download bundle.
       <footer>
   <p class="pull-right"><a href="#">Back to top</a></p>
   <p>
-    © 2009-2014 Michal Konečný, Jan Duracz
+    &copy; 2009-2014 Michal Konečný, Jan Duracz
 <!--     &middot;  -->
 <!--     <a href="/pages/privacy.html">Privacy</a>  -->
 <!--     &middot;  -->

@@ -5,13 +5,17 @@ date: 2014-02-24
 mathjax: on
 ---
 
-### In version 0.3:
+### The master branch:
 
-* Deciding conjectures with expressions that contain 
+* Deciding conjectures with expressions that contain
     * The operations +,-,*,/, abs, sqrt, exp <!--, sin, cos -->
     * Explicit **intervals** and **interval operations**
     * Definite **integrals** (with arbitrary expressions for endpoints)
     * Floating-point **rounded operations** (with adjustable precision)
+* Supported input formats:
+    * pp: based on fld language used in SPARK 2005 verification conditions
+    * a modified tptp: only fof formulas, extended with common infix relations (eg <=, >=) and operations (eg +, *, /)
+         * similar to the modified tptp supported by [MetiTarski](http://www.cl.cam.ac.uk/~lp15/papers/Arith/)
 * Verification of **floating-point** [SPARK/Ada 2005](http://en.wikipedia.org/wiki/SPARK_(programming_language)) code
     * Full verification of floating-point code in cooperation with the official SPARK tools
          * Functional correctness
@@ -27,10 +31,15 @@ mathjax: on
 ### Planned:
 
   * Support for other elementary real functions
-  * Integration with [SPARK 2014](http://www.spark-2014.org/)
-  * Support for formulas in TPTP format as used in [MetiTarski](http://www.cl.cam.ac.uk/~lp15/papers/Arith/)
+  * Support for calling from [Why3](http://why3.lri.fr/)
+    * This will facilitate integration with [SPARK 2014](http://www.spark-2014.org/)
   * Integration with symbolic theorem provers, SMT
-  * Proofs checkable by a widely trusted theorem prover
+  * Increase trust in PolyPaver results
+    * Verify the underlying function arithmetic
+        * Fully specify this arithmetic *(almost done)*
+        * Exhaustively property-test the arithmetic against its specification *(almost done)*
+        * Verify the arithmetic against the specification
+    * Generate independently verifiable proofs
 
 
 

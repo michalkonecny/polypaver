@@ -70,7 +70,7 @@
     
     <hr class="divider">
 
-    <h3 id="in-version-0.3">In version 0.3:</h3>
+    <h3 id="the-master-branch">The master branch:</h3>
 <ul>
 <li>Deciding conjectures with expressions that contain
 <ul>
@@ -78,6 +78,14 @@
 <li>Explicit <strong>intervals</strong> and <strong>interval operations</strong></li>
 <li>Definite <strong>integrals</strong> (with arbitrary expressions for endpoints)</li>
 <li>Floating-point <strong>rounded operations</strong> (with adjustable precision)</li>
+</ul></li>
+<li>Supported input formats:
+<ul>
+<li>pp: based on fld language used in SPARK 2005 verification conditions</li>
+<li>a modified tptp: only fof formulas, extended with common infix relations (eg &lt;=, &gt;=) and operations (eg +, *, /)
+<ul>
+<li>similar to the modified tptp supported by <a href="http://www.cl.cam.ac.uk/~lp15/papers/Arith/">MetiTarski</a></li>
+</ul></li>
 </ul></li>
 <li>Verification of <strong>floating-point</strong> <a href="http://en.wikipedia.org/wiki/SPARK_(programming_language)">SPARK/Ada 2005</a> code
 <ul>
@@ -99,17 +107,28 @@
 <h3 id="planned">Planned:</h3>
 <ul>
 <li>Support for other elementary real functions</li>
-<li>Integration with <a href="http://www.spark-2014.org/">SPARK 2014</a></li>
-<li>Support for formulas in TPTP format as used in <a href="http://www.cl.cam.ac.uk/~lp15/papers/Arith/">MetiTarski</a></li>
+<li>Support for calling from <a href="http://why3.lri.fr/">Why3</a>
+<ul>
+<li>This will facilitate integration with <a href="http://www.spark-2014.org/">SPARK 2014</a></li>
+</ul></li>
 <li>Integration with symbolic theorem provers, SMT</li>
-<li>Proofs checkable by a widely trusted theorem prover</li>
+<li>Increase trust in PolyPaver results
+<ul>
+<li>Verify the underlying function arithmetic
+<ul>
+<li>Fully specify this arithmetic <em>(almost done)</em></li>
+<li>Exhaustively property-test the arithmetic against its specification <em>(almost done)</em></li>
+<li>Verify the arithmetic against the specification</li>
+</ul></li>
+<li>Generate independently verifiable proofs</li>
+</ul></li>
 </ul>
     
     <hr class="divider">
     <footer>
   <p class="pull-right"><a href="#">Back to top</a></p>
   <p>
-    © 2009-2014 Michal Konečný, Jan Duracz
+    &copy; 2009-2014 Michal Konečný, Jan Duracz
 <!--     &middot;  -->
 <!--     <a href="/pages/privacy.html">Privacy</a>  -->
 <!--     &middot;  -->
