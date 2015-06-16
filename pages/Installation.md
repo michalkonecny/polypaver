@@ -1,3 +1,10 @@
+---
+title: PolyPaver | Documentation | Installation
+author: Michal Konečný
+date: 2015-06-16
+mathjax: on
+---
+
 Installation (from master branch)
 =================================
 

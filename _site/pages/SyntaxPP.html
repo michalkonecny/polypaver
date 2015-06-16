@@ -1,0 +1,231 @@
+<!DOCTYPE HTML>
+<html lang="en">
+  <head>
+    <title>PolyPaver | Documentation | .pp Language</title>
+        <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content>
+    <meta name="author" content>
+    <link href="../css/bootstrap.css" rel="stylesheet">
+    <link href="../css/syntax.css" rel="stylesheet">
+    <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link href="http://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet" type="text/css">
+    <script>
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+      })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+    
+      ga('create', 'UA-48373296-1', 'michalkonecny.github.io');
+      ga('send', 'pageview');
+    </script>    
+    <link href="../css/polypaver.css" rel="stylesheet">
+    <link href="../img/logo-24.ico" rel="shortcut icon" />
+  </head>
+  <body>
+    <div class="navbar-wrapper">
+  <div class="container">
+    <div class="navbar navbar-inverse navbar-static-top" role="navigation">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="../index.html">
+            <img src="../img/logo.png" width="24" />
+            PolyPaver
+          </a>
+        </div>
+        <div class="navbar-collapse collapse">
+          <ul class="nav navbar-nav">
+            <li><a href="../index.html">Home</a></li>
+<!--             <li class="dropdown"> -->
+<!--               <a href="#" class="dropdown-toggle" data-toggle="dropdown">Products <b class="caret"></b></a> -->
+<!--               <ul class="dropdown-menu"> -->
+<!--                 <li><a href="#">Warp Drive</a></li> -->
+<!--                 <li><a href="#">Fusion Reactor</a></li> -->
+<!--                 <li><a href="#">Sufficiently Smart Compiler</a></li> -->
+<!--                 <li class="divider"></li> -->
+<!--                 <li class="dropdown-header">Services</li> -->
+<!--                 <li><a href="#">Enlightenment</a></li> -->
+<!--               </ul> -->
+<!--             </li> -->
+            <li><a href="../pages/features.html">Features</a></li>
+            <li class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown">Documentation <b class="caret"></b></a>
+              <ul class="dropdown-menu">
+                <li><a href="../pages/QuickStart.html">Quick start</a></li>
+                <li><a href="../pages/Installation.html">Installation</a></li>
+                <li><a href="../tutorials.html">Tutorials</a></li>
+                <li><a href="../pages/CommandLineOptions.html">Command-line options</a></li>
+                <li class="divider"></li>
+                <li><a href="../pages/Changelog.html">Changelog</a></li>
+              </ul>
+            </li>
+            <li><a href="../news.html">News</a></li>
+            <li><a href="https://github.com/michalkonecny/polypaver">on GitHub</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+    <div class="container">
+    <h2>PolyPaver | Documentation | .pp Language</h2>
+    
+    <hr class="divider">
+
+    <p><strong>Warning</strong> <em>This file currently documents a subset of the language, some newer features are not yet included.</em></p>
+<h1 id="example">Example</h1>
+<pre><code>power.
+H1: x &lt;- [1 .. 10].
+H2: n &lt;- [1 .. 10].
+H3: integer(n).
+-&gt;
+C1: x^2 &lt;= x^(n+1) + 0.000000001.</code></pre>
+<h1 id="grammar">Grammar</h1>
+<h2 id="top-level">Top level</h2>
+<pre><code>&lt;conjecture&gt;       ::= &lt;identifier&gt; &quot;.&quot; [ { &lt;hypothesis&gt; } &quot;-&gt;&quot; ] &lt;conclusion&gt; { &lt;conclusion&gt; }
+&lt;hypothesis&gt;       ::= &quot;H&quot; { &lt;id&gt; } &quot;:&quot; &lt;predicate&gt; &quot;.&quot;
+&lt;conclusion&gt;       ::= &quot;C&quot; { &lt;id&gt; } &quot;:&quot; &lt;predicate&gt; &quot;.&quot;
+&lt;predicate&gt;        ::= &lt;type_declaration&gt; | &lt;expression&gt; &lt;relation_symbol&gt; &lt;expression&gt; | ...
+&lt;type_declaration&gt; ::= &quot;integer(&quot; &lt;identifier&gt; &quot;)&quot;</code></pre>
+<h2 id="relations">Relations</h2>
+<table>
+<thead>
+<tr class="header">
+<th align="left"><strong>Relation</strong></th>
+<th align="left"><strong>Explanation</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left"><code>&lt;-</code></td>
+<td align="left">element of / within interval / sub-interval of</td>
+</tr>
+<tr class="even">
+<td align="left"><code>&lt;=</code>, <code>&gt;=</code>, <code>==</code>, <code>=</code>, <code>!=</code></td>
+<td align="left"><code>=</code> and <code>==</code> both denote equality</td>
+</tr>
+</tbody>
+</table>
+<h2 id="expressions">Expressions</h2>
+<table>
+<thead>
+<tr class="header">
+<th align="left"><strong>Constant</strong></th>
+<th align="left"><strong>Explanation</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left"><code>Pi</code></td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left"><code>FepsAbs</code></td>
+<td align="left">2<sup>-126</sup> (IEEE Single FP least non-zero number)</td>
+</tr>
+<tr class="odd">
+<td align="left"><code>FepsiAbs</code></td>
+<td align="left">The interval <code>[</code> -2<sup>-126</sup>..2<sup>-126</sup><code>]</code></td>
+</tr>
+<tr class="even">
+<td align="left"><code>FepsRel</code></td>
+<td align="left">2<sup>-24</sup> (IEEE Single FP machine epsilon)</td>
+</tr>
+<tr class="odd">
+<td align="left"><code>FepsiRel</code></td>
+<td align="left">The interval <code>[</code> -2<sup>-24</sup>..2<sup>-24</sup><code>]</code></td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr class="header">
+<th align="left"><strong>Exact operator</strong></th>
+<th align="left"><strong>IEEE-Single-rounded operator</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left"><code>+</code></td>
+<td align="left"><code>(+)</code></td>
+</tr>
+<tr class="even">
+<td align="left"><code>-</code></td>
+<td align="left"><code>(-)</code></td>
+</tr>
+<tr class="odd">
+<td align="left"><code>*</code></td>
+<td align="left"><code>(*)</code></td>
+</tr>
+<tr class="even">
+<td align="left"><code>/</code></td>
+<td align="left"><code>(/)</code></td>
+</tr>
+<tr class="odd">
+<td align="left"><code>^</code></td>
+<td align="left"><em>rounded integer power not available</em></td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr class="header">
+<th align="left"><strong>Function</strong></th>
+<th align="left"><strong>Explanation</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left"><code>Interval(x,y)</code></td>
+<td align="left">the least interval covering <code>x</code> and <code>y</code></td>
+</tr>
+<tr class="even">
+<td align="left"><code>Sqrt(x)</code></td>
+<td align="left">exact square root of <code>x</code></td>
+</tr>
+<tr class="odd">
+<td align="left"><code>Exp(x)</code></td>
+<td align="left">exact natural exponential (e<sup><code>x</code></sup>)</td>
+</tr>
+<tr class="even">
+<td align="left"><code>Sin(x)</code></td>
+<td align="left">exact sine</td>
+</tr>
+<tr class="odd">
+<td align="left"><code>Cos(x)</code></td>
+<td align="left">exact cosine</td>
+</tr>
+<tr class="even">
+<td align="left"><code>Integral(a,b,f,x)</code></td>
+<td align="left">exact integral from <code>a</code> to <code>b</code> of <code>f(x)dx</code></td>
+</tr>
+</tbody>
+</table>
+<p>Please note that in the above, <code>x</code> and <code>y</code> can be arbitrary expressions.</p>
+    
+    <hr class="divider">
+    <footer>
+  <p class="pull-right"><a href="#">Back to top</a></p>
+  <p>
+    &copy; 2009-2014 Michal Konečný, Jan Duracz
+<!--     &middot;  -->
+<!--     <a href="/pages/privacy.html">Privacy</a>  -->
+<!--     &middot;  -->
+<!--     <a href="/pages/tos.html">Terms</a></p> -->
+</footer>
+
+    </div>
+
+    <script src="../js/jquery.js"></script>
+    <script src="../js/bootstrap.js"></script>
+    <script src="../js/holder.js"></script>
+  </body>
+</html>

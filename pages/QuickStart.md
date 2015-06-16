@@ -1,3 +1,10 @@
+---
+title: PolyPaver | Documentation | Quick Start
+author: Michal Konečný
+date: 2015-06-16
+mathjax: on
+---
+
 Assuming you have downloaded a compatible binary and installed dependencies (see [this guide](Installation.html)),
 you can start using PolyPaver to decide conjectures defined in .pp or .tptp files.
 
