@@ -54,20 +54,22 @@ initMachineDouble =
     do
     currentRndMode <- fegetround
     case currentRndMode == eFE_UPWARD of
-        True -> 
-            putStrLn "already rounding upwards" 
+        True ->
+            return () 
+--            putStrLn "already rounding upwards" 
         False ->
             do
             fesetround eFE_UPWARD
-            putStrLn "switching to upwards rounding" 
+            return ()
+--            putStrLn "switching to upwards rounding" 
 
 instance B.ERRealBase Double
     where
     typeName _ = "double"
     initialiseBaseArithmetic x = 
-		do
-		putStr $ "Base arithmetic:" ++ B.typeName x ++ "; "
-		initMachineDouble
+        do
+        putStr $ "Base arithmetic:" ++ B.typeName x ++ "; "
+        initMachineDouble
     defaultGranularity _ = 53
     getApproxBinaryLog d 
         | d < 0 =

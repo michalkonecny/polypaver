@@ -22,7 +22,8 @@ module PolyPaver.Invocation
 )
 where
 
-import PolyPaver.Args
+import qualified PolyPaver.Args as Args
+import PolyPaver.Args (Args, checkArgs)
 import PolyPaver.APBox
 import PolyPaver.Form
 import PolyPaver.ProverLoop
@@ -54,6 +55,7 @@ import System.Environment (getArgs, getProgName)
 import System.Console.CmdArgs (cmdArgs)
 --import System.CPUTime
 import System.IO
+import System.Exit (exitSuccess, exitFailure, exitWith, ExitCode(..))
 
 data Problem = Problem
     {
@@ -68,7 +70,7 @@ data Problem = Problem
 
 getTightnessValues :: Args -> [Integer]
 getTightnessValues args =
-    parse $ tightnessValues args
+    parse $ Args.tightnessValues args
     where
     parse ('2' : '^' : s) = map (2^) $ parse2 s
     parse s = parse2 s
@@ -91,11 +93,17 @@ getTightnessValues args =
 defaultMain :: Problem -> IO PaverResult
 defaultMain problem = 
     do
-    reportCmdLine
-    argsPre <- cmdArgs paverDefaultArgs
-    let args = setDefaults argsPre
+    args <- initialProcessing
+    runPaverReportingProgress problem args
+
+initialProcessing :: IO Args
+initialProcessing =
+    do
+    argsPre <- cmdArgs Args.paverDefaultArgs
+    let args = Args.setDefaults argsPre
+    if Args.quiet args then return () else reportCmdLine 
     case checkArgs args of
-        [] -> runPaverReportingProgress problem args
+        [] -> return args
         msgs -> 
             do
             mapM_ putStrLn msgs
@@ -106,39 +114,58 @@ batchMain ::
     IO ()
 batchMain problemFactory =
     do
-    reportCmdLine
-    argsPre <- cmdArgs paverDefaultArgs
-    let args = setDefaults argsPre
-    case checkArgs args of
-        [] -> 
+    args <- initialProcessing
+    let problemId = Args.problemId args
+    problems <- problemFactory args problemId
+    case problems of
+        [] -> return ()
+        [(name, problem)] ->
+            do 
+            maybePrintApplyingOnProblem args name problem
+            result <- runPaverReportingProgress problem args
+            exitOrWaitForPlot args result
+--            waitForReportingThreadsAndExit args result
+        _ ->
             do
-            let problemIdOpt = problemId args
-            problems <- problemFactory args problemIdOpt
             results <- mapM (runProblem args) problems
             putStr "\n>>>>>>>>>>> SUMMARY <<<<<<<<<<<"
             _ <- mapM printSummaryLine $ zip problems results
             putStrLn ""
             return ()
-        msgs -> 
-            do
-            mapM_ putStrLn msgs
-            error "The above errors have been identified in the command-line arguments."
     where
-    printSummaryLine ((name, _problem), result) =
+    printSummaryLine ((name, _problem), result)
+        =
         putStr $ "\n" ++ name ++ ": " ++ showPaverResultOneLine result
     runProblem args (name, problem)
         =
         do
-        putStrLn banner
-        putStrLn $ "*** applying PolyPaver on conjecture " ++ name
-        putStrLn banner
-        putStrLn $ show (problem_form problem)
-        putStrLn banner
-        putStrLn $ showForm 5000 const (problem_form problem)
-        putStrLn banner
+        maybePrintApplyingOnProblem args name problem
         runPaverReportingProgress problem args
-    banner = replicate 100 '*'
+    maybePrintApplyingOnProblem args name problem 
+        =
+        case Args.quiet args of
+            True -> return ()
+            False ->
+                do
+                putStrLn banner
+                putStrLn $ "*** applying PolyPaver on conjecture " ++ name
+                putStrLn banner
+                putStrLn $ showForm 5000 const (problem_form problem)
+                putStrLn banner
+        where
+        banner = replicate 100 '*'
     
+exitOrWaitForPlot :: Args -> PaverResult -> IO ()
+exitOrWaitForPlot args result =
+    case formTruthOrMessage of
+        _ | isPlotting -> return () -- exit... would stop the plotting
+        Right True -> exitSuccess
+        Right False -> exitWith (ExitFailure 111)
+        _ -> exitFailure
+    where
+    formTruthOrMessage = paverResult_formTruthOrMessage result
+    isPlotting = Args.plotWidth args > 0 && Args.plotHeight args > 0
+
 
 reportCmdLine :: IO ()
 reportCmdLine
@@ -189,15 +216,15 @@ runPaverReportingProgress problem args =
             do
             putStr $ format maybePrevState progressOrResult
         format 
-            | quiet args = showProgressOrResult 0
-            | verbose args = showProgressOrResult 2
+            | Args.quiet args = showProgressOrResult 0
+            | Args.verbose args = showProgressOrResult 2
             | otherwise = showProgressOrResult 1
             
 
     shouldPlot = dim == 2 && w > 0 && h > 0
     dim = length boxBounds
-    w = plotWidth args
-    h = plotHeight args
+    w = Args.plotWidth args
+    h = Args.plotHeight args
     startPlotter progressChannel =
         do
         stateTV <- Plot.initPlot initbox w h
@@ -253,19 +280,19 @@ showProgressOrResult ::
     Maybe (PavingState Double) -> 
     Either PaverProgress PaverResult -> 
     String
-showProgressOrResult _ _ (Right result) = 
+showProgressOrResult verbosity _ (Right result) | verbosity > 0 = 
     showPaverResult result
 showProgressOrResult verbosity maybePrevState (Left progress) 
-    | verbosity == 0 = ""
     | verbosity == 1 = showPaverProgressMini maybePrevState progress
-    | otherwise = showPaverProgress progress
+    | verbosity > 1 = showPaverProgress progress
+showProgressOrResult _ _ _ = ""
 
 showPaverResult :: PaverResult -> String
 showPaverResult result =
     banner ++
     outcomeS ++
     " in " ++ showDuration durationInPicoseconds ++ "." ++
-    stateS
+    stateS ++ "\n"
     where
     banner = take 100 $ "\n^^^^ time = " ++ showDuration durationInPicoseconds ++ repeat '^'
     outcomeS = 
