@@ -271,11 +271,12 @@ showPaverResult result =
     outcomeS = 
         case outcome of
             Right True -> "\nConjecture proved TRUE" 
-            Right False -> "\nConjecture shown FALSE"
+            Right False -> "\nConjecture shown FALSE on " ++ showBox lastPPB
             Left message -> "\nGave up on deciding conjecture: " ++ message 
     outcome = paverResult_formTruthOrMessage result
     durationInPicoseconds = paverResult_durationInPicosecs result
     state = paverResult_state result
+    lastPPB = paverResult_lastPPB result
     stateS = showState state
 
 showPaverProgress :: PaverProgress -> String

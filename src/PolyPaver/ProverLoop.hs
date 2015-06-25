@@ -201,6 +201,8 @@ tryToDecideFormOnBoxByPaving
                         Nothing Nothing
                 -- formula is false on this box:
                 | decided =
+                    do
+                    reportBoxDisproved
                     stopPaverDisproved
                 -- formula undecided, raise degree:
                 | currentDeg < degree args && undecidedMeasureImproved =
@@ -352,6 +354,8 @@ tryToDecideFormOnBoxByPaving
                 reportProgress False "Examining another box." True False Nothing
             reportBoxProved =
                 reportProgress True "Formula proved on this box." False True (Just (SM.Just True))
+            reportBoxDisproved =
+                reportProgress True "Formula DISPROVED on this box." False False (Just (SM.Just False))
             reportBoxSplit =
                 reportProgress True "Formula undecided on this box, splitting." False True (Just SM.Nothing)
             reportRaiseDegree =
