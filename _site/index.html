@@ -121,14 +121,14 @@
       <div class="row featurette">
         <div class="col-md-8">
 <!--           <h2 class="featurette-heading">About</h2> -->
-                <p class="lead">PolyPaver is a theorem prover specialised in deciding inequalities of 
-                non-linear real and floating-point expressions using rigorous polynomial approximations.
+                <p class="lead">A numerical theorem prover
                     <br />
-                    It is also a verifier of floating-point
-                    <a href="http://en.wikipedia.org/wiki/SPARK_(programming_language)">SPARK/Ada 2005</a> 
-                    programs.
+                    with support for verifying floating-point programs 
+                    in <a href="http://en.wikipedia.org/wiki/SPARK_(programming_language)">SPARK/Ada</a>.
                 </p>
-          <p>Some statements that PolyPaver proves <strong>automatically</strong> in a few seconds or minutes:</p>
+            <div id="mini-examples" class="section level4">
+<h4>Mini examples</h4>
+<p>Some statements that PolyPaver proves <strong>automatically</strong> in a few seconds or minutes:</p>
 <p><span class="math">\[
 \left(
 \begin{array}{l}
@@ -166,15 +166,16 @@ r = (0.5 \otimes (r \oplus x \oslash r))\\
 0.5 \otimes (r \oplus x \oslash r) \in (1+4[-\varepsilon, \varepsilon])\sqrt{x}
 \]</span></p>
 <p>where <span class="math">\(\otimes, \oplus, \oslash\)</span> are single-precision floating-point operations and <span class="math">\(\varepsilon\)</span> is the corresponding floating-point epsilon.</p>
-<div id="under-the-hood" class="section level3">
-<h3>Under the hood</h3>
+</div>
+<div id="under-the-hood" class="section level4">
+<h4>Under the hood</h4>
 <ul>
 <li>PolyPaver relies on a multi-variate correctly rounded function interval arithmetic</li>
 <li>It currently uses (a version of) the polynomial interval arithmetic from the <a href="https://code.google.com/p/aern/">AERN library</a></li>
 </ul>
 </div>
-<div id="origin" class="section level3">
-<h3>Origin</h3>
+<div id="origin" class="section level4">
+<h4>Origin</h4>
 <ul>
 <li>PolyPaver was first developed by Jan Duracz and Michal Konečný during Jan’s PhD study under Michal’s supervision.</li>
 <li>The project has been sponsored by EPSRC and Altran Praxis.</li>
@@ -192,7 +193,7 @@ r = (0.5 \otimes (r \oplus x \oslash r))\\
     <footer>
   <p class="pull-right"><a href="#">Back to top</a></p>
   <p>
-    &copy; 2009-2014 Michal Konečný, Jan Duracz
+    &copy; 2009-2015 Michal Konečný, Jan Duracz
 <!--     &middot;  -->
 <!--     <a href="/pages/privacy.html">Privacy</a>  -->
 <!--     &middot;  -->
