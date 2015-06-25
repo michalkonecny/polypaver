@@ -49,12 +49,12 @@ $$
 where $\otimes, \oplus, \oslash$ are single-precision floating-point operations
 and $\varepsilon$ is the corresponding floating-point epsilon. 
 
-### Under the hood:
+### Under the hood
 
   * PolyPaver relies on a multi-variate correctly rounded function interval arithmetic
   * It currently uses (a version of) the polynomial interval arithmetic from the [AERN library](https://code.google.com/p/aern/)
   
-### Origin:
+### Origin
 
   * PolyPaver was first developed by Jan Duracz and Michal Konečný during Jan's PhD study under Michal's supervision.
   * The project has been sponsored by EPSRC and Altran Praxis.

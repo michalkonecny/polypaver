@@ -89,19 +89,23 @@ pages = do
     compile $ do
       posts <- recentFirst =<< loadAll "posts/*"
       bits <- recentFirst =<< loadAll "bits/*"
-      compiler
+      (compiler shouldAddTOC)
         >>= loadAndApplyTemplate "templates/page.html"    postCtx
         >>= applyAsTemplate (indexCtx posts bits)
         >>= relativizeUrls
+    where
+    shouldAddTOC = True
 
 
 newsPosts :: Rules ()
 newsPosts = do
   match "posts/*" $ do
     route $ setExtension "html"
-    compile $ compiler
+    compile $ (compiler shouldAddTOC)
       >>= loadAndApplyTemplate "templates/newsPost.html"    postCtx
       >>= relativizeUrls
+    where
+    shouldAddTOC = True
 
 newsIndex :: Rules ()
 newsIndex = do
@@ -117,9 +121,11 @@ tutorials :: Rules ()
 tutorials = do
   match "tutorials/*" $ do
     route $ setExtension "html"
-    compile $ compiler
+    compile $ (compiler shouldAddTOC)
       >>= loadAndApplyTemplate "templates/tutorial.html"    postCtx
       >>= relativizeUrls
+    where
+    shouldAddTOC = True
 
 tutorialsIndex :: Rules ()
 tutorialsIndex = do
@@ -149,24 +155,26 @@ templates =
 bits :: Rules ()
 bits = 
     match "bits/*" $ 
-    compile $ compiler
+    compile $ (compiler shouldAddTOC)
 --      >>= loadAndApplyTemplate "templates/bit.html" bitCtx
       >>= relativizeUrls
+    where
+    shouldAddTOC = False
 
 --------------------------------------------------------------------
 -- Configuration
 --------------------------------------------------------------------
 
-compiler :: Compiler (Item String)
-compiler = pandocCompilerWith defaultHakyllReaderOptions pandocOptions
+compiler :: Bool -> Compiler (Item String)
+compiler shouldAddTOC = pandocCompilerWith defaultHakyllReaderOptions (pandocOptions shouldAddTOC)
 
-pandocOptions :: WriterOptions
-pandocOptions = 
+pandocOptions :: Bool -> WriterOptions
+pandocOptions shouldAddTOC = 
     defaultHakyllWriterOptions
     { 
         writerSectionDivs = True,
         writerStandalone = True,
-        writerTableOfContents = True,
+        writerTableOfContents = shouldAddTOC,
         writerTemplate = tocTemplate,
         writerHTMLMathMethod = MathJax ""
     }
