@@ -410,7 +410,7 @@ withPrec precArg termBuilder op =
     (Term (Lit adaDigitsRational, _)) = precArg
     relB
         | adaDigitsRational == 6 = 23
-        | adaDigitsRational == 15 = 53
+        | adaDigitsRational == 15 = 52
         | otherwise =
             floor $ 3.321928094887362 * (adaDigitsDbl + 1)
     absB 
