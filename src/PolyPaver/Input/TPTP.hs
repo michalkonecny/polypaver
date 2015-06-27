@@ -497,6 +497,34 @@ constant name =
 
 decodeFn :: String -> String -> [Term ()] -> Term ()
 decodeFn _ "exp" [arg1] = exp arg1
+decodeFn _ "sqrt" [arg1] = sqrt arg1
+decodeFn _ "eps_rel" [mantissaBitsT, expBitsT] =
+    withPrec (floor mantissaBits) (floor expBits) termOp0 FEpsRel
+    where
+    (Term (Lit mantissaBits, _)) = mantissaBitsT
+    (Term (Lit expBits, _)) = expBitsT
+decodeFn _ "eps_abs" [mantissaBitsT, expBitsT] =
+    withPrec (floor mantissaBits) (floor expBits) termOp0 FEpsAbs
+    where
+    (Term (Lit mantissaBits, _)) = mantissaBitsT
+    (Term (Lit expBits, _)) = expBitsT
+decodeFn _ "round" [mantissaBitsT, expBitsT, _roundingModeT, arg] = 
+    withPrec (floor mantissaBits) (floor expBits) termOp1 FRound arg
+    where
+    (Term (Lit mantissaBits, _)) = mantissaBitsT
+    (Term (Lit expBits, _)) = expBitsT
+decodeFn _ "eps_rel_single" [] =
+    withPrec 24 8 termOp0 FEpsRel
+decodeFn _ "eps_abs_single" [] =
+    withPrec 24 8 termOp0 FEpsAbs
+decodeFn _ "round_single" [_roundingModeT, arg] = 
+    withPrec 24 8 termOp1 FRound arg
+decodeFn _ "eps_rel_double" [] =
+    withPrec 53 11 termOp0 FEpsRel
+decodeFn _ "eps_abs_double" [] =
+    withPrec 53 11 termOp0 FEpsAbs
+decodeFn _ "round_double" [_roundingModeT, arg] = 
+    withPrec 53 11 termOp1 FRound arg
 decodeFn original fn _args =
     trace
     (
@@ -507,6 +535,13 @@ decodeFn original fn _args =
     where
     originalNoSpaces = filter (not . isSpace) original
 
+withPrec :: 
+    Int -> Int -> (s -> t) -> (Int -> Int -> s) -> t
+withPrec mantissaBits expBits termBuilder op =
+    (termBuilder $ op epsrelE epsabsE)
+    where
+    epsrelE = mantissaBits - 1 -- TODO sharpen this if rounding to nearest
+    epsabsE = 2^(expBits - 1) - 2
 
 m_UpperWord :: Parser String
 m_UpperWord =
