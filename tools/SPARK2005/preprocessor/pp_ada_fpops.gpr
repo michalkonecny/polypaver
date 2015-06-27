@@ -1,10 +1,10 @@
 with "asis";
 
-project PP_FPops is
+project PP_Ada_FPops is
 
    for Source_Dirs use ("src");
    for Object_Dir use "build";
-   for Main use ("pp_fpops.adb");
+   for Main use ("pp_ada_fpops.adb");
    
    package Compiler is
       for Default_Switches ("ada") use ("-g", "-O2");
@@ -14,5 +14,5 @@ project PP_FPops is
       for Default_Switches ("ada") use ("-s", "-x");
    end Builder;
 
-end PP_FPops;
+end PP_Ada_FPops;
 

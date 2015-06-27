@@ -14,7 +14,7 @@ with Asis.Errors;
 
 with Context_Processing;
 
-procedure PP_FPops is
+procedure PP_Ada_FPops is
    My_Context            : Asis.Context;
 
    My_Context_Name       : Wide_String := Asis.Ada_Environments.Default_Name;
@@ -149,4 +149,4 @@ exception
       Ada.Wide_Text_IO.Put (")");
       Ada.Wide_Text_IO.New_Line;
 
-end PP_FPops;
+end PP_Ada_FPops;
