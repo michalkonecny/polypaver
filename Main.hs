@@ -81,6 +81,9 @@ static = do
   match "js/*" $ do
     route idRoute
     compile $ copyFileCompiler
+  match "binary/**" $ do
+    route idRoute
+    compile $ copyFileCompiler
 
 pages :: Rules ()
 pages = do
